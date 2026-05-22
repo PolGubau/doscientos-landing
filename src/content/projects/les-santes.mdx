@@ -1,0 +1,236 @@
+---
+title: "i15! (Les Santes)"
+summary: "Full-stack solo build: unofficial festival guide for Les Santes, Mataró's biggest yearly festival. Real-time event map with live parade position interpolation, offline-first architecture, push notifications, and an embedded CMS - built across React Native, Next.js 15, and Supabase. Zero auth, zero ads, fully open source."
+available: true
+link: https://lessantes.polgubau.com
+client: "Ajuntament de Mataró"
+endedAt: "2026-06-10"
+timeline: 8
+color: "#b2374a90"
+services_provided:
+  - Mobile App
+  - Open API
+  - Landing & Admin
+cover: "../../assets/media/projects/les-santes/thumbnail.avif"
+logo: "../../assets/media/projects/les-santes/icon.svg"
+---
+
+
+import { Image } from "astro:assets";
+import Schema from "../../components/Schema.astro";
+
+
+<Schema type="SoftwareApplication" data={{
+  name: "Les Santes",
+  operatingSystem: "iOS, Android",
+  applicationCategory: "LifestyleApplication",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+  url: "https://lessantes.polgubau.com",
+  author: { "@type": "Person", name: "Pol Gubau Amores" },
+  description: "Unofficial festival guide app for Les Santes - Mataró's biggest yearly festival. Real-time event map, live parade interpolation, offline-first architecture, and push notifications.",
+  inLanguage: ["ca", "en", "es"],
+  availableOnDevice: "Mobile",
+}} />
+
+
+import logo from "../../assets/media/projects/les-santes/icon.svg";
+import landingThumbnail from "../../assets/media/projects/les-santes/landing-thumbnail.avif";
+import landingScreens from "../../assets/media/projects/les-santes/landing-screens.avif";
+import landingPosters from "../../assets/media/projects/les-santes/landing-posters.avif";
+import landing404 from "../../assets/media/projects/les-santes/landing-404.avif";
+import appAgenda from "../../assets/media/projects/les-santes/app-agenda.avif";
+import appAgendaFavs from "../../assets/media/projects/les-santes/app-agenda-favs.avif";
+import appMapa from "../../assets/media/projects/les-santes/app-mapa.avif";
+import appAra from "../../assets/media/projects/les-santes/app-ara.avif";
+import appCartells from "../../assets/media/projects/les-santes/app-cartells.avif";
+import appPostals from "../../assets/media/projects/les-santes/app-postals.avif";
+import appRecursos from "../../assets/media/projects/les-santes/app-recursos.avif";
+import adminHome from "../../assets/media/projects/les-santes/admin-home.avif";
+import adminEditEvent from "../../assets/media/projects/les-santes/admin-edit-event.avif";
+
+
+Every summer, **Mataró** celebrates **Les Santes**, 6 days of concerts, fire runs, giant-figure parades, and open-air events drawing tens of thousands of attendees across the whole city.
+
+The only official tool? A **printed PDF** and a static website with no real-time data. People were left guessing event times, where moving parades were, and whether anything had been cancelled.
+
+**So I built the full stack myself - mobile app, marketing site, and admin CMS - solo, from scratch, in public.**
+
+<Image src={landingThumbnail} alt="Les Santes landing page" class="rounded-2xl my-6" />
+
+<div class="not-prose grid grid-cols-2 sm:grid-cols-4 gap-4 my-8 p-5 rounded-2xl border border-neutral-200 bg-neutral-50">
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">3</span><span class="text-[11px] uppercase tracking-wide text-neutral-400">platforms shipped</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">Solo</span><span class="text-[11px] uppercase tracking-wide text-neutral-400">built & maintained</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">MIT</span><span class="text-[11px] uppercase tracking-wide text-neutral-400">open source</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">134</span><span class="text-[11px] uppercase tracking-wide text-neutral-400">years of posters archived</span></div>
+</div>
+
+---
+
+## Why this project exists
+
+I've been attending **Les Santes** for over 20 years. Every edition, I watched the same scene repeat: people holding crumpled printed programmes, asking each other *"where are the giants now?"* or *"what time does the correfoc start?"*
+
+The problem is genuinely hard in the moment: parades move, events start late, signal is poor in crowded streets, and the official website isn't built for real-time use.
+
+Mataró deserves better tooling. So I built it - a solo, public-good project with no client, no budget, and no team. Just a problem worth solving and a stack worth learning.
+
+---
+
+## Engineering highlights
+
+<div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
+  <div class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <span class="text-sm font-semibold">Live parade position - no GPS needed</span>
+    <span class="text-sm leading-relaxed text-neutral-500">Each parade has a pre-planned GeoJSON route and a start time. The app interpolates their position along that route every second, client-side. No hardware, no server round-trips - just geometry and elapsed time.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <span class="text-sm font-semibold">Works offline - festival venues kill signal</span>
+    <span class="text-sm leading-relaxed text-neutral-500">All data is cached on first load with a timestamp. If you open the app with no connection, you still get the full schedule - with a small note showing how old the data is. No spinners, no empty screens.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <span class="text-sm font-semibold">Zero accounts, zero data collected</span>
+    <span class="text-sm leading-relaxed text-neutral-500">No login, no sessions, no tokens. This simplified the whole backend and made App Store review straightforward - there was simply nothing to review in terms of data handling.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <span class="text-sm font-semibold">Instant cancellations via Supabase Realtime</span>
+    <span class="text-sm leading-relaxed text-neutral-500">When the organiser cancels an event, every connected app instance gets it immediately via Realtime broadcast. Users with notifications enabled get a push with the reason. No polling.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <span class="text-sm font-semibold">130 years of posters at 146 KB total</span>
+    <span class="text-sm leading-relaxed text-neutral-500">The full poster archive (1892-present) re-encoded to AVIF. What would have been 5.2 MB of PNGs fits in 146 KB - about 97% smaller, same visual quality.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <span class="text-sm font-semibold">MapLibre instead of Google or Apple Maps</span>
+    <span class="text-sm leading-relaxed text-neutral-500">MapLibre GL JS in a sandboxed WebView with MapTiler tiles. No third-party tracking, no native SDK setup, full control over styling. Keeps the privacy policy to one paragraph.</span>
+  </div>
+</div>
+
+<Image src={appMapa} alt="Live parade map with real-time position tracking" class="max-h-[60vh] w-auto rounded-2xl my-2" />
+
+---
+
+## The app
+
+The mobile app (React Native + Expo) is organised around one question: **what's happening right now?**
+
+<div class="not-prose my-6 overflow-hidden rounded-2xl aspect-video">
+  <iframe
+    src="https://www.youtube.com/embed/H1LrHJ9kwK0"
+    title="Les Santes app demo"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    loading="lazy"
+    class="w-full h-full"
+  />
+</div>
+
+### Ara (Now)
+
+Open the app and immediately see what's live: a hero card with the current event and a horizontal strip of upcoming ones. No login prompt, no onboarding, no setup - just the festival.
+
+<Image src={appAra} alt="App Ara view" class="max-h-[60vh] w-auto rounded-2xl my-6" />
+
+### Mapa (Interactive map)
+
+Fixed events appear as pins. Moving parades show their **real-time estimated position** as an animated route polyline, recalculated every second by interpolating elapsed time along the pre-planned GeoJSON path. It looks live because the math runs live.
+
+<Image src={appMapa} alt="App map with live event routes" data-reveal="bottom" data-easing="soft" class="max-h-[60vh] w-auto rounded-2xl my-6" />
+
+### Agenda (Full programme)
+
+The complete schedule, filterable by day, category, event type, or distance from the user's location. A favourites system lets users pin events and get notified before they start.
+
+<div class="not-prose flex flex-wrap gap-4 my-6" data-stagger="100">
+  <Image src={appAgenda} alt="Full agenda view" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
+  <Image src={appAgendaFavs} alt="Favourites filter" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
+</div>
+
+### Recursos (Archive)
+
+A scrollable archive of every official festival poster since 1892, plus a swipeable lightbox of the Gegants postcards - each encoded in AVIF for near-instant loading.
+
+<div class="not-prose flex flex-wrap gap-4 my-6" data-stagger="100">
+  <Image src={appCartells} alt="Poster archive" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
+  <Image src={appPostals} alt="Gegants postcard lightbox" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
+  <Image src={appRecursos} alt="Resources tab" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
+</div>
+
+---
+
+## Key design choices
+
+<div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6" data-stagger="80">
+  <div data-reveal="bottom" data-easing="soft" class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <span class="text-sm font-semibold">No login. No accounts. No data collected.</span>
+    <span class="text-sm leading-relaxed text-neutral-500">Festival attendees want to know what's on, not fill in forms. The app is 100% anonymous - no personal data is ever transmitted or stored. This also made App Store and Play Store approval straightforward, since there was nothing to review in terms of data handling.</span>
+  </div>
+  <div data-reveal="bottom" data-easing="soft" class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <span class="text-sm font-semibold">Offline-first, not offline-tolerant.</span>
+    <span class="text-sm leading-relaxed text-neutral-500">Festival venues have terrible signal. All event data is cached locally with a timestamp on first load, so the full app experience works without any internet connection. A non-blocking banner surfaces the cache age. No partial states, no placeholders.</span>
+  </div>
+  <div data-reveal="bottom" data-easing="soft" class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <span class="text-sm font-semibold">Catalan as the primary language.</span>
+    <span class="text-sm leading-relaxed text-neutral-500">Les Santes is a Catalan cultural festival. The app speaks Catalan first - not as localisation, but as the default. English and Spanish are fallbacks. This was the first product decision made, not the last.</span>
+  </div>
+  <div data-reveal="bottom" data-easing="soft" class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <span class="text-sm font-semibold">AVIF everywhere.</span>
+    <span class="text-sm leading-relaxed text-neutral-500">All media - app screenshots, poster archive, postcards, landing images - was re-encoded to AVIF. The 130+ year poster collection went from 5.2 MB of PNGs to ~146 KB. The same visual quality, under 30 KB per image on average.</span>
+  </div>
+  <div data-reveal="bottom" data-easing="soft" class="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 p-4 sm:col-span-2">
+    <span class="text-sm font-semibold">MapLibre in a WebView instead of native map SDKs.</span>
+    <span class="text-sm leading-relaxed text-neutral-500">Using Google Maps or Apple Maps would have introduced privacy policies, SDK setup overhead, and potential review friction. MapLibre GL JS runs sandboxed in a WebView with MapTiler tiles - full control over styling and data, zero third-party tracking, and a privacy policy that stays one paragraph.</span>
+  </div>
+</div>
+
+---
+
+## The landing page
+
+A Next.js 15 App Router site that converts visitors into app downloads and doubles as a full content management system for the festival organiser. Optimised for Core Web Vitals, fully typed, and SEO-structured to compete with the official city domain for high-intent queries.
+
+<div class="flex flex-col gap-1.5">
+
+
+  <Image src={landingScreens} alt="Landing page app screens section" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
+
+  <Image src={landingPosters} alt="Poster marquee on landing page" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
+
+  <Image src={landing404} alt="Custom 404 page" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
+</div>
+---
+
+## The admin panel
+
+A password-protected back-office embedded in the landing site. The festival organiser can create, edit, and cancel events without touching code. Cancellations require a reason, which is broadcast instantly to all connected app instances via Supabase Realtime and delivered as a push notification via Expo Notifications.
+
+<Image src={adminHome} alt="Admin panel - event list" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
+
+Event creation handles both fixed-location events and moving parades. Parade routes are drawn in geojson.io and uploaded as GeoJSON - the app then uses them for client-side live position interpolation during the festival.
+
+<Image src={adminEditEvent} alt="Admin panel - edit event form" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
+
+---
+
+## Tech at a glance
+
+| Layer | Stack |
+|---|---|
+| **Mobile app** | React Native, Expo SDK 54, Expo Router |
+| **State & cache** | Zustand, AsyncStorage |
+| **Map** | MapLibre GL JS in a WebView, MapTiler tiles |
+| **Push notifications** | Expo Notifications, Supabase Realtime |
+| **Landing & CMS** | Next.js 15, Tailwind CSS v4, shadcn/ui |
+| **Backend** | Supabase (PostgreSQL, Auth, Realtime) |
+| **SEO** | JSON-LD `@graph`, FAQPage, Festival subEvent[], AI-crawler allowlist |
+| **Images** | AVIF throughout (97% size reduction) |
+| **i18n** | Catalan primary, English fallback |
+
+---
+
+## Status
+
+The festival runs **24-29 July 2026**.
+
+The app is in active development targeting a public release on both the App Store and Google Play before the festival. Currently working towards official recognition from the Ajuntament de Mataró.
+
+The full codebase is open source under MIT.
