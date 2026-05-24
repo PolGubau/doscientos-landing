@@ -181,7 +181,13 @@ ai_suggested_next_step  text
 ai_temperature          text      -- 'hot' | 'warm' | 'cold'
 ai_confidence           numeric(3,2)
 ai_updated_at           timestamptz
+-- Soft delete (GDPR)
+deleted_at              timestamptz  -- NULL = activo; non-NULL = borrado logico
 ```
+
+Soft delete: todas las queries deben incluir `WHERE deleted_at IS NULL`.
+Endpoint `DELETE /api/crm/leads/[id]` hace UPDATE deleted_at=now() en lugar de DELETE real.
+Endpoint `POST /api/gdpr/leads/[id]/erase` anonimiza: name='ANONIMIZADO', email='anonimizado@gdpr.local', phone=null, ip=null, company=null, message=null.
 
 ### 5.2 clients
 
@@ -201,9 +207,10 @@ city        text
 postal_code text
 country     text DEFAULT 'ES'
 -- Extra
-notes       text
-status      text DEFAULT 'active' -- 'active' | 'inactive' | 'archived'
+notes        text
+status       text DEFAULT 'active' -- 'active' | 'inactive' | 'archived'
 portal_token uuid UNIQUE DEFAULT gen_random_uuid() -- token para portal general del cliente (fase 2)
+deleted_at   timestamptz  -- soft delete GDPR
 ```
 
 ### 5.3 projects
@@ -327,6 +334,8 @@ is_rectification    bool DEFAULT false  -- true si es una factura correctiva/abo
 rectified_invoice_id uuid REFERENCES invoices(id)  -- factura original que corrige
 rectification_reason text          -- motivo de la rectificacion
 rectification_type  text           -- 'sustitucion' | 'diferencia' (segun RD 1619/2012 art.15)
+-- Idempotencia (evitar doble facturación en reintentos de cron o red)
+idempotency_key     text UNIQUE    -- UUID enviado por el cliente en header Idempotency-Key
 ```
 
 IMPORTANTE: Una vez que una factura sale del estado 'draft', current_hash y chain_sequence son INMUTABLES.
@@ -432,14 +441,25 @@ metadata    jsonb          -- datos extra: {old_status, new_status, ip, email_su
 ### 5.12 team_members
 
 ```sql
-id          uuid PK       -- debe coincidir con el user id de Supabase Auth
-created_at  timestamptz
-name        text NOT NULL
-email       text NOT NULL UNIQUE
-role        text NOT NULL DEFAULT 'member'  -- 'admin' | 'member'
-avatar_url  text
-is_active   bool DEFAULT true
+id            uuid PK       -- debe coincidir con el user id de Supabase Auth
+created_at    timestamptz
+name          text NOT NULL
+email         text NOT NULL UNIQUE
+role          text NOT NULL DEFAULT 'member'
+-- Roles (jerarquía):
+-- 'owner'  -> acceso total + billing + borrar empresa + Verifactu cert
+-- 'admin'  -> acceso total excepto billing y borrado de empresa
+-- 'member' -> acceso a proyectos/tareas/leads asignados o de equipo; NO ve settings financieros
+-- 'viewer' -> solo lectura, sin crear ni editar nada
+avatar_url    text
+is_active     bool DEFAULT true
+github_handle text UNIQUE           -- handle de GitHub para sincronización bidireccional
+deleted_at    timestamptz           -- soft delete: NULL = activo
+mfa_enabled   bool DEFAULT false    -- refleja si el usuario tiene TOTP activo en Supabase Auth
 ```
+
+Restricción: solo puede haber 1 `owner`. El owner no puede degradarse a sí mismo
+(validado en API route, no en RLS para evitar lockout).
 
 ### 5.13 lead_interactions
 
@@ -586,8 +606,8 @@ CREATE POLICY "team_read_invoice_events" ON invoice_events
 
 ### 5.18 tasks
 
-Gestión de tareas vinculadas a proyectos. Soporta subtareas (parent_task_id), prioridades,
-asignaciones y sincronización bidireccional con GitHub Issues.
+Tareas vinculadas a proyecto o a lead. Soporta subtareas (parent_task_id), prioridades,
+etiquetas (tabla task_tags), sincronización GitHub y time tracking via time_entries.
 
 ```sql
 CREATE TABLE tasks (
@@ -595,19 +615,24 @@ CREATE TABLE tasks (
   created_at        timestamptz NOT NULL DEFAULT now(),
   updated_at        timestamptz NOT NULL DEFAULT now(),
 
-  -- Relaciones
-  project_id        uuid REFERENCES projects(id) NOT NULL,
-  milestone_id      uuid REFERENCES milestones(id),        -- hito al que pertenece (opcional)
-  parent_task_id    uuid REFERENCES tasks(id),              -- null = tarea raiz; non-null = subtarea
+  -- Relaciones (al menos uno de project_id o lead_id debe ser NOT NULL)
+  project_id        uuid REFERENCES projects(id),           -- null solo si lead_id IS NOT NULL
+  lead_id           uuid REFERENCES leads(id),              -- tarea de seguimiento de lead sin proyecto
+  milestone_id      uuid REFERENCES milestones(id),
+  parent_task_id    uuid REFERENCES tasks(id),              -- null = raiz; non-null = subtarea
   assignee_id       uuid REFERENCES team_members(id),
+
+  CONSTRAINT tasks_context_check CHECK (
+    project_id IS NOT NULL OR lead_id IS NOT NULL
+  ),
 
   -- Contenido
   title             text NOT NULL,
-  description       text,                                   -- Markdown, renderizado con Tiptap
+  description       text,                                   -- Markdown, renderizado con react-markdown
   status            text NOT NULL DEFAULT 'todo',
   -- 'todo'        -> pendiente
   -- 'in_progress' -> en curso
-  -- 'in_review'   -> esperando revision / PR abierto
+  -- 'in_review'   -> esperando revision (activo solo si project.github_repo_url IS NOT NULL)
   -- 'done'        -> completada
   -- 'cancelled'   -> cancelada sin completar
 
@@ -618,27 +643,32 @@ CREATE TABLE tasks (
   due_date          date,
   started_at        timestamptz,
   completed_at      timestamptz,
-  estimated_hours   numeric(6,2),                           -- estimacion en horas
+  estimated_hours   numeric(6,2),
 
-  -- Orden en el kanban (float para reordenar sin recalcular todos los registros)
-  kanban_order      float NOT NULL DEFAULT 0,
+  -- Orden Kanban con fractional indexing (LexoRank-style).
+  -- Librería: https://github.com/rocicorp/fractional-indexing
+  -- Valor inicial: 'a0'. Insertar entre dos elementos: midpoint(prev, next).
+  -- Nunca se recalcula en bulk; solo se actualiza la fila movida.
+  kanban_order      text NOT NULL DEFAULT 'a0',
 
   -- GitHub sync
-  github_issue_number int,                                  -- numero del issue en el repo vinculado
+  github_issue_number int,
   github_issue_url    text,
   github_pr_number    int,                                  -- PR que cierra esta tarea
   github_pr_url       text,
-  github_synced_at    timestamptz,                          -- ultima sincronizacion con GitHub
+  github_synced_at    timestamptz,
 
   -- Metadatos
-  tags              text[] DEFAULT '{}',                    -- etiquetas libres (ej: 'bug','feature','design')
-  is_billable       bool DEFAULT true                       -- si las horas de esta tarea son facturables
+  is_billable       bool DEFAULT true,                      -- si el tiempo registrado es facturable
+  deleted_at        timestamptz                             -- soft delete
 );
 
-CREATE INDEX idx_tasks_project_id ON tasks(project_id);
+CREATE INDEX idx_tasks_project_id ON tasks(project_id) WHERE project_id IS NOT NULL;
+CREATE INDEX idx_tasks_lead_id ON tasks(lead_id) WHERE lead_id IS NOT NULL;
 CREATE INDEX idx_tasks_assignee_id ON tasks(assignee_id);
 CREATE INDEX idx_tasks_parent_task_id ON tasks(parent_task_id);
 CREATE INDEX idx_tasks_status ON tasks(status);
+CREATE INDEX idx_tasks_kanban ON tasks(project_id, status, kanban_order);
 CREATE INDEX idx_tasks_github_issue ON tasks(github_issue_number) WHERE github_issue_number IS NOT NULL;
 ```
 
@@ -667,19 +697,139 @@ CREATE TABLE task_comments (
 CREATE INDEX idx_task_comments_task_id ON task_comments(task_id);
 ```
 
-### 5.20 task_attachments
+### 5.20 task_attachments (Phase 2)
+
+Tabla diferida para MVP. En MVP los archivos se adjuntan pegando URLs o usando Supabase Storage
+directamente desde el comentario (drag-and-drop a `task_comments.body` como enlace markdown).
+La tabla se define aquí para que el schema esté completo, pero la UI de upload se implementa tras validar
+que el equipo realmente adjunta archivos frecuentemente.
 
 ```sql
+-- Phase 2: implementar cuando el volumen de adjuntos lo justifique
 CREATE TABLE task_attachments (
   id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at      timestamptz NOT NULL DEFAULT now(),
   task_id         uuid REFERENCES tasks(id) NOT NULL,
   uploaded_by     uuid REFERENCES team_members(id) NOT NULL,
   filename        text NOT NULL,
-  storage_path    text NOT NULL,                            -- ruta en Supabase Storage bucket 'task-files'
+  storage_path    text NOT NULL,  -- bucket: task-files/{task_id}/{filename}
   mime_type       text,
   size_bytes      bigint
 );
+```
+
+### 5.22 task_tags
+
+Etiquetas tipadas por proyecto con color. Sustituye el campo `tags text[]` eliminado de `tasks`.
+Permite filtrado por color, autocompletado y reutilización entre tareas del mismo proyecto.
+
+```sql
+CREATE TABLE task_tags (
+  id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id uuid REFERENCES projects(id) NOT NULL,
+  name       text NOT NULL,          -- 'bug', 'feature', 'design', 'backend'
+  color      text NOT NULL DEFAULT '#6366f1',  -- hex color
+
+  UNIQUE (project_id, name)
+);
+
+-- Relación N:M tasks <-> task_tags
+CREATE TABLE task_tag_assignments (
+  task_id    uuid REFERENCES tasks(id) ON DELETE CASCADE,
+  tag_id     uuid REFERENCES task_tags(id) ON DELETE CASCADE,
+  PRIMARY KEY (task_id, tag_id)
+);
+
+CREATE INDEX idx_tag_assignments_task ON task_tag_assignments(task_id);
+CREATE INDEX idx_tag_assignments_tag ON task_tag_assignments(tag_id);
+```
+
+### 5.23 time_entries
+
+Registro de tiempo trabajado por tarea. Es el núcleo del time tracking y la facturación por horas.
+
+```sql
+CREATE TABLE time_entries (
+  id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at       timestamptz NOT NULL DEFAULT now(),
+  updated_at       timestamptz NOT NULL DEFAULT now(),
+
+  -- Contexto
+  task_id          uuid REFERENCES tasks(id),              -- null = tiempo de proyecto sin tarea específica
+  project_id       uuid REFERENCES projects(id) NOT NULL,
+  member_id        uuid REFERENCES team_members(id) NOT NULL,
+
+  -- Tiempo
+  started_at       timestamptz NOT NULL,
+  ended_at         timestamptz,                            -- null = timer corriendo actualmente
+  duration_minutes int GENERATED ALWAYS AS (
+    CASE WHEN ended_at IS NOT NULL
+         THEN EXTRACT(EPOCH FROM (ended_at - started_at)) / 60
+         ELSE NULL
+    END
+  ) STORED,
+
+  -- Descripción
+  description      text,                                   -- resumen de qué se hizo
+
+  -- Facturación
+  is_billable      bool NOT NULL DEFAULT true,
+  hourly_rate      numeric(10,2),                          -- snapshot del rate en el momento de cerrar
+  -- Cuándo se factura esta entrada:
+  invoiced_at      timestamptz,                            -- null = pendiente de facturar
+  invoice_id       uuid REFERENCES invoices(id)            -- null hasta que se incluya en factura
+);
+
+CREATE INDEX idx_time_entries_project ON time_entries(project_id);
+CREATE INDEX idx_time_entries_member ON time_entries(member_id);
+CREATE INDEX idx_time_entries_task ON time_entries(task_id) WHERE task_id IS NOT NULL;
+CREATE INDEX idx_time_entries_uninvoiced ON time_entries(project_id, is_billable)
+  WHERE invoiced_at IS NULL AND ended_at IS NOT NULL;
+```
+
+**Flujo de facturación de horas:**
+1. Al cerrar el proyecto o a demanda: botón "Importar horas no facturadas" en `/projects/[id]/invoices`.
+2. La API lee `time_entries WHERE project_id = X AND is_billable = true AND invoiced_at IS NULL AND ended_at IS NOT NULL`.
+3. Agrupa por `member_id`, calcula `duration_minutes * hourly_rate / 60`.
+4. Genera `line_items` en la nueva factura con descripción "Horas [Nombre] — [periodo]".
+5. UPDATE `time_entries.invoiced_at = now(), invoice_id = nueva_factura.id`.
+
+**Timer activo:**
+- Solo puede haber 1 `time_entry` con `ended_at IS NULL` por `member_id` a la vez (validado en API route).
+- UI: botón "▶ Iniciar" en el TaskSheet. Badge en la sidebar cuando hay un timer corriendo.
+
+### 5.24 notification_preferences
+
+Controla qué notificaciones recibe cada miembro y por qué canal, evitando que los usuarios
+desactiven toda notificación por saturación de emails innecesarios.
+
+```sql
+CREATE TABLE notification_preferences (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  member_id   uuid REFERENCES team_members(id) NOT NULL,
+  event_type  text NOT NULL,
+  -- Tipos de evento:
+  -- 'new_lead'             -> lead nuevo desde landing
+  -- 'lead_assigned'        -> lead asignado a mí
+  -- 'reminder_due'         -> recordatorio vence hoy
+  -- 'proposal_viewed'      -> cliente vio propuesta
+  -- 'proposal_accepted'    -> cliente aceptó propuesta
+  -- 'invoice_overdue'      -> factura vencida
+  -- 'task_assigned'        -> tarea asignada a mí
+  -- 'task_mention'         -> @mencionado en comentario
+  -- 'milestone_completed'  -> milestone llega al 100%
+  -- 'verifactu_error'      -> fallo en envío a AEAT
+  -- 'subscription_ending'  -> suscripción próxima a vencer
+  channel     text NOT NULL,  -- 'email' | 'in_app'
+  enabled     bool NOT NULL DEFAULT true,
+
+  UNIQUE (member_id, event_type, channel)
+);
+
+-- Defaults por rol (insertar al crear team_member):
+-- owner/admin: todos los eventos, ambos canales
+-- member: task_assigned + task_mention + reminder_due en ambos canales; resto desactivado
+-- viewer: solo in_app, ningún email
 ```
 
 ### 5.21 milestones (ampliada)
@@ -708,40 +858,118 @@ Todas las tablas tienen RLS activado. El service_role_key solo se usa en API rou
 
 ### 6.1 Politicas por tabla
 
+Las políticas RLS reflejan el modelo de roles: `owner > admin > member > viewer`.
+El rol se lee con `(SELECT role FROM team_members WHERE id = auth.uid())`.
+Para evitar N+1 en cada evaluación de política, se usa una función helper estable:
+
 ```sql
--- team_members pueden leer todo (autenticados)
+CREATE OR REPLACE FUNCTION current_member_role()
+RETURNS text STABLE LANGUAGE sql AS $$
+  SELECT role FROM team_members WHERE id = auth.uid() AND deleted_at IS NULL LIMIT 1;
+$$;
+```
+
+```sql
 -- El portal publico accede via service_role en API routes, nunca directamente
 
--- leads: solo usuarios autenticados
-CREATE POLICY "team_read_leads" ON leads FOR SELECT TO authenticated USING (true);
-CREATE POLICY "team_write_leads" ON leads FOR ALL TO authenticated USING (true);
+-- leads: todos leen; solo member+ escribe; solo admin+ borra (soft delete)
+CREATE POLICY "read_leads"   ON leads FOR SELECT TO authenticated USING (true);
+CREATE POLICY "write_leads"  ON leads FOR INSERT TO authenticated WITH CHECK (current_member_role() IN ('owner','admin','member'));
+CREATE POLICY "update_leads" ON leads FOR UPDATE TO authenticated USING (current_member_role() IN ('owner','admin','member'));
+CREATE POLICY "delete_leads" ON leads FOR DELETE TO authenticated USING (current_member_role() IN ('owner','admin'));
 
--- proposals: lectura publica por token (via API route server-side, no direct RLS)
--- La API route /api/portal/proposal/[token] usa service_role y valida el token
-CREATE POLICY "team_all_proposals" ON proposals FOR ALL TO authenticated USING (true);
+-- proposals: lectura publica por token via service_role; escritura solo member+
+CREATE POLICY "team_all_proposals" ON proposals FOR ALL TO authenticated
+  USING (current_member_role() IN ('owner','admin','member'))
+  WITH CHECK (current_member_role() IN ('owner','admin','member'));
 
--- invoices: igual que proposals
-CREATE POLICY "team_all_invoices" ON invoices FOR ALL TO authenticated USING (true);
+-- invoices: member+ crea; admin+ puede anular (status='cancelled'); owner+ accede a settings fiscales
+CREATE POLICY "team_read_invoices"   ON invoices FOR SELECT TO authenticated USING (true);
+CREATE POLICY "team_insert_invoices" ON invoices FOR INSERT TO authenticated
+  WITH CHECK (current_member_role() IN ('owner','admin','member'));
+CREATE POLICY "team_update_invoices" ON invoices FOR UPDATE TO authenticated
+  USING (current_member_role() IN ('owner','admin','member'));
+-- Borrar facturas: NUNCA permitido por RLS (Verifactu - integridad legal).
+CREATE POLICY "no_delete_invoices" ON invoices FOR DELETE USING (false);
 
--- activities: insert permitido a authenticated y a service_role (sistema)
-CREATE POLICY "team_read_activities" ON activities FOR SELECT TO authenticated USING (true);
+-- activities: todos leen; solo service_role inserta (los triggers lo hacen server-side)
+CREATE POLICY "team_read_activities"   ON activities FOR SELECT TO authenticated USING (true);
 CREATE POLICY "system_insert_activities" ON activities FOR INSERT TO service_role WITH CHECK (true);
 
--- email_templates: solo equipo
-CREATE POLICY "team_all_templates" ON email_templates FOR ALL TO authenticated USING (true);
+-- email_templates, services_catalog: member+ escribe
+CREATE POLICY "team_all_templates" ON email_templates FOR ALL TO authenticated
+  USING (current_member_role() IN ('owner','admin','member'))
+  WITH CHECK (current_member_role() IN ('owner','admin','member'));
+CREATE POLICY "viewer_read_templates" ON email_templates FOR SELECT TO authenticated USING (true);
 
--- services_catalog: solo equipo
-CREATE POLICY "team_all_services" ON services_catalog FOR ALL TO authenticated USING (true);
+CREATE POLICY "team_all_services" ON services_catalog FOR ALL TO authenticated
+  USING (current_member_role() IN ('owner','admin','member'))
+  WITH CHECK (current_member_role() IN ('owner','admin','member'));
 
--- tasks: solo equipo autenticado (el portal del cliente NO tiene acceso a tareas internas)
-CREATE POLICY "team_all_tasks" ON tasks FOR ALL TO authenticated USING (true);
+-- tasks, task_comments: member+ escribe; viewer solo lee
+CREATE POLICY "read_tasks"  ON tasks FOR SELECT TO authenticated USING (true);
+CREATE POLICY "write_tasks" ON tasks FOR ALL TO authenticated
+  USING (current_member_role() IN ('owner','admin','member'))
+  WITH CHECK (current_member_role() IN ('owner','admin','member'));
 
--- task_comments: solo equipo autenticado
-CREATE POLICY "team_all_task_comments" ON task_comments FOR ALL TO authenticated USING (true);
+CREATE POLICY "read_task_comments"  ON task_comments FOR SELECT TO authenticated USING (true);
+CREATE POLICY "write_task_comments" ON task_comments FOR ALL TO authenticated
+  USING (current_member_role() IN ('owner','admin','member'))
+  WITH CHECK (current_member_role() IN ('owner','admin','member'));
 
--- task_attachments: solo equipo autenticado
-CREATE POLICY "team_all_task_attachments" ON task_attachments FOR ALL TO authenticated USING (true);
+CREATE POLICY "read_task_attachments"  ON task_attachments FOR SELECT TO authenticated USING (true);
+CREATE POLICY "write_task_attachments" ON task_attachments FOR ALL TO authenticated
+  USING (current_member_role() IN ('owner','admin','member'))
+  WITH CHECK (current_member_role() IN ('owner','admin','member'));
+
+-- time_entries: cada miembro ve/edita las suyas; admin+ ve todas
+CREATE POLICY "read_own_time_entries" ON time_entries FOR SELECT TO authenticated
+  USING (member_id = auth.uid() OR current_member_role() IN ('owner','admin'));
+CREATE POLICY "write_own_time_entries" ON time_entries FOR ALL TO authenticated
+  USING (member_id = auth.uid())
+  WITH CHECK (member_id = auth.uid());
+
+-- notification_preferences: cada miembro gestiona las suyas
+CREATE POLICY "own_notification_prefs" ON notification_preferences FOR ALL TO authenticated
+  USING (member_id = auth.uid())
+  WITH CHECK (member_id = auth.uid());
+
+-- task_tags + task_tag_assignments: member+ gestiona
+CREATE POLICY "team_all_task_tags" ON task_tags FOR ALL TO authenticated
+  USING (current_member_role() IN ('owner','admin','member'))
+  WITH CHECK (current_member_role() IN ('owner','admin','member'));
+CREATE POLICY "read_task_tags" ON task_tags FOR SELECT TO authenticated USING (true);
+CREATE POLICY "team_all_tag_assignments" ON task_tag_assignments FOR ALL TO authenticated
+  USING (current_member_role() IN ('owner','admin','member'))
+  WITH CHECK (current_member_role() IN ('owner','admin','member'));
+
+-- team_members: todos leen (para menciones, asignaciones); solo owner/admin edita roles
+CREATE POLICY "read_team_members" ON team_members FOR SELECT TO authenticated USING (true);
+CREATE POLICY "admin_write_team" ON team_members FOR ALL TO authenticated
+  USING (current_member_role() IN ('owner','admin'))
+  WITH CHECK (current_member_role() IN ('owner','admin'));
 ```
+
+### 6.1.1 2FA para owner y admin
+
+Supabase Auth soporta TOTP nativo (`auth.mfa_factors`).
+El middleware Next.js verifica `auth.aal()` (Assurance Level):
+
+```typescript
+// middleware.ts
+const { data: { user } } = await supabase.auth.getUser()
+const role = await getCurrentRole(user.id) // query a team_members
+
+if (['owner', 'admin'].includes(role)) {
+  const { data: { aal } } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+  if (aal?.currentLevel !== 'aal2') {
+    return NextResponse.redirect(new URL('/login/mfa', request.url))
+  }
+}
+```
+
+Configuración en settings: `/settings/security` con QR de TOTP y botón de activación.
+Los `member` y `viewer` tienen 2FA opcional.
 
 ### 6.2 Acceso del portal publico
 
@@ -752,7 +980,14 @@ Las rutas /p/[tipo]/[token] son Next.js Server Components que:
 4. Si no existe: redirect a /p/not-found (pagina generica sin info)
 5. Nunca exponen el anon_key ni la estructura interna en el cliente
 
-Rate limiting en rutas del portal: max 30 requests/minuto por IP via middleware de Next.js.
+Rate limiting en rutas del portal: 30 req/min por IP (Upstash, sec. 26).
+
+**Qué ve el cliente en el portal:**
+- Sus propuestas (`/p/proposal/[token]`): aceptar, rechazar, descargar PDF.
+- Sus facturas (`/p/invoice/[token]`): ver, descargar PDF, QR Verifactu.
+- **NO ve** tareas ni comentarios internos del equipo.
+- **SÍ ve** milestones (si se implementa portal de proyecto en Phase 2): solo `name`,
+  `due_date` y `completion_percentage` — nunca los comentarios ni detalles de tareas.
 
 ### 6.3 Middleware de autenticacion
 
@@ -1393,6 +1628,8 @@ Configuracion en vercel.json:
     {
       "path": "/api/cron/generate-recurring-invoices",
       "schedule": "0 6 * * *"
+      // IMPORTANTE: debe correr ANTES que verifactu-send (06:00 vs 06:15)
+      // para que las facturas recurrentes generadas entren en el mismo envío a AEAT del día
     },
     {
       "path": "/api/cron/verifactu-send",
@@ -1667,25 +1904,16 @@ Tabla sortable por: prioridad, fecha límite, asignado, estado. Con filtros ráp
 Subtareas: en la vista lista las subtareas aparecen indentadas bajo la tarea padre.
 Toggle para expandir/colapsar.
 
-#### Vista Gantt (simplificada)
+#### Vista Gantt — Phase 2 (diferida)
 
-```
-           May 2026                     Jun 2026
-Tarea      26 27 28 29 30 31  1  2  3  4  5  6  7  8
-─────────────────────────────────────────────────────
-● Sprint 1 [████████████████]
-  Auth          [████]
-  CRUD Leads         [████████]
-  Setup infra   [████]
-● Sprint 2                    [████████████████]
-  Interacciones               [████████]
-  Recordatorios                        [████████]
-```
+El Gantt visual tiene ROI bajo en proyectos de agencia cortos (1-3 meses) y añade complejidad
+de rendering significativa. Se difiere hasta validar que el equipo lo necesita activamente.
 
-- Barras de colores por milestone (usando el campo `color` de milestones).
-- Click en barra: abre el panel lateral de la tarea.
-- No se puede editar arrastrando (demasiado complejo para MVP) — solo lectura visual.
-- Implementado con una librería ligera de CSS Grid + date-fns, sin dependencias pesadas.
+**MVP**: la vista Kanban + Lista cubre el 95% de los casos de uso. El campo `milestone.start_date`
+y `milestone.color` están en el schema y son suficientes para mostrar los hitos en la vista Lista.
+
+**Phase 2**: si el equipo pide Gantt, implementar con `@dnd-kit` + CSS Grid + `date-fns`.
+Solo lectura en Phase 2; edición drag-and-drop en Phase 3 si procede.
 
 ### 18.2 Panel lateral de tarea (TaskSheet)
 
@@ -1701,7 +1929,8 @@ Al hacer click en cualquier tarea se abre un `<Sheet>` de shadcn desde la derech
 │  Estimado: [4h]             Tags:       [design]    │
 ├─────────────────────────────────────────────────────┤
 │  Descripción                                        │
-│  [Editor Tiptap - Markdown - soporte @menciones]    │
+│  [Textarea Markdown + preview toggle + @menciones]  │
+│  (react-markdown para preview; sin Tiptap en MVP)   │
 │                                                     │
 ├─────────────────────────────────────────────────────┤
 │  GitHub                                             │
@@ -1836,7 +2065,7 @@ Eventos que procesa:
 | `issues.assigned` | UPDATE task.assignee_id según github_handle del team_member |
 | `issues.labeled` | Sincroniza task.tags con los labels del issue |
 | `issue_comment.created` | INSERT task_comment con source='github', github_comment_id, body del comentario, author mapeado por github_handle |
-| `pull_request.opened` | Si el body del PR contiene `Closes #N` o `Fixes #N`: UPDATE task.github_pr_number, github_pr_url, task.status='in_review' |
+| `pull_request.opened` | UPDATE task.github_pr_number, github_pr_url. El parser de `Closes #N` en el body del PR es frágil y se omite en MVP: el equipo vincula la tarea manualmente desde el TaskSheet si el PR no viene de CRM. |
 | `pull_request.closed` + merged=true | UPDATE task.status='done' (si no lo estaba ya) |
 | `pull_request.closed` + merged=false | UPDATE task.status='todo' (PR rechazado) |
 | `milestone.created` | Si no existe en CRM: crear milestone en el proyecto vinculado |
@@ -1897,7 +2126,20 @@ supabase.channel('leads').on('postgres_changes',
 
 ---
 
-## 21. Automatizaciones - Fase 1
+## 21. Automatizaciones
+
+La tabla `activities` es el **audit log central** de la aplicación. Toda mutación significativa
+(lead creado/convertido, propuesta enviada/aceptada, factura emitida/pagada, tarea completada,
+issue GitHub sincronizado) debe insertar una fila en `activities`. Esto permite:
+- Historial completo auditable en la ficha de cada entidad.
+- Dashboard de actividad del equipo.
+- Detectar anomalías (ej: muchas facturas emitidas en poco tiempo → posible bug).
+
+**Idempotency en mutaciones críticas de facturación:**
+Los endpoints `POST /api/crm/invoices` y `RPC create_recurring_invoice` aceptan el header
+`Idempotency-Key: <uuid>`. Si ya existe una factura con esa key (campo `idempotency_key` en
+`invoices`), la API devuelve la factura existente con HTTP 200 sin crear duplicado.
+Crítico para evitar doble facturación si Vercel reintenta la request o el cron se ejecuta dos veces.
 
 | Trigger | Accion automatica |
 |---|---|
@@ -1930,6 +2172,10 @@ supabase.channel('leads').on('postgres_changes',
 | PR abierto con 'Closes #N' (webhook GitHub) | UPDATE task.status = 'in_review', github_pr_number, github_pr_url. |
 | Issue nuevo en GitHub (no creado desde CRM) | INSERT tarea en proyecto vinculado con source='github', status='todo'. |
 | Milestone 100% completo con is_payment_milestone | Banner en /projects/[id] sugiriendo generar factura del hito. Registra en activities. |
+| Timer de tiempo iniciado | INSERT time_entry con ended_at=null. Valida que no haya otro timer abierto para el mismo miembro. |
+| Timer detenido | UPDATE time_entry.ended_at=now(). duration_minutes calculado por columna GENERATED. |
+| Botón "Importar horas no facturadas" | Lee time_entries WHERE invoiced_at IS NULL, genera line_items, UPDATE invoiced_at+invoice_id. Registra en activities. |
+| Notificación enviada (email/in_app) | Solo si notification_preferences.enabled=true para ese member+event_type+channel. |
 
 ---
 
@@ -2010,6 +2256,17 @@ GITHUB_APP_ID=
 GITHUB_APP_PRIVATE_KEY_BASE64=    # clave privada de la GitHub App en base64
 GITHUB_WEBHOOK_SECRET=            # secret para validar firma de webhooks entrantes
 
+# Observabilidad
+SENTRY_DSN=
+SENTRY_AUTH_TOKEN=                # para source maps en CI
+AXIOM_DATASET=crm-doscientos
+AXIOM_TOKEN=
+BETTERSTACK_HEARTBEAT_URL=        # ping desde cada cron para confirmar ejecución
+
+# Rate limiting (Upstash Redis)
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+
 # App URLs
 NEXT_PUBLIC_APP_URL=https://crm.doscientos.es
 NEXT_PUBLIC_LANDING_URL=https://doscientos.es
@@ -2017,102 +2274,301 @@ NEXT_PUBLIC_LANDING_URL=https://doscientos.es
 
 ---
 
-## 24. Prioridad de implementacion (sprints)
+## 24. Observabilidad
 
+### 24.1 Errores — Sentry
+
+```typescript
+// sentry.server.config.ts + sentry.client.config.ts
+import * as Sentry from '@sentry/nextjs'
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  environment: process.env.NODE_ENV,
+  tracesSampleRate: 0.2,  // 20% de trazas en producción
+  // Ignorar errores esperados del cliente:
+  ignoreErrors: ['AbortError', 'ResizeObserver loop limit exceeded'],
+})
 ```
-Sprint 1 - Core y auth (~1 semana)
-  Auth equipo con Supabase Auth (email/password)
-  Middleware de proteccion de rutas
-  Tabla team_members y settings
-  CRUD Leads (tabla + kanban basico sin drag)
-  CRUD Clientes + Proyectos
-  Integracion landing -> Supabase (reemplaza Notion y Google Sheets)
 
-Sprint 2 - Interacciones y seguimiento (~1 semana)
-  Tabla lead_interactions + triggers DB
-  UI timeline en ficha de lead
-  Quick-add popover (llamada, email, WhatsApp, nota)
-  Tabla reminders + vista /reminders
-  Cron diario de recordatorios (email a equipo)
-  Email manual desde CRM (modal + Resend)
+Capturar con contexto de usuario autenticado:
+```typescript
+Sentry.setUser({ id: user.id, email: user.email, role })
+```
 
-Sprint 3 - Presupuestos (~1 semana)
-  Tabla services_catalog + pantalla settings
-  Tabla email_templates + gestion basica
-  Editor de propuesta con line items y drag-and-drop
-  Calculo automatico de totales e IVA
-  Portal publico /p/proposal/[token]
-  Aceptar y rechazar propuesta con notificacion
-  Tracking de apertura (view_count, activities)
-  Preview interna identica a la vista del cliente
+### 24.2 Logs estructurados — Axiom + Pino
 
-Sprint 4 - Facturas (~1 semana)
-  Numeracion correlativa automatica (secuencia PostgreSQL)
-  Generacion de factura desde propuesta aceptada (pre-relleno)
-  Project milestones (pagos parciales)
-  Portal publico /p/invoice/[token]
-  CSS @media print optimizado para descarga como PDF
-  Cron de facturas vencidas (status overdue + email)
+```typescript
+// lib/logger.ts
+import pino from 'pino'
 
-Sprint 4b - Suscripciones y facturacion recurrente (~3-4 dias)
-  Tabla subscriptions + columnas nuevas en invoices (subscription_id, is_recurring, billing_period_*)
-  RPC create_recurring_invoice (transaccion atomica invoice + line_item + activity)
-  Cron generate-recurring-invoices (06:00 UTC diario)
-  Tab Suscripciones en ficha de cliente (lista, crear, pausar, cancelar)
-  Templates recurring-invoice-ready, recurring-invoice-sent, subscription-ending
-  Banner de facturas recurrentes en draft pendientes mas de 3 dias
+export const logger = pino({
+  level: 'info',
+  transport: {
+    target: '@axiomhq/pino',
+    options: { dataset: process.env.AXIOM_DATASET, token: process.env.AXIOM_TOKEN },
+  },
+})
 
-Sprint 4c - Verifactu / SIF (~1 semana)
-  Columnas verifactu_* + chain_sequence + is_rectification en invoices (ya en schema)
-  Tabla invoice_events (append-only con RLS)
-  lib/verifactu/: hash.ts, xml.ts, sign.ts, client.ts, qr.ts, utils.ts
-  Trigger DB: inmutabilidad de current_hash y chain_sequence tras emision
-  Cron verifactu-send (cada 15 min): envio a AEAT, reintentos exponenciales, alerta a 5 fallos
-  QR PNG en Supabase Storage + bucket invoices-qr publico
-  QR + texto legal en portal /p/invoice/[token] y en CSS @media print
-  Flujo UI de factura rectificativa (boton, modal, serie R-YYYY-NNN)
-  Templates verifactu-alert.tsx y verifactu-cert-expiry.tsx
-  Cron de caducidad de certificado (verificar settings.verifactu_cert_expires_at)
-  Toggle VERIFACTU_ENV test/prod en settings de la app
-  Documentacion interna: como renovar el certificado FNMT
+// Uso en API routes:
+logger.info({ action: 'invoice.issued', invoiceId, userId }, 'Factura emitida')
+logger.error({ action: 'verifactu.send', error: err.message }, 'Error AEAT')
+```
 
-Sprint 5 - IA (~3-4 dias)
-  API route summarize-lead con GPT-4o-mini
-  UI: card de resumen IA en ficha de lead
-  Temperatura hot/warm/cold con badge de color
-  API route draft-email con GPT-4o
-  Boton Generar borrador en modal de email
+### 24.3 Heartbeat de crons — BetterStack
 
-Sprint 6 - Dashboard y pulido (~1 semana)
-  KPI cards (leads, propuestas, facturacion, vencidas)
-  Graficos (bar, donut, linea) con recharts
-  Buscador global Cmd+K con Command de shadcn
-  Filtros avanzados en todas las secciones
-  Paginacion en tablas grandes
-  Supabase Realtime para notificacion de lead nuevo
-  Drag-and-drop en kanban de leads
-  Responsive y dark/light mode
+Cada cron route, al completar sin error, hace:
+```typescript
+await fetch(process.env.BETTERSTACK_HEARTBEAT_URL!)
+```
+Si BetterStack no recibe el ping en el intervalo esperado, envía alerta al equipo.
+Configurar un heartbeat monitor por cron (daily-reminders, overdue-invoices, generate-recurring, verifactu-send).
+Sin heartbeat externo, Vercel puede silenciar fallos de cron sin notificar.
 
-Sprint 7 - Gestion de tareas y GitHub (~1.5 semanas)
-  Tablas tasks, task_comments, task_attachments, columnas github en projects y milestones
-  RLS de todas las tablas nuevas
-  Trigger update_milestone_progress() (recalculo automatico de completion_percentage)
-  Vista Kanban por proyecto con drag-and-drop (@dnd-kit)
-  Vista Lista con filtros y subtareas indentadas
-  Vista Gantt (lectura, CSS Grid + date-fns)
-  TaskSheet: panel lateral con editor Tiptap, menciones, subtareas, comentarios, GitHub
-  Quick-add inline de tareas en columna kanban
-  Sistema de menciones (@handle): parseo, notificacion Realtime, email task-mention.tsx
-  GitHub App: instalacion en la org, configuracion de repos por proyecto
-  Webhook /api/github/webhook: issues, PRs, comentarios, milestones
-  API route /api/github/create-issue: crear issue desde tarea CRM
-  Sincronizacion de estados: issue closed <-> task done; PR merged <-> task done
-  Campo github_handle en team_members + UI en settings de perfil
-  Banner "Milestone 100% completado" con CTA para generar factura si is_payment_milestone
+### 24.4 Backup verificado — cron mensual
+
+```typescript
+// app/api/cron/verify-backup/route.ts
+// Schedule: 0 10 1 * * (día 1 de cada mes a las 10:00)
+export async function GET() {
+  // 1. Conectar a Supabase Management API con SUPABASE_ACCESS_TOKEN
+  // 2. Obtener ultimo backup: GET /v1/projects/{ref}/database/backups
+  // 3. Verificar que created_at < 24h
+  // 4. Consultar conteo de filas críticas con service_role
+  const counts = await Promise.all([
+    supabase.from('invoices').select('*', { count: 'exact', head: true }),
+    supabase.from('clients').select('*', { count: 'exact', head: true }),
+    supabase.from('leads').select('*', { count: 'exact', head: true }),
+  ])
+  // 5. Email al owner con resumen: fecha backup + conteos
+  await sendBackupReport(counts)
+}
 ```
 
 ---
 
+## 25. GDPR y soft delete
+
+### 25.1 Principios
+
+- `leads`, `clients`, `team_members` y `tasks` tienen `deleted_at timestamptz`.
+- Todas las queries de aplicación añaden `WHERE deleted_at IS NULL` (via helper `activeQuery()`).
+- Las facturas y `invoice_events` **nunca** se borran (obligación fiscal 6 años, RD 1619/2012 art.19).
+- Los time_entries de facturas emitidas tampoco se borran (trazabilidad).
+
+### 25.2 Endpoints GDPR
+
+```
+POST /api/gdpr/leads/[id]/erase
+  → Anonimiza: name, email, phone, ip, message, company → valores neutros
+  → Mantiene: status, source, created_at (datos estadísticos sin PII)
+  → Solo accessible por role='owner' o role='admin'
+
+POST /api/gdpr/clients/[id]/erase
+  → Requiere que no haya facturas pendientes de pago
+  → Anonimiza PII del cliente
+  → Facturas quedan con datos anonimizados pero invoice_number intacto (legal)
+
+GET /api/gdpr/clients/[id]/export
+  → ZIP con: datos del cliente en JSON + PDFs de todas sus facturas
+  → Solo accessible por role='owner' o role='admin'
+```
+
+### 25.3 Retention policy
+
+Cron mensual `data-retention` que hard-delete filas con `deleted_at < now() - interval '2 years'`
+excepto las que tengan facturas asociadas (las conserva 6 años).
+
+---
+
+## 26. Rate limiting
+
+Implementado con Upstash Redis + `@upstash/ratelimit` en `middleware.ts`:
+
+```typescript
+import { Ratelimit } from '@upstash/ratelimit'
+import { Redis } from '@upstash/redis'
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(100, '1 m'),  // 100 req/min por IP autenticada
+})
+
+// En middleware:
+const identifier = user?.id ?? ip  // autenticado: por user; anónimo: por IP
+const { success } = await ratelimit.limit(identifier)
+if (!success) return new Response('Too Many Requests', { status: 429 })
+```
+
+Límites específicos por ruta:
+| Ruta | Límite |
+|---|---|
+| `/api/crm/*` | 100 req/min por usuario |
+| `/api/portal/*` | 30 req/min por IP |
+| `/api/github/webhook` | Sin límite (fuente de confianza, valida por firma) |
+| `/api/cron/*` | Solo desde Vercel (valida `Authorization: Bearer CRON_SECRET`) |
+| `/api/gdpr/*` | 5 req/min por usuario (operaciones pesadas) |
+
+---
+
+## 27. Calendar ICS
+
+Endpoint que expone tareas con `due_date` y recordatorios como feed de calendario estándar.
+Suscribible desde Google Calendar, Apple Calendar, Outlook.
+
+```
+GET /api/calendar/[memberId]/feed.ics?token=[calendar_token]
+```
+
+- `calendar_token`: campo adicional en `team_members`, UUID random, diferente al session token.
+  Permite suscribirse sin exponer credenciales de sesión.
+- Incluye: tareas asignadas al miembro con `due_date IS NOT NULL` + reminders del miembro.
+- Formato: iCal RFC 5545. Librería: `ical-generator` (npm).
+- Actualización: sin cache en Vercel (header `Cache-Control: no-store`), el cliente de calendario
+  hace polling cada 15-60 min por su cuenta.
+
+---
+
+## 28. Template renderer
+
+Renderer unificado para todas las plantillas con variables (propuestas, facturas, emails):
+
+```typescript
+// lib/templates/render.ts
+export type TemplateContext = {
+  client: Pick<Client, 'name' | 'company' | 'email'>
+  project?: Pick<Project, 'name'>
+  proposal?: Pick<Proposal, 'public_token' | 'total'>
+  invoice?: Pick<Invoice, 'invoice_number' | 'total' | 'due_date'>
+  member?: Pick<TeamMember, 'name'>
+}
+
+const VARIABLES: Record<string, (ctx: TemplateContext) => string> = {
+  '{{client.name}}':       ctx => ctx.client.name,
+  '{{client.company}}':   ctx => ctx.client.company,
+  '{{client.email}}':     ctx => ctx.client.email,
+  '{{project.name}}':     ctx => ctx.project?.name ?? '',
+  '{{proposal.link}}':    ctx => `${APP_URL}/p/proposal/${ctx.proposal?.public_token}`,
+  '{{invoice.number}}':   ctx => ctx.invoice?.invoice_number ?? '',
+  '{{invoice.total}}':    ctx => formatCurrency(ctx.invoice?.total ?? 0),
+  '{{invoice.due_date}}': ctx => formatDate(ctx.invoice?.due_date),
+  '{{member.name}}':      ctx => ctx.member?.name ?? '',
+}
+
+export function renderTemplate(template: string, ctx: TemplateContext): string {
+  return Object.entries(VARIABLES).reduce(
+    (text, [key, fn]) => text.replaceAll(key, fn(ctx)),
+    template
+  )
+}
+```
+
+Usado en: `email_templates.body`, `proposals.body_md`, subject de emails transaccionales.
+Las variables disponibles se muestran en el editor de `email_templates` como chips clicables.
+
+---
+
+## 29. Implementation Steps
+
+Orden sugerido para hacer el proyecto del tirón. Cada step es un bloque coherente de
+funcionalidad que puede desplegarse y usarse en producción de forma independiente.
+
+---
+
+### Step 1 — Infraestructura y auth
+- Repo Next.js 15 App Router, Tailwind, shadcn/ui, Sentry, Pino + Axiom
+- Supabase: proyecto, tablas team_members + settings, RLS con `current_member_role()`
+- Supabase Auth: email/password, 2FA TOTP para owner/admin (sec. 6.1.1)
+- Middleware: protección de rutas, rate limiting (Upstash), validación de rol
+- Vercel: deploy, env vars, dominio crm.doscientos.es, BetterStack heartbeats vacíos
+- `lib/logger.ts` (Pino + Axiom), `lib/templates/render.ts` (sec. 28)
+
+### Step 2 — Leads y pipeline
+- Tablas: leads (con deleted_at), lead_interactions, reminders, activities
+- Triggers DB: interactions_count, last_interaction_at, next_followup_at
+- UI: kanban de leads (4 columnas, drag-and-drop @dnd-kit), ficha de lead, timeline
+- Quick-add popover: llamada, email, WhatsApp, nota
+- Vista /reminders con filtros y badges de urgencia
+- Cron `daily-reminders` (07:00 L-V) + BetterStack heartbeat
+- Integración landing → Supabase (reemplaza Notion/Google Sheets)
+- Supabase Realtime: toast "Nuevo lead" en dashboard
+
+### Step 3 — Clientes, proyectos y presupuestos
+- Tablas: clients (con deleted_at), projects (con github_repo_owner/name), services_catalog
+- Tablas: email_templates, proposals, line_items, proposal_items
+- `lib/templates/render.ts`: interpolación de variables en subject/body
+- Editor de propuesta: line items con drag-and-drop, totales automáticos con IVA
+- Portal público `/p/proposal/[token]`: aceptar/rechazar con motivo
+- Tracking de apertura: view_count, activities
+- Preview interna idéntica a la vista del cliente
+- notification_preferences: defaults por rol al crear team_member
+
+### Step 4 — Facturas y suscripciones
+- Tablas: invoices (todos los campos verifactu_* ya en schema), line_items, invoice_events
+- Secuencia PostgreSQL para invoice_number (F-YYYY-NNN / R-YYYY-NNN)
+- Generación de factura desde propuesta aceptada (pre-relleno)
+- Milestones: pagos parciales, `is_payment_milestone`, trigger de progreso
+- Portal público `/p/invoice/[token]`, CSS @media print, descarga PDF
+- Cron `overdue-invoices` (08:00 L-V) + heartbeat
+- Tabla subscriptions, RPC `create_recurring_invoice` (transacción atómica)
+- Cron `generate-recurring-invoices` (06:00 UTC diario) + heartbeat
+- Templates: recurring-invoice-ready, recurring-invoice-sent, subscription-ending
+- Idempotency key en `POST /api/crm/invoices` (header `Idempotency-Key`)
+
+### Step 5 — Verifactu / SIF
+- `lib/verifactu/`: hash.ts (SHA-256 chain), xml.ts, sign.ts, client.ts, qr.ts, utils.ts
+- Trigger DB: inmutabilidad de `current_hash` y `chain_sequence` tras emisión
+- Flujo de emisión: SELECT FOR UPDATE → computeHash → INSERT invoice_events 'issued'
+- Cron `verifactu-send` (cada 15 min): envío a AEAT, reintentos exponenciales, alerta 5 fallos
+- QR PNG en Supabase Storage bucket `invoices-qr` (público) + QR en portal e impresión
+- Flujo UI: factura rectificativa (botón, modal, serie R-YYYY-NNN)
+- Templates verifactu-alert.tsx, verifactu-cert-expiry.tsx
+- Cron `verify-backup` (día 1 de cada mes) + cron `data-retention` (mensual)
+- Toggle VERIFACTU_ENV test/prod en settings de la app
+- Endpoints GDPR: `/api/gdpr/*/erase`, `/api/gdpr/*/export` (sec. 25.2)
+
+### Step 6 — IA y dashboard
+- API route `summarize-lead` (GPT-4o-mini): resumen + temperatura hot/warm/cold
+- API route `draft-email` (GPT-4o): borrador en modal de email con contexto del lead
+- KPI cards: leads activos, propuestas pendientes, facturación mensual, vencidas
+- Gráficos recharts: bar (facturación por mes), donut (estado de leads), línea (nuevos leads)
+- Buscador global Cmd+K (shadcn Command): leads, clientes, proyectos, facturas
+- Filtros avanzados en todas las vistas, paginación en tablas grandes
+- Responsive + dark/light mode
+
+### Step 7 — Tasks y time tracking
+- Tablas: tasks (project_id nullable, lead_id, LexoRank), task_comments, task_tags,
+  task_tag_assignments, time_entries, notification_preferences
+- ALTER milestones: start_date, completion_percentage, color, github_milestone_number, is_payment_milestone
+- Trigger `update_milestone_progress()`
+- RLS: todas las tablas nuevas con `current_member_role()`
+- Vista Kanban por proyecto (4 columnas, @dnd-kit, fractional indexing)
+- Vista Lista con subtareas indentadas, filtros, ordenación multi-columna
+- TaskSheet: campos, markdown textarea + preview, subtareas, tags, timer de tiempo
+- Quick-add inline de tareas en columna Kanban
+- Time tracker: ▶ Iniciar / ⏹ Parar, badge en sidebar, validación 1 timer activo por miembro
+- Botón "Importar horas no facturadas" en /projects/[id]/invoices (sec. 5.23 flujo)
+- Menciones @handle: parseo en textarea, notify Realtime, email si inactivo >5 min
+- Calendar ICS endpoint `/api/calendar/[memberId]/feed.ics` (sec. 27)
+- Banner "Milestone 100% completado" con CTA si `is_payment_milestone`
+
+### Step 8 — GitHub integration
+- GitHub App: instalación en org, configurar repos por proyecto (github_repo_owner/name)
+- Webhook `/api/github/webhook`: validar X-Hub-Signature-256, procesar eventos (sec. 19.3)
+- API route `/api/github/create-issue`: crear issue desde tarea CRM
+- Sync: issue closed → task done; PR opened → task github_pr_number; PR merged → task done
+- github_handle en settings/profile de cada miembro
+- Phase 2 (si se valida uso): Gantt visual, task_attachments UI, commits referenciando tareas
+
+---
+
+> **Dependencias entre steps**: cada step asume que el anterior está desplegado y funcionando.
+> Los steps 5 (Verifactu) y 8 (GitHub) son independientes entre sí y pueden hacerse en paralelo
+> si hay dos personas trabajando.
+
+---
+
 *Equipo: Pol (Frontend y Design) - Gerard (Backend y DevOps)*
-*Stack: Next.js 15 + Supabase + shadcn/ui + Resend + OpenAI + Vercel*
+*Stack: Next.js 15 + Supabase + shadcn/ui + Resend + OpenAI + Vercel + Upstash + Sentry + Axiom + BetterStack*
 *Referencia fiscal: Real Decreto 1619/2012 (facturacion) + RD 1007/2023 + Orden HAC/1177/2024 (Verifactu/SIF)*
+*Última revisión: mayo 2026 — spec completa lista para implementación del tirón*
