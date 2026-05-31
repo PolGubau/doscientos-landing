@@ -1,4 +1,5 @@
 ---
+import { ArrowLeft } from "@lucide/astro";
 import MainLayout from "~/layouts/MainLayout.astro";
 import { getMetadata } from "~/shared/lib/constants";
 
@@ -14,9 +15,10 @@ const lastUpdated = "18 de mayo de 2026";
     <div class="mb-10">
       <a
         href="/"
-        class="text-sm text-muted-foreground hover:text-foreground transition-colors"
+        class="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
       >
-        ← Volver al inicio
+        <ArrowLeft aria-hidden="true" class="size-4" />
+        Volver al inicio
       </a>
     </div>
 
@@ -27,33 +29,42 @@ const lastUpdated = "18 de mayo de 2026";
       </p>
 
       <p>
-        Este sitio web, operado por <strong>{legalName}</strong> (nombre comercial: <strong>{name}</strong>),
-        utiliza cookies y tecnologías similares. A continuación te explicamos exactamente
-        qué cookies usamos, con qué finalidad y cómo puedes gestionarlas, de acuerdo
-        con el RGPD y la LSSI-CE.
+        Este sitio web, operado por <strong>{legalName}</strong> (nombre comercial:
+        <strong>{name}</strong>), utiliza cookies y tecnologías similares. A
+        continuación te explicamos exactamente qué cookies usamos, con qué
+        finalidad y cómo puedes gestionarlas, de acuerdo con el RGPD y la
+        LSSI-CE.
       </p>
 
       <p>
-        <strong>Importante:</strong> las cookies analíticas y de marketing solo se activan
-        si das tu consentimiento explícito a través del banner que aparece al visitar el sitio
-        por primera vez. Puedes cambiar tus preferencias en cualquier momento desde el enlace
-        al final de esta página.
+        <strong>Importante:</strong> las cookies analíticas y de marketing solo se
+        activan si das tu consentimiento explícito a través del banner que aparece
+        al visitar el sitio por primera vez. Puedes cambiar tus preferencias en cualquier
+        momento desde el enlace al final de esta página.
       </p>
 
       <h2>1. ¿Qué son las cookies?</h2>
       <p>
-        Las cookies son pequeños archivos de texto que los sitios web almacenan en tu
-        dispositivo. Permiten recordar información sobre tu visita (preferencias, sesión, etc.)
-        para mejorar la experiencia de uso en visitas posteriores.
+        Las cookies son pequeños archivos de texto que los sitios web almacenan
+        en tu dispositivo. Permiten recordar información sobre tu visita
+        (preferencias, sesión, etc.) para mejorar la experiencia de uso en
+        visitas posteriores.
       </p>
 
       <h2>2. Cookies que utilizamos</h2>
 
       <h3>2.1 Cookies técnicas (estrictamente necesarias)</h3>
-      <p>Necesarias para el funcionamiento básico del sitio. No requieren consentimiento.</p>
+      <p>
+        Necesarias para el funcionamiento básico del sitio. No requieren
+        consentimiento.
+      </p>
       <table>
         <thead>
-          <tr><th>Nombre / Clave</th><th>Proveedor</th><th>Finalidad</th><th>Duración</th></tr>
+          <tr
+            ><th>Nombre / Clave</th><th>Proveedor</th><th>Finalidad</th><th
+              >Duración</th
+            ></tr
+          >
         </thead>
         <tbody>
           <tr>
@@ -73,92 +84,167 @@ const lastUpdated = "18 de mayo de 2026";
 
       <h3>2.2 Cookies analíticas (requieren consentimiento)</h3>
       <p>
-        Solo se activan si aceptas las cookies analíticas. Nos ayudan a entender cómo
-        se usa el sitio para mejorar su rendimiento y contenidos.
+        Solo se activan si aceptas las cookies analíticas. Nos ayudan a entender
+        cómo se usa el sitio para mejorar su rendimiento y contenidos.
       </p>
       <table>
         <thead>
-          <tr><th>Herramienta</th><th>Proveedor</th><th>Finalidad</th><th>Más info</th></tr>
+          <tr
+            ><th>Herramienta</th><th>Proveedor</th><th>Finalidad</th><th
+              >Más info</th
+            ></tr
+          >
         </thead>
         <tbody>
           <tr>
             <td>Google Analytics 4</td>
             <td>Google LLC (EE. UU.)</td>
-            <td>Analítica de tráfico: páginas vistas, sesiones, fuentes de tráfico. Datos anonimizados.</td>
-            <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Política</a></td>
+            <td
+              >Analítica de tráfico: páginas vistas, sesiones, fuentes de
+              tráfico. Datos anonimizados.</td
+            >
+            <td
+              ><a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer">Política</a
+              ></td
+            >
           </tr>
           <tr>
             <td>Microsoft Clarity</td>
             <td>Microsoft (EE. UU.)</td>
-            <td>Mapas de calor y grabaciones de sesión anónimas para detectar problemas de UX.</td>
-            <td><a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener noreferrer">Política</a></td>
+            <td
+              >Mapas de calor y grabaciones de sesión anónimas para detectar
+              problemas de UX.</td
+            >
+            <td
+              ><a
+                href="https://privacy.microsoft.com/privacystatement"
+                target="_blank"
+                rel="noopener noreferrer">Política</a
+              ></td
+            >
           </tr>
         </tbody>
       </table>
 
       <h3>2.3 Cookies de marketing (requieren consentimiento)</h3>
       <p>
-        Solo se activan si aceptas las cookies de marketing. Se usan para medir la
-        efectividad de nuestras campañas publicitarias.
+        Solo se activan si aceptas las cookies de marketing. Se usan para medir
+        la efectividad de nuestras campañas publicitarias.
       </p>
       <table>
         <thead>
-          <tr><th>Herramienta</th><th>Proveedor</th><th>Finalidad</th><th>Más info</th></tr>
+          <tr
+            ><th>Herramienta</th><th>Proveedor</th><th>Finalidad</th><th
+              >Más info</th
+            ></tr
+          >
         </thead>
         <tbody>
           <tr>
             <td>Meta Pixel</td>
             <td>Meta Platforms (EE. UU.)</td>
-            <td>Seguimiento de conversiones de campañas de Facebook/Instagram. Medición de ROI publicitario.</td>
-            <td><a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener noreferrer">Política</a></td>
+            <td
+              >Seguimiento de conversiones de campañas de Facebook/Instagram.
+              Medición de ROI publicitario.</td
+            >
+            <td
+              ><a
+                href="https://www.facebook.com/privacy/policy"
+                target="_blank"
+                rel="noopener noreferrer">Política</a
+              ></td
+            >
           </tr>
           <tr>
             <td>GoHighLevel Tracking</td>
             <td>HighLevel Inc. (EE. UU.)</td>
-            <td>Seguimiento de visitas y conversiones procedentes de campañas de marketing.</td>
-            <td><a href="https://www.gohighlevel.com/privacy-policy" target="_blank" rel="noopener noreferrer">Política</a></td>
+            <td
+              >Seguimiento de visitas y conversiones procedentes de campañas de
+              marketing.</td
+            >
+            <td
+              ><a
+                href="https://www.gohighlevel.com/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer">Política</a
+              ></td
+            >
           </tr>
         </tbody>
       </table>
 
       <h2>3. Base jurídica</h2>
       <ul>
-        <li><strong>Cookies técnicas:</strong> interés legítimo (artículo 6.1.f RGPD) — imprescindibles para el funcionamiento del sitio.</li>
-        <li><strong>Cookies analíticas y de marketing:</strong> consentimiento del usuario (artículo 6.1.a RGPD) — solo se activan tras aceptación explícita.</li>
+        <li>
+          <strong>Cookies técnicas:</strong> interés legítimo (artículo 6.1.f RGPD)
+          — imprescindibles para el funcionamiento del sitio.
+        </li>
+        <li>
+          <strong>Cookies analíticas y de marketing:</strong> consentimiento del usuario
+          (artículo 6.1.a RGPD) — solo se activan tras aceptación explícita.
+        </li>
       </ul>
 
       <h2>4. Transferencias internacionales</h2>
       <p>
-        Google, Microsoft, Meta y GoHighLevel están ubicados en EE. UU. Las transferencias
-        de datos se realizan bajo las garantías adecuadas del RGPD (Decisiones de Adecuación
-        o Cláusulas Contractuales Tipo). Consulta sus políticas de privacidad para más detalles.
+        Google, Microsoft, Meta y GoHighLevel están ubicados en EE. UU. Las
+        transferencias de datos se realizan bajo las garantías adecuadas del
+        RGPD (Decisiones de Adecuación o Cláusulas Contractuales Tipo). Consulta
+        sus políticas de privacidad para más detalles.
       </p>
 
       <h2>5. Cómo gestionar tus preferencias</h2>
       <p>
-        Puedes cambiar tus preferencias de cookies en cualquier momento haciendo clic en
-        el botón "Gestionar preferencias de cookies" al final de esta página, o borrando
-        la clave <code>doscientos-consent</code> de localStorage en las herramientas de
-        desarrollador de tu navegador.
+        Puedes cambiar tus preferencias de cookies en cualquier momento haciendo
+        clic en el botón "Gestionar preferencias de cookies" al final de esta
+        página, o borrando la clave <code>doscientos-consent</code> de localStorage
+        en las herramientas de desarrollador de tu navegador.
       </p>
-      <p>También puedes rechazar cookies desde la configuración de tu navegador:</p>
+      <p>
+        También puedes rechazar cookies desde la configuración de tu navegador:
+      </p>
       <ul>
-        <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Google Chrome</a></li>
-        <li><a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias" target="_blank" rel="noopener noreferrer">Mozilla Firefox</a></li>
-        <li><a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer">Safari</a></li>
-        <li><a href="https://support.microsoft.com/es-es/windows/eliminar-y-administrar-cookies-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank" rel="noopener noreferrer">Microsoft Edge</a></li>
+        <li>
+          <a
+            href="https://support.google.com/chrome/answer/95647"
+            target="_blank"
+            rel="noopener noreferrer">Google Chrome</a>
+        </li>
+        <li>
+          <a
+            href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias"
+            target="_blank"
+            rel="noopener noreferrer">Mozilla Firefox</a>
+        </li>
+        <li>
+          <a
+            href="https://support.apple.com/es-es/guide/safari/sfri11471/mac"
+            target="_blank"
+            rel="noopener noreferrer">Safari</a>
+        </li>
+        <li>
+          <a
+            href="https://support.microsoft.com/es-es/windows/eliminar-y-administrar-cookies-168dab11-0753-043d-7c16-ede5947fc64d"
+            target="_blank"
+            rel="noopener noreferrer">Microsoft Edge</a>
+        </li>
       </ul>
 
       <h2>6. Actualización de esta política</h2>
       <p>
-        Podemos actualizar esta política cuando incorporemos nuevas herramientas o
-        cambie la legislación aplicable. La versión vigente estará siempre en esta
-        página con la fecha de última actualización.
+        Podemos actualizar esta política cuando incorporemos nuevas herramientas
+        o cambie la legislación aplicable. La versión vigente estará siempre en
+        esta página con la fecha de última actualización.
       </p>
 
       <h2>7. Contacto</h2>
       <p>
-        Para cualquier duda sobre el uso de cookies, contacta con nosotros en{" "}
+        Para cualquier duda sobre el uso de cookies, contacta con nosotros en{
+          " "
+        }
         <a href={links.email}>{links.email.replace("mailto:", "")}</a>.
       </p>
 

@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { CircleCheck } from "@lucide/astro";
+import { ArrowUpRight, CircleCheck } from "@lucide/astro";
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import { branding } from "~/config/branding";
@@ -283,9 +283,13 @@ const personSchemas = branding.team.map((member) => ({
                   href={member.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+                  class="group inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
                 >
-                  Ver más →
+                  Ver más
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
                 </a>
               </div>
             </article>

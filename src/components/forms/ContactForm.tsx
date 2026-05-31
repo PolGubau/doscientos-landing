@@ -337,7 +337,23 @@ export default function ContactForm() {
       {/* Mensaje de éxito */}
       {status === "success" && (
         <div className="p-6 rounded-2xl bg-green-50 border border-green-200 text-center space-y-1">
-          <p className="text-green-800 font-semibold text-base">¡Recibido! 🎉</p>
+          <p className="text-green-800 font-semibold text-base inline-flex items-center justify-center gap-2">
+            <svg
+              aria-hidden="true"
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            ¡Recibido!
+          </p>
           <p className="text-green-700 text-sm">Te respondemos en menos de 24 horas.</p>
         </div>
       )}
@@ -345,8 +361,22 @@ export default function ContactForm() {
       {/* Mensaje de error */}
       {status === "error" && (
         <div className="p-4 rounded-xl bg-red-50 border border-red-200">
-          <p className="text-red-800 text-sm font-medium">
-            ✗ {errorMessage}
+          <p className="text-red-800 text-sm font-medium inline-flex items-center gap-2">
+            <svg
+              aria-hidden="true"
+              className="w-4 h-4 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+            {errorMessage}
           </p>
         </div>
       )}

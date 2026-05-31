@@ -18,39 +18,38 @@ const imageResolution = 800;
 
 <a href={`/projects/${id}`} class="w-full">
   <article
-    class="group h-full flex flex-col gap-4 rounded-4xl bg-accent shadow-pastel overflow-x-hidden transition-all duration-300 p-3 hover:shadow-2xl hover:brightness-105"
+    class="group h-full flex flex-col gap-4 rounded-4xl bg-accent shadow-pastel overflow-hidden p-3 transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-xl"
   >
     <header class="w-full aspect-[1.5] rounded-3xl overflow-hidden">
-      <!-- Image -->
       <div
-        class="duration-300 transition-all w-full h-full bg-gradient-to-br from-muted to-primary/20 flex items-center justify-center relative overflow-hidden group-hover:brightness-105"
+        class="w-full h-full bg-gradient-to-br from-muted to-primary/20 flex items-center justify-center relative overflow-hidden"
       >
         <Image
           width={imageResolution * 1.5}
           height={imageResolution}
           src={cover}
           alt={`Imagen de portada del proyecto ${title}, mostrando una vista previa visual del trabajo realizado para el cliente. La imagen refleja el estilo y la esencia del proyecto, utilizando colores y elementos gráficos relacionados con ${title}.`}
-          class="w-full h-full object-cover object-center"
+          class="w-full h-full object-cover object-center transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
         />
       </div>
     </header>
 
     <footer class="flex items-center gap-4 justify-between px-2 pb-2">
-      <div class="flex flex-col gap-1">
-        <span class="text-xs text-muted-foreground">
+      <div class="flex flex-col gap-1 min-w-0">
+        <span class="text-xs text-muted-foreground truncate">
           {
             services_provided?.length > 0 &&
               services_provided.map((cat) => cat.trim()).join(" · ")
           }
         </span>
-        <h3 class="text-xl font-semibold">
+        <h3
+          class="text-xl font-semibold truncate transition-colors duration-300 group-hover:text-primary"
+        >
           {title}
         </h3>
       </div>
 
-      <div>
-        <UpRightArrow class="bg-background duration-300 p-2" />
-      </div>
+      <UpRightArrow class="bg-background p-2 shrink-0" />
     </footer>
   </article>
 </a>

@@ -1,4 +1,5 @@
 ---
+import { Check, X } from "@lucide/astro";
 import SectionHeader from "../ui/SectionHeader.astro";
 import SectionTag from "../ui/SectionTag.astro";
 
@@ -86,18 +87,17 @@ const rows = [
               role="cell"
               class="p-4 text-sm font-semibold text-primary text-center border-l border-muted flex items-center justify-center gap-2"
             >
-              <span aria-hidden="true" class="text-green-500">
-                ✓
-              </span>
+              <Check
+                aria-hidden="true"
+                class="size-4 text-green-500 shrink-0"
+              />
               {row.us}
             </div>
             <div
               role="cell"
               class="p-4 text-sm text-muted-foreground text-center border-l border-muted flex items-center justify-center gap-2"
             >
-              <span aria-hidden="true" class="text-red-400">
-                ✗
-              </span>
+              <X aria-hidden="true" class="size-4 text-red-400 shrink-0" />
               {row.them}
             </div>
           </div>
