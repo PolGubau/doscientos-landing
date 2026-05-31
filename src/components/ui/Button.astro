@@ -43,5 +43,5 @@ const {
   {...rest}
 >
   <slot />
-  {withArrow && <UpRightArrow />}
+  {withArrow && <UpRightArrow inverted={variant === "solid"} />}
 </button>
