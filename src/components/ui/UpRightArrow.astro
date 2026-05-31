@@ -12,9 +12,11 @@ const { class: className } = Astro.props;
 <div
   aria-hidden="true"
   class={cn(
-    "rounded-full p-1 bg-stone-500/20 border border-stone-500/40 flex items-center justify-center group-hover:rotate-45 transition-all duration-300",
+    "rounded-full p-1 bg-background border border-muted-foreground/15 flex items-center justify-center transition-colors duration-300 ease-out group-hover:border-primary/60",
     className,
   )}
 >
-  <ArrowUpRight class="size-4" />
+  <ArrowUpRight
+    class="size-4 text-muted-foreground transition-[color,transform] duration-300 ease-out group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+  />
 </div>
