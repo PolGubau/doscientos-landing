@@ -18,3 +18,14 @@ ul.bento {
 		}
 	}
 }
+
+/* medium-zoom overlay: por encima de la navbar (z-50) */
+.medium-zoom-overlay {
+	z-index: 100 !important;
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+}
+.medium-zoom-image--opened {
+	z-index: 101 !important;
+	border-radius: 12px;
+}
