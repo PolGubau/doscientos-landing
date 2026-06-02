@@ -22,70 +22,62 @@ import detalleProducto from "../../assets/media/projects/cash-movil-canarias/det
 import clientes from "../../assets/media/projects/cash-movil-canarias/clientes.webp";
 import reparaciones from "../../assets/media/projects/cash-movil-canarias/reparaciones.webp";
 
-CASHMÓVIL CANARIAS necesitaba dejar de improvisar. Llevaban años con PrestaShop parcheado, stock desincronizado entre la tienda física y la web, y sin ningún dato real sobre qué productos eran rentables. Nosotros nos encargamos del **sistema completo**, desde la tienda online hasta el panel interno de gestión.
+**CASHMÓVIL CANARIAS** llevaba años trabajando con un PrestaShop parcheado: stock desincronizado entre la tienda física y la web, fichas de cliente inexistentes y cero datos sobre qué productos dejaban margen. Cada decisión se tomaba a ojo.
 
-<Image
-  src={tienda}
-  alt="CashMóvil Canarias - Tienda online"
-  width={1400}
-  data-reveal
-  class={"rounded-4xl border-2 border-muted w-full bg-muted my-20!"}
-/>
+Nos encargaron el sistema completo: **ecommerce y backoffice unificados**, hechos a medida para cómo trabajan realmente en tienda — móviles con variantes únicas, clientes recurrentes con historial, servicio técnico integrado.
 
-El reto no era solo construir una tienda bonita. Era construir **una herramienta que encajara con cómo trabaja realmente el equipo en tienda**: móviles con variantes complejas, clientes recurrentes con historial, servicio técnico integrado y márgenes que vigilar de cerca.
+**Sustituimos PrestaShop por un sistema propio que une tienda online, inventario, clientes y reparaciones en una sola herramienta.**
 
-**¿Por qué un sistema propio y no otra plantilla?**
+<Image src={tienda} alt="CashMóvil Canarias - Tienda online ecommerce de móviles y dispositivos" class="rounded-2xl my-6" />
 
-- El stock de cada dispositivo es único — no hay tallas ni colores estándar, hay IMEI, batería y estado
-- El cliente que compra hoy puede volver a reparar mañana — todo tiene que estar conectado
-- La decisión de compra es impulsiva — un checkout lento es una venta perdida
-
-<div className="grid md:grid-cols-[1fr_2fr] gap-6">
-
-<Image
-  src={tiendaMovil}
-  alt="CashMóvil Canarias - Tienda online desde móvil"
-  width={650}
-  data-reveal
-  class={"rounded-2xl w-full bg-muted my-20! border-2 border-muted"}
-/>
-<Image
-  src={detalleProducto}
-  alt="CashMóvil Canarias - Panel de gestión interno"
-  width={650}
-  data-reveal
-  class={"rounded-2xl w-full bg-muted my-20! border-2 border-muted"}
-/>
+<div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">&lt; 2 s</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">carga en móvil</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">0</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">desincronizaciones de stock</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">1</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">sistema para todo</span></div>
 </div>
-Uno de los mayores retos era el panel interno: tenía que ser **potente pero simple**. El equipo no es técnico y no tiene tiempo para aprender herramientas complejas. Diseñamos un backoffice con acciones rápidas en portada — registrar un dispositivo, abrir una reparación, buscar un cliente — para que el flujo de tienda no se interrumpa.
 
-<Image
-  src={clientes}
-  alt="CashMóvil Canarias - Ficha de cliente"
-  width={1000}
-  data-reveal
-  class={"rounded-2xl w-full bg-muted my-20! border-2 border-muted"}
-/>
+---
 
-**Lo que cambió:**
-- De stock desincronizado a un inventario único, siempre actualizado
-- De cero datos a dashboard con márgenes reales y ranking de ventas
-- De ficha de cliente inexistente a historial completo: compras, garantías y reparaciones
-- De dependencia de PrestaShop a sistema propio, con el código en manos del cliente
+## El problema
 
-<Image
-  src={reparaciones}
-  alt="CashMóvil Canarias - Gestión de reparaciones"
-  width={1000}
-  data-reveal
-  class={"rounded-2xl w-full bg-muted my-20! border-2 border-muted"}
-/>
+**El stock de cada dispositivo es único.** No hay tallas ni colores estándar — hay IMEI, batería, estado y precio individual. PrestaShop está pensado para catálogos repetitivos, no para esto, y cada venta exigía edición manual.
 
-**En números:**
+A esto se sumaban tres dolores: el cliente que compra hoy puede volver a reparar mañana y **toda esa información estaba desconectada**; la decisión de compra es impulsiva y un checkout lento es venta perdida; y el equipo en tienda no es técnico — no tenía tiempo de pelearse con un panel complejo cada vez que entraba un cliente.
+
+---
+
+## La solución
+
+### Tienda online
+
+Ecommerce a medida con fichas de producto pensadas para móviles de segunda mano y nuevos: foto principal grande, especificaciones clave visibles, checkout en 3 pasos. Optimizada para móvil porque ahí es donde compran sus clientes.
+
+<div class="not-prose flex flex-wrap gap-4 justify-center my-6">
+  <Image src={tiendaMovil} alt="CashMóvil Canarias - Tienda online vista móvil con catálogo de dispositivos" class="max-h-[60vh] w-auto rounded-2xl" />
+  <Image src={detalleProducto} alt="CashMóvil Canarias - Ficha de detalle de producto con variantes únicas de dispositivo" class="max-h-[60vh] w-auto rounded-2xl" />
+</div>
+
+### Backoffice
+
+El panel interno tenía que ser **potente pero simple**. Lo diseñamos con acciones rápidas en portada — registrar un dispositivo, abrir una reparación, buscar un cliente — para que el flujo de tienda nunca se interrumpa.
+
+<Image src={clientes} alt="CashMóvil Canarias - Ficha de cliente con historial unificado de compras y reparaciones" class="rounded-2xl my-6" />
+
+Cada cliente tiene historial completo: compras, garantías, reparaciones abiertas y cerradas. El módulo de servicio técnico está integrado con el inventario, así que abrir una reparación actualiza stock y agenda en un solo gesto.
+
+<Image src={reparaciones} alt="CashMóvil Canarias - Módulo de gestión de reparaciones integrado con inventario" class="rounded-2xl my-6" />
+
+---
+
+## Resultados
+
 - **< 2 segundos** de carga en la tienda online desde móvil
 - **< 3 minutos** para completar una compra desde el primer clic
 - **1 solo sistema** para gestionar inventario, clientes, ventas y reparaciones
 - **0 desincronizaciones** de stock entre tienda física y web
+- **Dashboard con márgenes reales** y ranking de ventas — antes inexistente
+
+---
 
 > Por primera vez tenemos visibilidad real de nuestro negocio. Sabemos qué vendemos, qué nos deja margen y qué le ha comprado cada cliente.
 >

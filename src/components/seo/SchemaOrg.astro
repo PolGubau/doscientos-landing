@@ -23,6 +23,7 @@ interface Props {
     client?: string;
     datePublished?: string;
     url?: string;
+    services?: string[];
   };
 }
 
@@ -144,6 +145,17 @@ const projectSchema = project
       image: project.image || `${baseUrl}/og-image.png`,
       datePublished: project.datePublished,
       url: project.url || baseUrl,
+      inLanguage: "es-ES",
+      ...(project.url && {
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": project.url,
+        },
+      }),
+      ...(project.services &&
+        project.services.length > 0 && {
+          keywords: project.services.join(", "),
+        }),
       creator: {
         "@type": "Organization",
         name: branding.name,

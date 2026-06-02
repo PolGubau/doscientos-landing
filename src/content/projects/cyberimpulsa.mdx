@@ -20,60 +20,65 @@ import heroView from "../../assets/media/projects/cyberimpulsa/hero.webp";
 import casesView from "../../assets/media/projects/cyberimpulsa/cases.webp";
 import ctaView from "../../assets/media/projects/cyberimpulsa/crm.webp";
 
-Cyberimpulsa ayuda a empresas de Ciberseguridad, Software e IA a conseguir clientes B2B. Su problema era claro: tenían un sistema de captación probado, resultados reales de clientes y credibilidad suficiente, pero no una presencia digital de calidad que lo comunicara. **El tráfico que llegaba no se convertía en reuniones.**
+**Cyberimpulsa** ayuda a empresas de **Ciberseguridad, Software e IA** a conseguir clientes B2B. Tenían un sistema de captación probado, casos de éxito reales y credibilidad sobrada — pero la web no lo comunicaba. El tráfico que llegaba no se convertía en reuniones.
 
-Nos encargaron construir la landing desde cero. El objetivo no era una web bonita. Era una máquina de agendar llamadas.
+Nos encargaron construir la landing desde cero. El objetivo no era una web bonita.
 
-<Image
-  src={heroView}
-  alt="Cyberimpulsa - Landing page de captación B2B para empresas tech"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+**Era una máquina de agendar llamadas cualificadas con empresas tech.**
 
-**El reto de una landing de servicios B2B de alto ticket** no es explicar qué haces. Es generar suficiente confianza en 30 segundos para que alguien que nunca ha oído hablar de ti agende una llamada contigo.
+<Image src={heroView} alt="Cyberimpulsa - Landing page de captación B2B para empresas de ciberseguridad, software e IA" class="rounded-2xl my-6" />
 
-Para eso necesitas tres cosas: prueba social inmediata, claridad en el proceso y una fricción mínima para dar el siguiente paso. Estructuramos la página exactamente en ese orden.
+<div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">3 sem.</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">de briefing a producción</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">98/100</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">PageSpeed</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">&lt; 1 s</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">tiempo de carga</span></div>
+</div>
 
-La primera sección muestra a qué empresas ayudan y en qué sectores. La segunda, resultados reales de clientes con números concretos: 20.000€ captados en 2 meses, 27.000€ en 2 meses, 250.000€ en presupuestos generados. La tercera, el proceso en 3 pasos. Y el CTA: una llamada de 30 minutos, sin compromiso, directo al Calendly.
+---
 
-<Image
-  src={casesView}
-  alt="Casos de éxito de clientes de Cyberimpulsa"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+## El problema
 
-**¿Qué hicimos exactamente?**
+**Una landing de servicios B2B de alto ticket no tiene que explicar qué hace la empresa — tiene que generar confianza en 30 segundos.** Alguien que nunca ha oído hablar de Cyberimpulsa tiene que llegar a la página, entender el valor y agendar una llamada antes de cerrar la pestaña.
 
-- Arquitectura de una sola página con scroll narrativo: problema → prueba → proceso → CTA
-- Globo 3D interactivo en el hero mostrando presencia internacional (Barcelona, Londres, Berlín, París, Nueva York)
-- Sección de casos de éxito con métricas reales de cada cliente
-- Proceso en 3 pasos con progress bar animada al hacer scroll
-- Integración directa con Calendly para agendar sin salir de la experiencia
-- Marquee de logos de clientes para generar confianza inmediata
-- Rendimiento 98/100 en PageSpeed: carga en menos de 1 segundo
+Eso requiere tres cosas en este orden: **prueba social inmediata**, **claridad en el proceso** y **fricción mínima** para dar el siguiente paso. La web anterior fallaba en las tres.
 
-La tecnología era Astro con el mismo sistema de animaciones de reveal que usamos en nuestros proyectos propios. Cero frameworks pesados, máxima velocidad.
+---
 
-<Image
-  src={ctaView}
-  alt="Sección de contacto y agenda de Cyberimpulsa"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+## La solución
 
-**En números**
+Estructuramos la página como un scroll narrativo: **problema → prueba → proceso → CTA**. Una sola página, sin menús que distraigan, sin caminos secundarios.
+
+La primera sección muestra los sectores a los que ayudan, con un globo 3D interactivo que destaca su presencia internacional (Barcelona, Londres, Berlín, París, Nueva York). La segunda, casos de éxito con métricas reales: 20.000€ captados en 2 meses, 27.000€ en 2 meses, 250.000€ en presupuestos generados.
+
+<Image src={casesView} alt="Cyberimpulsa - Casos de éxito de clientes B2B con métricas reales de captación" class="rounded-2xl my-6" />
+
+La tercera, el proceso en **3 pasos** con progress bar animada al hacer scroll. Y el cierre: una llamada de 30 minutos sin compromiso, integrada con Calendly para agendar sin salir de la experiencia.
+
+<Image src={ctaView} alt="Cyberimpulsa - Sección de contacto con Calendly integrado para agendar reuniones" class="rounded-2xl my-6" />
+
+---
+
+## Decisiones técnicas clave
+
+<div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
+  <div class="p-4 rounded-xl border border-muted"><div class="text-sm font-semibold mb-1">Astro estático</div><div class="text-xs text-muted-foreground">Cero frameworks pesados en cliente. Carga inmediata desde CDN.</div></div>
+  <div class="p-4 rounded-xl border border-muted"><div class="text-sm font-semibold mb-1">Globo 3D en hero</div><div class="text-xs text-muted-foreground">Refuerza la presencia internacional sin imágenes estáticas.</div></div>
+  <div class="p-4 rounded-xl border border-muted"><div class="text-sm font-semibold mb-1">Calendly embebido</div><div class="text-xs text-muted-foreground">Un clic para agendar, sin redirección ni formularios.</div></div>
+  <div class="p-4 rounded-xl border border-muted"><div class="text-sm font-semibold mb-1">Marquee de logos</div><div class="text-xs text-muted-foreground">Prueba social visible en los primeros segundos.</div></div>
+</div>
+
+---
+
+## Resultados
+
 - **3 semanas** de desarrollo desde briefing hasta producción
 - **98/100** en PageSpeed — carga en menos de 1 segundo
 - **Calendly integrado** con fricción mínima: un clic para agendar
 - **0 dependencias pesadas** — Astro estático, rendimiento nativo
+- **Primeras llamadas agendadas** desde la web en el primer mes
 
-> En menos de un mes ya teníamos la web en producción y las primeras llamadas agenadas desde ella. Exactamente lo que necesitábamos.
+---
+
+> En menos de un mes ya teníamos la web en producción y las primeras llamadas agendadas desde ella. Exactamente lo que necesitábamos.
 >
 > — Rafa, Cyberimpulsa
-
-Una landing de servicios B2B no es un portfolio. Es una conversación. Si no consigue que el visitante dé el siguiente paso, no importa lo bien que esté diseñada. Esta sí lo consigue.

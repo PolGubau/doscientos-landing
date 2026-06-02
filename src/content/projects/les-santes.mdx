@@ -48,15 +48,15 @@ Construimos el stack completo desde cero: app móvil, landing y CMS, como proyec
   <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">97%</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">reducción de peso de imágenes</span></div>
 </div>
 
----
 
-## El problema real
 
-**El reto no es técnico - es de contexto.** Los desfiles se mueven, los eventos empiezan tarde, la cobertura móvil en calles llenas de gente es pésima, y la web oficial no está pensada para uso en tiempo real.
+## El problema
+
+**El reto no es técnico, es de contexto.** Los desfiles se mueven, los eventos empiezan tarde, la cobertura móvil en calles llenas de gente es pésima, y la web oficial no está pensada para uso en tiempo real.
 
 Les Santes es una de las fiestas mayores más importantes de Cataluña y no tenía ninguna herramienta digital que estuviera a la altura. Lo construimos como proyecto de bien público: sin presupuesto de cliente, con código abierto y pensado para durar.
 
----
+
 
 ## Decisiones técnicas clave
 
@@ -89,7 +89,7 @@ Les Santes es una de las fiestas mayores más importantes de Cataluña y no ten�
 
 <Image src={appMapa} alt="Mapa con posición en tiempo real de los desfiles" class="max-h-[60vh] w-auto rounded-2xl my-2" />
 
----
+
 
 ## La app
 
@@ -137,7 +137,7 @@ Un archivo desplazable con todos los carteles oficiales del festival desde 1892,
   <Image src={appRecursos} alt="Pestaña de recursos" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
 </div>
 
----
+
 
 ## La landing
 
@@ -149,7 +149,7 @@ Un sitio Next.js 15 que convierte visitas en descargas de la app y actúa como C
 
 <Image src={landing404} alt="Página 404 personalizada" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
 
----
+
 
 ## El panel de administración
 
@@ -161,7 +161,7 @@ La creación de actos gestiona tanto eventos de ubicación fija como desfiles en
 
 <Image src={adminEditEvent} alt="Panel de administración - formulario de edición" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
 
----
+
 
 **En números**
 - **3 plataformas** entregadas y en producción (app, landing, admin)
@@ -169,26 +169,10 @@ La creación de actos gestiona tanto eventos de ubicación fija como desfiles en
 - **0 datos personales** recogidos ni transmitidos
 - **Código abierto** publicado en GitHub
 
----
 
-## Stack técnico
-
-| Capa | Tecnología |
-|---|---|
-| **App móvil** | React Native, Expo SDK 54, Expo Router |
-| **Estado y caché** | Zustand, AsyncStorage |
-| **Mapa** | MapLibre GL JS en WebView, tiles de MapTiler |
-| **Notificaciones push** | Expo Notifications, Supabase Realtime |
-| **Landing y CMS** | Next.js 15, Tailwind CSS v4, shadcn/ui |
-| **Backend** | Supabase (PostgreSQL, Auth, Realtime) |
-| **SEO** | JSON-LD `@graph`, FAQPage, Festival subEvent[] |
-| **Imágenes** | AVIF en todo el proyecto (97% de reducción de peso) |
-| **Idiomas** | Catalán como principal, español e inglés como fallback |
-
----
 
 ## Estado del proyecto
 
-El festival se celebra del **24 al 29 de julio de 2026**.
+El festival se celebra del **18 al 29 de julio de 2026**.
 
 La app está en desarrollo activo con lanzamiento previsto en el App Store y Google Play antes del festival. La landing y el panel de administración ya están en producción, alimentando la app con datos reales y recibiendo visitas orgánicas desde búsquedas relacionadas con el festival.

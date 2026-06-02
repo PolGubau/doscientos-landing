@@ -1,0 +1,48 @@
+---
+title: "Explorador del Fondo Areñas"
+summary: "Visualización interactiva WebGL de un grafo multidimensional construido sobre 564 fotografías teatrales de Barcelona (1909–1935) para el TFM de Humanidades Digitales de la UAB. 740 nodos, 4 120 aristas, layout ForceAtlas2 pre-calculado y panel contextual por dimensión."
+available: true
+client: "Institut d´Estudis Fotogràfics de Catalunya"
+endedAt: "2026-06-01"
+timeline: 3
+color: "#7c5c3a90"
+services_provided:
+  - Web
+  - Pipeline de datos
+  - Optimización de imágenes
+cover: "../../assets/media/projects/arenas/thumbnail.png"
+logo: "../../assets/media/projects/arenas/icon.svg"
+---
+
+import { Image } from "astro:assets";
+
+import thumbnail from "../../assets/media/projects/arenas/thumbnail.png";
+import grafoNoFotos from "../../assets/media/projects/arenas/grafo-no-fotos.png";
+import grafoGephi from "../../assets/media/projects/arenas/grafo-gephi.png";
+import thumbnail2 from "../../assets/media/projects/arenas/thumbnail2.png";
+
+El **Institut d'Estudis Fotogràfics de Catalunya** necesitaba una herramienta que diera vida a una investigación académica sobre el Fondo Fotográfico Areñas: 564 negativos de vidrio que documentan la escena teatral de Barcelona entre 1909 y 1935. Nos encargamos de **convertir ese corpus en una experiencia explorable**.
+
+<Image src={thumbnail} alt="Explorador del Fondo Areñas" width={1000} data-reveal class={"rounded-4xl w-full bg-muted my-20!"} />
+
+El problema de fondo era conceptual, no técnico. Los catálogos tradicionales tratan cada fotografía como un objeto aislado: quién sale, cuándo. Lo que no representan es la red. Una sola imagen de Areñas conecta un actor, un teatro, un escenógrafo y una compañía dentro del tejido cultural de la Barcelona modernista. Esas relaciones existían, pero eran invisibles.
+
+Construimos un **grafo multidimensional navegable** donde cada fotografía es un nodo conectado a tres capas de datos extraídas con modelos: el año estimado de la toma, las prendas de vestimenta detectadas y las palabras transcritas del texto manuscrito que acompañaba cada pieza. En total, **740 nodos y 4 120 aristas** que el usuario puede filtrar, explorar y navegar libremente.
+
+<Image src={grafoGephi} alt="Vista del grafo" width={1000} data-reveal class={"rounded-4xl w-full bg-muted my-20!"} />
+
+El renderizado corre en WebGL con Sigma.js: cada nodo imagen muestra la fotografía real como textura circular dentro del canvas. Para resolver el bloqueo CORS de los archivos estatales de la Generalitat, implementamos un proxy de imagen en Next.js que sirve las URLs de forma transparente.
+
+El layout no se calcula en el navegador. ForceAtlas2 corre 500 iteraciones durante el build sobre el fichero GEXF fuente y serializa las coordenadas en un JSON estático. El cliente arranca directamente en la posición final, sin ningún layout en runtime.
+
+<Image src={grafoNoFotos} alt="Grafo con capas de año y vestimenta activas" width={1000} data-reveal class={"rounded-4xl w-full bg-muted my-20!"} />
+
+La interfaz es un split screen: grafo a la izquierda, panel contextual a la derecha. Al hacer clic en cualquier nodo el panel hace crossfade y muestra el detalle — la foto ampliada, el año predicho con el porcentaje de confianza del modelo, las prendas detectadas y las fotos del mismo año. Hacer clic en cualquier elemento del panel mueve la cámara del grafo al nodo correspondiente.
+
+<Image src={thumbnail2} alt="Panel lateral con detalle de fotografía seleccionada" width={1000} data-reveal class={"rounded-4xl w-full bg-muted my-20!"} />
+
+**En números**
+- **564 fotografías** históricas del teatro barcelonés de 1909–1935
+- **4 120 aristas** semánticas entre imágenes, años, prendas y palabras
+- **0 layout** ejecutado en cliente — posiciones pre-calculadas en build
+- **3 modelos** de análisis integrados: datación, detección de vestimenta y HTR
