@@ -91,7 +91,9 @@ const SectorIcon = iconMap[pack.icon] ?? Globe;
           {pack.heroSubtitle}
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="/contact"><Button size="lg" withArrow>{pack.cta}</Button></a>
+          <a href={`/contact?subject=Pack ${pack.title}&ref=${pack.slug}`}
+            ><Button size="lg" withArrow>{pack.cta}</Button></a
+          >
           <a href="/packs">
             <Button size="lg" variant="outline">Ver todos los packs</Button>
           </a>
@@ -216,7 +218,7 @@ const SectorIcon = iconMap[pack.icon] ?? Globe;
           sin compromiso.
         </p>
       </div>
-      <a href="/contact">
+      <a href={`/contact?subject=Pack ${pack.title}&ref=${pack.slug}`}>
         <Button
           size="lg"
           withArrow

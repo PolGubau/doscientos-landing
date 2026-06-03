@@ -19,6 +19,8 @@ interface EmailData {
 	utm_source?: string;
 	utm_medium?: string;
 	utm_campaign?: string;
+	subject?: string;
+	ref?: string;
 }
 
 export function generateContactEmailHTML(data: EmailData): string {
@@ -38,6 +40,8 @@ export function generateContactEmailHTML(data: EmailData): string {
 		utm_source,
 		utm_medium,
 		utm_campaign,
+		subject,
+		ref,
 	} = data;
 
 	const hasUTM = utm_source || utm_medium || utm_campaign;
@@ -174,6 +178,17 @@ export function generateContactEmailHTML(data: EmailData): string {
           <div class="value">${name}</div>
         </div>
 
+        ${
+					subject
+						? `
+        <div class="field">
+          <div class="label">Interés / Pack</div>
+          <div class="value" style="color: #2A4227; font-weight: 700;">${subject}</div>
+        </div>
+        `
+						: ""
+				}
+
         <div class="field">
           <div class="label">Email</div>
           <div class="value"><a href="mailto:${email}">${email}</a></div>
@@ -232,6 +247,16 @@ export function generateContactEmailHTML(data: EmailData): string {
               <div class="metadata-label">Dispositivo</div>
               <div class="metadata-value">${device}</div>
             </div>
+            ${
+							ref
+								? `
+            <div class="metadata-item">
+              <div class="metadata-label">Referencia</div>
+              <div class="metadata-value">${ref}</div>
+            </div>
+            `
+								: ""
+						}
             ${
 							referrer !== "Direct"
 								? `

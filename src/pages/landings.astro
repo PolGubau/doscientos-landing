@@ -188,7 +188,9 @@ const faqs = [
           data-speed="fast"
           data-easing="elastic"
         >
-          <a href="/contact">
+          <a
+            href="/contact?subject=Interés en Web Profesional&ref=landing-general"
+          >
             <Button size="lg" withArrow>Solicitar presupuesto</Button>
           </a>
           <a href="#trabajos-realizados">
@@ -514,7 +516,10 @@ const faqs = [
               </ul>
 
               <div class="mt-auto flex flex-wrap items-center gap-3">
-                <a href="/contact" class="w-fit">
+                <a
+                  href={`/contact?subject=Pack ${pack.title}&ref=landing-general`}
+                  class="w-fit"
+                >
                   <Button
                     size="sm"
                     withArrow
@@ -541,6 +546,33 @@ const faqs = [
           );
         })
       }
+    </div>
+
+    <!-- CTA hub de packs -->
+    <div
+      class="w-full flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-muted/60 bg-accent px-6 py-5 shadow-pastel-sm"
+      data-reveal="bottom"
+      data-speed="fast"
+      data-easing="smooth"
+    >
+      <div class="flex items-center gap-3">
+        <span
+          class="size-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0"
+        >
+          <Sparkles class="size-4" />
+        </span>
+        <p class="text-sm font-medium text-foreground">
+          ¿Quieres comparar todos los packs con detalle?
+          <span class="text-muted-foreground font-normal">
+            Precio, características y lo que incluye cada sector.</span
+          >
+        </p>
+      </div>
+      <a href="/packs" class="shrink-0">
+        <Button size="sm" variant="outline" withArrow
+          >Ver todos los packs</Button
+        >
+      </a>
     </div>
   </section>
 
@@ -714,7 +746,9 @@ const faqs = [
         </p>
       </div>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="/contact">
+        <a
+          href="/contact?subject=Presupuesto Web Profesional&ref=landing-general-footer"
+        >
           <Button
             size="lg"
             withArrow

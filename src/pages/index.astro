@@ -13,54 +13,52 @@ import Services from "~/components/sections/Services.astro";
 import Testimonials from "~/components/sections/Testimonials.astro";
 
 const title =
-    "Agencia de Desarrollo Web en Barcelona · MVPs en 6 semanas | doscientos";
+  "Agencia de Desarrollo Web en Barcelona · MVPs en 6 semanas | doscientos";
 const description =
-    "doscientos es una agencia de desarrollo web y automatización en Barcelona. Lanzamos MVPs en 6 semanas a precio cerrado. +30 proyectos entregados. Sin sorpresas, sin tiempos muertos.";
+  "doscientos es una agencia de desarrollo web y automatización en Barcelona. Lanzamos MVPs en 6 semanas a precio cerrado. +30 proyectos entregados. Sin sorpresas, sin tiempos muertos.";
 ---
 
 <MainLayout title={title} description={description}>
-    <Hero />
-    <Services />
-    <Impact />
-    <CaseStudies />
+  <Hero />
+  <Services />
+  <Impact />
+  <CaseStudies />
 
-    <!-- Mid-page CTA -->
-    <section class="px-6 max-w-4xl mx-auto w-full" data-reveal="bottom">
-        <div
-            class="bg-foreground text-background rounded-2xl px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6"
+  <!-- Mid-page CTA -->
+  <section class="px-6 max-w-4xl mx-auto w-full" data-reveal="bottom">
+    <div
+      class="bg-foreground text-background rounded-2xl px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6"
+    >
+      <div class="space-y-1 text-center sm:text-left">
+        <p class="text-xl font-bold">¿Tiene pinta de que encajamos?</p>
+        <p class="text-background/60 text-sm">
+          Cuéntanos el problema. Respuesta en menos de 24h, sin compromiso.
+        </p>
+      </div>
+      <a
+        href="/contact?subject=Interés General&ref=home"
+        class="shrink-0 inline-flex items-center gap-2 rounded-full px-5 py-3 text-lg font-semibold bg-background text-foreground hover:bg-background/90 transition-colors"
+      >
+        Pedir propuesta
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="size-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          ><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg
         >
-            <div class="space-y-1 text-center sm:text-left">
-                <p class="text-xl font-bold">¿Tiene pinta de que encajamos?</p>
-                <p class="text-background/60 text-sm">
-                    Cuéntanos el problema. Respuesta en menos de 24h, sin
-                    compromiso.
-                </p>
-            </div>
-            <a
-                href="/contact"
-                class="shrink-0 inline-flex items-center gap-2 rounded-full px-5 py-3 text-lg font-semibold bg-background text-foreground hover:bg-background/90 transition-colors"
-            >
-                Pedir propuesta
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="size-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    ><path d="M7 17L17 7"></path><path d="M7 7h10v10"
-                    ></path></svg
-                >
-            </a>
-        </div>
-    </section>
+      </a>
+    </div>
+  </section>
 
-    <Method />
-    <ForWho />
-    <Testimonials />
-    <Comparison />
-    <FAQ />
-    <Hype />
+  <Method />
+  <ForWho />
+  <Testimonials />
+  <Comparison />
+  <FAQ />
+  <Hype />
 </MainLayout>
