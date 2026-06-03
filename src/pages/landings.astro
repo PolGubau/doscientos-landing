@@ -7,7 +7,7 @@ import {
   Dumbbell,
   ExternalLink,
   FileText,
-  Globe2,
+  Globe,
   Headphones,
   HeartPulse,
   MonitorSmartphone,
@@ -21,6 +21,7 @@ import {
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import SectionTag from "~/components/ui/SectionTag.astro";
+import { basePlan, extras, packs } from "~/data/packs";
 import MainLayout from "~/layouts/MainLayout.astro";
 
 const title = "Páginas web profesionales desde 200€ | doscientos";
@@ -78,227 +79,17 @@ const included = [
     title: "Hosting y mantenimiento disponibles",
     description:
       "Nos encargamos del alojamiento, dominio, seguridad, copias de seguridad, soporte y pequeños cambios de contenido.",
-    icon: Globe2,
+    icon: Globe,
   },
 ];
 
-const basePlan = {
-  install: {
-    price: "200€",
-    features: [
-      "Diseño profesional personalizado",
-      "Hasta 5 secciones",
-      "Diseño responsive",
-      "Formulario de contacto",
-      "Botón de WhatsApp",
-      "Google Maps",
-      "Dominio incluido",
-      "SSL",
-      "Publicación online",
-    ],
-  },
-  maintenance: {
-    price: "20€/mes",
-    badge: "Más barato que un café al día",
-    features: [
-      "Hosting",
-      "Renovación del dominio",
-      "Monitorización",
-      "Copias de seguridad",
-      "Actualizaciones de seguridad",
-      "Soporte técnico",
-      "Hasta 15 minutos de cambios al mes",
-    ],
-  },
+const iconMap: Record<string, typeof Scissors> = {
+  Scissors,
+  Utensils,
+  Dumbbell,
+  BriefcaseBusiness,
+  HeartPulse,
 };
-
-const extras = [
-  {
-    title: "Integración Booksy",
-    install: "+50€ instalación",
-    monthly: "+5€/mes",
-    description: "Permite que los clientes reserven directamente desde tu web.",
-  },
-  {
-    title: "Integración Calendly",
-    install: "+50€ instalación",
-    monthly: "+5€/mes",
-    description:
-      "Conecta tu calendario para que los clientes puedan reservar huecos disponibles.",
-  },
-  {
-    title: "Instagram",
-    install: "+30€ instalación",
-    monthly: "+3€/mes",
-    description: "Mostrar publicaciones directamente en tu web.",
-  },
-  {
-    title: "TikTok",
-    install: "+30€ instalación",
-    monthly: "+3€/mes",
-    description:
-      "Integra tu contenido social para reforzar confianza y actividad.",
-  },
-  {
-    title: "Galería de trabajos avanzada",
-    install: "+50€ instalación",
-    monthly: "+3€/mes",
-    description:
-      "Muestra servicios, resultados, antes y después o trabajos destacados.",
-  },
-  {
-    title: "Blog autogestionable",
-    install: "+100€ instalación",
-    monthly: "+5€/mes",
-    description:
-      "Publica novedades, consejos o contenidos locales sin depender de desarrollo.",
-  },
-  {
-    title: "SEO Local",
-    install: "+100€ instalación",
-    monthly: "+10€/mes",
-    description:
-      "Optimización para aparecer mejor en Google Maps y búsquedas locales.",
-  },
-  {
-    title: "Correo corporativo",
-    install: "+50€ instalación",
-    monthly: "+5€/mes",
-    description: "Ejemplos: info@tuempresa.es o reservas@tuempresa.es.",
-  },
-  {
-    title: "Formularios avanzados",
-    install: "+50€ instalación",
-    monthly: "+5€/mes",
-    description:
-      "Solicitudes con más campos, filtros, avisos y flujos de contacto adaptados.",
-  },
-  {
-    title: "Recepción automática por WhatsApp",
-    install: "+100€ instalación",
-    monthly: "+10€/mes",
-    description:
-      "Automatiza el primer mensaje y ordena mejor las solicitudes entrantes.",
-  },
-  {
-    title: "Chat IA",
-    install: "+200€ instalación",
-    monthly: "+15€/mes",
-    description:
-      "Responde automáticamente a preguntas frecuentes de los clientes.",
-  },
-  {
-    title: "Sistema de reservas propio",
-    install: "+300€ instalación",
-    monthly: "+15€/mes",
-    description:
-      "Reserva citas directamente en tu web con un flujo propio y controlado.",
-  },
-];
-
-const businessSolutions = [
-  {
-    title: "Pack Barbería",
-    install: "250€ instalación",
-    monthly: "39€/mes",
-    description:
-      "Convierte visitantes en reservas y muestra tus mejores trabajos de forma profesional.",
-    cta: "Solicitar Pack Barbería",
-    icon: Scissors,
-    features: [
-      "Diseño profesional personalizado",
-      "Integración con Booksy",
-      "Galería de trabajos",
-      "Botón de WhatsApp",
-      "Integración con Instagram",
-      "Mapa de ubicación",
-      "Dominio incluido",
-      "Hosting incluido",
-      "Soporte incluido",
-    ],
-  },
-  {
-    title: "Pack Restaurante",
-    install: "300€ instalación",
-    monthly: "39€/mes",
-    description:
-      "Permite que tus clientes consulten tu carta y contacten contigo fácilmente desde cualquier dispositivo.",
-    cta: "Solicitar Pack Restaurante",
-    icon: Utensils,
-    features: [
-      "Diseño profesional personalizado",
-      "Carta digital",
-      "Galería de platos",
-      "Botón de llamada directa",
-      "WhatsApp",
-      "Google Maps",
-      "Dominio incluido",
-      "Hosting incluido",
-      "Soporte incluido",
-    ],
-  },
-  {
-    title: "Pack Gimnasio",
-    install: "300€ instalación",
-    monthly: "39€/mes",
-    description:
-      "Muestra tus instalaciones, tarifas y horarios para convertir visitas en nuevos socios.",
-    cta: "Solicitar Pack Gimnasio",
-    icon: Dumbbell,
-    features: [
-      "Diseño profesional personalizado",
-      "Horarios",
-      "Tarifas",
-      "Galería de instalaciones",
-      "Formulario de contacto",
-      "WhatsApp",
-      "Dominio incluido",
-      "Hosting incluido",
-      "Soporte incluido",
-    ],
-  },
-  {
-    title: "Pack Profesional",
-    install: "250€ instalación",
-    monthly: "39€/mes",
-    description:
-      "Genera confianza y consigue nuevos clientes con una presencia online profesional.",
-    audience: "Abogados, asesorías, consultorías y autónomos.",
-    cta: "Solicitar Pack Profesional",
-    icon: BriefcaseBusiness,
-    features: [
-      "Diseño profesional personalizado",
-      "Página de servicios",
-      "Formulario de contacto",
-      "WhatsApp",
-      "Google Maps",
-      "Dominio incluido",
-      "Hosting incluido",
-      "Soporte incluido",
-    ],
-  },
-  {
-    title: "Pack Clínica",
-    install: "300€ instalación",
-    monthly: "39€/mes",
-    description:
-      "Facilita que nuevos pacientes encuentren tu clínica y contacten contigo.",
-    audience: "Fisioterapeutas, psicólogos, dentistas y centros médicos.",
-    cta: "Solicitar Pack Clínica",
-    icon: HeartPulse,
-    features: [
-      "Diseño profesional personalizado",
-      "Página de servicios",
-      "Presentación del equipo",
-      "Formulario de contacto",
-      "WhatsApp",
-      "Google Maps",
-      "Dominio incluido",
-      "Hosting incluido",
-      "Soporte incluido",
-    ],
-  },
-];
 
 const projects = [
   {
@@ -617,9 +408,9 @@ const faqs = [
 
     <div class="grid lg:grid-cols-2 gap-4 w-full" data-stagger="90">
       {
-        businessSolutions.map((solution, index) => {
-          const Icon = solution.icon;
-          const featured = index === 0;
+        packs.map((pack) => {
+          const Icon = iconMap[pack.icon] ?? Globe;
+          const featured = pack.featured ?? false;
 
           return (
             <article
@@ -644,10 +435,8 @@ const faqs = [
                     <Icon class="size-6" />
                   </div>
                   <div class="space-y-3">
-                    <h3 class="text-2xl md:text-3xl font-bold">
-                      {solution.title}
-                    </h3>
-                    {solution.audience && (
+                    <h3 class="text-2xl md:text-3xl font-bold">{pack.title}</h3>
+                    {pack.audience && (
                       <p
                         class={`text-sm ${
                           featured
@@ -655,7 +444,7 @@ const faqs = [
                             : "text-muted-foreground"
                         }`}
                       >
-                        {solution.audience}
+                        {pack.audience}
                       </p>
                     )}
                     <p
@@ -665,7 +454,7 @@ const faqs = [
                           : "text-muted-foreground"
                       }`}
                     >
-                      {solution.description}
+                      {pack.tagline}
                     </p>
                   </div>
                 </div>
@@ -679,7 +468,7 @@ const faqs = [
                     }`}
                   >
                     <p class="text-xs text-muted-foreground">Instalación</p>
-                    <p class="font-bold">{solution.install}</p>
+                    <p class="font-bold">{pack.install}</p>
                   </div>
                   <div
                     class={`rounded-2xl p-3 ${
@@ -695,13 +484,13 @@ const faqs = [
                     >
                       Mensual
                     </p>
-                    <p class="font-bold">{solution.monthly}</p>
+                    <p class="font-bold">{pack.monthly}</p>
                   </div>
                 </div>
               </div>
 
               <ul class="grid sm:grid-cols-2 gap-3">
-                {solution.features.map((feature) => (
+                {pack.features.map((feature) => (
                   <li class="flex items-center gap-3 text-sm">
                     <Check
                       class={`size-4 shrink-0 ${
@@ -713,19 +502,29 @@ const faqs = [
                 ))}
               </ul>
 
-              <a href="/contact" class="mt-auto w-fit">
-                <Button
-                  size="sm"
-                  withArrow
-                  class={
-                    featured
-                      ? "bg-background text-foreground hover:bg-background/90"
-                      : ""
-                  }
+              <div class="mt-auto flex flex-wrap items-center gap-3">
+                <a href="/contact" class="w-fit">
+                  <Button
+                    size="sm"
+                    withArrow
+                    class={
+                      featured
+                        ? "bg-background text-foreground hover:bg-background/90"
+                        : ""
+                    }
+                  >
+                    {pack.cta}
+                  </Button>
+                </a>
+                <a
+                  href={`/packs/${pack.slug}`}
+                  class={`text-sm font-semibold underline-offset-4 hover:underline ${
+                    featured ? "text-background/80" : "text-muted-foreground"
+                  }`}
                 >
-                  {solution.cta}
-                </Button>
-              </a>
+                  Ver detalles
+                </a>
+              </div>
             </article>
           );
         })

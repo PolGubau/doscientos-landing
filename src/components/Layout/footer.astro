@@ -1,5 +1,14 @@
 ---
-import { Mail, Phone, Star } from "@lucide/astro";
+import {
+  Github,
+  Instagram,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+  Twitter,
+} from "@lucide/astro";
+import NewsletterInput from "~/components/ui/NewsletterInput";
 import { branding } from "~/config/branding";
 import { copy } from "~/shared/lib/copy";
 import FinalCTA from "../sections/FinalCTA.astro";
@@ -11,24 +20,32 @@ interface Props {
 const { showCta = true } = Astro.props;
 const currentYear = new Date().getFullYear();
 
-const footerLinks = {
-  producto: [
-    { label: "Inicio", href: "/" },
-    { label: "Proyectos", href: "/projects" },
-    { label: "Blog", href: "/blog" },
-    { label: "Sobre nosotros", href: "/sobre-nosotros" },
-  ],
-  legal: [
-    { label: "Aviso Legal", href: "/legal" },
-    { label: "Privacidad", href: "/privacy" },
-    { label: "Cookies", href: "/cookies" },
-  ],
-  social: [
-    { label: "LinkedIn", href: branding.social.linkedin },
-    { label: "Twitter", href: branding.social.twitter },
-    { label: "GitHub", href: branding.social.github },
-  ],
-};
+const linkColumns = [
+  {
+    title: "Producto",
+    links: [
+      { label: "Inicio", href: "/" },
+      { label: "Proyectos", href: "/projects" },
+      { label: "Blog", href: "/blog" },
+      { label: "Sobre nosotros", href: "/sobre-nosotros" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Aviso Legal", href: "/legal" },
+      { label: "Privacidad", href: "/privacy" },
+      { label: "Cookies", href: "/cookies" },
+    ],
+  },
+];
+
+const socialLinks = [
+  { label: "LinkedIn", href: branding.social.linkedin, Icon: Linkedin },
+  { label: "Twitter", href: branding.social.twitter, Icon: Twitter },
+  { label: "GitHub", href: branding.social.github, Icon: Github },
+  { label: "Instagram", href: branding.social.instagram, Icon: Instagram },
+];
 ---
 
 <section class="bg-foreground text-background">
@@ -47,113 +64,100 @@ const footerLinks = {
         <!-- Brand & Newsletter (takes more space) -->
         <div class="lg:col-span-6 space-y-8">
           <div class="space-y-4">
-            <h3 class="text-3xl font-semibold">
-              {branding.name}
-            </h3>
-            <p class="text-muted text-lg max-w-md">
+            <div class="flex items-center gap-2.5">
+              <img
+                src="/iso.svg"
+                alt=""
+                aria-hidden="true"
+                class="h-7 w-auto object-contain brightness-0 invert opacity-90"
+              />
+              <h3 class="text-3xl font-semibold lowercase">
+                {branding.name}
+              </h3>
+            </div>
+            <p class="text-background/70 text-lg max-w-md text-balance">
               {copy.footer.tagline}
             </p>
-            <div class="flex flex-col gap-2 pt-2">
+            <div class="flex flex-col gap-3 pt-2">
               <a
                 href={`mailto:${branding.contact.email}`}
-                class="text-neutral-300 hover:text-white transition-colors text-sm flex items-center gap-2"
+                class="group flex items-center gap-3 text-sm text-background/70 hover:text-background transition-colors"
               >
-                <Mail aria-hidden="true" class="size-4" />
+                <Mail
+                  class="size-4 text-background/50 group-hover:text-background transition-colors"
+                />
                 {branding.contact.email}
               </a>
               <a
                 href={`tel:+${branding.contact.whatsapp.number}`}
-                class="text-neutral-300 hover:text-white transition-colors text-sm flex items-center gap-2"
+                class="group flex items-center gap-3 text-sm text-background/70 hover:text-background transition-colors"
               >
-                <Phone aria-hidden="true" class="size-4" />
+                <Phone
+                  class="size-4 text-background/50 group-hover:text-background transition-colors"
+                />
                 {branding.contact.whatsapp.displayNumber}
               </a>
+              <p class="flex items-center gap-3 text-sm text-background/70">
+                <MapPin class="size-4 text-background/50" />
+                {branding.location.city}, {branding.location.country}
+              </p>
             </div>
+          </div>
+
+          <!-- Social -->
+          <div class="flex items-center gap-3 pt-2">
+            {
+              socialLinks.map((social) => (
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  class="rounded-full p-2.5 bg-background/5 border border-background/10 text-background/70 hover:text-background hover:bg-background/10 hover:-translate-y-0.5 transition-all"
+                >
+                  <social.Icon class="size-5" />
+                </a>
+              ))
+            }
           </div>
         </div>
 
         <!-- Links columns -->
-        <div class="lg:col-span-2 space-y-6">
-          <h4
-            class="text-sm font-medium text-background uppercase tracking-wider"
-          >
-            Producto
-          </h4>
-          <ul class="space-y-3">
-            {
-              footerLinks.producto.map((link) => (
-                <li>
-                  <a
-                    href={link.href}
-                    class="text-neutral-300 hover:text-neutral-50 transition-colors"
-                    style="letter-spacing: -0.02em;"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-
-        <div class="lg:col-span-2 space-y-6">
-          <h4
-            class="text-sm font-medium text-background uppercase tracking-wider"
-          >
-            Legal
-          </h4>
-          <ul class="space-y-3">
-            {
-              footerLinks.legal.map((link) => (
-                <li>
-                  <a
-                    href={link.href}
-                    class="text-neutral-300 hover:text-neutral-50 transition-colors"
-                    style="letter-spacing: -0.02em;"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-        <div class="lg:col-span-2 space-y-6">
-          <h4
-            class="text-sm font-medium text-background uppercase tracking-wider"
-          >
-            Social
-          </h4>
-          <ul class="space-y-3">
-            {
-              footerLinks.social.map((link) => (
-                <li>
-                  <a
-                    href={link.href}
-                    class="text-neutral-300 hover:text-neutral-50 transition-colors"
-                    style="letter-spacing: -0.02em;"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
+        {
+          linkColumns.map((column) => (
+            <div class="lg:col-span-3 space-y-6">
+              <h4 class="text-sm font-medium text-background/50 uppercase tracking-wider">
+                {column.title}
+              </h4>
+              <ul class="space-y-3">
+                {column.links.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      class="inline-block tracking-tight text-background/70 hover:text-background hover:translate-x-1 transition-all"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
       </div>
 
       <!-- Bottom bar -->
       <div
-        class="pt-20 flex flex-col md:flex-row justify-between items-center gap-6"
+        class="mt-16 pt-8 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-6"
       >
-        <p class="text-sm text-muted">
+        <p class="text-sm text-background/50">
           {copy.footer.copyright.replace("2026", currentYear.toString())}
         </p>
         <a
           href="https://g.page/r/CVVDrT1qq_qvEBM/review"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center gap-2 text-sm text-neutral-300 hover:text-white transition-colors group"
+          class="flex items-center gap-2 text-sm text-background/70 hover:text-background transition-colors group"
         >
           <span class="flex text-yellow-400" aria-hidden="true">
             <Star class="size-4 fill-current" />
