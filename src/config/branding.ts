@@ -42,6 +42,11 @@ export const branding = {
 		instagram: "https://instagram.com/doscientos.es",
 	},
 
+	// Reseñas
+	reviews: {
+		googleReviewUrl: "https://g.page/r/CVVDrT1qq_qvEBM/review",
+	},
+
 	// Ubicación
 	location: {
 		city: "Barcelona",
