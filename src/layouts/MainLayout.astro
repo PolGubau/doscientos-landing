@@ -2,11 +2,11 @@
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Layout/footer.astro";
 import Navbar from "../components/Layout/navbar.astro";
-import ConsentScript from "../components/consent/ConsentScript.astro";
-import CookieBanner from "../components/consent/CookieBanner.astro";
 import GoogleAnalytics from "../components/analytics/GoogleAnalytics.astro";
 import MetaPixel from "../components/analytics/MetaPixel.astro";
 import MicrosoftClarity from "../components/analytics/MicrosoftClarity.astro";
+import ConsentScript from "../components/consent/ConsentScript.astro";
+import CookieBanner from "../components/consent/CookieBanner.astro";
 import OpenGraph from "../components/seo/OpenGraph.astro";
 import SEOHead from "../components/seo/SEOHead.astro";
 import SchemaOrg from "../components/seo/SchemaOrg.astro";
@@ -17,6 +17,9 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  robots?: string;
+  keywords?: string[];
+  showFooterCta?: boolean;
   type?: "website" | "article";
   article?: {
     publishedTime?: string;
@@ -26,14 +29,23 @@ interface Props {
   };
 }
 
-const { title, description, image, type = "website", article } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  robots,
+  keywords,
+  showFooterCta = true,
+  type = "website",
+  article,
+} = Astro.props;
 ---
 
-<html lang="es" dir="ltr" class="w-screen overflow-x-hidden">
+<html lang="es" dir="ltr" class="w-full overflow-x-hidden">
   <head>
     <ConsentScript />
     <BaseHead title={title} description={description} image={image} />
-    <SEOHead />
+    <SEOHead robots={robots} keywords={keywords} />
     <OpenGraph
       title={title || "doscientos - Desarrollo de producto digital"}
       description={description ||
@@ -92,7 +104,7 @@ const { title, description, image, type = "website", article } = Astro.props;
     <main id="main-content" class="flex flex-col w-full gap-20 pb-20">
       <slot />
     </main>
-    <Footer />
+    <Footer showCta={showFooterCta} />
     <FloatingCTA />
     <CookieBanner />
     <!-- GoHighLevel CRM tracking: solo con consent de marketing -->
