@@ -15,6 +15,10 @@ interface Props {
     name: string;
     description: string;
     image?: string;
+    url?: string;
+    serviceType?: string;
+    price?: number;
+    priceCurrency?: string;
   };
   project?: {
     name: string;
@@ -23,10 +27,15 @@ interface Props {
     client?: string;
     datePublished?: string;
     url?: string;
+    services?: string[];
   };
+  faqs?: {
+    question: string;
+    answer: string;
+  }[];
 }
 
-const { type = "organization", article, service, project } = Astro.props;
+const { type = "organization", article, service, project, faqs } = Astro.props;
 
 // Strip trailing slash — Astro.site returns "https://doscientos.es/" which causes double slashes in paths
 const baseUrl = (Astro.site?.toString() ?? "https://doscientos.es").replace(
@@ -126,13 +135,46 @@ const serviceSchema = service
       name: service.name,
       description: service.description,
       image: service.image,
+      ...(service.serviceType && { serviceType: service.serviceType }),
+      url: service.url || baseUrl,
+      inLanguage: "es-ES",
       provider: {
         "@type": "Organization",
         name: branding.name,
         url: baseUrl,
       },
+      areaServed: {
+        "@type": "Country",
+        name: "España",
+      },
+      ...(service.price !== undefined && {
+        offers: {
+          "@type": "Offer",
+          price: service.price,
+          priceCurrency: service.priceCurrency || "EUR",
+          url: service.url || baseUrl,
+          availability: "https://schema.org/InStock",
+        },
+      }),
     }
   : null;
+
+// FAQPage Schema
+const faqSchema =
+  faqs && faqs.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.answer,
+          },
+        })),
+      }
+    : null;
 
 // CreativeWork Schema (para proyectos)
 const projectSchema = project
@@ -144,6 +186,17 @@ const projectSchema = project
       image: project.image || `${baseUrl}/og-image.png`,
       datePublished: project.datePublished,
       url: project.url || baseUrl,
+      inLanguage: "es-ES",
+      ...(project.url && {
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": project.url,
+        },
+      }),
+      ...(project.services &&
+        project.services.length > 0 && {
+          keywords: project.services.join(", "),
+        }),
       creator: {
         "@type": "Organization",
         name: branding.name,
@@ -166,10 +219,15 @@ if (type === "website") schemas.push(websiteSchema);
 if (type === "article" && articleSchema) schemas.push(articleSchema);
 if (type === "service" && serviceSchema) schemas.push(serviceSchema);
 if (type === "project" && projectSchema) schemas.push(projectSchema);
+if (faqSchema) schemas.push(faqSchema);
 ---
 
 {
   schemas.map((schema) => (
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(schema)}
+    />
   ))
 }

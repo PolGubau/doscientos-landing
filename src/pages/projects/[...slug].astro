@@ -51,6 +51,7 @@ const publishedTime =
       client: project.data.client,
       datePublished: publishedTime,
       url: `https://doscientos.es/projects/${project.id}`,
+      services: project.data.services_provided,
     }}
   />
   <article
@@ -113,11 +114,14 @@ const publishedTime =
     <div
       class="px-2
       prose prose-neutral prose-sm mx-auto w-full max-w-none
-      
       prose-p:max-w-xl prose-p:mx-auto
       prose-ul:max-w-xl prose-ul:mx-auto
+      prose-ol:max-w-xl prose-ol:mx-auto
       prose-blockquote:max-w-xl prose-blockquote:mx-auto
-      
+      prose-headings:max-w-xl prose-headings:mx-auto
+      prose-img:max-w-xl prose-img:mx-auto
+      prose-hr:max-w-xl prose-hr:mx-auto
+      prose-table:max-w-xl prose-table:mx-auto
         prose-headings:font-bold prose-headings:text-foreground
         prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
         prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
@@ -143,3 +147,10 @@ const publishedTime =
   </article>
   <OtherProjects currentProjectId={project.id} />
 </MainLayout>
+
+<script>
+  import mediumZoom from "medium-zoom";
+  document.addEventListener("astro:page-load", () => {
+    mediumZoom(".prose img", { background: "rgba(12,17,11,0.6)", margin: 24 });
+  });
+</script>

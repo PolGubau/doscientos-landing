@@ -3,6 +3,7 @@
  * FloatingCTA - CTA flotante que aparece al hacer scroll
  * Mejora conversión mostrando CTA siempre visible
  */
+import UpRightArrow from "./UpRightArrow.astro";
 ---
 
 <div
@@ -15,19 +16,7 @@
     class="flex items-center gap-3 px-6 py-4 bg-primary text-background rounded-full shadow-2xl hover:shadow-primary/50 hover:scale-105 transition-all duration-300 pointer-events-auto group"
   >
     <span class="font-semibold">Hablemos de tu proyecto</span>
-    <svg
-      aria-hidden="true"
-      class="size-5 group-hover:translate-x-1 transition-transform"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-    </svg>
+    <UpRightArrow inverted />
   </a>
 </div>
 

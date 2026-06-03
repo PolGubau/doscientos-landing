@@ -1,26 +1,30 @@
 ---
+import { Image } from "astro:assets";
 import {
   BriefcaseBusiness,
   CalendarCheck,
   Check,
-  CircleDollarSign,
   Dumbbell,
   ExternalLink,
   FileText,
-  Globe2,
+  Globe,
   Headphones,
   HeartPulse,
   MonitorSmartphone,
   Palette,
+  Scissors,
   Search,
   ShieldCheck,
-  Scissors,
   Sparkles,
   Utensils,
 } from "@lucide/astro";
+import imgArnau from "~/assets/media/landing/examples-landings/arnaumartinez.avif";
+import imgCyber from "~/assets/media/landing/examples-landings/cyberimpulsa.avif";
+import imgPol from "~/assets/media/landing/examples-landings/polgubau.avif";
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import SectionTag from "~/components/ui/SectionTag.astro";
+import { basePlan, extras, getPackPricing, packs } from "~/data/packs";
 import MainLayout from "~/layouts/MainLayout.astro";
 
 const title = "Páginas web profesionales desde 200€ | doscientos";
@@ -29,7 +33,7 @@ const description =
 
 const highlights = [
   "Web profesional desde 200€",
-  "Mantenimiento obligatorio desde 20€/mes",
+  "Mantenimiento desde 20€/mes",
   "Dominio incluido",
   "Hosting incluido",
   "Seguridad incluida",
@@ -78,220 +82,17 @@ const included = [
     title: "Hosting y mantenimiento disponibles",
     description:
       "Nos encargamos del alojamiento, dominio, seguridad, copias de seguridad, soporte y pequeños cambios de contenido.",
-    icon: Globe2,
+    icon: Globe,
   },
 ];
 
-const basePlan = {
-  install: {
-    price: "200€",
-    features: [
-      "Diseño profesional personalizado",
-      "Hasta 5 secciones",
-      "Diseño responsive",
-      "Formulario de contacto",
-      "Botón de WhatsApp",
-      "Google Maps",
-      "Dominio incluido",
-      "SSL",
-      "Publicación online",
-    ],
-  },
-  maintenance: {
-    price: "20€/mes",
-    badge: "Más barato que un café al día",
-    features: [
-      "Hosting",
-      "Renovación del dominio",
-      "Monitorización",
-      "Copias de seguridad",
-      "Actualizaciones de seguridad",
-      "Soporte técnico",
-      "Hasta 15 minutos de cambios al mes",
-    ],
-  },
+const iconMap: Record<string, typeof Scissors> = {
+  Scissors,
+  Utensils,
+  Dumbbell,
+  BriefcaseBusiness,
+  HeartPulse,
 };
-
-const extras = [
-  {
-    title: "Integración Booksy",
-    install: "+50€ instalación",
-    monthly: "+5€/mes",
-    description: "Permite que los clientes reserven directamente desde tu web.",
-  },
-  {
-    title: "Integración Calendly",
-    install: "+50€ instalación",
-    monthly: "+5€/mes",
-    description: "Conecta tu calendario para que los clientes puedan reservar huecos disponibles.",
-  },
-  {
-    title: "Instagram",
-    install: "+30€ instalación",
-    monthly: "+3€/mes",
-    description: "Mostrar publicaciones directamente en tu web.",
-  },
-  {
-    title: "TikTok",
-    install: "+30€ instalación",
-    monthly: "+3€/mes",
-    description: "Integra tu contenido social para reforzar confianza y actividad.",
-  },
-  {
-    title: "Galería de trabajos avanzada",
-    install: "+50€ instalación",
-    monthly: "+3€/mes",
-    description: "Muestra servicios, resultados, antes y después o trabajos destacados.",
-  },
-  {
-    title: "Blog autogestionable",
-    install: "+100€ instalación",
-    monthly: "+5€/mes",
-    description: "Publica novedades, consejos o contenidos locales sin depender de desarrollo.",
-  },
-  {
-    title: "SEO Local",
-    install: "+100€ instalación",
-    monthly: "+10€/mes",
-    description:
-      "Optimización para aparecer mejor en Google Maps y búsquedas locales.",
-  },
-  {
-    title: "Correo corporativo",
-    install: "+50€ instalación",
-    monthly: "+5€/mes",
-    description: "Ejemplos: info@tuempresa.es o reservas@tuempresa.es.",
-  },
-  {
-    title: "Formularios avanzados",
-    install: "+50€ instalación",
-    monthly: "+5€/mes",
-    description: "Solicitudes con más campos, filtros, avisos y flujos de contacto adaptados.",
-  },
-  {
-    title: "Recepción automática por WhatsApp",
-    install: "+100€ instalación",
-    monthly: "+10€/mes",
-    description: "Automatiza el primer mensaje y ordena mejor las solicitudes entrantes.",
-  },
-  {
-    title: "Chat IA",
-    install: "+200€ instalación",
-    monthly: "+15€/mes",
-    description:
-      "Responde automáticamente a preguntas frecuentes de los clientes.",
-  },
-  {
-    title: "Sistema de reservas propio",
-    install: "+300€ instalación",
-    monthly: "+15€/mes",
-    description: "Reserva citas directamente en tu web con un flujo propio y controlado.",
-  },
-];
-
-const businessSolutions = [
-  {
-    title: "Pack Barbería",
-    install: "250€ instalación",
-    monthly: "39€/mes",
-    description:
-      "Convierte visitantes en reservas y muestra tus mejores trabajos de forma profesional.",
-    cta: "Solicitar Pack Barbería",
-    icon: Scissors,
-    features: [
-      "Diseño profesional personalizado",
-      "Integración con Booksy",
-      "Galería de trabajos",
-      "Botón de WhatsApp",
-      "Integración con Instagram",
-      "Mapa de ubicación",
-      "Dominio incluido",
-      "Hosting incluido",
-      "Soporte incluido",
-    ],
-  },
-  {
-    title: "Pack Restaurante",
-    install: "300€ instalación",
-    monthly: "39€/mes",
-    description:
-      "Permite que tus clientes consulten tu carta y contacten contigo fácilmente desde cualquier dispositivo.",
-    cta: "Solicitar Pack Restaurante",
-    icon: Utensils,
-    features: [
-      "Diseño profesional personalizado",
-      "Carta digital",
-      "Galería de platos",
-      "Botón de llamada directa",
-      "WhatsApp",
-      "Google Maps",
-      "Dominio incluido",
-      "Hosting incluido",
-      "Soporte incluido",
-    ],
-  },
-  {
-    title: "Pack Gimnasio",
-    install: "300€ instalación",
-    monthly: "39€/mes",
-    description:
-      "Muestra tus instalaciones, tarifas y horarios para convertir visitas en nuevos socios.",
-    cta: "Solicitar Pack Gimnasio",
-    icon: Dumbbell,
-    features: [
-      "Diseño profesional personalizado",
-      "Horarios",
-      "Tarifas",
-      "Galería de instalaciones",
-      "Formulario de contacto",
-      "WhatsApp",
-      "Dominio incluido",
-      "Hosting incluido",
-      "Soporte incluido",
-    ],
-  },
-  {
-    title: "Pack Profesional",
-    install: "250€ instalación",
-    monthly: "39€/mes",
-    description:
-      "Genera confianza y consigue nuevos clientes con una presencia online profesional.",
-    audience: "Abogados, asesorías, consultorías y autónomos.",
-    cta: "Solicitar Pack Profesional",
-    icon: BriefcaseBusiness,
-    features: [
-      "Diseño profesional personalizado",
-      "Página de servicios",
-      "Formulario de contacto",
-      "WhatsApp",
-      "Google Maps",
-      "Dominio incluido",
-      "Hosting incluido",
-      "Soporte incluido",
-    ],
-  },
-  {
-    title: "Pack Clínica",
-    install: "300€ instalación",
-    monthly: "39€/mes",
-    description:
-      "Facilita que nuevos pacientes encuentren tu clínica y contacten contigo.",
-    audience: "Fisioterapeutas, psicólogos, dentistas y centros médicos.",
-    cta: "Solicitar Pack Clínica",
-    icon: HeartPulse,
-    features: [
-      "Diseño profesional personalizado",
-      "Página de servicios",
-      "Presentación del equipo",
-      "Formulario de contacto",
-      "WhatsApp",
-      "Google Maps",
-      "Dominio incluido",
-      "Hosting incluido",
-      "Soporte incluido",
-    ],
-  },
-];
 
 const projects = [
   {
@@ -352,7 +153,9 @@ const faqs = [
   showFooterCta={false}
 >
   <section class="px-6 max-w-7xl mx-auto pt-20 lg:pt-28 w-full">
-    <div class="grid lg:grid-cols-[1.04fr_0.96fr] gap-10 lg:gap-16 items-center">
+    <div
+      class="grid lg:grid-cols-[1.04fr_0.96fr] gap-10 lg:gap-16 items-center"
+    >
       <header class="flex flex-col gap-8" data-stagger="100">
         <div data-reveal="top" data-speed="fast" data-easing="smooth">
           <SectionTag>Webs para pequeños negocios</SectionTag>
@@ -360,7 +163,7 @@ const faqs = [
 
         <div class="space-y-6">
           <h1
-            class="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-balance text-foreground"
+            class="text-4xl sm:text-5xl lg:text-5xl xl:text-7xl font-bold tracking-tight text-balance text-foreground"
             data-reveal="scale"
             data-speed="normal"
             data-easing="bounce"
@@ -385,7 +188,9 @@ const faqs = [
           data-speed="fast"
           data-easing="elastic"
         >
-          <a href="/contact">
+          <a
+            href="/contact?subject=Interés en Web Profesional&ref=landing-general"
+          >
             <Button size="lg" withArrow>Solicitar presupuesto</Button>
           </a>
           <a href="#trabajos-realizados">
@@ -411,60 +216,65 @@ const faqs = [
         </ul>
       </header>
 
+      <!-- Hero showcase: 3 landing screenshots en capas -->
       <div
-        class="relative"
+        class="hero-showcase relative hidden lg:flex items-center justify-center"
         data-reveal="right"
         data-speed="normal"
         data-easing="smooth"
       >
-        <div
-          class="rounded-3xl bg-accent border border-muted/60 shadow-pastel p-4 sm:p-5"
-        >
-          <div class="rounded-2xl bg-background border border-muted overflow-hidden">
-            <div class="flex items-center gap-2 border-b border-muted px-4 py-3">
-              <span class="size-3 rounded-full bg-primary/80"></span>
-              <span class="size-3 rounded-full bg-muted"></span>
-              <span class="size-3 rounded-full bg-muted"></span>
-              <span class="ml-auto text-xs text-muted-foreground font-medium">
-                negocio-web.es
-              </span>
-            </div>
-            <div class="p-5 sm:p-7 space-y-6">
-              <div class="space-y-3">
-                <div class="h-3 w-20 rounded-full bg-primary/20"></div>
-                <div class="space-y-2">
-                  <div class="h-8 rounded-lg bg-foreground/90"></div>
-                  <div class="h-8 w-4/5 rounded-lg bg-foreground/90"></div>
-                </div>
-                <div class="h-3 w-3/4 rounded-full bg-muted"></div>
-                <div class="h-3 w-2/3 rounded-full bg-muted"></div>
-              </div>
-
-              <div class="grid grid-cols-3 gap-3">
-                <div class="rounded-2xl bg-primary/10 p-4 aspect-square flex items-end">
-                  <Sparkles class="size-5 text-primary" />
-                </div>
-                <div class="rounded-2xl bg-muted p-4 aspect-square flex items-end">
-                  <Search class="size-5 text-foreground" />
-                </div>
-                <div class="rounded-2xl bg-primary text-background p-4 aspect-square flex items-end">
-                  <CircleDollarSign class="size-5" />
-                </div>
-              </div>
-
-              <div class="rounded-2xl bg-foreground text-background p-5 flex items-center justify-between gap-4">
-                <div>
-                  <p class="text-sm text-background/70">Instalación</p>
-                  <p class="text-4xl font-bold">200€</p>
-                </div>
-                <div class="text-right text-sm text-background/70">
-                  <p>20€/mes</p>
-                  <p>Dominio y hosting</p>
-                  <p>Soporte incluido</p>
-                </div>
-              </div>
-            </div>
+        <!-- Card trasera izquierda -->
+        <div class="showcase-card showcase-card--back-left">
+          <div class="browser-chrome">
+            <span class="dot dot--red"></span>
+            <span class="dot dot--yellow"></span>
+            <span class="dot dot--green"></span>
+            <span class="browser-url">arnaumartinez.com</span>
           </div>
+          <Image
+            src={imgArnau}
+            alt="Landing page profesional de Arnau Martínez - ejemplo de web personal hecha con doscientos"
+            width={640}
+            height={420}
+            class="w-full object-cover object-top"
+            loading="eager"
+          />
+        </div>
+
+        <!-- Card central (protagonista) -->
+        <div class="showcase-card showcase-card--center">
+          <div class="browser-chrome">
+            <span class="dot dot--red"></span>
+            <span class="dot dot--yellow"></span>
+            <span class="dot dot--green"></span>
+            <span class="browser-url">cyberimpulsa.com</span>
+          </div>
+          <Image
+            src={imgCyber}
+            alt="Landing page profesional de Cyberimpulsa - ejemplo de web para negocio hecha con doscientos"
+            width={640}
+            height={420}
+            class="w-full object-cover object-top"
+            loading="eager"
+          />
+        </div>
+
+        <!-- Card trasera derecha -->
+        <div class="showcase-card showcase-card--back-right">
+          <div class="browser-chrome">
+            <span class="dot dot--red"></span>
+            <span class="dot dot--yellow"></span>
+            <span class="dot dot--green"></span>
+            <span class="browser-url">polgubau.com</span>
+          </div>
+          <Image
+            src={imgPol}
+            alt="Landing page profesional de Pol Gubau - ejemplo de portfolio web hecho con doscientos"
+            width={640}
+            height={420}
+            class="w-full object-cover object-top"
+            loading="eager"
+          />
         </div>
       </div>
     </div>
@@ -479,7 +289,10 @@ const faqs = [
       align="center"
     />
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-full" data-stagger="90">
+    <div
+      class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-full"
+      data-stagger="90"
+    >
       {
         included.map((item) => {
           const Icon = item.icon;
@@ -521,11 +334,15 @@ const faqs = [
       data-speed="normal"
       data-easing="smooth"
     >
-      <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 border-b border-muted pb-8">
+      <div
+        class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 border-b border-muted pb-8"
+      >
         <div class="space-y-4">
           <div class="flex flex-wrap items-center gap-3">
             <h3 class="text-3xl md:text-4xl font-bold">Plan Base</h3>
-            <span class="rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold">
+            <span
+              class="rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold"
+            >
               Más barato que un café al día
             </span>
           </div>
@@ -540,7 +357,7 @@ const faqs = [
             <p class="text-4xl font-bold">{basePlan.install.price}</p>
           </div>
           <div class="rounded-2xl bg-primary text-background p-5">
-            <p class="text-sm text-background/70">Mantenimiento obligatorio</p>
+            <p class="text-sm text-background/70">Mantenimiento</p>
             <p class="text-4xl font-bold">{basePlan.maintenance.price}</p>
           </div>
         </div>
@@ -562,7 +379,7 @@ const faqs = [
         </div>
 
         <div class="space-y-5">
-          <h4 class="text-xl font-bold">Mantenimiento obligatorio</h4>
+          <h4 class="text-xl font-bold">Mantenimiento</h4>
           <ul class="grid sm:grid-cols-2 gap-3">
             {
               basePlan.maintenance.features.map((feature) => (
@@ -589,9 +406,10 @@ const faqs = [
 
     <div class="grid lg:grid-cols-2 gap-4 w-full" data-stagger="90">
       {
-        businessSolutions.map((solution, index) => {
-          const Icon = solution.icon;
-          const featured = index === 0;
+        packs.map((pack) => {
+          const Icon = iconMap[pack.icon] ?? Globe;
+          const featured = pack.featured ?? false;
+          const pricing = getPackPricing(pack);
 
           return (
             <article
@@ -616,10 +434,8 @@ const faqs = [
                     <Icon class="size-6" />
                   </div>
                   <div class="space-y-3">
-                    <h3 class="text-2xl md:text-3xl font-bold">
-                      {solution.title}
-                    </h3>
-                    {solution.audience && (
+                    <h3 class="text-2xl md:text-3xl font-bold">{pack.title}</h3>
+                    {pack.audience && (
                       <p
                         class={`text-sm ${
                           featured
@@ -627,15 +443,17 @@ const faqs = [
                             : "text-muted-foreground"
                         }`}
                       >
-                        {solution.audience}
+                        {pack.audience}
                       </p>
                     )}
                     <p
                       class={`text-sm leading-relaxed text-pretty max-w-xl ${
-                        featured ? "text-background/70" : "text-muted-foreground"
+                        featured
+                          ? "text-background/70"
+                          : "text-muted-foreground"
                       }`}
                     >
-                      {solution.description}
+                      {pack.tagline}
                     </p>
                   </div>
                 </div>
@@ -649,7 +467,7 @@ const faqs = [
                     }`}
                   >
                     <p class="text-xs text-muted-foreground">Instalación</p>
-                    <p class="font-bold">{solution.install}</p>
+                    <p class="font-bold">{pack.install}</p>
                   </div>
                   <div
                     class={`rounded-2xl p-3 ${
@@ -665,13 +483,27 @@ const faqs = [
                     >
                       Mensual
                     </p>
-                    <p class="font-bold">{solution.monthly}</p>
+                    <p class="font-bold">{pack.monthly}</p>
                   </div>
                 </div>
               </div>
 
+              {pricing.savingsInstall > 0 && (
+                <p
+                  class={`w-fit rounded-full px-4 py-1.5 text-sm font-semibold ${
+                    featured
+                      ? "bg-background/15 text-background"
+                      : "bg-primary/10 text-primary"
+                  }`}
+                >
+                  Ahorras {pricing.savingsInstall}€ de instalación y{" "}
+                  {pricing.savingsMonthly}€/mes frente a contratarlo por
+                  separado
+                </p>
+              )}
+
               <ul class="grid sm:grid-cols-2 gap-3">
-                {solution.features.map((feature) => (
+                {pack.features.map((feature) => (
                   <li class="flex items-center gap-3 text-sm">
                     <Check
                       class={`size-4 shrink-0 ${
@@ -683,23 +515,64 @@ const faqs = [
                 ))}
               </ul>
 
-              <a href="/contact" class="mt-auto w-fit">
-                <Button
-                  size="sm"
-                  withArrow
-                  class={
-                    featured
-                      ? "bg-background text-foreground hover:bg-background/90"
-                      : ""
-                  }
+              <div class="mt-auto flex flex-wrap items-center gap-3">
+                <a
+                  href={`/contact?subject=Pack ${pack.title}&ref=landing-general`}
+                  class="w-fit"
                 >
-                  {solution.cta}
-                </Button>
-              </a>
+                  <Button
+                    size="sm"
+                    withArrow
+                    arrowInverted={!featured}
+                    class={
+                      featured
+                        ? "bg-background text-foreground hover:bg-background/90"
+                        : ""
+                    }
+                  >
+                    {pack.cta}
+                  </Button>
+                </a>
+                <a
+                  href={`/packs/${pack.slug}`}
+                  class={`text-sm font-semibold underline-offset-4 hover:underline ${
+                    featured ? "text-background/80" : "text-muted-foreground"
+                  }`}
+                >
+                  Ver detalles
+                </a>
+              </div>
             </article>
           );
         })
       }
+    </div>
+
+    <!-- CTA hub de packs -->
+    <div
+      class="w-full flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-muted/60 bg-accent px-6 py-5 shadow-pastel-sm"
+      data-reveal="bottom"
+      data-speed="fast"
+      data-easing="smooth"
+    >
+      <div class="flex items-center gap-3">
+        <span
+          class="size-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0"
+        >
+          <Sparkles class="size-4" />
+        </span>
+        <p class="text-sm font-medium text-foreground">
+          ¿Quieres comparar todos los packs con detalle?
+          <span class="text-muted-foreground font-normal">
+            Precio, características y lo que incluye cada sector.</span
+          >
+        </p>
+      </div>
+      <a href="/packs" class="shrink-0">
+        <Button size="sm" variant="outline" withArrow
+          >Ver todos los packs</Button
+        >
+      </a>
     </div>
   </section>
 
@@ -712,7 +585,10 @@ const faqs = [
       align="center"
     />
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-full" data-stagger="70">
+    <div
+      class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-full"
+      data-stagger="70"
+    >
       {
         extras.map((extra) => (
           <article
@@ -757,7 +633,10 @@ const faqs = [
       align="center"
     />
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full" data-stagger="80">
+    <div
+      class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full"
+      data-stagger="80"
+    >
       {
         projects.map((project) => (
           <article
@@ -852,7 +731,9 @@ const faqs = [
       data-speed="normal"
       data-easing="smooth"
     >
-      <div class="size-12 rounded-2xl bg-background/10 flex items-center justify-center">
+      <div
+        class="size-12 rounded-2xl bg-background/10 flex items-center justify-center"
+      >
         <ShieldCheck class="size-6" />
       </div>
       <div class="space-y-4">
@@ -865,7 +746,9 @@ const faqs = [
         </p>
       </div>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="/contact">
+        <a
+          href="/contact?subject=Presupuesto Web Profesional&ref=landing-general-footer"
+        >
           <Button
             size="lg"
             withArrow
@@ -887,3 +770,162 @@ const faqs = [
     </div>
   </section>
 </MainLayout>
+
+<style>
+  /* ─── Hero showcase ────────────────────────────────────────────────────── */
+  .hero-showcase {
+    /* Fluid sizing so the layered cards always fit inside their grid column
+       (avoids overflowing onto the copy on small laptops). */
+    --card-w: clamp(220px, 22vw, 300px);
+    --spread: clamp(80px, 10vw, 145px);
+    --img-h: clamp(180px, 17vw, 240px);
+    height: clamp(400px, 32vw, 460px);
+    perspective: 1200px;
+  }
+
+  /* Browser chrome bar */
+  .browser-chrome {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--color-muted);
+    background: var(--color-background);
+    flex-shrink: 0;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot--red {
+    background: #ff5f57;
+  }
+  .dot--yellow {
+    background: #febc2e;
+  }
+  .dot--green {
+    background: #28c840;
+  }
+
+  .browser-url {
+    margin-left: 10px;
+    font-size: 11px;
+    color: var(--color-muted-foreground);
+    font-family: monospace;
+    background: var(--color-muted);
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+
+  /* Base card */
+  .showcase-card {
+    position: absolute;
+    width: var(--card-w);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--color-muted);
+    background: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.07),
+      0 20px 40px -8px rgb(0 0 0 / 0.12);
+    transition:
+      transform 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .showcase-card img {
+    display: block;
+    width: 100%;
+    height: var(--img-h);
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* Card central – protagonist */
+  .showcase-card--center {
+    z-index: 10;
+    transform: translateY(0px) scale(1);
+    animation: float-center 6s ease-in-out infinite;
+    box-shadow:
+      0 8px 12px -2px rgb(0 0 0 / 0.1),
+      0 32px 64px -12px rgb(0 0 0 / 0.18);
+  }
+
+  /* Card izquierda */
+  .showcase-card--back-left {
+    z-index: 5;
+    transform: translateX(calc(-1 * var(--spread))) translateY(28px)
+      rotate(-6deg) scale(0.88);
+    animation: float-left 6s ease-in-out infinite;
+    animation-delay: -2s;
+    opacity: 0.85;
+  }
+
+  /* Card derecha */
+  .showcase-card--back-right {
+    z-index: 5;
+    transform: translateX(var(--spread)) translateY(28px) rotate(6deg)
+      scale(0.88);
+    animation: float-right 6s ease-in-out infinite;
+    animation-delay: -4s;
+    opacity: 0.85;
+  }
+
+  @keyframes float-center {
+    0%,
+    100% {
+      transform: translateY(0px) scale(1);
+    }
+    50% {
+      transform: translateY(-12px) scale(1);
+    }
+  }
+
+  @keyframes float-left {
+    0%,
+    100% {
+      transform: translateX(calc(-1 * var(--spread))) translateY(28px)
+        rotate(-6deg) scale(0.88);
+    }
+    50% {
+      transform: translateX(calc(-1 * var(--spread))) translateY(16px)
+        rotate(-6deg) scale(0.88);
+    }
+  }
+
+  @keyframes float-right {
+    0%,
+    100% {
+      transform: translateX(var(--spread)) translateY(28px) rotate(6deg)
+        scale(0.88);
+    }
+    50% {
+      transform: translateX(var(--spread)) translateY(16px) rotate(6deg)
+        scale(0.88);
+    }
+  }
+
+  /* Hover: acercar las laterales */
+  .hero-showcase:hover .showcase-card--back-left {
+    opacity: 0.95;
+    transform: translateX(calc(-1 * var(--spread) - 8px)) translateY(18px)
+      rotate(-5deg) scale(0.91);
+  }
+  .hero-showcase:hover .showcase-card--back-right {
+    opacity: 0.95;
+    transform: translateX(calc(var(--spread) + 8px)) translateY(18px)
+      rotate(5deg) scale(0.91);
+  }
+
+  /* Respeta usuarios con movimiento reducido */
+  @media (prefers-reduced-motion: reduce) {
+    .showcase-card {
+      animation: none !important;
+    }
+  }
+</style>

@@ -4,17 +4,57 @@ import { cn } from "~/shared/lib/utils";
 
 type Props = {
   class?: string;
+  inverted?: boolean;
 };
 
-const { class: className } = Astro.props;
+const { class: className, inverted = false } = Astro.props;
 ---
 
 <div
   aria-hidden="true"
+  data-arrow-inverted={inverted}
   class={cn(
-    "rounded-full p-1 bg-stone-500/20 border border-stone-500/40 flex items-center justify-center group-hover:rotate-45 transition-all duration-300",
+    "arrow-container rounded-full p-1 flex items-center justify-center",
+    inverted ? "bg-transparent" : "bg-background",
     className,
   )}
 >
-  <ArrowUpRight class="size-4" />
+  <ArrowUpRight
+    class={cn(
+      "arrow-icon size-4",
+      inverted ? "text-background/70" : "text-muted-foreground",
+    )}
+  />
 </div>
+
+<style>
+  :global(.arrow-container) {
+    perspective: 1000px;
+    border: 1px solid color-mix(in srgb, var(--foreground) 15%, transparent);
+    transition: border-color 0.3s ease-out;
+  }
+  :global([data-arrow-inverted="true"].arrow-container) {
+    border-color: color-mix(in srgb, var(--background) 25%, transparent);
+  }
+  :global(.group:hover .arrow-container) {
+    border-color: var(--primary);
+  }
+  :global(.group:hover [data-arrow-inverted="true"].arrow-container) {
+    border-color: color-mix(in srgb, var(--background) 50%, transparent);
+  }
+  :global(.arrow-icon) {
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition:
+      transform 0.3s ease-out,
+      color 0.3s ease-out;
+  }
+  :global(.group:hover .arrow-icon) {
+    transform: rotate(45deg) translateZ(0);
+    color: var(--primary);
+  }
+  :global(.group:hover [data-arrow-inverted="true"] .arrow-icon) {
+    color: var(--background);
+  }
+</style>

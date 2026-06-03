@@ -6,6 +6,7 @@ export type ButtonProps = {
   variant?: "solid" | "outline";
   class?: string;
   withArrow?: boolean;
+  arrowInverted?: boolean;
   type?: "button" | "submit" | "reset";
 };
 
@@ -16,6 +17,7 @@ const {
   size = "md",
   variant = "solid",
   withArrow = false,
+  arrowInverted,
   type = "button",
   ...rest
 } = Astro.props;
@@ -43,5 +45,9 @@ const {
   {...rest}
 >
   <slot />
-  {withArrow && <UpRightArrow />}
+  {
+    withArrow && (
+      <UpRightArrow inverted={arrowInverted ?? variant === "solid"} />
+    )
+  }
 </button>

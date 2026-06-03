@@ -3,25 +3,31 @@ import confetti from "canvas-confetti";
 import { useEffect, useState } from "react";
 
 export default function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  // Capturar UTM parameters de la URL
-  const [utmParams, setUtmParams] = useState({
+  // Capturar parámetros de la URL
+  const [contextParams, setContextParams] = useState({
     utm_source: "",
     utm_medium: "",
     utm_campaign: "",
+    subject: "",
+    ref: "",
   });
 
   useEffect(() => {
-    // Capturar UTM params al cargar
+    // Capturar params al cargar
     const params = new URLSearchParams(window.location.search);
-    setUtmParams({
+    setContextParams({
       utm_source: params.get("utm_source") || "",
       utm_medium: params.get("utm_medium") || "",
       utm_campaign: params.get("utm_campaign") || "",
+      subject: params.get("subject") || "",
+      ref: params.get("ref") || "",
     });
   }, []);
 
@@ -41,16 +47,14 @@ export default function ContactForm() {
         break;
       case "phone":
         if (!value.trim()) error = "El teléfono es obligatorio";
-        else if (!/^\+?[\d\s-]{9,}$/.test(value))
-          error = "Teléfono inválido";
+        else if (!/^\+?[\d\s-]{9,}$/.test(value)) error = "Teléfono inválido";
         break;
       case "budget":
         // optional — no validation needed
         break;
       case "message":
         if (!value.trim()) error = "El mensaje es obligatorio";
-        else if (value.trim().length < 10)
-          error = "Mínimo 10 caracteres";
+        else if (value.trim().length < 10) error = "Mínimo 10 caracteres";
         break;
     }
 
@@ -67,13 +71,21 @@ export default function ContactForm() {
     return !error;
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleBlur = (
+    e: React.FocusEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value } = e.target;
     setTouched((prev) => ({ ...prev, [name]: true }));
     validateField(name, value);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value } = e.target;
     if (touched[name]) {
       validateField(name, value);
@@ -88,10 +100,15 @@ export default function ContactForm() {
     const formData = new FormData(form);
 
     // Agregar datos adicionales
-    formData.append("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
-    formData.append("utm_source", utmParams.utm_source);
-    formData.append("utm_medium", utmParams.utm_medium);
-    formData.append("utm_campaign", utmParams.utm_campaign);
+    formData.append(
+      "timezone",
+      Intl.DateTimeFormat().resolvedOptions().timeZone,
+    );
+    formData.append("utm_source", contextParams.utm_source);
+    formData.append("utm_medium", contextParams.utm_medium);
+    formData.append("utm_campaign", contextParams.utm_campaign);
+    formData.append("subject", contextParams.subject);
+    formData.append("ref", contextParams.ref);
 
     // Mostrar loading brevemente para que se sienta natural
     setStatus("loading");
@@ -128,7 +145,9 @@ export default function ContactForm() {
       if (error) {
         // Si falla, mostrar error pero mantener formulario limpio
         setStatus("error");
-        setErrorMessage("Hubo un problema al enviar. Reintentando automáticamente...");
+        setErrorMessage(
+          "Hubo un problema al enviar. Reintentando automáticamente...",
+        );
         console.error("Action error:", error);
 
         // Auto-retry después de 2 segundos
@@ -138,7 +157,9 @@ export default function ContactForm() {
 
           if (retryError) {
             setStatus("error");
-            setErrorMessage("No se pudo enviar. Por favor, contacta por email a hola@doscientos.es");
+            setErrorMessage(
+              "No se pudo enviar. Por favor, contacta por email a hola@doscientos.es",
+            );
           } else {
             setStatus("success");
             setTimeout(() => setStatus("idle"), 3000);
@@ -154,11 +175,18 @@ export default function ContactForm() {
       console.error("Error completo:", error);
     }
   };
-
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
+      {contextParams.subject && (
+        <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 text-primary text-sm animate-in fade-in slide-in-from-top-4 duration-500">
+          Vienes desde: <strong>{contextParams.subject}</strong>
+        </div>
+      )}
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-foreground mb-2"
+        >
           Nombre
         </label>
         <input
@@ -184,7 +212,10 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-foreground mb-2"
+        >
           Email
         </label>
         <input
@@ -211,8 +242,12 @@ export default function ContactForm() {
 
       <div className="grid md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="company" className="block text-sm font-medium text-foreground mb-2">
-            Empresa <span className="text-muted-foreground text-sm">(opcional)</span>
+          <label
+            htmlFor="company"
+            className="block text-sm font-medium text-foreground mb-2"
+          >
+            Empresa{" "}
+            <span className="text-muted-foreground text-sm">(opcional)</span>
           </label>
           <input
             type="text"
@@ -225,7 +260,10 @@ export default function ContactForm() {
           />
         </div>
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-foreground mb-2"
+          >
             Teléfono
           </label>
           <input
@@ -252,8 +290,12 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="budget" className="block text-sm font-medium text-foreground mb-2">
-          Presupuesto aproximado <span className="text-muted-foreground">(opcional)</span>
+        <label
+          htmlFor="budget"
+          className="block text-sm font-medium text-foreground mb-2"
+        >
+          Presupuesto aproximado{" "}
+          <span className="text-muted-foreground">(opcional)</span>
         </label>
         <select
           id="budget"
@@ -270,7 +312,10 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+        <label
+          htmlFor="message"
+          className="block text-sm font-medium text-foreground mb-2"
+        >
           Mensaje
         </label>
         <textarea
@@ -301,7 +346,11 @@ export default function ContactForm() {
       >
         {status === "loading" ? (
           <>
-            <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+            <svg
+              className="animate-spin h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
               <title>Enviando...</title>
               <circle
                 className="opacity-25"
@@ -322,7 +371,12 @@ export default function ContactForm() {
         ) : (
           <>
             Pedir presupuesto
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <title>Enviar mensaje</title>
               <path
                 strokeLinecap="round"
@@ -337,22 +391,51 @@ export default function ContactForm() {
       {/* Mensaje de éxito */}
       {status === "success" && (
         <div className="p-6 rounded-2xl bg-green-50 border border-green-200 text-center space-y-1">
-          <p className="text-green-800 font-semibold text-base">¡Recibido! 🎉</p>
-          <p className="text-green-700 text-sm">Te respondemos en menos de 24 horas.</p>
+          <p className="text-green-800 font-semibold text-base inline-flex items-center justify-center gap-2">
+            <svg
+              aria-hidden="true"
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            ¡Recibido!
+          </p>
+          <p className="text-green-700 text-sm">
+            Te respondemos en menos de 24 horas.
+          </p>
         </div>
       )}
 
       {/* Mensaje de error */}
       {status === "error" && (
         <div className="p-4 rounded-xl bg-red-50 border border-red-200">
-          <p className="text-red-800 text-sm font-medium">
-            ✗ {errorMessage}
+          <p className="text-red-800 text-sm font-medium inline-flex items-center gap-2">
+            <svg
+              aria-hidden="true"
+              className="w-4 h-4 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+            {errorMessage}
           </p>
         </div>
       )}
-
-
     </form>
   );
 }
-

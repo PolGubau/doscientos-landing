@@ -1,4 +1,5 @@
 ---
+import { ArrowLeft, ArrowUp } from "@lucide/astro";
 import type { MarkdownHeading } from "astro";
 
 type Props = {
@@ -77,15 +78,17 @@ const { headings, backTo } = Astro.props;
     title="Return Back"
     href={backTo ?? "/"}
     href-lang="en-us"
-    class="text-neutral-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300"
+    class="text-neutral-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300 inline-flex items-center gap-2"
   >
-    ← Back
+    <ArrowLeft aria-hidden="true" class="size-4" />
+    Back
   </a>
 
   <button
     id="to-top-btn"
-    class="text-secondary-500 cursor-pointer hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-neutral-300"
+    class="text-secondary-500 cursor-pointer hover:text-secondary-600 dark:text-neutral-400 dark:hover:text-neutral-300 inline-flex items-center gap-2"
   >
-    ↑ Go to top
+    <ArrowUp aria-hidden="true" class="size-4" />
+    Go to top
   </button>
 </nav>

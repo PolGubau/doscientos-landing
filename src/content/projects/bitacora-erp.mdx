@@ -21,53 +21,50 @@ import adminView from "../../assets/media/projects/bitacora/admin.webp";
 import crmView from "../../assets/media/projects/bitacora/crm.webp";
 import phoneView from "../../assets/media/projects/bitacora/phone.webp";
 
-BitácoraERP es un sistema especializado en logística, tránsito y gestión aduanera. Cuando llegamos, la facturación era completamente manual: alguien tenía que calcular impuestos, emitir documentos y registrarlos en contabilidad uno a uno. **Con el volumen de operaciones que movían, eso era insostenible.**
+**BitácoraERP** es un sistema especializado en logística, tránsito y gestión aduanera utilizado por empresas que mueven cientos de operaciones al mes. Cuando llegamos, la facturación se hacía a mano: alguien calculaba impuestos, emitía documentos y los registraba en contabilidad uno a uno.
 
-Nos encargaron diseñar e implementar el módulo de facturación desde cero, integrado con el resto del ERP.
+Con el volumen real de operaciones, eso era insostenible y una fuente constante de errores fiscales.
 
-<Image
-  src={adminView}
-  alt="Panel de administración BitácoraERP - Módulo de facturación"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+**Diseñamos e implementamos el módulo de facturación completo desde cero, integrado con el resto del ERP.**
 
-**El reto no era solo generar facturas.** Era hacerlo correctamente: IVA, IGIC, tarifas distintas por cliente y zona, numeración correlativa, integración automática con contabilidad. Un error en cualquier punto rompía el flujo completo.
+<Image src={adminView} alt="BitácoraERP - Panel de administración del módulo de facturación para logística y aduanas" class="rounded-2xl my-6" />
 
-Construimos una arquitectura modular que permite tanto facturación individual como agrupada por cliente o periodo. El cálculo fiscal es automático y aplica la normativa vigente sin que nadie tenga que pensar en ello.
+<div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">0</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">errores fiscales</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">100%</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">facturas contabilizadas auto</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">3</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">formatos de exportación</span></div>
+</div>
 
-<Image
-  src={crmView}
-  alt="Gestión de clientes y tarifas en BitácoraERP"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+---
 
-**¿Qué hicimos exactamente?**
+## El problema
 
-- Módulo completo de facturación individual y agrupada
-- Cálculo automático de IVA/IGIC según normativa y tarifas configurables por cliente y zona
-- Generación de PDFs listos para imprimir con layout fiscal completo
-- Exportación automática en múltiples formatos (PDF, XML, email)
-- Integración directa con el módulo contable: cada factura se contabiliza sola
-- Numeración correlativa y trazabilidad de todos los documentos generados
+**El reto no era generar facturas, era hacerlo correctamente.** IVA peninsular, IGIC canario, tarifas distintas por cliente y zona, numeración correlativa, integración automática con contabilidad. Un error en cualquier punto rompía el cierre fiscal del mes.
 
-<Image
-  src={phoneView}
-  alt="Acceso móvil a BitácoraERP"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+En logística y aduanas, los errores de facturación no son solo molestia administrativa: tienen consecuencias legales reales y bloquean operaciones de clientes.
 
-**En números**
+---
+
+## La solución
+
+Construimos una arquitectura modular que soporta facturación **individual y agrupada** por cliente o periodo. El cálculo fiscal es automático y aplica la normativa vigente — IVA, IGIC, tarifas por zona — sin que nadie tenga que pensar en ello.
+
+<Image src={crmView} alt="BitácoraERP - Gestión de clientes y tarifas configurables por zona" class="rounded-2xl my-6" />
+
+El módulo cubre el flujo completo: cálculo fiscal automático, generación de PDFs con layout fiscal listo para imprimir, exportación en PDF/XML/email según el cliente, y contabilización automática sin intervención manual. Cada documento queda con numeración correlativa y trazabilidad completa.
+
+<Image src={phoneView} alt="BitácoraERP - Acceso móvil al módulo de facturación" class="rounded-2xl my-6" />
+
+---
+
+## Resultados
+
 - **0 errores fiscales** desde la implantación del módulo
 - **100% de facturas** contabilizadas automáticamente, sin intervención manual
-- **Múltiples formatos** de exportación para clientes con distintos requisitos
+- **3 formatos de exportación** (PDF, XML, email) según requisitos del cliente
+- **Cierre mensual** reducido de una tarde entera a minutos
+
+---
 
 > Antes tardábamos una tarde entera en cerrar la facturación mensual. Ahora es cosa de minutos.
-
-Automatizar la facturación no es solo eficiencia. Es eliminar una fuente constante de errores que, en logística y aduanas, pueden tener consecuencias legales reales.
 

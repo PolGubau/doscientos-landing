@@ -108,3 +108,10 @@ const publishedTime =
     </div>
   </article>
 </MainLayout>
+
+<script>
+  import mediumZoom from "medium-zoom";
+  document.addEventListener("astro:page-load", () => {
+    mediumZoom(".prose img", { background: "rgba(12,17,11,0.6)", margin: 24 });
+  });
+</script>

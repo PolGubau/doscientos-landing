@@ -22,62 +22,58 @@ import cities from "../../assets/media/projects/flatmatch/cities.png";
 import filter from "../../assets/media/projects/flatmatch/filter.png";
 import swipe from "../../assets/media/projects/flatmatch/swipe.png";
 
-EXCHANGE STUDENT necesitaba un equipo técnico para implementar su producto digital. Nosotros nos encargamos del **desarrollo entero de la plataforma**, desde el diseño de la experiencia de usuario hasta la arquitectura backend y frontend.
-<Image
-  src={cities}
-  alt="Flatmatch - Plataforma de búsqueda de alojamiento"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+**EXCHANGE STUDENT** llegó con un producto digital sin equipo técnico que lo implementara: una plataforma de búsqueda de alojamiento temporal pensada para estudiantes Erasmus y jóvenes profesionales en movilidad. El mercado lo dominaban portales con catálogos infinitos donde la fatiga de decisión hace que el 70% de los usuarios abandone sin contactar a nadie.
 
-Hemos creado una solución que hace el proceso de buscar alojamiento **rápido, visual y atractivo**, aprovechando patrones de interacción que los usuarios ya conocen y aman.
+Nos encargamos del producto entero: diseño de experiencia, frontend, backend y arquitectura de datos.
 
-Gamificar la búsqueda de piso con una experiencia tipo Tinder **acelera la toma de decisiones y aumenta el engagement**. Y ha sido de gran impacto para estudiantes Erasmus y jóvenes profesionales.
+**Construimos una app de búsqueda de piso con mecánica swipe — la misma que Tinder — para acelerar la toma de decisiones y multiplicar el engagement.**
 
-<Image
-  src={swipe}
-  alt="Flatmatch - Plataforma de búsqueda de alojamiento"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+<Image src={cities} alt="Flatmatch - Selector de ciudades de la app de búsqueda de alojamiento" class="rounded-2xl my-6" />
 
+<div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">500+</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">usuarios en 3 meses</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">45%</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">retención mensual</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">70%</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">menos tiempo de búsqueda</span></div>
+</div>
 
-**¿Por qué esto mejora la experiencia?**
+---
 
-- Reduce el tiempo de búsqueda en un 70%
-- Elimina la fatiga de decisión
-- Hace el proceso más divertido y menos estresante
+## El problema
 
+**Buscar piso para una estancia corta es un proceso tedioso, lento y opaco.** Los portales tradicionales presentan listas largas con fotos pequeñas, filtros mal diseñados y una experiencia pensada para alquiler permanente — no para movilidad estudiantil ni profesional.
 
-Uno de los mayores retos era hacer que publicar un alojamiento fuera **rápido y sin fricción**. Diseñamos un flujo guiado en 9 pasos que convierte un proceso complejo en algo simple y accesible para cualquier usuario, incluso sin experiencia previa.
+El usuario llega con una decisión que tomar en pocos días, y la fricción del catálogo le hace abandonar antes de contactar al primer anunciante.
 
-<Image src={filter} alt="Interfaz tipo Tinder de Flatmatch" width={1000}
-  data-reveal class={"rounded-4xl w-full bg-muted my-20!"} />
+---
 
+## La solución
 
+Repensamos la búsqueda como una mecánica de **swipe gamificado**: una tarjeta por propiedad a pantalla completa, con foto principal grande, datos clave visibles y dos gestos — derecha para guardar, izquierda para descartar. La decisión se reduce a segundos.
 
-**Impacto:**
-- Los usuarios guardan un promedio de 8-12 propiedades antes de tomar una decisión
-- El 65% de los contactos se realizan desde la sección de favoritos
+<Image src={swipe} alt="Flatmatch - Interfaz swipe con tarjeta de propiedad a pantalla completa" class="rounded-2xl my-6" />
 
-**En Números**
-- **500+ usuarios** en solo 3 meses sin inversión en marketing
-- **45% de retención** - Los usuarios vuelven porque funciona
-- **25 swipes por sesión** - Engagement 2.4x superior a la competencia
-- **70% menos tiempo** buscando piso (de 2-3 horas a 15-20 minutos)
-- **8 de cada 10** encuentran opciones viables en la primera sesión
-- **3x más interacciones** que en plataformas tradicionales
-- **80% de usuarios** recomendarían Flatmatch a amigos
+Los filtros se aplican antes del swipe para que cada tarjeta sea relevante. Las propiedades guardadas pasan a una sección de favoritos desde la que el usuario contacta directamente al anunciante.
 
-<Image src={chat} alt="Perfil de usuario en Flatmatch" width={1000}
-  data-reveal class={"rounded-4xl w-full bg-muted my-20!"} />
+<Image src={filter} alt="Flatmatch - Filtros de búsqueda previos al swipe" class="rounded-2xl my-6" />
 
+Para los anunciantes diseñamos un flujo guiado en **9 pasos** que convierte la publicación de un piso — habitualmente un formulario largo y abandonable — en una secuencia simple, accesible incluso sin experiencia previa.
 
+<Image src={chat} alt="Flatmatch - Sistema de contacto entre usuario y anunciante" class="rounded-2xl my-6" />
 
+---
+
+## Resultados
+
+- **500+ usuarios** registrados en 3 meses, sin inversión en marketing
+- **45% de retención mensual** — los usuarios vuelven porque encuentran resultado
+- **25 swipes por sesión** — engagement 2,4x superior a plataformas comparables
+- **70% menos tiempo** de búsqueda (de 2–3 horas a 15–20 minutos)
+- **8 de cada 10 usuarios** encuentran opciones viables en la primera sesión
+- **65% de los contactos** se inician desde la sección de favoritos
+
+---
 
 > Transformamos un proceso tedioso en una experiencia que los usuarios disfrutan. El resultado: más engagement, más conversiones, más crecimiento.
 >
-> — Lorenzo, Founder de EXCHANGE STUDENT
+> — Lorenzo, founder de EXCHANGE STUDENT
 

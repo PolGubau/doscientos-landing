@@ -21,54 +21,50 @@ import graphView from "../../assets/media/projects/ifco/graph.webp";
 import handView from "../../assets/media/projects/ifco/hand.webp";
 import showcaseView from "../../assets/media/projects/ifco/showcase.webp";
 
-IFCO Systems gestiona más de 300 millones de palés reutilizables en todo el mundo. Su sistema de trazabilidad (quién tiene cada palé, dónde está, cuándo vuelve) corría sobre una plataforma legacy que ya no podía escalar. **Cada fallo de sistema tenía impacto directo en la cadena de suministro de sus clientes.**
+**IFCO Systems** gestiona más de **300 millones de palés reutilizables** en todo el mundo. Su sistema de trazabilidad — quién tiene cada palé, dónde está, cuándo vuelve — corría sobre una plataforma legacy que ya no escalaba y cuyos fallos impactaban directamente en la cadena de suministro de sus clientes.
 
-Nos encargaron la migración a una arquitectura moderna sin parar las operaciones.
+Cada palé que no se puede registrar en el sistema es un palé perdido para un cliente en algún punto de Europa. El margen de tolerancia a downtime era cero.
 
-<Image
-  src={showcaseView}
-  alt="Sistema de trazabilidad de palés - IFCO Systems"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+**Migramos el sistema completo a una arquitectura moderna sin parar las operaciones ni un día.**
 
-**El reto real de una migración de este tipo no es técnico. Es operativo.** IFCO no podía permitirse ni un día de inactividad. Cada palé que no se puede registrar en el sistema es un palé perdido para algún cliente en algún punto de Europa.
+<Image src={showcaseView} alt="IFCO Systems - Plataforma de trazabilidad de palés reutilizables" class="rounded-2xl my-6" />
 
-Diseñamos una migración en fases con sistemas corriendo en paralelo: el legacy seguía operando mientras el nuevo iba tomando el relevo módulo a módulo, con reconciliación de datos continua entre ambos.
+<div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">0</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">interrupciones de servicio</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">100%</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">datos históricos migrados</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">-60%</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">tiempo de respuesta</span></div>
+</div>
 
-<Image
-  src={graphView}
-  alt="Datos y trazabilidad en tiempo real - IFCO Systems"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+---
 
-**¿Qué hicimos exactamente?**
+## El problema
 
-- Auditoría completa del sistema legacy: mapeo de dependencias, flujos de datos y puntos críticos
-- Diseño de nueva arquitectura escalable con separación de responsabilidades clara
-- Migración de base de datos con cero pérdida de datos históricos
-- Estrategia de rollout en fases con sistemas en paralelo y reconciliación continua
-- Nuevo sistema de trazabilidad en tiempo real con alertas automáticas
-- APIs documentadas para integraciones con los sistemas de clientes
+**El reto real de una migración de este calibre no es técnico, es operativo.** El sistema legacy procesaba miles de movimientos de palés al día en varios países, con clientes que dependían de su API para sus propias operaciones logísticas.
 
-<Image
-  src={handView}
-  alt="Operaciones con palés reutilizables - IFCO Systems"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+Ningún cliente podía notar el cambio. Ningún dato histórico podía perderse. Ninguna ventana de mantenimiento era aceptable.
 
-**En números**
+---
+
+## La solución
+
+Diseñamos una **migración en fases con sistemas en paralelo**. El legacy seguía operando mientras el nuevo iba tomando el relevo módulo a módulo, con reconciliación de datos continua entre ambos para detectar cualquier divergencia antes de que llegara a cliente.
+
+<Image src={graphView} alt="IFCO Systems - Trazabilidad de palés en tiempo real en la nueva arquitectura" class="rounded-2xl my-6" />
+
+El trabajo cubrió cuatro frentes: **auditoría** del sistema legacy mapeando dependencias y puntos críticos; **nueva arquitectura escalable** con separación clara de responsabilidades; **migración de base de datos** con cero pérdida de histórico; y un **sistema de trazabilidad en tiempo real** con alertas automáticas y APIs documentadas para las integraciones de clientes.
+
+<Image src={handView} alt="IFCO Systems - Operaciones logísticas con palés reutilizables en planta" class="rounded-2xl my-6" />
+
+---
+
+## Resultados
+
 - **0 interrupciones** durante los 8 meses de migración
 - **100% de datos históricos** migrados sin pérdida
-- **Tiempo de respuesta** reducido un 60% respecto al sistema anterior
-- **Cobertura en tiempo real** para operaciones en múltiples países
+- **-60% en tiempo de respuesta** respecto al sistema legacy
+- **Cobertura en tiempo real** para operaciones en múltiples países europeos
+
+---
 
 > Migrar un sistema crítico en producción sin parar las operaciones es lo más difícil que existe en ingeniería de software. El equipo lo ejecutó exactamente así.
-
-Las migraciones de sistemas legacy son el proyecto que más empresas postergan por miedo. Y tienen razón en tener miedo: si no se hace bien, el coste es enorme. Si se hace bien, el impacto también lo es.
 

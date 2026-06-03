@@ -22,58 +22,51 @@ import ogImage2 from "../../assets/media/projects/testiu-molt/og-image-2.webp";
 import platjaActivitat from "../../assets/media/projects/testiu-molt/platja-activitat.webp";
 import uiPreview from "../../assets/media/projects/testiu-molt/ui.webp";
 
-El Ajuntament de Barcelona nos encargó la **preparación técnica completa** de T'estiu molt 2023, el programa municipal de actividades de verano para niños y jóvenes de la ciudad. Miles de familias dependen de que el sistema funcione el día de apertura. No hay margen de error.
+**T'estiu molt** es el programa municipal de actividades de verano para niños y jóvenes del **Ajuntament de Barcelona**. Miles de familias entran en el sistema el mismo minuto cuando se abren las inscripciones — y dependen de que funcione.
 
-<Image
-  src={ogImage}
-  alt="T'estiu molt 2023 - Campaña municipal de verano de Barcelona"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+Cada año cambian centros, actividades y reglas de inscripción. No es un proyecto de arquitectura nueva: es algo más exigente, operar sobre un sistema en producción con alta demanda sin romper nada y sin que nadie lo note.
 
-Cada año la campaña cambia: nuevos centros, nuevas actividades, nuevas reglas de inscripción. Nuestro trabajo fue **asegurar que todo eso funcionara correctamente** antes de que las familias empezaran a inscribirse, y estar disponibles durante todo el periodo activo para resolver cualquier incidencia en tiempo real.
+**Nos encargamos de la preparación técnica completa de la campaña 2023 y del soporte durante todo el periodo de inscripciones.**
 
-No era un proyecto de arquitectura nueva. Era algo más exigente: **operar sobre un sistema en producción con alta demanda**, sin romper nada y sin que nadie lo notara.
+<Image src={ogImage} alt="T'estiu molt 2023 - Campaña municipal de verano del Ajuntament de Barcelona" class="rounded-2xl my-6" />
 
-<Image
-  src={platjaActivitat}
-  alt="Actividades de verano en la playa - T'estiu molt Barcelona"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+<div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">0</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">caídas críticas</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">100%</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">centros validados</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">&lt; 10 min</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">respuesta a incidencias</span></div>
+</div>
 
-**¿Qué hicimos exactamente?**
+---
 
-- Carga masiva y validación de todas las actividades y centros inscritos para 2023
-- Implementación de las nuevas reglas de negocio definidas por el Ajuntament (criterios de inscripción, condiciones, validaciones)
-- Testing funcional exhaustivo antes de la apertura oficial
-- Monitoreo activo durante todo el periodo de inscripciones
-- Resolución de incidencias en producción bajo presión operativa
+## El problema
 
-<Image
-  src={uiPreview}
-  alt="Interfaz de gestión de T'estiu molt 2023"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+**La apertura de inscripciones es el momento más crítico del año.** El sistema tiene que aguantar un pico de tráfico concentrado en pocos minutos, con datos nuevos cargados pocos días antes y reglas de negocio que han cambiado respecto al año anterior.
 
-**En números**
-- **Miles de familias** inscribieron a sus hijos sin incidencias técnicas
+Si cae el sistema, miles de familias se quedan sin plaza. Si las reglas están mal cargadas, las inscripciones se aceptan con datos incorrectos. El margen de error es cero.
+
+<Image src={platjaActivitat} alt="T'estiu molt - Actividades de verano en la playa de Barcelona" class="rounded-2xl my-6" />
+
+---
+
+## La solución
+
+Trabajamos en dos fases. **Antes de la apertura**: carga masiva y validación de todas las actividades y centros, implementación de las nuevas reglas de negocio definidas por el Ajuntament (criterios de inscripción, condiciones, validaciones) y testing funcional exhaustivo simulando el flujo completo desde la perspectiva de una familia.
+
+<Image src={uiPreview} alt="T'estiu molt 2023 - Interfaz de gestión de inscripciones municipales" class="rounded-2xl my-6" />
+
+**Durante el periodo activo**: monitoreo en tiempo real del sistema con alertas, equipo disponible para resolver incidencias en producción bajo presión operativa, y comunicación directa con el equipo del Ajuntament para escalar cualquier caso sin pasar por colas de soporte.
+
+<Image src={ogImage2} alt="T'estiu molt 2023 - Operativa final de la campaña de verano" class="rounded-2xl my-6" />
+
+---
+
+## Resultados
+
+- **Miles de familias** inscribieron a sus hijos sin incidencias técnicas reportadas
 - **0 caídas críticas** durante el periodo de apertura
-- **100% de actividades y centros** cargados y validados correctamente
-- **Respuesta en minutos** ante cualquier incidencia durante la campaña
+- **100% de actividades y centros** cargados y validados antes del lanzamiento
+- **Menos de 10 minutos** de respuesta media ante cualquier incidencia operativa
 
-<Image
-  src={ogImage2}
-  alt="T'estiu molt 2023 - Resultados de la campaña"
-  width={1000}
-  data-reveal
-  class={"rounded-4xl w-full bg-muted my-20!"}
-/>
+---
 
 > La apertura de inscripciones es el momento más crítico del año. Tener un equipo técnico que garantice la estabilidad del sistema marca la diferencia entre una campaña exitosa y un caos para miles de familias.
-
-Lo que parece invisible —que todo funcione— es exactamente lo más difícil de conseguir.

@@ -11,7 +11,6 @@ const notion = new Client({
 	auth: import.meta.env.NOTION_INTEGRATION_SECRET,
 });
 
-
 // Función para parsear User Agent
 function parseUserAgent(ua: string) {
 	const browser =
@@ -46,6 +45,8 @@ export const server = {
 			utm_source: z.string().optional(),
 			utm_medium: z.string().optional(),
 			utm_campaign: z.string().optional(),
+			subject: z.string().optional(),
+			ref: z.string().optional(),
 		}),
 		handler: async (input, context) => {
 			const {
@@ -59,6 +60,8 @@ export const server = {
 				utm_source,
 				utm_medium,
 				utm_campaign,
+				subject,
+				ref,
 			} = input;
 
 			const budgetLabels: Record<string, string> = {
@@ -112,6 +115,8 @@ export const server = {
 				utmSource: utm_source || "",
 				utmMedium: utm_medium || "",
 				utmCampaign: utm_campaign || "",
+				subject: subject || "",
+				ref: ref || "",
 			};
 
 			try {
@@ -132,6 +137,8 @@ export const server = {
 					utm_source,
 					utm_medium,
 					utm_campaign,
+					subject,
+					ref,
 				});
 
 				const { data: emailData, error: emailError } = await resend.emails.send(
@@ -332,6 +339,24 @@ export const server = {
 										},
 									],
 								},
+								subject: {
+									rich_text: [
+										{
+											text: {
+												content: subject || "",
+											},
+										},
+									],
+								},
+								ref: {
+									rich_text: [
+										{
+											text: {
+												content: ref || "",
+											},
+										},
+									],
+								},
 							},
 						});
 
@@ -413,5 +438,4 @@ export const server = {
 			}
 		},
 	}),
-
 };
