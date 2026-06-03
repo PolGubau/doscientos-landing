@@ -4,6 +4,11 @@ import { branding } from "~/config/branding";
 import { copy } from "~/shared/lib/copy";
 import FinalCTA from "../sections/FinalCTA.astro";
 
+interface Props {
+  showCta?: boolean;
+}
+
+const { showCta = true } = Astro.props;
 const currentYear = new Date().getFullYear();
 
 const footerLinks = {
@@ -27,9 +32,13 @@ const footerLinks = {
 ---
 
 <section class="bg-foreground text-background">
-  <div class="bg-background rounded-b-[5vw] py-16">
-    <FinalCTA />
-  </div>
+  {
+    showCta && (
+      <div class="bg-background rounded-b-[5vw] py-16">
+        <FinalCTA />
+      </div>
+    )
+  }
 
   <footer class="bg-foreground text-background py-20 px-6">
     <div class="max-w-7xl mx-auto">
