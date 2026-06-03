@@ -12,9 +12,9 @@ import {
   HeartPulse,
   MonitorSmartphone,
   Palette,
+  Scissors,
   Search,
   ShieldCheck,
-  Scissors,
   Sparkles,
   Utensils,
 } from "@lucide/astro";
@@ -29,7 +29,7 @@ const description =
 
 const highlights = [
   "Web profesional desde 200€",
-  "Mantenimiento obligatorio desde 20€/mes",
+  "Mantenimiento desde 20€/mes",
   "Dominio incluido",
   "Hosting incluido",
   "Seguridad incluida",
@@ -123,7 +123,8 @@ const extras = [
     title: "Integración Calendly",
     install: "+50€ instalación",
     monthly: "+5€/mes",
-    description: "Conecta tu calendario para que los clientes puedan reservar huecos disponibles.",
+    description:
+      "Conecta tu calendario para que los clientes puedan reservar huecos disponibles.",
   },
   {
     title: "Instagram",
@@ -135,19 +136,22 @@ const extras = [
     title: "TikTok",
     install: "+30€ instalación",
     monthly: "+3€/mes",
-    description: "Integra tu contenido social para reforzar confianza y actividad.",
+    description:
+      "Integra tu contenido social para reforzar confianza y actividad.",
   },
   {
     title: "Galería de trabajos avanzada",
     install: "+50€ instalación",
     monthly: "+3€/mes",
-    description: "Muestra servicios, resultados, antes y después o trabajos destacados.",
+    description:
+      "Muestra servicios, resultados, antes y después o trabajos destacados.",
   },
   {
     title: "Blog autogestionable",
     install: "+100€ instalación",
     monthly: "+5€/mes",
-    description: "Publica novedades, consejos o contenidos locales sin depender de desarrollo.",
+    description:
+      "Publica novedades, consejos o contenidos locales sin depender de desarrollo.",
   },
   {
     title: "SEO Local",
@@ -166,13 +170,15 @@ const extras = [
     title: "Formularios avanzados",
     install: "+50€ instalación",
     monthly: "+5€/mes",
-    description: "Solicitudes con más campos, filtros, avisos y flujos de contacto adaptados.",
+    description:
+      "Solicitudes con más campos, filtros, avisos y flujos de contacto adaptados.",
   },
   {
     title: "Recepción automática por WhatsApp",
     install: "+100€ instalación",
     monthly: "+10€/mes",
-    description: "Automatiza el primer mensaje y ordena mejor las solicitudes entrantes.",
+    description:
+      "Automatiza el primer mensaje y ordena mejor las solicitudes entrantes.",
   },
   {
     title: "Chat IA",
@@ -185,7 +191,8 @@ const extras = [
     title: "Sistema de reservas propio",
     install: "+300€ instalación",
     monthly: "+15€/mes",
-    description: "Reserva citas directamente en tu web con un flujo propio y controlado.",
+    description:
+      "Reserva citas directamente en tu web con un flujo propio y controlado.",
   },
 ];
 
@@ -352,7 +359,9 @@ const faqs = [
   showFooterCta={false}
 >
   <section class="px-6 max-w-7xl mx-auto pt-20 lg:pt-28 w-full">
-    <div class="grid lg:grid-cols-[1.04fr_0.96fr] gap-10 lg:gap-16 items-center">
+    <div
+      class="grid lg:grid-cols-[1.04fr_0.96fr] gap-10 lg:gap-16 items-center"
+    >
       <header class="flex flex-col gap-8" data-stagger="100">
         <div data-reveal="top" data-speed="fast" data-easing="smooth">
           <SectionTag>Webs para pequeños negocios</SectionTag>
@@ -420,8 +429,12 @@ const faqs = [
         <div
           class="rounded-3xl bg-accent border border-muted/60 shadow-pastel p-4 sm:p-5"
         >
-          <div class="rounded-2xl bg-background border border-muted overflow-hidden">
-            <div class="flex items-center gap-2 border-b border-muted px-4 py-3">
+          <div
+            class="rounded-2xl bg-background border border-muted overflow-hidden"
+          >
+            <div
+              class="flex items-center gap-2 border-b border-muted px-4 py-3"
+            >
               <span class="size-3 rounded-full bg-primary/80"></span>
               <span class="size-3 rounded-full bg-muted"></span>
               <span class="size-3 rounded-full bg-muted"></span>
@@ -441,18 +454,26 @@ const faqs = [
               </div>
 
               <div class="grid grid-cols-3 gap-3">
-                <div class="rounded-2xl bg-primary/10 p-4 aspect-square flex items-end">
+                <div
+                  class="rounded-2xl bg-primary/10 p-4 aspect-square flex items-end"
+                >
                   <Sparkles class="size-5 text-primary" />
                 </div>
-                <div class="rounded-2xl bg-muted p-4 aspect-square flex items-end">
+                <div
+                  class="rounded-2xl bg-muted p-4 aspect-square flex items-end"
+                >
                   <Search class="size-5 text-foreground" />
                 </div>
-                <div class="rounded-2xl bg-primary text-background p-4 aspect-square flex items-end">
+                <div
+                  class="rounded-2xl bg-primary text-background p-4 aspect-square flex items-end"
+                >
                   <CircleDollarSign class="size-5" />
                 </div>
               </div>
 
-              <div class="rounded-2xl bg-foreground text-background p-5 flex items-center justify-between gap-4">
+              <div
+                class="rounded-2xl bg-foreground text-background p-5 flex items-center justify-between gap-4"
+              >
                 <div>
                   <p class="text-sm text-background/70">Instalación</p>
                   <p class="text-4xl font-bold">200€</p>
@@ -479,7 +500,10 @@ const faqs = [
       align="center"
     />
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-full" data-stagger="90">
+    <div
+      class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-full"
+      data-stagger="90"
+    >
       {
         included.map((item) => {
           const Icon = item.icon;
@@ -521,11 +545,15 @@ const faqs = [
       data-speed="normal"
       data-easing="smooth"
     >
-      <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 border-b border-muted pb-8">
+      <div
+        class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 border-b border-muted pb-8"
+      >
         <div class="space-y-4">
           <div class="flex flex-wrap items-center gap-3">
             <h3 class="text-3xl md:text-4xl font-bold">Plan Base</h3>
-            <span class="rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold">
+            <span
+              class="rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold"
+            >
               Más barato que un café al día
             </span>
           </div>
@@ -540,7 +568,7 @@ const faqs = [
             <p class="text-4xl font-bold">{basePlan.install.price}</p>
           </div>
           <div class="rounded-2xl bg-primary text-background p-5">
-            <p class="text-sm text-background/70">Mantenimiento obligatorio</p>
+            <p class="text-sm text-background/70">Mantenimiento</p>
             <p class="text-4xl font-bold">{basePlan.maintenance.price}</p>
           </div>
         </div>
@@ -562,7 +590,7 @@ const faqs = [
         </div>
 
         <div class="space-y-5">
-          <h4 class="text-xl font-bold">Mantenimiento obligatorio</h4>
+          <h4 class="text-xl font-bold">Mantenimiento</h4>
           <ul class="grid sm:grid-cols-2 gap-3">
             {
               basePlan.maintenance.features.map((feature) => (
@@ -632,7 +660,9 @@ const faqs = [
                     )}
                     <p
                       class={`text-sm leading-relaxed text-pretty max-w-xl ${
-                        featured ? "text-background/70" : "text-muted-foreground"
+                        featured
+                          ? "text-background/70"
+                          : "text-muted-foreground"
                       }`}
                     >
                       {solution.description}
@@ -712,7 +742,10 @@ const faqs = [
       align="center"
     />
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-full" data-stagger="70">
+    <div
+      class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-full"
+      data-stagger="70"
+    >
       {
         extras.map((extra) => (
           <article
@@ -757,7 +790,10 @@ const faqs = [
       align="center"
     />
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full" data-stagger="80">
+    <div
+      class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full"
+      data-stagger="80"
+    >
       {
         projects.map((project) => (
           <article
@@ -852,7 +888,9 @@ const faqs = [
       data-speed="normal"
       data-easing="smooth"
     >
-      <div class="size-12 rounded-2xl bg-background/10 flex items-center justify-center">
+      <div
+        class="size-12 rounded-2xl bg-background/10 flex items-center justify-center"
+      >
         <ShieldCheck class="size-6" />
       </div>
       <div class="space-y-4">
