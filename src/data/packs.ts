@@ -26,6 +26,8 @@ export interface Pack {
 	monthly: string;
 	installAmount: number;
 	monthlyAmount: number;
+	/** Slugs de los extras del grid que el pack incluye sobre el plan base. */
+	bundledExtras: string[];
 	tagline: string;
 	cta: string;
 	features: string[];
@@ -446,9 +448,12 @@ export const packs: Pack[] = [
 ];
 
 export interface PackExtra {
+	slug: string;
 	title: string;
 	install: string;
 	monthly: string;
+	installAmount: number;
+	monthlyAmount: number;
 	description: string;
 }
 
@@ -456,6 +461,7 @@ export interface PackExtra {
 export const basePlan = {
 	install: {
 		price: "200€",
+		amount: 200,
 		features: [
 			"Diseño profesional personalizado",
 			"Hasta 5 secciones",
