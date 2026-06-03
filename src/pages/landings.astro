@@ -189,41 +189,6 @@ const extras = [
   },
 ];
 
-const packs = [
-  {
-    title: "Pack Visibilidad",
-    install: "150€ instalación",
-    monthly: "15€/mes",
-    features: ["SEO Local", "Instagram", "TikTok"],
-    featured: false,
-  },
-  {
-    title: "Pack Captación",
-    install: "250€ instalación",
-    monthly: "20€/mes",
-    features: [
-      "Formularios avanzados",
-      "WhatsApp automático",
-      "Correo corporativo",
-    ],
-    featured: false,
-  },
-  {
-    title: "Pack Premium",
-    install: "500€ instalación",
-    monthly: "40€/mes",
-    features: [
-      "SEO Local",
-      "Booksy",
-      "Correo corporativo",
-      "WhatsApp automático",
-      "Instagram",
-      "TikTok",
-    ],
-    featured: true,
-  },
-];
-
 const businessSolutions = [
   {
     title: "Pack Barbería",
@@ -777,67 +742,6 @@ const faqs = [
                 <p class="font-bold">{extra.monthly}</p>
               </div>
             </div>
-          </article>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="landing-section">
-    <SectionHeader
-      tag="Packs recomendados"
-      title="Combinaciones pensadas"
-      subtitle="para vender mejor."
-      description="Agrupamos los extras más habituales para que puedas crecer con una propuesta cerrada y fácil de entender."
-      align="center"
-    />
-
-    <div class="grid lg:grid-cols-3 gap-4 w-full" data-stagger="110">
-      {
-        packs.map((pack) => (
-          <article
-            class={`rounded-3xl p-7 md:p-8 border shadow-pastel flex flex-col gap-7 ${
-              pack.featured
-                ? "bg-foreground text-background border-foreground"
-                : "bg-accent text-foreground border-muted/60"
-            }`}
-            data-reveal="bottom"
-            data-speed="normal"
-            data-easing="smooth"
-          >
-            <div class="space-y-4">
-              <div class="flex items-start justify-between gap-4">
-                <h3 class="text-2xl font-bold">{pack.title}</h3>
-                {pack.featured && (
-                  <span class="rounded-full bg-background text-foreground px-3 py-1 text-xs font-semibold">
-                    Más contratado
-                  </span>
-                )}
-              </div>
-              <div class="space-y-1">
-                <p class="text-4xl font-bold">{pack.install}</p>
-                <p
-                  class={`text-lg font-semibold ${
-                    pack.featured ? "text-background/70" : "text-primary"
-                  }`}
-                >
-                  {pack.monthly}
-                </p>
-              </div>
-            </div>
-
-            <ul class="space-y-3">
-              {pack.features.map((feature) => (
-                <li class="flex items-center gap-3">
-                  <Check
-                    class={`size-4 shrink-0 ${
-                      pack.featured ? "text-background" : "text-primary"
-                    }`}
-                  />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
           </article>
         ))
       }
