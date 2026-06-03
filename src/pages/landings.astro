@@ -21,7 +21,7 @@ import {
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import SectionTag from "~/components/ui/SectionTag.astro";
-import { basePlan, extras, packs } from "~/data/packs";
+import { basePlan, extras, getPackPricing, packs } from "~/data/packs";
 import MainLayout from "~/layouts/MainLayout.astro";
 
 const title = "Páginas web profesionales desde 200€ | doscientos";
@@ -411,6 +411,7 @@ const faqs = [
         packs.map((pack) => {
           const Icon = iconMap[pack.icon] ?? Globe;
           const featured = pack.featured ?? false;
+          const pricing = getPackPricing(pack);
 
           return (
             <article
@@ -488,6 +489,20 @@ const faqs = [
                   </div>
                 </div>
               </div>
+
+              {pricing.savingsInstall > 0 && (
+                <p
+                  class={`w-fit rounded-full px-4 py-1.5 text-sm font-semibold ${
+                    featured
+                      ? "bg-background/15 text-background"
+                      : "bg-primary/10 text-primary"
+                  }`}
+                >
+                  Ahorras {pricing.savingsInstall}€ de instalación y{" "}
+                  {pricing.savingsMonthly}€/mes frente a contratarlo por
+                  separado
+                </p>
+              )}
 
               <ul class="grid sm:grid-cols-2 gap-3">
                 {pack.features.map((feature) => (

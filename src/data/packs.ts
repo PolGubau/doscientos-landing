@@ -50,10 +50,11 @@ export const packs: Pack[] = [
 		title: "Pack Barbería",
 		icon: "Scissors",
 		featured: true,
-		install: "250€",
-		monthly: "39€/mes",
-		installAmount: 250,
-		monthlyAmount: 39,
+		install: "290€",
+		monthly: "26€/mes",
+		installAmount: 290,
+		monthlyAmount: 26,
+		bundledExtras: ["booksy", "galeria-avanzada", "instagram"],
 		tagline:
 			"Convierte visitantes en reservas y muestra tus mejores trabajos de forma profesional.",
 		cta: "Solicitar Pack Barbería",
@@ -69,9 +70,9 @@ export const packs: Pack[] = [
 			"Soporte incluido",
 		],
 		metaTitle:
-			"Web para barbería desde 250€ | Reservas online y galería | doscientos",
+			"Web para barbería desde 290€ | Reservas online y galería | doscientos",
 		metaDescription:
-			"Página web profesional para barberías: reservas con Booksy, galería de trabajos, WhatsApp e Instagram. Desde 250€ + 39€/mes con dominio, hosting y soporte incluidos.",
+			"Página web profesional para barberías: reservas con Booksy, galería de trabajos, WhatsApp e Instagram. Desde 290€ + 26€/mes con dominio, hosting y soporte incluidos.",
 		heroTitle: "La web que llena la agenda de tu barbería",
 		heroSubtitle:
 			"Una página rápida y profesional que convierte visitas en reservas, conectada a tu sistema de citas.",
@@ -130,10 +131,11 @@ export const packs: Pack[] = [
 		sector: "Restaurante",
 		title: "Pack Restaurante",
 		icon: "Utensils",
-		install: "300€",
-		monthly: "39€/mes",
-		installAmount: 300,
-		monthlyAmount: 39,
+		install: "290€",
+		monthly: "26€/mes",
+		installAmount: 290,
+		monthlyAmount: 26,
+		bundledExtras: ["galeria-avanzada", "correo", "instagram"],
 		tagline:
 			"Permite que tus clientes consulten tu carta y contacten contigo fácilmente desde cualquier dispositivo.",
 		cta: "Solicitar Pack Restaurante",
@@ -149,9 +151,9 @@ export const packs: Pack[] = [
 			"Soporte incluido",
 		],
 		metaTitle:
-			"Web para restaurante desde 300€ | Carta digital y reservas | doscientos",
+			"Web para restaurante desde 290€ | Carta digital y reservas | doscientos",
 		metaDescription:
-			"Página web para restaurantes con carta digital, galería de platos, llamada directa, WhatsApp y Google Maps. Desde 300€ + 39€/mes con dominio, hosting y soporte incluidos.",
+			"Página web para restaurantes con carta digital, galería de platos, llamada directa, WhatsApp y Google Maps. Desde 290€ + 26€/mes con dominio, hosting y soporte incluidos.",
 		heroTitle: "La carta de tu restaurante, siempre a un toque",
 		heroSubtitle:
 			"Una web rápida con tu carta digital, fotos que abren el apetito y contacto directo para reservar mesa.",
@@ -210,10 +212,11 @@ export const packs: Pack[] = [
 		sector: "Gimnasio",
 		title: "Pack Gimnasio",
 		icon: "Dumbbell",
-		install: "300€",
-		monthly: "39€/mes",
-		installAmount: 300,
-		monthlyAmount: 39,
+		install: "290€",
+		monthly: "26€/mes",
+		installAmount: 290,
+		monthlyAmount: 26,
+		bundledExtras: ["galeria-avanzada", "formularios-avanzados", "instagram"],
 		tagline:
 			"Muestra tus instalaciones, tarifas y horarios para convertir visitas en nuevos socios.",
 		cta: "Solicitar Pack Gimnasio",
@@ -229,9 +232,9 @@ export const packs: Pack[] = [
 			"Soporte incluido",
 		],
 		metaTitle:
-			"Web para gimnasio desde 300€ | Tarifas, horarios y altas | doscientos",
+			"Web para gimnasio desde 290€ | Tarifas, horarios y altas | doscientos",
 		metaDescription:
-			"Página web para gimnasios y centros deportivos: tarifas, horarios, galería de instalaciones, formulario de alta y WhatsApp. Desde 300€ + 39€/mes con todo incluido.",
+			"Página web para gimnasios y centros deportivos: tarifas, horarios, galería de instalaciones, formulario de alta y WhatsApp. Desde 290€ + 26€/mes con todo incluido.",
 		heroTitle: "La web que convierte curiosos en socios",
 		heroSubtitle:
 			"Tarifas claras, horarios al día y un formulario de alta directo para captar socios sin fricción.",
@@ -291,10 +294,11 @@ export const packs: Pack[] = [
 		title: "Pack Profesional",
 		icon: "BriefcaseBusiness",
 		audience: "Abogados, asesorías, consultorías y autónomos.",
-		install: "250€",
-		monthly: "39€/mes",
-		installAmount: 250,
-		monthlyAmount: 39,
+		install: "350€",
+		monthly: "34€/mes",
+		installAmount: 350,
+		monthlyAmount: 34,
+		bundledExtras: ["formularios-avanzados", "correo", "seo-local"],
 		tagline:
 			"Genera confianza y consigue nuevos clientes con una presencia online profesional.",
 		cta: "Solicitar Pack Profesional",
@@ -308,9 +312,9 @@ export const packs: Pack[] = [
 			"Hosting incluido",
 			"Soporte incluido",
 		],
-		metaTitle: "Web para asesorías y profesionales desde 250€ | doscientos",
+		metaTitle: "Web para asesorías y profesionales desde 350€ | doscientos",
 		metaDescription:
-			"Página web profesional para abogados, asesorías, consultorías y autónomos: página de servicios, formulario de contacto, WhatsApp y Google Maps. Desde 250€ + 39€/mes.",
+			"Página web profesional para abogados, asesorías, consultorías y autónomos: página de servicios, formulario de contacto, WhatsApp y Google Maps. Desde 350€ + 34€/mes.",
 		heroTitle: "La web que transmite la confianza que tu cliente busca",
 		heroSubtitle:
 			"Una presencia online seria y clara que explica tus servicios y convierte visitas en consultas.",
@@ -370,10 +374,11 @@ export const packs: Pack[] = [
 		title: "Pack Clínica",
 		icon: "HeartPulse",
 		audience: "Fisioterapeutas, psicólogos, dentistas y centros médicos.",
-		install: "300€",
-		monthly: "39€/mes",
-		installAmount: 300,
-		monthlyAmount: 39,
+		install: "350€",
+		monthly: "34€/mes",
+		installAmount: 350,
+		monthlyAmount: 34,
+		bundledExtras: ["formularios-avanzados", "correo", "seo-local"],
 		tagline:
 			"Facilita que nuevos pacientes encuentren tu clínica y contacten contigo.",
 		cta: "Solicitar Pack Clínica",
@@ -389,9 +394,9 @@ export const packs: Pack[] = [
 			"Soporte incluido",
 		],
 		metaTitle:
-			"Web para clínica desde 300€ | Capta pacientes online | doscientos",
+			"Web para clínica desde 350€ | Capta pacientes online | doscientos",
 		metaDescription:
-			"Página web para clínicas y centros de salud: servicios, presentación del equipo, formulario de contacto, WhatsApp y Google Maps. Desde 300€ + 39€/mes con todo incluido.",
+			"Página web para clínicas y centros de salud: servicios, presentación del equipo, formulario de contacto, WhatsApp y Google Maps. Desde 350€ + 34€/mes con todo incluido.",
 		heroTitle: "La web que ayuda a nuevos pacientes a confiar en tu clínica",
 		heroSubtitle:
 			"Una presencia clara y cercana que explica tus tratamientos, presenta a tu equipo y facilita pedir cita.",
@@ -476,6 +481,7 @@ export const basePlan = {
 	},
 	maintenance: {
 		price: "20€/mes",
+		amount: 20,
 		badge: "Más barato que un café al día",
 		features: [
 			"Hosting",
@@ -492,83 +498,119 @@ export const basePlan = {
 /** Extras opcionales que se pueden añadir a cualquier pack o al plan base. */
 export const extras: PackExtra[] = [
 	{
+		slug: "booksy",
 		title: "Integración Booksy",
 		install: "+50€ instalación",
 		monthly: "+5€/mes",
+		installAmount: 50,
+		monthlyAmount: 5,
 		description: "Permite que los clientes reserven directamente desde tu web.",
 	},
 	{
+		slug: "calendly",
 		title: "Integración Calendly",
 		install: "+50€ instalación",
 		monthly: "+5€/mes",
+		installAmount: 50,
+		monthlyAmount: 5,
 		description:
 			"Conecta tu calendario para que los clientes puedan reservar huecos disponibles.",
 	},
 	{
+		slug: "instagram",
 		title: "Instagram",
 		install: "+30€ instalación",
 		monthly: "+3€/mes",
+		installAmount: 30,
+		monthlyAmount: 3,
 		description: "Mostrar publicaciones directamente en tu web.",
 	},
 	{
+		slug: "tiktok",
 		title: "TikTok",
 		install: "+30€ instalación",
 		monthly: "+3€/mes",
+		installAmount: 30,
+		monthlyAmount: 3,
 		description:
 			"Integra tu contenido social para reforzar confianza y actividad.",
 	},
 	{
+		slug: "galeria-avanzada",
 		title: "Galería de trabajos avanzada",
 		install: "+50€ instalación",
 		monthly: "+3€/mes",
+		installAmount: 50,
+		monthlyAmount: 3,
 		description:
 			"Muestra servicios, resultados, antes y después o trabajos destacados.",
 	},
 	{
+		slug: "blog",
 		title: "Blog autogestionable",
 		install: "+100€ instalación",
 		monthly: "+5€/mes",
+		installAmount: 100,
+		monthlyAmount: 5,
 		description:
 			"Publica novedades, consejos o contenidos locales sin depender de desarrollo.",
 	},
 	{
+		slug: "seo-local",
 		title: "SEO Local",
 		install: "+100€ instalación",
 		monthly: "+10€/mes",
+		installAmount: 100,
+		monthlyAmount: 10,
 		description:
 			"Optimización para aparecer mejor en Google Maps y búsquedas locales.",
 	},
 	{
+		slug: "correo",
 		title: "Correo corporativo",
 		install: "+50€ instalación",
 		monthly: "+5€/mes",
+		installAmount: 50,
+		monthlyAmount: 5,
 		description: "Ejemplos: info@tuempresa.es o reservas@tuempresa.es.",
 	},
 	{
+		slug: "formularios-avanzados",
 		title: "Formularios avanzados",
 		install: "+50€ instalación",
 		monthly: "+5€/mes",
+		installAmount: 50,
+		monthlyAmount: 5,
 		description:
 			"Solicitudes con más campos, filtros, avisos y flujos de contacto adaptados.",
 	},
 	{
+		slug: "whatsapp-auto",
 		title: "Recepción automática por WhatsApp",
 		install: "+100€ instalación",
 		monthly: "+10€/mes",
+		installAmount: 100,
+		monthlyAmount: 10,
 		description:
 			"Automatiza el primer mensaje y ordena mejor las solicitudes entrantes.",
 	},
 	{
+		slug: "chat-ia",
 		title: "Chat IA",
 		install: "+200€ instalación",
 		monthly: "+15€/mes",
+		installAmount: 200,
+		monthlyAmount: 15,
 		description:
 			"Responde automáticamente a preguntas frecuentes de los clientes.",
 	},
 	{
+		slug: "reservas",
 		title: "Sistema de reservas propio",
 		install: "+300€ instalación",
 		monthly: "+15€/mes",
+		installAmount: 300,
+		monthlyAmount: 15,
 		description:
 			"Reserva citas directamente en tu web con un flujo propio y controlado.",
 	},
@@ -577,4 +619,42 @@ export const extras: PackExtra[] = [
 /** Devuelve un pack por su slug, o undefined si no existe. */
 export function getPack(slug: string): Pack | undefined {
 	return packs.find((pack) => pack.slug === slug);
+}
+
+export interface PackPricing {
+	/** Precio del pack (base + extras, con descuento ya aplicado). */
+	installAmount: number;
+	monthlyAmount: number;
+	/** Coste de contratar el plan base + los mismos extras por separado. */
+	alaCarteInstall: number;
+	alaCarteMonthly: number;
+	/** Ahorro del pack frente a comprar el base + extras por separado. */
+	savingsInstall: number;
+	savingsMonthly: number;
+}
+
+/**
+ * Calcula el ahorro de un pack frente a contratar el plan base y sus extras
+ * por separado. El precio del pack siempre es menor que la suma à la carte.
+ */
+export function getPackPricing(pack: Pack): PackPricing {
+	const bundled = pack.bundledExtras
+		.map((slug) => extras.find((extra) => extra.slug === slug))
+		.filter((extra): extra is PackExtra => Boolean(extra));
+
+	const alaCarteInstall =
+		basePlan.install.amount +
+		bundled.reduce((sum, extra) => sum + extra.installAmount, 0);
+	const alaCarteMonthly =
+		basePlan.maintenance.amount +
+		bundled.reduce((sum, extra) => sum + extra.monthlyAmount, 0);
+
+	return {
+		installAmount: pack.installAmount,
+		monthlyAmount: pack.monthlyAmount,
+		alaCarteInstall,
+		alaCarteMonthly,
+		savingsInstall: Math.max(0, alaCarteInstall - pack.installAmount),
+		savingsMonthly: Math.max(0, alaCarteMonthly - pack.monthlyAmount),
+	};
 }

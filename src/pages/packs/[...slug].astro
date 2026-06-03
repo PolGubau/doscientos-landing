@@ -19,7 +19,8 @@ import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import SchemaOrg from "~/components/seo/SchemaOrg.astro";
 import Button from "~/components/ui/Button.astro";
 import { branding } from "~/config/branding";
-import { type Pack, packs } from "~/data/packs";
+import { getPackPricing, packs } from "~/data/packs";
+import type { Pack } from "~/data/packs";
 import MainLayout from "~/layouts/MainLayout.astro";
 
 export function getStaticPaths() {
@@ -31,6 +32,7 @@ export function getStaticPaths() {
 
 const { pack } = Astro.props as { pack: Pack };
 const url = `${branding.url}/packs/${pack.slug}`;
+const pricing = getPackPricing(pack);
 
 // biome-ignore lint/suspicious/noExplicitAny: mapa de iconos lucide
 const iconMap: Record<string, any> = {
@@ -104,6 +106,15 @@ const SectorIcon = iconMap[pack.icon] ?? Globe;
           <p class="text-sm text-background/70">Mantenimiento</p>
           <p class="text-4xl font-bold">{pack.monthly}</p>
         </div>
+        {
+          pricing.savingsInstall > 0 && (
+            <p class="col-span-2 inline-flex w-fit rounded-full bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
+              Ahorras {pricing.savingsInstall}€ de instalación y{" "}
+              {pricing.savingsMonthly}€/mes frente a contratar los extras por
+              separado
+            </p>
+          )
+        }
         <ul
           class="col-span-2 grid gap-3 rounded-2xl bg-accent border border-muted/60 p-5"
         >

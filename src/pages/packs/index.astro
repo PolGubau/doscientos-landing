@@ -13,10 +13,11 @@ import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import { branding } from "~/config/branding";
-import { basePlan, packs } from "~/data/packs";
+import { basePlan, getPackPricing, packs } from "~/data/packs";
 import MainLayout from "~/layouts/MainLayout.astro";
 
-const title = "Webs para negocios locales desde 200€ | Packs por sector | doscientos";
+const title =
+  "Webs para negocios locales desde 200€ | Packs por sector | doscientos";
 const description =
   "Packs de páginas web profesionales para barberías, restaurantes, gimnasios, clínicas y profesionales. Desde 200€ + 20€/mes con dominio, hosting, seguridad y soporte incluidos.";
 
@@ -42,7 +43,11 @@ const itemListSchema = {
 ---
 
 <MainLayout title={title} description={description}>
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(itemListSchema)}
+  />
 
   <section class="landing-section pt-10 lg:pt-20">
     <Breadcrumbs items={[{ name: "Packs", url: "/packs" }]} />
@@ -64,10 +69,14 @@ const itemListSchema = {
   </section>
 
   <section id="packs" class="landing-section scroll-mt-28">
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full" data-stagger="80">
+    <div
+      class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full"
+      data-stagger="80"
+    >
       {
         packs.map((pack) => {
           const Icon = iconMap[pack.icon] ?? Globe;
+          const pricing = getPackPricing(pack);
           return (
             <a
               href={`/packs/${pack.slug}`}
@@ -86,6 +95,12 @@ const itemListSchema = {
                     {pack.tagline}
                   </p>
                 </div>
+                {pricing.savingsInstall > 0 && (
+                  <p class="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                    Ahorras {pricing.savingsInstall}€ + {pricing.savingsMonthly}
+                    €/mes
+                  </p>
+                )}
               </div>
               <div class="flex items-center justify-between pt-4 mt-2 border-t border-muted/60">
                 <div>
@@ -111,7 +126,9 @@ const itemListSchema = {
       description="Cualquier pack parte del mismo plan base: una instalación baja y un mantenimiento mensual que cubre dominio, hosting, seguridad y soporte."
       align="center"
     />
-    <article class="w-full max-w-4xl rounded-3xl bg-accent border border-muted/60 shadow-pastel p-5 md:p-8 grid sm:grid-cols-2 gap-6">
+    <article
+      class="w-full max-w-4xl rounded-3xl bg-accent border border-muted/60 shadow-pastel p-5 md:p-8 grid sm:grid-cols-2 gap-6"
+    >
       <div class="rounded-2xl bg-foreground text-background p-5">
         <p class="text-sm text-background/70">Instalación desde</p>
         <p class="text-4xl font-bold">{basePlan.install.price}</p>
@@ -140,7 +157,9 @@ const itemListSchema = {
       data-speed="normal"
       data-easing="smooth"
     >
-      <div class="size-12 rounded-2xl bg-background/10 flex items-center justify-center">
+      <div
+        class="size-12 rounded-2xl bg-background/10 flex items-center justify-center"
+      >
         <ShieldCheck class="size-6" />
       </div>
       <div class="space-y-4">
@@ -148,11 +167,16 @@ const itemListSchema = {
           ¿No sabes qué pack encaja con tu negocio?
         </h2>
         <p class="text-background/70 max-w-2xl text-pretty text-lg">
-          Cuéntanos a qué te dedicas y te recomendamos la mejor opción, sin compromiso.
+          Cuéntanos a qué te dedicas y te recomendamos la mejor opción, sin
+          compromiso.
         </p>
       </div>
       <a href="/contact">
-        <Button size="lg" withArrow class="bg-background text-foreground hover:bg-background/90">
+        <Button
+          size="lg"
+          withArrow
+          class="bg-background text-foreground hover:bg-background/90"
+        >
           Hablar con nosotros
         </Button>
       </a>
