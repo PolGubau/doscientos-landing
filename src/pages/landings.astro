@@ -1,9 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import {
   BriefcaseBusiness,
   CalendarCheck,
   Check,
-  CircleDollarSign,
   Dumbbell,
   ExternalLink,
   FileText,
@@ -18,6 +18,9 @@ import {
   Sparkles,
   Utensils,
 } from "@lucide/astro";
+import imgArnau from "~/assets/media/landing/examples-landings/arnaumartinez.avif";
+import imgCyber from "~/assets/media/landing/examples-landings/cyberimpulsa.avif";
+import imgPol from "~/assets/media/landing/examples-landings/polgubau.avif";
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import SectionTag from "~/components/ui/SectionTag.astro";
@@ -160,7 +163,7 @@ const faqs = [
 
         <div class="space-y-6">
           <h1
-            class="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-balance text-foreground"
+            class="text-4xl sm:text-5xl lg:text-5xl xl:text-7xl font-bold tracking-tight text-balance text-foreground"
             data-reveal="scale"
             data-speed="normal"
             data-easing="bounce"
@@ -211,72 +214,65 @@ const faqs = [
         </ul>
       </header>
 
+      <!-- Hero showcase: 3 landing screenshots en capas -->
       <div
-        class="relative"
+        class="hero-showcase relative hidden lg:flex items-center justify-center"
         data-reveal="right"
         data-speed="normal"
         data-easing="smooth"
       >
-        <div
-          class="rounded-3xl bg-accent border border-muted/60 shadow-pastel p-4 sm:p-5"
-        >
-          <div
-            class="rounded-2xl bg-background border border-muted overflow-hidden"
-          >
-            <div
-              class="flex items-center gap-2 border-b border-muted px-4 py-3"
-            >
-              <span class="size-3 rounded-full bg-primary/80"></span>
-              <span class="size-3 rounded-full bg-muted"></span>
-              <span class="size-3 rounded-full bg-muted"></span>
-              <span class="ml-auto text-xs text-muted-foreground font-medium">
-                negocio-web.es
-              </span>
-            </div>
-            <div class="p-5 sm:p-7 space-y-6">
-              <div class="space-y-3">
-                <div class="h-3 w-20 rounded-full bg-primary/20"></div>
-                <div class="space-y-2">
-                  <div class="h-8 rounded-lg bg-foreground/90"></div>
-                  <div class="h-8 w-4/5 rounded-lg bg-foreground/90"></div>
-                </div>
-                <div class="h-3 w-3/4 rounded-full bg-muted"></div>
-                <div class="h-3 w-2/3 rounded-full bg-muted"></div>
-              </div>
-
-              <div class="grid grid-cols-3 gap-3">
-                <div
-                  class="rounded-2xl bg-primary/10 p-4 aspect-square flex items-end"
-                >
-                  <Sparkles class="size-5 text-primary" />
-                </div>
-                <div
-                  class="rounded-2xl bg-muted p-4 aspect-square flex items-end"
-                >
-                  <Search class="size-5 text-foreground" />
-                </div>
-                <div
-                  class="rounded-2xl bg-primary text-background p-4 aspect-square flex items-end"
-                >
-                  <CircleDollarSign class="size-5" />
-                </div>
-              </div>
-
-              <div
-                class="rounded-2xl bg-foreground text-background p-5 flex items-center justify-between gap-4"
-              >
-                <div>
-                  <p class="text-sm text-background/70">Instalación</p>
-                  <p class="text-4xl font-bold">200€</p>
-                </div>
-                <div class="text-right text-sm text-background/70">
-                  <p>20€/mes</p>
-                  <p>Dominio y hosting</p>
-                  <p>Soporte incluido</p>
-                </div>
-              </div>
-            </div>
+        <!-- Card trasera izquierda -->
+        <div class="showcase-card showcase-card--back-left">
+          <div class="browser-chrome">
+            <span class="dot dot--red"></span>
+            <span class="dot dot--yellow"></span>
+            <span class="dot dot--green"></span>
+            <span class="browser-url">arnaumartinez.com</span>
           </div>
+          <Image
+            src={imgArnau}
+            alt="Landing page profesional de Arnau Martínez - ejemplo de web personal hecha con doscientos"
+            width={640}
+            height={420}
+            class="w-full object-cover object-top"
+            loading="eager"
+          />
+        </div>
+
+        <!-- Card central (protagonista) -->
+        <div class="showcase-card showcase-card--center">
+          <div class="browser-chrome">
+            <span class="dot dot--red"></span>
+            <span class="dot dot--yellow"></span>
+            <span class="dot dot--green"></span>
+            <span class="browser-url">cyberimpulsa.com</span>
+          </div>
+          <Image
+            src={imgCyber}
+            alt="Landing page profesional de Cyberimpulsa - ejemplo de web para negocio hecha con doscientos"
+            width={640}
+            height={420}
+            class="w-full object-cover object-top"
+            loading="eager"
+          />
+        </div>
+
+        <!-- Card trasera derecha -->
+        <div class="showcase-card showcase-card--back-right">
+          <div class="browser-chrome">
+            <span class="dot dot--red"></span>
+            <span class="dot dot--yellow"></span>
+            <span class="dot dot--green"></span>
+            <span class="browser-url">polgubau.com</span>
+          </div>
+          <Image
+            src={imgPol}
+            alt="Landing page profesional de Pol Gubau - ejemplo de portfolio web hecho con doscientos"
+            width={640}
+            height={420}
+            class="w-full object-cover object-top"
+            loading="eager"
+          />
         </div>
       </div>
     </div>
@@ -522,6 +518,7 @@ const faqs = [
                   <Button
                     size="sm"
                     withArrow
+                    arrowInverted={!featured}
                     class={
                       featured
                         ? "bg-background text-foreground hover:bg-background/90"
@@ -739,3 +736,162 @@ const faqs = [
     </div>
   </section>
 </MainLayout>
+
+<style>
+  /* ─── Hero showcase ────────────────────────────────────────────────────── */
+  .hero-showcase {
+    /* Fluid sizing so the layered cards always fit inside their grid column
+       (avoids overflowing onto the copy on small laptops). */
+    --card-w: clamp(220px, 22vw, 300px);
+    --spread: clamp(80px, 10vw, 145px);
+    --img-h: clamp(180px, 17vw, 240px);
+    height: clamp(400px, 32vw, 460px);
+    perspective: 1200px;
+  }
+
+  /* Browser chrome bar */
+  .browser-chrome {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--color-muted);
+    background: var(--color-background);
+    flex-shrink: 0;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot--red {
+    background: #ff5f57;
+  }
+  .dot--yellow {
+    background: #febc2e;
+  }
+  .dot--green {
+    background: #28c840;
+  }
+
+  .browser-url {
+    margin-left: 10px;
+    font-size: 11px;
+    color: var(--color-muted-foreground);
+    font-family: monospace;
+    background: var(--color-muted);
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+
+  /* Base card */
+  .showcase-card {
+    position: absolute;
+    width: var(--card-w);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--color-muted);
+    background: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.07),
+      0 20px 40px -8px rgb(0 0 0 / 0.12);
+    transition:
+      transform 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .showcase-card img {
+    display: block;
+    width: 100%;
+    height: var(--img-h);
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* Card central – protagonist */
+  .showcase-card--center {
+    z-index: 10;
+    transform: translateY(0px) scale(1);
+    animation: float-center 6s ease-in-out infinite;
+    box-shadow:
+      0 8px 12px -2px rgb(0 0 0 / 0.1),
+      0 32px 64px -12px rgb(0 0 0 / 0.18);
+  }
+
+  /* Card izquierda */
+  .showcase-card--back-left {
+    z-index: 5;
+    transform: translateX(calc(-1 * var(--spread))) translateY(28px)
+      rotate(-6deg) scale(0.88);
+    animation: float-left 6s ease-in-out infinite;
+    animation-delay: -2s;
+    opacity: 0.85;
+  }
+
+  /* Card derecha */
+  .showcase-card--back-right {
+    z-index: 5;
+    transform: translateX(var(--spread)) translateY(28px) rotate(6deg)
+      scale(0.88);
+    animation: float-right 6s ease-in-out infinite;
+    animation-delay: -4s;
+    opacity: 0.85;
+  }
+
+  @keyframes float-center {
+    0%,
+    100% {
+      transform: translateY(0px) scale(1);
+    }
+    50% {
+      transform: translateY(-12px) scale(1);
+    }
+  }
+
+  @keyframes float-left {
+    0%,
+    100% {
+      transform: translateX(calc(-1 * var(--spread))) translateY(28px)
+        rotate(-6deg) scale(0.88);
+    }
+    50% {
+      transform: translateX(calc(-1 * var(--spread))) translateY(16px)
+        rotate(-6deg) scale(0.88);
+    }
+  }
+
+  @keyframes float-right {
+    0%,
+    100% {
+      transform: translateX(var(--spread)) translateY(28px) rotate(6deg)
+        scale(0.88);
+    }
+    50% {
+      transform: translateX(var(--spread)) translateY(16px) rotate(6deg)
+        scale(0.88);
+    }
+  }
+
+  /* Hover: acercar las laterales */
+  .hero-showcase:hover .showcase-card--back-left {
+    opacity: 0.95;
+    transform: translateX(calc(-1 * var(--spread) - 8px)) translateY(18px)
+      rotate(-5deg) scale(0.91);
+  }
+  .hero-showcase:hover .showcase-card--back-right {
+    opacity: 0.95;
+    transform: translateX(calc(var(--spread) + 8px)) translateY(18px)
+      rotate(5deg) scale(0.91);
+  }
+
+  /* Respeta usuarios con movimiento reducido */
+  @media (prefers-reduced-motion: reduce) {
+    .showcase-card {
+      animation: none !important;
+    }
+  }
+</style>

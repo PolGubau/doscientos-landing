@@ -200,9 +200,9 @@ const SectorIcon = iconMap[pack.icon] ?? Globe;
     </div>
   </section>
 
-  <section class="px-6 max-w-5xl mx-auto w-full">
+  <section class="landing-section">
     <div
-      class="bg-foreground text-background rounded-3xl p-8 md:p-12 text-center flex flex-col items-center gap-6 shadow-pastel"
+      class="max-w-3xl w-full bg-foreground text-background rounded-3xl p-8 md:p-12 text-center flex flex-col items-center gap-6 shadow-pastel"
       data-reveal="bottom"
       data-speed="normal"
       data-easing="smooth"
@@ -220,6 +220,7 @@ const SectorIcon = iconMap[pack.icon] ?? Globe;
         <Button
           size="lg"
           withArrow
+          arrowInverted={false}
           class="bg-background text-foreground hover:bg-background/90"
         >
           {pack.cta}
