@@ -17,6 +17,8 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  robots?: string;
+  showFooterCta?: boolean;
   type?: "website" | "article";
   article?: {
     publishedTime?: string;
@@ -26,14 +28,22 @@ interface Props {
   };
 }
 
-const { title, description, image, type = "website", article } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  robots,
+  showFooterCta = true,
+  type = "website",
+  article,
+} = Astro.props;
 ---
 
-<html lang="es" dir="ltr" class="w-screen overflow-x-hidden">
+<html lang="es" dir="ltr" class="w-full overflow-x-hidden">
   <head>
     <ConsentScript />
     <BaseHead title={title} description={description} image={image} />
-    <SEOHead />
+    <SEOHead robots={robots} />
     <OpenGraph
       title={title || "doscientos - Desarrollo de producto digital"}
       description={description ||
@@ -92,7 +102,7 @@ const { title, description, image, type = "website", article } = Astro.props;
     <main id="main-content" class="flex flex-col w-full gap-20 pb-20">
       <slot />
     </main>
-    <Footer />
+    <Footer showCta={showFooterCta} />
     <FloatingCTA />
     <CookieBanner />
     <!-- GoHighLevel CRM tracking: solo con consent de marketing -->
