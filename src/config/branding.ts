@@ -25,7 +25,7 @@ export const branding = {
 	// Contacto
 	contact: {
 		calCom: {
-			bookingUrl: "https://cal.com/doscientos/30min",
+			bookingUrl: "https://cal.eu/doscientos/30min",
 			path: "doscientos/30min",
 		},
 		whatsapp: {
