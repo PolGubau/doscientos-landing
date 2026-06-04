@@ -14,7 +14,22 @@ export function BudgetPicker({ value, onSelect }: BudgetPickerProps) {
           Opcional
         </span>
       </legend>
-      <div className="flex flex-wrap gap-2">
+      {/* Móvil: select nativo (picker del sistema) */}
+      <select
+        value={value}
+        onChange={(e) => onSelect(e.target.value)}
+        className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm transition-all focus:border-primary focus:ring-1 focus:ring-primary sm:hidden"
+      >
+        <option value="">Selecciona un rango</option>
+        {BUDGET_OPTIONS.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+
+      {/* Desktop: chips de selección rápida */}
+      <div className="hidden flex-wrap gap-2 sm:flex">
         {BUDGET_OPTIONS.map((option) => {
           const selected = value === option;
           return (
@@ -23,11 +38,10 @@ export function BudgetPicker({ value, onSelect }: BudgetPickerProps) {
               type="button"
               aria-pressed={selected}
               onClick={() => onSelect(selected ? "" : option)}
-              className={`px-3.5 py-2 rounded-full text-sm border transition-all ${
-                selected
+              className={`px-3.5 py-2 rounded-full text-sm border transition-all ${selected
                   ? "bg-primary text-background border-primary font-medium"
                   : "border-muted-foreground/30 text-muted-foreground hover:border-primary/60 hover:text-foreground hover:bg-muted/20"
-              }`}
+                }`}
             >
               {option}
             </button>

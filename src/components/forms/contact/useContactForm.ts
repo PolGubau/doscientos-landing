@@ -37,6 +37,7 @@ function validate(name: string, value: string): string {
 
 export function useContactForm() {
 	const [step, setStep] = useState(1);
+	const [stepDirection, setStepDirection] = useState<1 | -1>(1);
 	const [status, setStatus] = useState<FormStatus>("idle");
 	const [errorMessage, setErrorMessage] = useState("");
 	const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -108,10 +109,16 @@ export function useContactForm() {
 			validateField("email", formData.email),
 		].every(Boolean);
 		setTouched((prev) => ({ ...prev, name: true, email: true }));
-		if (ok) setStep(2);
+		if (ok) {
+			setStepDirection(1);
+			setStep(2);
+		}
 	};
 
-	const prevStep = () => setStep(1);
+	const prevStep = () => {
+		setStepDirection(-1);
+		setStep(1);
+	};
 
 	const handleStep1KeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter") {
@@ -192,6 +199,7 @@ export function useContactForm() {
 		step,
 		status,
 		errorMessage,
+		stepDirection,
 		fieldErrors,
 		touched,
 		formData,

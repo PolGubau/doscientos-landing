@@ -1,4 +1,4 @@
-import { Check, ChevronRight, Loader2, Lock } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Loader2, Lock } from "lucide-react";
 import { BudgetPicker } from "./contact/BudgetPicker";
 import { CalEmbed } from "./contact/CalEmbed";
 import { Field } from "./contact/Field";
@@ -12,6 +12,7 @@ export default function ContactForm() {
     step,
     status,
     errorMessage,
+    stepDirection,
     fieldErrors,
     touched,
     formData,
@@ -44,7 +45,13 @@ export default function ContactForm() {
         <ProgressBar step={step} totalSteps={TOTAL_STEPS} />
 
         {step === 1 && (
-          <div className="space-y-4 motion-slide-in-from-right motion-duration-300">
+          <div
+            key="step-1"
+            className={`space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
+                ? "motion-safe:slide-in-from-right-4"
+                : "motion-safe:slide-in-from-left-4"
+              }`}
+          >
             <Field
               id="name"
               label="Nombre completo"
@@ -87,7 +94,13 @@ export default function ContactForm() {
         )}
 
         {step === 2 && (
-          <div className="space-y-4 motion-slide-in-from-right motion-duration-300">
+          <div
+            key="step-2"
+            className={`space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
+                ? "motion-safe:slide-in-from-right-4"
+                : "motion-safe:slide-in-from-left-4"
+              }`}
+          >
             <Field
               id="phone"
               type="tel"
@@ -122,9 +135,11 @@ export default function ContactForm() {
               <button
                 type="button"
                 onClick={prevStep}
-                className="flex h-12 shrink-0 items-center justify-center rounded-full border border-muted-foreground/30 px-6 font-semibold transition-all hover:bg-muted/10"
+                aria-label="Volver al paso anterior"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-muted-foreground/30 font-semibold transition-all hover:bg-muted/10 sm:w-auto sm:px-6"
               >
-                Atrás
+                <ArrowLeft className="w-5 h-5 sm:hidden" aria-hidden="true" />
+                <span className="hidden sm:inline">Atrás</span>
               </button>
               <button
                 type="submit"
