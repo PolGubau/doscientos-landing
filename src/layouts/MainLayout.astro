@@ -105,7 +105,7 @@ const {
       <slot />
     </main>
     <Footer showCta={showFooterCta} />
-    <FloatingCTA />
+    {Astro.url.pathname !== "/contact" && <FloatingCTA />}
     <CookieBanner />
     <!-- GoHighLevel CRM tracking: solo con consent de marketing -->
     <script is:inline>

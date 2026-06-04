@@ -132,6 +132,9 @@ button {
 	@apply cursor-pointer;
 }
 
+html {
+	scrollbar-gutter: stable;
+}
 body {
 	@apply bg-background text-foreground antialiased font-heading overflow-x-hidden;
 	timeline-scope: --scroll;
