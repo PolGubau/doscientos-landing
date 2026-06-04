@@ -1,10 +1,10 @@
 import { actions } from "astro:actions";
 import Cal, { getCalApi } from "@calcom/embed-react";
 import confetti from "canvas-confetti";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { branding } from "~/config/branding";
 
-const CAL_LINK = branding.contact.calComUrl.replace("https://cal.com/", "");
+const CAL_LINK = branding.contact.calCom.path;
 
 // Mensajes de error según el código de respuesta
 const ERROR_MESSAGES: Record<number, string> = {
@@ -15,7 +15,129 @@ const ERROR_MESSAGES: Record<number, string> = {
 };
 
 const FALLBACK_ERROR =
-  "No se pudo enviar. Escríbenos a hola@doscientos.es y te respondemos enseguida.";
+  `No se pudo enviar. Escríbenos a ${branding.contact.email} o llama al ${branding.contact.whatsapp.displayNumber} y te respondemos enseguida.`;
+
+// Clave para persistir el progreso del formulario entre recargas
+const STORAGE_KEY = "doscientos:contact-form";
+
+const BUDGET_OPTIONS = [
+  "< 3.000 €",
+  "3.000 – 10.000 €",
+  "10.000 – 30.000 €",
+  "+ 30.000 €",
+  "No lo sé todavía",
+] as const;
+
+const EMPTY_FORM = { name: "", email: "", phone: "", company: "", budget: "" };
+
+type ContactValues = typeof EMPTY_FORM;
+
+type FieldId = keyof ContactValues;
+
+type FieldProps = {
+  id: FieldId;
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  autoComplete: string;
+  type?: string;
+  placeholder?: string;
+  error?: string;
+  touched?: boolean;
+  optional?: boolean;
+  autoFocus?: boolean;
+  inputMode?: React.InputHTMLAttributes<HTMLInputElement>["inputMode"];
+  enterKeyHint?: React.InputHTMLAttributes<HTMLInputElement>["enterKeyHint"];
+};
+
+function Field({
+  id,
+  label,
+  value,
+  onChange,
+  onBlur,
+  onKeyDown,
+  autoComplete,
+  type = "text",
+  placeholder,
+  error,
+  touched,
+  optional,
+  autoFocus,
+  inputMode,
+  enterKeyHint,
+}: FieldProps) {
+  const hasError = Boolean(touched && error);
+  const isValid = Boolean(touched && !error && value.trim());
+  const isEmail = type === "email";
+
+  return (
+    <div className="space-y-2">
+      <label
+        htmlFor={id}
+        className="flex items-center justify-between text-sm font-medium"
+      >
+        <span>{label}</span>
+        {optional && (
+          <span className="text-xs font-normal text-muted-foreground">
+            Opcional
+          </span>
+        )}
+      </label>
+      <div className="relative">
+        <input
+          type={type}
+          id={id}
+          name={id}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          onKeyDown={onKeyDown}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          inputMode={inputMode}
+          enterKeyHint={enterKeyHint}
+          // biome-ignore lint/a11y/noAutofocus: enfoque intencional al cambiar de paso
+          autoFocus={autoFocus}
+          autoCapitalize={isEmail ? "off" : undefined}
+          autoCorrect={isEmail ? "off" : undefined}
+          spellCheck={isEmail ? false : undefined}
+          aria-invalid={hasError}
+          aria-describedby={hasError ? `${id}-error` : undefined}
+          className={`w-full px-4 py-3 ${isValid ? "pr-11" : ""} rounded-xl bg-background border transition-all ${hasError
+            ? "border-red-500 ring-1 ring-red-500"
+            : "border-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
+            }`}
+        />
+        {isValid && (
+          <svg
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500 motion-scale-in-95 motion-duration-200"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        )}
+      </div>
+      <p
+        id={`${id}-error`}
+        role="alert"
+        className="text-xs text-red-500 min-h-[1rem]"
+      >
+        {hasError ? error : ""}
+      </p>
+    </div>
+  );
+}
 
 function CalEmbed({ name, email }: { name: string; email: string }) {
   useEffect(() => {
@@ -67,13 +189,26 @@ export default function ContactForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const dedupeKey = useRef(crypto.randomUUID());
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
+  const [formData, setFormData] = useState<ContactValues>(() => {
+    if (typeof window === "undefined") return EMPTY_FORM;
+    try {
+      const saved = window.localStorage.getItem(STORAGE_KEY);
+      return saved ? { ...EMPTY_FORM, ...JSON.parse(saved) } : EMPTY_FORM;
+    } catch {
+      return EMPTY_FORM;
+    }
   });
+
+  // Persistir el progreso para que no se pierda al recargar
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+    } catch {
+      // localStorage no disponible (modo privado / SSR)
+    }
+  }, [formData]);
 
   // Capturar parámetros de la URL
   const [contextParams, setContextParams] = useState({
@@ -148,6 +283,14 @@ export default function ContactForm() {
 
   const prevStep = () => setStep(1);
 
+  // Permite avanzar de paso pulsando Enter en los campos del paso 1
+  const handleStep1KeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      nextStep();
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -162,16 +305,13 @@ export default function ContactForm() {
     for (const [key, value] of Object.entries(formData)) {
       payload.append(key, value);
     }
-    payload.append(
-      "timezone",
-      Intl.DateTimeFormat().resolvedOptions().timeZone,
-    );
     payload.append("utm_source", contextParams.utm_source);
     payload.append("utm_medium", contextParams.utm_medium);
     payload.append("utm_campaign", contextParams.utm_campaign);
-    payload.append("subject", contextParams.subject);
-    payload.append("ref", contextParams.ref);
-    // Mensaje por defecto para cumplir con la acción si es necesario
+    payload.append("referrer", document.referrer ?? "");
+    payload.append("language", navigator.language ?? "");
+    payload.append("dedupeKey", dedupeKey.current);
+    payload.append("website", ""); // honeypot — debe quedar vacío
     payload.append("message", "Lead desde formulario corto (multi-step)");
 
     try {
@@ -185,6 +325,11 @@ export default function ContactForm() {
       } else {
         setStatus("success");
         setStep(3);
+        try {
+          window.localStorage.removeItem(STORAGE_KEY);
+        } catch {
+          // localStorage no disponible
+        }
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 
         if (typeof window !== "undefined" && "gtag" in window) {
@@ -223,49 +368,35 @@ export default function ContactForm() {
 
         {step === 1 && (
           <div className="space-y-4 motion-slide-in-from-right motion-duration-300">
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium">
-                Nombre completo
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Ej. Pol Gubau"
-                className={`w-full px-4 py-3 rounded-xl bg-background border transition-all ${touched.name && fieldErrors.name
-                  ? "border-red-500 ring-1 ring-red-500"
-                  : "border-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
-                  }`}
-              />
-              {touched.name && fieldErrors.name && (
-                <p className="text-xs text-red-500">{fieldErrors.name}</p>
-              )}
-            </div>
+            <Field
+              id="name"
+              label="Nombre completo"
+              value={formData.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              onKeyDown={handleStep1KeyDown}
+              placeholder="Ej. Pol Gubau"
+              autoComplete="name"
+              enterKeyHint="next"
+              error={fieldErrors.name}
+              touched={touched.name}
+            />
 
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">
-                Email profesional
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="pol@doscientos.es"
-                className={`w-full px-4 py-3 rounded-xl bg-background border transition-all ${touched.email && fieldErrors.email
-                  ? "border-red-500 ring-1 ring-red-500"
-                  : "border-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
-                  }`}
-              />
-              {touched.email && fieldErrors.email && (
-                <p className="text-xs text-red-500">{fieldErrors.email}</p>
-              )}
-            </div>
+            <Field
+              id="email"
+              type="email"
+              label="Email"
+              value={formData.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              onKeyDown={handleStep1KeyDown}
+              placeholder="pol@doscientos.es"
+              autoComplete="email"
+              inputMode="email"
+              enterKeyHint="next"
+              error={fieldErrors.email}
+              touched={touched.email}
+            />
 
             <button
               type="button"
@@ -293,41 +424,59 @@ export default function ContactForm() {
 
         {step === 2 && (
           <div className="space-y-4 motion-slide-in-from-right motion-duration-300">
-            <div className="space-y-2">
-              <label htmlFor="phone" className="text-sm font-medium">
-                Teléfono
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="666 123 456"
-                className={`w-full px-4 py-3 rounded-xl bg-background border transition-all ${touched.phone && fieldErrors.phone
-                  ? "border-red-500 ring-1 ring-red-500"
-                  : "border-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
-                  }`}
-              />
-              {touched.phone && fieldErrors.phone && (
-                <p className="text-xs text-red-500">{fieldErrors.phone}</p>
-              )}
-            </div>
+            <Field
+              id="phone"
+              type="tel"
+              label="Teléfono"
+              value={formData.phone}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="666 123 456"
+              autoComplete="tel"
+              inputMode="tel"
+              enterKeyHint="send"
+              autoFocus
+              error={fieldErrors.phone}
+              touched={touched.phone}
+            />
+
+            <Field
+              id="company"
+              label="Empresa / Sector"
+              value={formData.company}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ej. Tecnología / E-commerce"
+              autoComplete="organization"
+              enterKeyHint="send"
+              optional
+            />
 
             <div className="space-y-2">
-              <label htmlFor="company" className="text-sm font-medium">
-                Empresa / Sector
-              </label>
-              <input
-                type="text"
-                id="company"
-                name="company"
-                value={formData.company}
-                onChange={handleChange}
-                placeholder="Ej. Tecnología / E-commerce"
-                className="w-full px-4 py-3 rounded-xl bg-background border border-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-              />
+              <p className="flex items-center justify-between text-sm font-medium">
+                <span>Presupuesto estimado</span>
+                <span className="text-xs font-normal text-muted-foreground">Opcional</span>
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {BUDGET_OPTIONS.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        budget: prev.budget === option ? "" : option,
+                      }))
+                    }
+                    className={`px-3 py-1.5 rounded-full text-sm border transition-all ${formData.budget === option
+                        ? "bg-primary text-background border-primary font-medium"
+                        : "border-muted-foreground/30 hover:border-primary/60 hover:bg-muted/20"
+                      }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="flex gap-3 pt-2">
@@ -344,7 +493,28 @@ export default function ContactForm() {
                 className="flex-[2] py-4 bg-primary text-background rounded-full font-semibold hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {status === "loading" ? "Enviando..." : "Solicitar consultoría"}
-                {status !== "loading" && (
+                {status === "loading" ? (
+                  <svg
+                    className="w-4 h-4 animate-spin"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth={4}
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    />
+                  </svg>
+                ) : (
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -363,10 +533,31 @@ export default function ContactForm() {
               </button>
             </div>
             {status === "error" && (
-              <p className="text-sm text-red-500 text-center mt-2">
+              <p
+                role="alert"
+                className="text-sm text-red-500 text-center mt-2"
+              >
                 {errorMessage}
               </p>
             )}
+
+            <p className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground pt-1">
+              <svg
+                className="size-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+              Tus datos están seguros. Sin spam, sin compromiso.
+            </p>
           </div>
         )}
       </form>

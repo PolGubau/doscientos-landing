@@ -24,7 +24,10 @@ export const branding = {
 	],
 	// Contacto
 	contact: {
-		calComUrl: "https://cal.com/doscientos/30min",
+		calCom: {
+			bookingUrl: "https://cal.com/doscientos/30min",
+			path: "doscientos/30min",
+		},
 		whatsapp: {
 			number: "34671171525",
 			displayNumber: "+34 671 17 15 25",
