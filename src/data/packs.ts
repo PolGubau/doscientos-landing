@@ -507,8 +507,8 @@ export const extras: PackExtra[] = [
 		description: "Permite que los clientes reserven directamente desde tu web.",
 	},
 	{
-		slug: "calendly",
-		title: "Integración Calendly",
+		slug: "cal-com",
+		title: "Integración Cal.com",
 		install: "+50€ instalación",
 		monthly: "+5€/mes",
 		installAmount: 50,

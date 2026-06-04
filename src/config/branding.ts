@@ -24,7 +24,7 @@ export const branding = {
 	],
 	// Contacto
 	contact: {
-		calendlyUrl: "https://calendly.com/hola-doscientos-0jch/30min",
+		calComUrl: "https://cal.com/doscientos/30min",
 		whatsapp: {
 			number: "34671171525",
 			displayNumber: "+34 671 17 15 25",

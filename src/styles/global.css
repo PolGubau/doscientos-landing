@@ -3,8 +3,8 @@
 @import "./custom-styles.css";
 @import "@polgubau/astro-reveal/styles";
 @plugin "@tailwindcss/typography";
-/* @plugin "tailwindcss-intersect";
-@plugin "tailwindcss-motion"; */
+@plugin "tailwindcss-intersect";
+@plugin "tailwindcss-motion";
 
 /* @custom-variant dark (&:where(.dark, .dark *)); */
 

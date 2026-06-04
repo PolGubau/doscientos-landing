@@ -1,78 +1,28 @@
 ---
-import { Mail, Sparkles } from "@lucide/astro";
 import ContactForm from "~/components/forms/ContactForm";
-import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
-import { branding } from "~/config/branding";
 import MainLayout from "~/layouts/MainLayout.astro";
-
-const calendlyUrl = branding.contact.calendlyUrl;
 ---
 
 <MainLayout
   title="Contacto - Agenda una llamada gratuita | doscientos"
   description="Llamada de 15 minutos sin compromiso. Respuesta en 24h. Hablemos de tu proyecto y cómo podemos ayudarte a lanzar en 6 semanas."
 >
-  <section class="px-6 max-w-7xl mx-auto pt-28 lg:pt-36">
-    <div
-      class="grid lg:grid-cols-[5fr_7fr] gap-10 lg:gap-16 max-lg:divide-y lg:divide-x divide-muted"
-    >
-      <!-- Option 1: Calendly -->
-      <article class="space-y-20 max-lg:pb-10 lg:pr-10">
-        <SectionHeader
-          tag="Contacto"
-          title="Hablemos de tu proyecto"
-          description="Tanto si estás listo para empezar como si solo tienes dudas, estamos aquí para ayudarte."
-        />
+  <section class="px-6 max-w-4xl mx-auto pt-28 lg:pt-36 pb-20">
+    <div class="space-y-12">
+      <SectionHeader
+        tag="Contacto"
+        title="Hablemos de tu proyecto"
+        description="Tanto si estás listo para empezar como si solo tienes dudas, estamos aquí para ayudarte. Rellena este breve formulario y agenda tu llamada."
+        align="center"
+      />
 
-        <div>
-          <header class="space-y-4">
-            <h3 class="text-2xl font-semibold text-foreground">
-              Agenda una llamada
-            </h3>
-            <p class="text-muted-foreground leading-relaxed max-w-md">
-              Elige el día y hora que mejor te convenga. Hablaremos de tu
-              proyecto y cómo podemos ayudarte.
-            </p>
-          </header>
-
-          <ul class="space-y-2 py-6 text-sm text-muted-foreground">
-            <li class="flex items-center gap-2">
-              <Sparkles class="size-5 text-primary" />
-              En 15 minutos analizamos tu proyecto
-            </li>
-            <li class="flex items-center gap-2">
-              <Sparkles class="size-5 text-primary" />
-              Sin compromiso
-            </li>
-            <li class="flex items-center gap-2">
-              <Sparkles class="size-5 text-primary" />
-              Respuesta inmediata
-            </li>
-          </ul>
-          <a href={calendlyUrl} target="_blank" rel="noopener noreferrer">
-            <Button withArrow> Agendar llamada </Button>
-          </a>
+      <article
+        class="bg-muted/30 rounded-3xl p-8 md:p-12 border border-muted shadow-sm"
+      >
+        <div class="max-w-xl mx-auto">
+          <ContactForm client:load />
         </div>
-      </article>
-
-      <!-- Option 2: Contact Form -->
-      <article class="space-y-6">
-        <div class="space-y-4">
-          <div
-            class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
-          >
-            <Mail class="w-6 h-6 text-primary" />
-          </div>
-          <h3 class="text-2xl font-semibold text-foreground">
-            Envíanos un mensaje
-          </h3>
-          <p class="text-muted-foreground leading-relaxed">
-            Cuéntanos sobre tu proyecto y te contactaremos en menos de 24 horas.
-          </p>
-        </div>
-
-        <ContactForm client:load />
       </article>
     </div>
   </section>

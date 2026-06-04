@@ -21,6 +21,7 @@
 		"@astrojs/rss": "^4.0.11",
 		"@astrojs/sitemap": "^3.4.0",
 		"@astrojs/vercel": "^9.0.4",
+		"@calcom/embed-react": "^1.5.3",
 		"@lucide/astro": "^0.576.0",
 		"@notionhq/client": "^5.13.0",
 		"@polgubau/astro-reveal": "^1.0.2",
