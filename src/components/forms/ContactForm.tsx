@@ -122,21 +122,21 @@ export default function ContactForm() {
               <button
                 type="button"
                 onClick={prevStep}
-                className="flex-1 py-4 border border-muted-foreground/30 rounded-full font-semibold hover:bg-muted/10 transition-all"
+                className="flex h-12 shrink-0 items-center justify-center rounded-full border border-muted-foreground/30 px-6 font-semibold transition-all hover:bg-muted/10"
               >
                 Atrás
               </button>
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="flex-[2] py-4 bg-primary text-background rounded-full font-semibold hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="flex h-12 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 font-semibold text-background transition-all hover:opacity-90 disabled:opacity-50"
               >
-                {status === "loading" ? "Enviando..." : "Solicitar consultoría"}
                 {status === "loading" ? (
                   <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
                 ) : (
                   <Check className="w-4 h-4" aria-hidden="true" />
                 )}
+                {status === "loading" ? "Enviando..." : "Solicitar consultoría"}
               </button>
             </div>
             {status === "error" && (
