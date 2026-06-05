@@ -169,7 +169,7 @@ export default function ContactForm() {
 
             <p className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground pt-1">
               <Lock className="size-3" aria-hidden="true" />
-              Tus datos están seguros. Sin spam, sin compromiso.
+              Tus datos están seguros. Sin spam ni compromiso.
             </p>
           </div>
         )}
