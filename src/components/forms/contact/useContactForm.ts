@@ -104,14 +104,19 @@ export function useContactForm() {
 		setFormData((prev) => ({ ...prev, budget: value }));
 
 	const nextStep = () => {
-		const ok = [
-			validateField("name", formData.name),
-			validateField("email", formData.email),
-		].every(Boolean);
+		const nameOk = validateField("name", formData.name);
+		const emailOk = validateField("email", formData.email);
 		setTouched((prev) => ({ ...prev, name: true, email: true }));
-		if (ok) {
+		if (nameOk && emailOk) {
 			setStepDirection(1);
 			setStep(2);
+		} else {
+			const firstInvalid = !nameOk ? "name" : "email";
+			requestAnimationFrame(() => {
+				(
+					document.getElementById(firstInvalid) as HTMLInputElement | null
+				)?.focus();
+			});
 		}
 	};
 

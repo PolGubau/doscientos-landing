@@ -41,10 +41,10 @@ export function Field({
   const isEmail = type === "email";
 
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1.5 group">
       <label
         htmlFor={id}
-        className="flex items-center justify-between text-sm font-medium"
+        className="flex items-center justify-between text-sm font-medium transition-colors group-has-[:focus-visible]:text-primary"
       >
         <span>{label}</span>
         {optional && (
@@ -72,10 +72,12 @@ export function Field({
           autoCorrect={isEmail ? "off" : undefined}
           spellCheck={isEmail ? false : undefined}
           aria-invalid={hasError}
-          aria-describedby={`${id}-error`}
-          className={`w-full px-4 py-3 ${isValid ? "pr-11" : ""} rounded-xl bg-background text-foreground placeholder:text-muted-foreground border transition-all ${hasError
-            ? "border-red-500 ring-1 ring-red-500"
-            : "border-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
+          aria-describedby={hasError ? `${id}-error` : undefined}
+          className={`h-12 w-full px-4 ${isValid ? "pr-11" : ""} rounded-xl bg-background text-foreground placeholder:text-muted-foreground border transition-all ${hasError
+              ? "border-red-500 ring-1 ring-red-500"
+              : isValid
+                ? "border-green-500 focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                : "border-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
             }`}
         />
         {isValid && (
@@ -85,13 +87,16 @@ export function Field({
           />
         )}
       </div>
-      <p
-        id={`${id}-error`}
-        role="alert"
-        className="text-xs text-red-500 min-h-[1rem]"
-      >
-        {hasError ? error : ""}
-      </p>
+      {hasError && (
+        <p
+          id={`${id}-error`}
+          role="alert"
+          className="text-xs text-red-500 min-h-[1rem]"
+        >
+          {error}
+        </p>
+      )}
+      {!hasError && <div className="min-h-[1rem]" aria-hidden="true" />}
     </div>
   );
 }

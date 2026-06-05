@@ -32,11 +32,11 @@ export default function ContactForm() {
   return (
     <div className="relative overflow-hidden p-1 w-full">
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Honeypot anti-spam — invisible para usuarios reales */}
+        {/* Honeypot anti-spam — off-screen, no display:none para que los bots lo rellenen */}
         <input
           type="text"
           name="website"
-          className="hidden"
+          className="absolute -left-[9999px] -top-[9999px] h-px w-px opacity-0 pointer-events-none"
           tabIndex={-1}
           autoComplete="off"
           aria-hidden="true"
@@ -52,35 +52,38 @@ export default function ContactForm() {
               : "motion-safe:slide-in-from-left-4"
               }`}
           >
-            <Field
-              id="name"
-              label="Nombre completo"
-              value={formData.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              onKeyDown={handleStep1KeyDown}
-              placeholder="Ej. Pol Gubau"
-              autoComplete="name"
-              enterKeyHint="next"
-              error={fieldErrors.name}
-              touched={touched.name}
-            />
+            <div className="grid lg:grid-cols-2 lg:gap-6">
 
-            <Field
-              id="email"
-              type="email"
-              label="Email"
-              value={formData.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              onKeyDown={handleStep1KeyDown}
-              placeholder="pol@doscientos.es"
-              autoComplete="email"
-              inputMode="email"
-              enterKeyHint="next"
-              error={fieldErrors.email}
-              touched={touched.email}
-            />
+              <Field
+                id="name"
+                label="Nombre completo"
+                value={formData.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                onKeyDown={handleStep1KeyDown}
+                placeholder="Ej. Pol Gubau"
+                autoComplete="name"
+                enterKeyHint="next"
+                error={fieldErrors.name}
+                touched={touched.name}
+              />
+
+              <Field
+                id="email"
+                type="email"
+                label="Email"
+                value={formData.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                onKeyDown={handleStep1KeyDown}
+                placeholder="pol@doscientos.es"
+                autoComplete="email"
+                inputMode="email"
+                enterKeyHint="next"
+                error={fieldErrors.email}
+                touched={touched.email}
+              />
+            </div>
 
             <button
               type="button"
@@ -144,6 +147,7 @@ export default function ContactForm() {
               <button
                 type="submit"
                 disabled={status === "loading"}
+                aria-busy={status === "loading"}
                 className="flex h-12 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 font-semibold text-background transition-all hover:opacity-90 disabled:opacity-50"
               >
                 {status === "loading" ? (
@@ -151,11 +155,14 @@ export default function ContactForm() {
                 ) : (
                   <Check className="w-4 h-4" aria-hidden="true" />
                 )}
-                {status === "loading" ? "Enviando..." : "Solicitar consultoría"}
+                {status === "loading" ? "Enviando..." : "Confirmar y agendar"}
               </button>
             </div>
             {status === "error" && (
-              <p role="alert" className="text-sm text-red-500 text-center mt-2">
+              <p
+                role="alert"
+                className="flex items-center justify-center gap-1.5 rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500"
+              >
                 {errorMessage}
               </p>
             )}
