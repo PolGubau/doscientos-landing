@@ -18,6 +18,11 @@
 }
 
 :root {
+	/* El sitio es light-only (las variables .dark están desactivadas).
+	   Forzamos el esquema de color para que los controles de formulario
+	   nativos no se rendericen en oscuro cuando el SO está en modo oscuro,
+	   lo que dejaba el texto del formulario invisible. */
+	color-scheme: light;
 	--radius: 0.625rem;
 	--background: #f6f7f9;
 	--foreground: #0c110b;

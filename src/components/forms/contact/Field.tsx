@@ -73,7 +73,7 @@ export function Field({
           spellCheck={isEmail ? false : undefined}
           aria-invalid={hasError}
           aria-describedby={`${id}-error`}
-          className={`w-full px-4 py-3 ${isValid ? "pr-11" : ""} rounded-xl bg-background border transition-all ${hasError
+          className={`w-full px-4 py-3 ${isValid ? "pr-11" : ""} rounded-xl bg-background text-foreground placeholder:text-muted-foreground border transition-all ${hasError
             ? "border-red-500 ring-1 ring-red-500"
             : "border-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
             }`}

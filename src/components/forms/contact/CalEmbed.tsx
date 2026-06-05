@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { branding } from "~/config/branding";
 
 const CAL_LINK = branding.contact.calCom.path;
+const CAL_ORIGIN = new URL(branding.contact.calCom.bookingUrl).origin; // "https://cal.eu"
 
 type CalEmbedProps = {
   name: string;
@@ -13,7 +14,7 @@ type CalEmbedProps = {
 export function CalEmbed({ name, email }: CalEmbedProps) {
   useEffect(() => {
     (async () => {
-      const cal = await getCalApi();
+      const cal = await getCalApi({ embedJsUrl: `${CAL_ORIGIN}/embed/embed.js` });
       cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
     })();
   }, []);
@@ -36,6 +37,7 @@ export function CalEmbed({ name, email }: CalEmbedProps) {
 
       <Cal
         calLink={CAL_LINK}
+        calOrigin={CAL_ORIGIN}
         style={{ width: "100%", height: "100%", minHeight: "500px" }}
         config={{ name, email, layout: "month_view" }}
       />

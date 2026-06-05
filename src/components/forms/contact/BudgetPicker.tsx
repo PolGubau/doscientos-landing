@@ -18,7 +18,7 @@ export function BudgetPicker({ value, onSelect }: BudgetPickerProps) {
       <select
         value={value}
         onChange={(e) => onSelect(e.target.value)}
-        className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm transition-all focus:border-primary focus:ring-1 focus:ring-primary sm:hidden"
+        className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm text-foreground transition-all focus:border-primary focus:ring-1 focus:ring-primary sm:hidden"
       >
         <option value="">Selecciona un rango</option>
         {BUDGET_OPTIONS.map((option) => (
@@ -39,8 +39,8 @@ export function BudgetPicker({ value, onSelect }: BudgetPickerProps) {
               aria-pressed={selected}
               onClick={() => onSelect(selected ? "" : option)}
               className={`px-3.5 py-2 rounded-full text-sm border transition-all ${selected
-                  ? "bg-primary text-background border-primary font-medium"
-                  : "border-muted-foreground/30 text-muted-foreground hover:border-primary/60 hover:text-foreground hover:bg-muted/20"
+                ? "bg-primary text-background border-primary font-medium"
+                : "border-muted-foreground/30 text-muted-foreground hover:border-primary/60 hover:text-foreground hover:bg-muted/20"
                 }`}
             >
               {option}
