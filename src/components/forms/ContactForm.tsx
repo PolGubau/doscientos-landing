@@ -30,7 +30,7 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="relative overflow-hidden p-1">
+    <div className="relative overflow-hidden p-1 w-full">
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Honeypot anti-spam — invisible para usuarios reales */}
         <input
@@ -47,9 +47,9 @@ export default function ContactForm() {
         {step === 1 && (
           <div
             key="step-1"
-            className={`space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
-                ? "motion-safe:slide-in-from-right-4"
-                : "motion-safe:slide-in-from-left-4"
+            className={`w-full motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
+              ? "motion-safe:slide-in-from-right-4"
+              : "motion-safe:slide-in-from-left-4"
               }`}
           >
             <Field
@@ -97,8 +97,8 @@ export default function ContactForm() {
           <div
             key="step-2"
             className={`space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
-                ? "motion-safe:slide-in-from-right-4"
-                : "motion-safe:slide-in-from-left-4"
+              ? "motion-safe:slide-in-from-right-4"
+              : "motion-safe:slide-in-from-left-4"
               }`}
           >
             <Field
