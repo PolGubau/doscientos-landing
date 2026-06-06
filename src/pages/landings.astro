@@ -1,88 +1,115 @@
 ---
 import { Image } from "astro:assets";
 import {
-  BriefcaseBusiness,
+  Building2,
   CalendarCheck,
   Check,
+  CircleX,
   Dumbbell,
   ExternalLink,
   FileText,
   Globe,
   Headphones,
-  HeartPulse,
   MonitorSmartphone,
   Palette,
   Scissors,
   Search,
   ShieldCheck,
   Sparkles,
+  Store,
   Utensils,
 } from "@lucide/astro";
 import imgArnau from "~/assets/media/landing/examples-landings/arnaumartinez.avif";
 import imgCyber from "~/assets/media/landing/examples-landings/cyberimpulsa.avif";
+import imgDoscientos from "~/assets/media/landing/examples-landings/doscientos.jpg";
+import imgNatura from "~/assets/media/landing/examples-landings/naturastudio.jpg";
 import imgPol from "~/assets/media/landing/examples-landings/polgubau.avif";
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import SectionTag from "~/components/ui/SectionTag.astro";
-import { basePlan, extras, getPackPricing, packs } from "~/data/packs";
 import MainLayout from "~/layouts/MainLayout.astro";
 
-const title = "Páginas web profesionales desde 200€ | doscientos";
+const title = "Web profesional lista en 48 horas | doscientos";
 const description =
-  "Solución completa de presencia online para negocios locales: web profesional desde 200€, dominio, hosting, seguridad, soporte y mantenimiento desde 20€/mes.";
+  "Elige el pack de tu negocio y consigue una web profesional lista en 48 horas. Precio especial solo para los 10 primeros clientes.";
 
 const highlights = [
-  "Web profesional desde 200€",
-  "Mantenimiento desde 20€/mes",
+  "Entrega en 48 horas",
+  "Oferta de lanzamiento",
+  "Solo 10 plazas",
   "Dominio incluido",
-  "Hosting incluido",
-  "Seguridad incluida",
-  "Soporte incluido",
-  "Sin permanencia",
+  "Hosting y soporte incluidos",
 ];
+
+// Cambiar por "7 de 10 plazas ocupadas" cuando avance la promoción.
+const launchAvailability = "10 plazas disponibles";
 
 const included = [
   {
-    title: "Diseño profesional y personalizado",
+    title: "Web profesional adaptada a móvil",
     description:
-      "Una web con identidad propia, alineada con tu negocio y preparada para convertir visitas en contactos.",
-    icon: Palette,
-  },
-  {
-    title: "Adaptada a móvil, tablet y ordenador",
-    description:
-      "Diseño responsive para que tus clientes puedan encontrarte y contactar desde cualquier dispositivo.",
+      "Una experiencia rápida y clara desde cualquier teléfono, tablet u ordenador.",
     icon: MonitorSmartphone,
   },
   {
-    title: "Formularios de contacto",
+    title: "Diseño moderno y claro",
     description:
-      "Recibe solicitudes, reservas o dudas directamente desde tu web con un flujo claro y accesible.",
-    icon: FileText,
+      "Una imagen profesional adaptada a tu negocio, sin plantillas genéricas.",
+    icon: Palette,
   },
   {
-    title: "Integración con WhatsApp",
+    title: "Dominio personalizado incluido",
     description:
-      "Botones y llamadas a la acción conectadas a WhatsApp para conversaciones rápidas con nuevos clientes.",
+      "Tu negocio con una dirección web propia, fácil de recordar y compartir.",
+    icon: Globe,
+  },
+  {
+    title: "Hosting incluido",
+    description:
+      "Nos encargamos de que tu web esté siempre online, rápida y disponible.",
+    icon: Globe,
+  },
+  {
+    title: "Soporte técnico incluido",
+    description:
+      "Tienes ayuda directa cuando necesites resolver una duda o incidencia.",
     icon: Headphones,
   },
   {
-    title: "Integración con reservas externas",
+    title: "Mantenimiento mensual",
     description:
-      "Conectamos Booksy, Cal.com, Google Calendar u otros sistemas externos que ya uses en tu negocio.",
-    icon: CalendarCheck,
+      "Seguridad, copias de respaldo y pequeñas modificaciones incluidas.",
+    icon: ShieldCheck,
   },
   {
-    title: "Optimización SEO básica",
+    title: "WhatsApp directo",
     description:
-      "Estructura técnica, metadatos y rendimiento base para que Google pueda entender tu página.",
+      "Tus clientes pueden iniciar una conversación contigo en un solo toque.",
+    icon: Headphones,
+  },
+  {
+    title: "Google Maps",
+    description:
+      "Ubicación, indicaciones y acceso rápido para llegar a tu negocio.",
+    icon: Globe,
+  },
+  {
+    title: "Formulario de contacto",
+    description:
+      "Recibe solicitudes y datos de clientes aunque estés ocupado o fuera de horario.",
+    icon: FileText,
+  },
+  {
+    title: "SEO local básico",
+    description:
+      "Una estructura preparada para que Google entienda tu negocio y tu ubicación.",
     icon: Search,
   },
   {
-    title: "Hosting y mantenimiento disponibles",
+    title: "Entrega en 48 horas",
     description:
-      "Nos encargamos del alojamiento, dominio, seguridad, copias de seguridad, soporte y pequeños cambios de contenido.",
-    icon: Globe,
+      "Publicamos la web en 48 horas cuando recibimos todo el material necesario.",
+    icon: CalendarCheck,
   },
 ];
 
@@ -90,58 +117,295 @@ const iconMap: Record<string, typeof Scissors> = {
   Scissors,
   Utensils,
   Dumbbell,
-  BriefcaseBusiness,
-  HeartPulse,
+  Building2,
+  Sparkles,
+  Store,
 };
+
+const sharedPackFeatures = [
+  "Todo lo incluido en el pack base",
+  "Entrega en 48 horas",
+  "Precio de lanzamiento",
+];
+
+const basePackFeatures = [
+  "Dominio incluido",
+  "Hosting y soporte incluidos",
+  "Entrega en 48 horas",
+];
+
+const landingPacks = [
+  {
+    title: "Pack Base",
+    icon: "Globe",
+    install: "200€ instalación",
+    monthly: "29€/mes mantenimiento, hosting y soporte",
+    tagline:
+      "La forma más sencilla de tener una presencia online profesional sin preocuparte por la parte técnica.",
+    story:
+      "Pensado para negocios que necesitan explicar con claridad qué hacen, transmitir confianza y facilitar que sus clientes contacten desde cualquier dispositivo.",
+    cta: "Quiero el Pack Base",
+    extras: [
+      "Hasta 5 secciones",
+      "Diseño profesional personalizado",
+      "Formulario de contacto",
+      "Botón de WhatsApp",
+      "Google Maps",
+      "Dominio personalizado",
+      "SSL y publicación online",
+    ],
+    gains: [
+      "Una presencia online profesional",
+      "Más confianza antes del primer contacto",
+      "Información disponible 24/7",
+      "Menos dudas repetitivas",
+      "Más contactos desde móvil",
+      "Toda la parte técnica gestionada",
+    ],
+  },
+  {
+    title: "Pack Barbería",
+    icon: "Scissors",
+    install: "299€ instalación",
+    monthly: "39€/mes mantenimiento, hosting y soporte",
+    tagline:
+      "Convierte tu barbería en la opción que el cliente elige antes de pisar la calle.",
+    story:
+      "Cuando alguien busca dónde cortarse el pelo, no quiere perder tiempo preguntando precios, horarios o disponibilidad. Quiere ver tu estilo, confiar en tu trabajo y reservar rápido.",
+    cta: "Quiero mi web de barbería",
+    extras: [
+      "Galería de trabajos",
+      "Servicios y precios",
+      "Botón de reserva destacado",
+      "Integración con Booksy, Calendly o reservas externas",
+      "Sección de equipo y barberos",
+      "Promociones destacadas",
+      "Fotos del local",
+    ],
+    gains: [
+      "Más reservas sin depender solo de Instagram",
+      "Menos mensajes preguntando precios y horarios",
+      "Más confianza gracias a la galería",
+      "Mejor imagen premium",
+      "Más clientes desde Google",
+      "Agenda más llena fuera del horario comercial",
+    ],
+  },
+  {
+    title: "Pack Restaurante",
+    icon: "Utensils",
+    install: "349€ instalación",
+    monthly: "49€/mes mantenimiento, hosting y soporte",
+    tagline:
+      "Haz que tus clientes encuentren tu carta, tu ubicación y tu reserva sin tener que llamarte.",
+    story:
+      "Cuando alguien tiene hambre, busca rápido. Si no encuentra tu carta, tus horarios o cómo reservar, se va al siguiente restaurante.",
+    cta: "Quiero mi web de restaurante",
+    extras: [
+      "Carta digital",
+      "Fotos de platos y local",
+      "Horarios destacados",
+      "Botón de reservar",
+      "Botón de llamada rápida",
+      "Ubicación y cómo llegar",
+      "Menús, eventos o especialidades",
+      "Integración con plataformas externas",
+    ],
+    gains: [
+      "Más reservas",
+      "Menos llamadas preguntando por la carta",
+      "Más clientes desde búsquedas locales",
+      "Carta disponible 24/7",
+      "Imagen más profesional",
+      "Más confianza antes de visitar el local",
+    ],
+  },
+  {
+    title: "Pack Inmobiliaria",
+    icon: "Building2",
+    install: "499€ instalación",
+    monthly: "69€/mes mantenimiento, hosting y soporte",
+    tagline:
+      "Capta propietarios, compradores y contactos sin depender solo de portales inmobiliarios.",
+    story:
+      "Una inmobiliaria no necesita solo enseñar pisos. Necesita generar confianza, captar propietarios y convertir visitas en oportunidades reales.",
+    cta: "Quiero mi web inmobiliaria",
+    extras: [
+      "Página de captación de propietarios",
+      "Formulario de valoración de vivienda",
+      "Servicios inmobiliarios",
+      "Zonas de trabajo",
+      "CTAs para vender o alquilar",
+      "Captación de compradores",
+      "Enlace a portales externos",
+      "Testimonios o casos destacados",
+    ],
+    gains: [
+      "Más propietarios interesados",
+      "Más solicitudes de valoración",
+      "Menos dependencia de portales",
+      "Más autoridad local",
+      "Más leads cualificados",
+      "Una imagen más seria y profesional",
+    ],
+  },
+  {
+    title: "Pack Estética y Belleza",
+    icon: "Sparkles",
+    install: "299€ instalación",
+    monthly: "39€/mes mantenimiento, hosting y soporte",
+    tagline:
+      "Haz que tus tratamientos entren por los ojos y se conviertan en reservas.",
+    story:
+      "En estética, peluquería, uñas o belleza, la imagen lo es todo. Si tus resultados se ven profesionales, tus clientes confían más y reservan antes.",
+    cta: "Quiero mi web de estética",
+    extras: [
+      "Galería de resultados",
+      "Servicios",
+      "Precios",
+      "Tratamientos destacados",
+      "Botón de reserva",
+      "Promociones",
+      "Fotos del centro",
+      "WhatsApp visible",
+      "Integración con sistema de reservas",
+    ],
+    gains: [
+      "Más citas",
+      "Más confianza antes de reservar",
+      "Mejor presentación de tratamientos premium",
+      "Menos mensajes repetitivos",
+      "Más clientes desde Google",
+      "Imagen profesional y cuidada",
+    ],
+  },
+  {
+    title: "Pack Entrenador Personal",
+    icon: "Dumbbell",
+    install: "299€ instalación",
+    monthly: "39€/mes mantenimiento, hosting y soporte",
+    tagline:
+      "Convierte tus seguidores e interesados en clientes reales.",
+    story:
+      "Tu Instagram puede generar interés, pero una web profesional convierte ese interés en confianza, solicitudes y clientes.",
+    cta: "Quiero mi web de entrenador",
+    extras: [
+      "Presentación del entrenador",
+      "Planes y servicios",
+      "Testimonios",
+      "Transformaciones o casos de éxito",
+      "Formulario de captación",
+      "WhatsApp",
+      "Sección de metodología",
+      "Preguntas frecuentes",
+    ],
+    gains: [
+      "Más solicitudes de clientes",
+      "Más credibilidad",
+      "Más ventas de planes o asesorías",
+      "Menos dependencia de redes sociales",
+      "Imagen más profesional",
+      "Mayor confianza antes del primer contacto",
+    ],
+  },
+  {
+    title: "Pack Negocio Local",
+    icon: "Store",
+    install: "249€ instalación",
+    monthly: "29€/mes mantenimiento, hosting y soporte",
+    tagline:
+      "Una web clara y profesional para que tu negocio exista donde tus clientes te buscan.",
+    story:
+      "Si tus clientes no encuentran información clara sobre tu negocio, horarios, ubicación o servicios, probablemente acabarán eligiendo a otro.",
+    cta: "Quiero mi web de negocio local",
+    extras: [
+      "Presentación del negocio",
+      "Servicios principales",
+      "Horarios",
+      "Ubicación",
+      "WhatsApp",
+      "Formulario de contacto",
+      "Fotos del negocio",
+      "Sección de confianza",
+    ],
+    gains: [
+      "Más contactos",
+      "Más confianza",
+      "Mejor presencia local",
+      "Información disponible 24/7",
+      "Menos dudas repetitivas por WhatsApp",
+      "Imagen más profesional que solo redes sociales",
+    ],
+  },
+];
 
 const projects = [
   {
-    name: "Arnau Martínez",
-    url: "https://arnaumartinez.es/",
-    domain: "arnaumartinez.es",
+    name: "Natura Studio",
+    url: "https://naturastudio-landing.vercel.app/inicio",
+    domain: "naturastudio-landing.vercel.app",
+    image: imgNatura,
   },
   {
     name: "Doscientos",
     url: "https://doscientos.es/",
     domain: "doscientos.es",
+    image: imgDoscientos,
   },
   {
     name: "CyberImpulsa",
     url: "https://www.cyberimpulsa.com/",
     domain: "cyberimpulsa.com",
+    image: imgCyber,
   },
   {
     name: "Pol Gubau",
     url: "https://polgubau.com/",
     domain: "polgubau.com",
+    image: imgPol,
+  },
+  {
+    name: "Arnau Martínez",
+    url: "https://arnaumartinez.es/",
+    domain: "arnaumartinez.es",
+    image: imgArnau,
   },
 ];
 
 const faqs = [
   {
-    question: "¿Cuánto tardáis en hacer una web?",
+    question: "¿La web estará lista en 48 horas?",
     answer:
-      "Una landing sencilla suele estar lista en días una vez tenemos textos, estructura y materiales básicos. Si el alcance crece, cerramos una fecha realista antes de empezar.",
+      "Sí. Siempre que recibamos la información necesaria del negocio, imágenes, textos y accesos a tiempo.",
   },
   {
-    question: "¿Tengo que contratar mantenimiento?",
+    question: "¿Qué necesito enviaros para empezar?",
     answer:
-      "Sí. El mantenimiento mensual es obligatorio porque incluye hosting, dominio, seguridad, monitorización, copias de seguridad y soporte técnico.",
+      "Nombre del negocio, logo si tienes, colores o referencias, fotos, servicios, precios, horarios, ubicación y enlaces de reservas si ya usas alguna herramienta.",
   },
   {
-    question: "¿Puedo usar mi propio dominio?",
+    question: "¿El dominio está incluido?",
     answer:
-      "Sí. Podemos conectar el dominio que ya tengas o ayudarte a comprar uno nuevo si todavía no lo tienes.",
+      "Sí, el dominio personalizado está incluido en la instalación.",
   },
   {
-    question: "¿Podéis conectar WhatsApp o Booksy?",
+    question: "¿El mantenimiento mensual es obligatorio?",
     answer:
-      "Sí. Podemos añadir llamadas a WhatsApp, enlaces de reserva con Booksy, Calendly u otras herramientas externas que use tu negocio.",
+      "Sí. Incluye hosting, soporte técnico, mantenimiento básico y pequeñas modificaciones.",
   },
   {
-    question: "¿Qué pasa si quiero nuevas funcionalidades?",
+    question: "¿Tengo permanencia?",
+    answer: "No. No tienes permanencia.",
+  },
+  {
+    question: "¿Qué pasa después de los 10 primeros clientes?",
     answer:
-      "Las funcionalidades avanzadas, integraciones complejas o desarrollos a medida se valoran aparte y se presupuestan antes de implementarlas.",
+      "La oferta de lanzamiento finalizará y los precios subirán.",
+  },
+  {
+    question: "¿Puedo contratar aunque mi negocio no aparezca en los packs?",
+    answer:
+      "Sí. Puedes elegir el Pack Negocio Local y lo adaptamos a tu caso.",
   },
 ];
 ---
@@ -168,7 +432,7 @@ const faqs = [
             data-speed="normal"
             data-easing="bounce"
           >
-            Tu web profesional lista en días, no en meses.
+            Tu web profesional lista en 48 horas
           </h1>
           <p
             class="text-lg lg:text-xl text-muted-foreground max-w-2xl text-pretty leading-relaxed"
@@ -176,9 +440,8 @@ const faqs = [
             data-speed="normal"
             data-easing="soft"
           >
-            Diseñamos páginas web modernas, rápidas y optimizadas para captar
-            clientes con dominio, hosting, seguridad y soporte incluidos desde
-            20€/mes.
+            Elige el pack de tu negocio y consigue una web diseñada para atraer
+            más clientes, reservas y contactos desde el primer día.
           </p>
         </div>
 
@@ -189,12 +452,12 @@ const faqs = [
           data-easing="elastic"
         >
           <a
-            href="/contact?subject=Interés en Web Profesional&ref=landing-general"
+            href="/contact?subject=Quiero mi web en 48 horas&ref=landing-general"
           >
-            <Button size="lg" withArrow>Solicitar presupuesto</Button>
+            <Button size="lg" withArrow>Quiero mi web en 48h</Button>
           </a>
-          <a href="#trabajos-realizados">
-            <Button size="lg" variant="outline">Ver ejemplos</Button>
+          <a href="#packs-negocio">
+            <Button size="lg" variant="outline">Ver packs por negocio</Button>
           </a>
         </div>
 
@@ -214,6 +477,15 @@ const faqs = [
             ))
           }
         </ul>
+        <p
+          class="text-sm font-semibold text-foreground max-w-2xl text-pretty"
+          data-reveal="bottom"
+          data-speed="fast"
+          data-easing="soft"
+        >
+          Precio especial solo para los 10 primeros clientes. Cuando se
+          completen las plazas, los precios subirán.
+        </p>
       </header>
 
       <!-- Hero showcase: 3 landing screenshots en capas -->
@@ -280,12 +552,215 @@ const faqs = [
     </div>
   </section>
 
+  <section class="px-6 max-w-5xl mx-auto w-full">
+    <div
+      class="bg-foreground text-background rounded-3xl p-6 md:p-8 shadow-pastel flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+      data-reveal="bottom"
+      data-speed="normal"
+      data-easing="smooth"
+    >
+      <div class="space-y-3">
+        <div data-reveal="top" data-speed="fast" data-easing="smooth">
+          <span class="rounded-full bg-background/10 text-background px-3 py-1 text-xs font-semibold">
+            Oferta de lanzamiento
+          </span>
+        </div>
+        <div class="space-y-2">
+          <h2 class="text-2xl md:text-4xl font-bold text-balance">
+            Precio especial solo para los 10 primeros clientes
+          </h2>
+          <p class="text-background/70 text-pretty">
+            Estamos lanzando esta oferta para negocios locales que quieren una
+            web profesional rápida, clara y preparada para convertir visitas en
+            clientes.
+          </p>
+          <p class="text-sm font-semibold text-background">
+            Cuando se completen las 10 plazas, esta promoción desaparecerá y
+            los precios aumentarán.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-2xl bg-background text-foreground p-5 md:min-w-[220px] text-center">
+        <p class="text-sm text-muted-foreground">Plazas de lanzamiento</p>
+        <p class="text-3xl font-bold">{launchAvailability}</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="packs-negocio" class="landing-section scroll-mt-28">
+    <SectionHeader
+      tag="Soluciones para tu negocio"
+      title="Soluciones pensadas para tu negocio"
+      description="Empieza con el Pack Base o elige una solución diseñada para transformar visitas en reservas, contactos y clientes según las necesidades reales de tu sector."
+      align="center"
+    />
+
+    <div class="grid lg:grid-cols-2 gap-4 w-full" data-stagger="90">
+      {
+        landingPacks.map((pack) => {
+          const Icon = iconMap[pack.icon] ?? Globe;
+          const featured = pack.title === "Pack Base";
+          const packFeatures =
+            pack.title === "Pack Base" ? basePackFeatures : sharedPackFeatures;
+
+          return (
+            <article
+              class={`group rounded-3xl border shadow-pastel p-5 md:p-7 flex flex-col gap-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-pastel-sm ${
+                featured
+                  ? "bg-foreground text-background border-foreground"
+                  : "bg-accent text-foreground border-muted/60"
+              }`}
+              data-reveal="bottom"
+              data-speed="normal"
+              data-easing="smooth"
+            >
+              <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
+                <div class="space-y-4">
+                  <div
+                    class={`size-12 rounded-2xl flex items-center justify-center ${
+                      featured
+                        ? "bg-background/10 text-background"
+                        : "bg-primary/10 text-primary"
+                    }`}
+                  >
+                    <Icon class="size-6" />
+                  </div>
+                  <div class="space-y-3">
+                    <h3 class="text-2xl md:text-3xl font-bold">{pack.title}</h3>
+                    <p
+                      class={`text-base font-semibold leading-relaxed text-pretty max-w-xl ${
+                        featured ? "text-background" : "text-foreground"
+                      }`}
+                    >
+                      {pack.tagline}
+                    </p>
+                    <p
+                      class={`text-sm leading-relaxed text-pretty max-w-xl ${
+                        featured
+                          ? "text-background/70"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      {pack.story}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 sm:min-w-[220px]">
+                  <div
+                    class={`rounded-2xl p-3 ${
+                      featured
+                        ? "bg-background text-foreground"
+                        : "bg-background border border-muted"
+                    }`}
+                  >
+                    <p class="text-xs text-muted-foreground">Instalación</p>
+                    <p class="font-bold">{pack.install}</p>
+                  </div>
+                  <div
+                    class={`rounded-2xl p-3 ${
+                      featured
+                        ? "bg-primary text-background"
+                        : "bg-primary/10 text-primary"
+                    }`}
+                  >
+                    <p
+                      class={`text-xs ${
+                        featured ? "text-background/70" : "text-primary/70"
+                      }`}
+                    >
+                      Mensual
+                    </p>
+                    <p class="font-bold">{pack.monthly}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                {packFeatures.map((feature) => (
+                  <span
+                    class={`rounded-full px-3 py-1.5 text-xs font-semibold ${
+                      featured
+                        ? "bg-background/10 text-background"
+                        : "bg-primary/10 text-primary"
+                    }`}
+                  >
+                    {feature}
+                  </span>
+                ))}
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                  <h4 class="font-bold">
+                    {
+                      pack.title === "Pack Base"
+                        ? "Qué incluye"
+                        : "Incluye además del pack base"
+                    }
+                  </h4>
+                  <ul class="space-y-3">
+                    {pack.extras.map((feature) => (
+                      <li class="flex items-start gap-3 text-sm">
+                        <Check
+                          class={`size-4 mt-0.5 shrink-0 ${
+                            featured ? "text-background" : "text-primary"
+                          }`}
+                        />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div class="space-y-4">
+                  <h4 class="font-bold">Qué gana tu negocio</h4>
+                  <ul class="space-y-3">
+                    {pack.gains.map((gain) => (
+                      <li class="flex items-start gap-3 text-sm">
+                        <Sparkles
+                          class={`size-4 mt-0.5 shrink-0 ${
+                            featured ? "text-background" : "text-primary"
+                          }`}
+                        />
+                        <span>{gain}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div class="mt-auto flex flex-wrap items-center gap-3">
+                <a
+                  href={`/contact?subject=${encodeURIComponent(`${pack.title} en 48 horas`)}&ref=landing-general`}
+                  class="w-fit"
+                >
+                  <Button
+                    size="sm"
+                    withArrow
+                    arrowInverted={!featured}
+                    class={
+                      featured
+                        ? "bg-background text-foreground hover:bg-background/90"
+                        : ""
+                    }
+                  >
+                    {pack.cta}
+                  </Button>
+                </a>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+
   <section class="landing-section">
     <SectionHeader
-      tag="Qué incluye"
-      title="Todo lo necesario para"
-      subtitle="empezar a captar clientes."
-      description="Una landing clara, rápida y preparada para que un cliente pueda entender tu servicio, confiar y contactar sin fricción."
+      tag="Incluido en todos los packs"
+      title="Todo lo que necesitas"
+      subtitle="para empezar."
+      description="Todos los packs incluyen una base común. Esto es lo mínimo que necesita cualquier negocio local para dejar de depender solo de Instagram, WhatsApp o recomendaciones."
       align="center"
     />
 
@@ -321,306 +796,63 @@ const faqs = [
 
   <section class="landing-section">
     <SectionHeader
-      tag="Precios"
-      title="Plan Base para"
-      subtitle="estar online sin complicarte."
-      description="Una inversión inicial baja y un mantenimiento mensual obligatorio para que no tengas que preocuparte por dominio, hosting, seguridad ni parte técnica."
+      tag="Tu presencia online"
+      title="¿Por qué no basta"
+      subtitle="con tener Instagram?"
+      description="Las redes sociales ayudan a que te descubran. Una web profesional convierte ese interés en confianza, reservas y contactos."
       align="center"
     />
 
-    <article
-      class="w-full max-w-6xl rounded-3xl bg-accent border border-muted/60 shadow-pastel p-5 md:p-8"
-      data-reveal="bottom"
-      data-speed="normal"
-      data-easing="smooth"
-    >
-      <div
-        class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 border-b border-muted pb-8"
+    <div class="grid md:grid-cols-2 gap-4 w-full max-w-5xl">
+      <article
+        class="rounded-3xl bg-accent border border-muted/60 shadow-pastel p-6 md:p-8 space-y-6"
+        data-reveal="left"
+        data-speed="normal"
+        data-easing="smooth"
       >
-        <div class="space-y-4">
-          <div class="flex flex-wrap items-center gap-3">
-            <h3 class="text-3xl md:text-4xl font-bold">Plan Base</h3>
-            <span
-              class="rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold"
-            >
-              Más barato que un café al día
-            </span>
-          </div>
-          <p class="text-muted-foreground max-w-2xl text-pretty">
-            Una web profesional para negocios locales con toda la parte técnica
-            incluida en una cuota mensual clara.
-          </p>
-        </div>
-        <div class="grid sm:grid-cols-2 gap-3 min-w-full lg:min-w-[360px]">
-          <div class="rounded-2xl bg-foreground text-background p-5">
-            <p class="text-sm text-background/70">Instalación</p>
-            <p class="text-4xl font-bold">{basePlan.install.price}</p>
-          </div>
-          <div class="rounded-2xl bg-primary text-background p-5">
-            <p class="text-sm text-background/70">Mantenimiento</p>
-            <p class="text-4xl font-bold">{basePlan.maintenance.price}</p>
-          </div>
-        </div>
-      </div>
+        <h3 class="text-2xl font-bold">Solo Instagram</h3>
+        <ul class="space-y-4">
+          {
+            [
+              "Difícil de encontrar en Google",
+              "Información desordenada",
+              "El cliente tiene que escribir para preguntar",
+              "No transmite la misma confianza",
+              "Dependes del algoritmo",
+            ].map((item) => (
+              <li class="flex items-start gap-3">
+                <CircleX class="size-5 mt-0.5 text-muted-foreground shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
 
-      <div class="grid lg:grid-cols-2 gap-8 pt-8">
-        <div class="space-y-5">
-          <h4 class="text-xl font-bold">Instalación</h4>
-          <ul class="grid sm:grid-cols-2 gap-3">
-            {
-              basePlan.install.features.map((feature) => (
-                <li class="flex items-center gap-3 text-sm">
-                  <Check class="size-4 text-primary shrink-0" />
-                  <span>{feature}</span>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-
-        <div class="space-y-5">
-          <h4 class="text-xl font-bold">Mantenimiento</h4>
-          <ul class="grid sm:grid-cols-2 gap-3">
-            {
-              basePlan.maintenance.features.map((feature) => (
-                <li class="flex items-center gap-3 text-sm">
-                  <Check class="size-4 text-primary shrink-0" />
-                  <span>{feature}</span>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      </div>
-    </article>
-  </section>
-
-  <section class="landing-section">
-    <SectionHeader
-      tag="Soluciones para tu negocio"
-      title="Soluciones pensadas"
-      subtitle="para tu negocio."
-      description="No hacemos páginas web genéricas. Creamos soluciones adaptadas a cada sector para ayudarte a captar más clientes."
-      align="center"
-    />
-
-    <div class="grid lg:grid-cols-2 gap-4 w-full" data-stagger="90">
-      {
-        packs.map((pack) => {
-          const Icon = iconMap[pack.icon] ?? Globe;
-          const featured = pack.featured ?? false;
-          const pricing = getPackPricing(pack);
-
-          return (
-            <article
-              class={`group rounded-3xl border shadow-pastel p-5 md:p-7 flex flex-col gap-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-pastel-sm ${
-                featured
-                  ? "bg-foreground text-background border-foreground"
-                  : "bg-accent text-foreground border-muted/60"
-              }`}
-              data-reveal="bottom"
-              data-speed="normal"
-              data-easing="smooth"
-            >
-              <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
-                <div class="space-y-4">
-                  <div
-                    class={`size-12 rounded-2xl flex items-center justify-center ${
-                      featured
-                        ? "bg-background/10 text-background"
-                        : "bg-primary/10 text-primary"
-                    }`}
-                  >
-                    <Icon class="size-6" />
-                  </div>
-                  <div class="space-y-3">
-                    <h3 class="text-2xl md:text-3xl font-bold">{pack.title}</h3>
-                    {pack.audience && (
-                      <p
-                        class={`text-sm ${
-                          featured
-                            ? "text-background/60"
-                            : "text-muted-foreground"
-                        }`}
-                      >
-                        {pack.audience}
-                      </p>
-                    )}
-                    <p
-                      class={`text-sm leading-relaxed text-pretty max-w-xl ${
-                        featured
-                          ? "text-background/70"
-                          : "text-muted-foreground"
-                      }`}
-                    >
-                      {pack.tagline}
-                    </p>
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2 sm:min-w-[220px]">
-                  <div
-                    class={`rounded-2xl p-3 ${
-                      featured
-                        ? "bg-background text-foreground"
-                        : "bg-background border border-muted"
-                    }`}
-                  >
-                    <p class="text-xs text-muted-foreground">Instalación</p>
-                    <p class="font-bold">{pack.install}</p>
-                  </div>
-                  <div
-                    class={`rounded-2xl p-3 ${
-                      featured
-                        ? "bg-primary text-background"
-                        : "bg-primary/10 text-primary"
-                    }`}
-                  >
-                    <p
-                      class={`text-xs ${
-                        featured ? "text-background/70" : "text-primary/70"
-                      }`}
-                    >
-                      Mensual
-                    </p>
-                    <p class="font-bold">{pack.monthly}</p>
-                  </div>
-                </div>
-              </div>
-
-              {pricing.savingsInstall > 0 && (
-                <p
-                  class={`w-fit rounded-full px-4 py-1.5 text-sm font-semibold ${
-                    featured
-                      ? "bg-background/15 text-background"
-                      : "bg-primary/10 text-primary"
-                  }`}
-                >
-                  Ahorras {pricing.savingsInstall}€ de instalación y{" "}
-                  {pricing.savingsMonthly}€/mes frente a contratarlo por
-                  separado
-                </p>
-              )}
-
-              <ul class="grid sm:grid-cols-2 gap-3">
-                {pack.features.map((feature) => (
-                  <li class="flex items-center gap-3 text-sm">
-                    <Check
-                      class={`size-4 shrink-0 ${
-                        featured ? "text-background" : "text-primary"
-                      }`}
-                    />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div class="mt-auto flex flex-wrap items-center gap-3">
-                <a
-                  href={`/contact?subject=Pack ${pack.title}&ref=landing-general`}
-                  class="w-fit"
-                >
-                  <Button
-                    size="sm"
-                    withArrow
-                    arrowInverted={!featured}
-                    class={
-                      featured
-                        ? "bg-background text-foreground hover:bg-background/90"
-                        : ""
-                    }
-                  >
-                    {pack.cta}
-                  </Button>
-                </a>
-                <a
-                  href={`/packs/${pack.slug}`}
-                  class={`text-sm font-semibold underline-offset-4 hover:underline ${
-                    featured ? "text-background/80" : "text-muted-foreground"
-                  }`}
-                >
-                  Ver detalles
-                </a>
-              </div>
-            </article>
-          );
-        })
-      }
-    </div>
-
-    <!-- CTA hub de packs -->
-    <div
-      class="w-full flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-muted/60 bg-accent px-6 py-5 shadow-pastel-sm"
-      data-reveal="bottom"
-      data-speed="fast"
-      data-easing="smooth"
-    >
-      <div class="flex items-center gap-3">
-        <span
-          class="size-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0"
-        >
-          <Sparkles class="size-4" />
-        </span>
-        <p class="text-sm font-medium text-foreground">
-          ¿Quieres comparar todos los packs con detalle?
-          <span class="text-muted-foreground font-normal">
-            Precio, características y lo que incluye cada sector.</span
-          >
-        </p>
-      </div>
-      <a href="/packs" class="shrink-0">
-        <Button size="sm" variant="outline" withArrow
-          >Ver todos los packs</Button
-        >
-      </a>
-    </div>
-  </section>
-
-  <section class="landing-section">
-    <SectionHeader
-      tag="Extras"
-      title="Añade solo lo que"
-      subtitle="tu negocio necesita."
-      description="Cada extra muestra el coste de instalación y el incremento mensual para mantenerlo funcionando."
-      align="center"
-    />
-
-    <div
-      class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 w-full"
-      data-stagger="70"
-    >
-      {
-        extras.map((extra) => (
-          <article
-            class="panel shadow-pastel min-h-[220px] justify-between"
-            data-reveal="bottom"
-            data-speed="normal"
-            data-easing="smooth"
-          >
-            <div class="space-y-4">
-              <div class="size-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                <Sparkles class="size-5" />
-              </div>
-              <div class="space-y-2">
-                <h3 class="text-xl font-bold text-pretty">{extra.title}</h3>
-                <p class="text-sm text-muted-foreground leading-relaxed text-pretty">
-                  {extra.description}
-                </p>
-              </div>
-            </div>
-            <div class="grid grid-cols-2 gap-2 pt-2">
-              <div class="rounded-2xl bg-background border border-muted p-3">
-                <p class="text-xs text-muted-foreground">Instalación</p>
-                <p class="font-bold">{extra.install}</p>
-              </div>
-              <div class="rounded-2xl bg-primary/10 text-primary p-3">
-                <p class="text-xs text-primary/70">Mensual</p>
-                <p class="font-bold">{extra.monthly}</p>
-              </div>
-            </div>
-          </article>
-        ))
-      }
+      <article
+        class="rounded-3xl bg-foreground text-background shadow-pastel p-6 md:p-8 space-y-6"
+        data-reveal="right"
+        data-speed="normal"
+        data-easing="smooth"
+      >
+        <h3 class="text-2xl font-bold">Web profesional</h3>
+        <ul class="space-y-4">
+          {
+            [
+              "Apareces mejor en búsquedas locales",
+              "Todo está claro y ordenado",
+              "El cliente puede contactar o reservar rápido",
+              "Transmite más profesionalidad",
+              "Trabaja para tu negocio 24/7",
+            ].map((item) => (
+              <li class="flex items-start gap-3">
+                <Check class="size-5 mt-0.5 text-background shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
     </div>
   </section>
 
@@ -629,48 +861,63 @@ const faqs = [
       tag="Trabajos realizados"
       title="Proyectos reales,"
       subtitle="no promesas vacías."
-      description="Algunos ejemplos de webs y productos digitales que ya están publicados."
+      description="Webs reales diseñadas para presentar mejor cada negocio, generar confianza y convertir visitas en oportunidades."
       align="center"
     />
 
     <div
-      class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full"
+      class="grid md:grid-cols-2 gap-5 w-full"
       data-stagger="80"
     >
       {
         projects.map((project) => (
           <article
-            class="group rounded-3xl bg-accent border border-muted/60 shadow-pastel p-5 flex flex-col gap-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-pastel-sm"
+            class="group rounded-3xl bg-accent border border-muted/60 shadow-pastel overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-pastel-sm"
             data-reveal="bottom"
             data-speed="normal"
             data-easing="smooth"
           >
-            <div class="aspect-[1.35] rounded-2xl bg-background border border-muted flex items-center justify-center overflow-hidden">
-              <img
-                src={`https://www.google.com/s2/favicons?domain=${project.domain}&sz=128`}
-                alt={`Favicon de ${project.name}`}
-                width="64"
-                height="64"
+            <div
+              class="relative aspect-[16/10] overflow-hidden bg-foreground"
+            >
+              <div class="absolute inset-x-0 top-0 z-10 flex h-10 items-center gap-2 border-b border-muted/70 bg-background/95 px-4 backdrop-blur-sm">
+                <span class="size-2.5 rounded-full bg-[#ff5f57]"></span>
+                <span class="size-2.5 rounded-full bg-[#febc2e]"></span>
+                <span class="size-2.5 rounded-full bg-[#28c840]"></span>
+                <span class="ml-2 min-w-0 truncate rounded-full bg-muted px-3 py-1 text-[10px] text-muted-foreground">
+                  {project.domain}
+                </span>
+              </div>
+              <Image
+                src={project.image}
+                alt={`Vista previa de la web de ${project.name}`}
+                class="h-full w-full object-cover object-top pt-10 transition-transform duration-500 group-hover:scale-[1.025]"
+                widths={[480, 768, 1200]}
+                sizes="(min-width: 768px) 50vw, 100vw"
                 loading="lazy"
-                decoding="async"
-                class="size-16 rounded-2xl"
               />
             </div>
-            <div class="space-y-2">
-              <h3 class="text-xl font-bold">{project.name}</h3>
-              <p class="text-sm text-muted-foreground break-words">
-                {project.url.replace("https://", "")}
-              </p>
+
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 p-5 md:p-7">
+              <div class="space-y-2">
+                <p class="text-xs font-semibold uppercase text-muted-foreground">
+                  Proyecto publicado
+                </p>
+                <h3 class="text-2xl md:text-3xl font-bold">{project.name}</h3>
+                <p class="text-sm text-muted-foreground break-words">
+                  {project.url.replace("https://", "")}
+                </p>
+              </div>
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition-colors hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                Ver proyecto
+                <ExternalLink class="size-4" />
+              </a>
             </div>
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="mt-auto inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-muted px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-muted-foreground hover:bg-foreground/5 focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-              Ver proyecto
-              <ExternalLink class="size-4" />
-            </a>
           </article>
         ))
       }
@@ -738,11 +985,12 @@ const faqs = [
       </div>
       <div class="space-y-4">
         <h2 class="text-3xl md:text-5xl font-bold text-balance">
-          Tu negocio merece una web profesional
+          Tu web profesional lista en 48 horas
         </h2>
         <p class="text-background/70 max-w-2xl text-pretty text-lg">
-          Empieza desde solo 200€ y olvídate de la parte técnica. Nosotros nos
-          encargamos del hosting, dominio, seguridad y mantenimiento.
+          Elige el pack de tu negocio y aprovecha el precio especial para los
+          10 primeros clientes. Nosotros nos encargamos del hosting, dominio,
+          seguridad y mantenimiento.
         </p>
       </div>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -754,16 +1002,16 @@ const faqs = [
             withArrow
             class="bg-background text-foreground hover:bg-background/90"
           >
-            Solicitar presupuesto
+            Quiero mi web en 48h
           </Button>
         </a>
-        <a href="#trabajos-realizados">
+        <a href="#packs-negocio">
           <Button
             size="lg"
             variant="outline"
             class="border-background/20 text-background hover:bg-background/10 hover:border-background/60"
           >
-            Ver ejemplos
+            Ver packs por negocio
           </Button>
         </a>
       </div>
