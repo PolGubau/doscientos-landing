@@ -43,6 +43,7 @@ export const branding = {
 		github: "https://github.com/doscientos",
 		linkedin: "https://www.linkedin.com/company/doscientos",
 		instagram: "https://instagram.com/doscientos.es",
+		brandfetch: "https://brandfetch.com/doscientos.es",
 	},
 
 	// Reseñas
