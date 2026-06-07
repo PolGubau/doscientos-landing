@@ -1,5 +1,6 @@
 // @ts-check
 import mdx from "@astrojs/mdx";
+import icon from "astro-icon";
 import { defineConfig } from "astro/config";
 
 import tailwindcss from "@tailwindcss/vite";
@@ -59,6 +60,7 @@ export default defineConfig({
     mdx(),
     metaTags(),
     react({ experimentalReactChildren: true }),
+    icon({ iconDir: "src/assets/icons" }),
   ],
   markdown: {
     rehypePlugins: [

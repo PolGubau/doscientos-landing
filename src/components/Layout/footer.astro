@@ -1,15 +1,6 @@
 ---
-import {
-  BadgeCheck,
-  Github,
-  Instagram,
-  Linkedin,
-  Mail,
-  MapPin,
-  Phone,
-  Star,
-  Twitter,
-} from "@lucide/astro";
+import { Mail, MapPin, Phone, Star } from "@lucide/astro";
+import { Icon } from "astro-icon/components";
 import { branding } from "~/config/branding";
 import { copy } from "~/shared/lib/copy";
 import FinalCTA from "../sections/FinalCTA.astro";
@@ -43,11 +34,31 @@ const linkColumns = [
 ];
 
 const socialLinks = [
-  { label: "LinkedIn", href: branding.social.linkedin, Icon: Linkedin },
-  { label: "Twitter", href: branding.social.twitter, Icon: Twitter },
-  { label: "GitHub", href: branding.social.github, Icon: Github },
-  { label: "Instagram", href: branding.social.instagram, Icon: Instagram },
-  { label: "Brandfetch", href: branding.social.brandfetch, Icon: BadgeCheck },
+  {
+    label: "LinkedIn",
+    href: branding.social.linkedin,
+    icon: "simple-icons:linkedin",
+  },
+  {
+    label: "X / Twitter",
+    href: branding.social.twitter,
+    icon: "simple-icons:x",
+  },
+  {
+    label: "GitHub",
+    href: branding.social.github,
+    icon: "simple-icons:github",
+  },
+  {
+    label: "Instagram",
+    href: branding.social.instagram,
+    icon: "simple-icons:instagram",
+  },
+  {
+    label: "Brandfetch",
+    href: branding.social.brandfetch,
+    icon: "simple-icons:brandfetch",
+  },
 ];
 ---
 
@@ -118,7 +129,7 @@ const socialLinks = [
                   aria-label={social.label}
                   class="rounded-full p-2.5 bg-background/5 border border-background/10 text-background/70 hover:text-background hover:bg-background/10 hover:-translate-y-0.5 transition-all"
                 >
-                  <social.Icon class="size-5" />
+                  <Icon name={social.icon} class="size-5" />
                 </a>
               ))
             }
