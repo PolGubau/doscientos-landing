@@ -37,7 +37,7 @@
 	--primary-foreground: oklch(0.984 0.003 247.858);
 	--secondary: oklch(0.968 0.007 247.896);
 	--muted: #e3e5e7;
-	--muted-foreground: #62748e;
+	--muted-foreground: #52525b;
 	--accent: oklch(1 0 0);
 	--destructive: #e7000b;
 }
@@ -148,9 +148,8 @@ html {
 	scrollbar-gutter: stable;
 }
 body {
-	@apply bg-background text-foreground antialiased font-heading overflow-x-hidden;
+	@apply bg-background text-foreground antialiased font-heading overflow-x-clip;
 	timeline-scope: --scroll;
-	scroll-behavior: smooth;
 	font-size: 16px;
 }
 

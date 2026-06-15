@@ -45,13 +45,13 @@ const { class: className, inverted = false } = Astro.props;
   :global(.arrow-icon) {
     will-change: transform;
     backface-visibility: hidden;
-    transform: translateZ(0);
+    transform: translate3d(0, 0, 0) rotate(0deg);
     transition:
       transform 0.3s ease-out,
       color 0.3s ease-out;
   }
   :global(.group:hover .arrow-icon) {
-    transform: rotate(45deg) translateZ(0);
+    transform: translate3d(0, 0, 0) rotate(45deg);
     color: var(--primary);
   }
   :global(.group:hover [data-arrow-inverted="true"] .arrow-icon) {

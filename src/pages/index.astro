@@ -1,7 +1,9 @@
 ---
 import MainLayout from "~/layouts/MainLayout.astro";
 
+import { StarIcon } from "@lucide/astro";
 import CaseStudies from "~/components/sections/CaseStudies.astro";
+import ClientsCarousel from "~/components/sections/ClientsCarousel.astro";
 import Comparison from "~/components/sections/Comparison.astro";
 import FAQ from "~/components/sections/FAQ.astro";
 import ForWho from "~/components/sections/ForWho.astro";
@@ -19,7 +21,48 @@ const description =
 ---
 
 <MainLayout title={title} description={description}>
-  <Hero />
+  <!-- Block-level wrapper so ScrollTrigger's pin-spacer lives in normal flow.
+       Pinning a direct flex child of <main> collapses pin-spacing to 0. -->
+  <div class="block">
+    <Hero />
+  </div>
+  <div
+    class="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground pt-6"
+    data-reveal="bottom"
+    data-speed="normal"
+    data-easing="soft"
+    data-delay="700"
+  >
+    <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1" aria-hidden="true">
+        {
+          new Array(5)
+            .fill(0)
+            .map(() => (
+              <StarIcon
+                class="size-4 text-yellow-400"
+                fill="currentColor"
+                stroke="currentColor"
+              />
+            ))
+        }
+      </div>
+      <span>
+        <strong class="text-foreground">
+          <span class="sr-only">5 de 5 estrellas —</span>5/5
+        </strong>{" "}
+        en satisfacción de cliente
+      </span>
+    </div>
+    <span class="text-muted/50 hidden sm:block">·</span>
+    <span
+      ><strong class="text-foreground">+30 proyectos</strong> entregados</span
+    >
+  </div>
+  <!-- Clients carousel below the hero, full-width -->
+  <div class="relative z-20 w-full">
+    <ClientsCarousel />
+  </div>
   <Services />
   <Impact />
   <CaseStudies />

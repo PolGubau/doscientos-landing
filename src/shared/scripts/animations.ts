@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { killOrbital, setupOrbital } from "./orbital";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,8 +50,8 @@ const getReveal = (
 	}
 };
 
-const setupHero = () => {
-	const h1 = document.querySelector<HTMLElement>("h1");
+const setupHero = (extraDelay = 0) => {
+	const h1 = document.querySelector<HTMLElement>("#hero h1");
 	if (!h1) return;
 	// Idempotency guard: never re-wrap an already-processed heading
 	if (h1.dataset.heroReady) return;
@@ -78,16 +79,21 @@ const setupHero = () => {
 			duration: 1,
 			stagger: 0.05,
 			ease: "power4.out",
-			delay: 0.2,
+			delay: 0.2 + extraDelay,
 		},
 	);
 
-	// Animate other hero elements
-	const heroReveal = document.querySelectorAll("#hero [data-reveal]:not(h1)");
+	// Animate other hero elements. Skip #hero-scroll-reveal — its subtitle +
+	// CTAs are revealed by the orbital scroll choreography, not on load.
+	const heroReveal = document.querySelectorAll(
+		"#hero [data-reveal]:not(h1):not(#hero-scroll-reveal)",
+	);
 	for (const el of heroReveal) {
 		const type = el.getAttribute("data-reveal") || "bottom";
 		const delay =
-			Number.parseFloat(el.getAttribute("data-delay") || "0") / 1000 + 0.5;
+			Number.parseFloat(el.getAttribute("data-delay") || "0") / 1000 +
+			0.5 +
+			extraDelay;
 		const { from, to } = getReveal(type);
 
 		gsap.fromTo(el, from, {
@@ -186,7 +192,8 @@ const setupCounters = () => {
 let ctx: ReturnType<typeof gsap.context> | undefined;
 
 export const initAnimations = () => {
-	// Kill animations & ScrollTriggers left over from the previous page.
+	// Kill orbital tweens first, then context (order matters).
+	killOrbital();
 	ctx?.revert();
 
 	// Respect prefers-reduced-motion
@@ -197,11 +204,22 @@ export const initAnimations = () => {
 		return;
 	}
 
+	const hasOrbital = !!document.getElementById("orbital-ring");
+
 	ctx = gsap.context(() => {
-		setupHero();
+		// Without orbital ring (non-hero pages) reveal the hero immediately.
+		if (!hasOrbital) setupHero(0);
 		setupScrollReveals();
 		setupCounters();
 	});
+
+	// When the orbital ring finishes forming the circle, reveal the hero text.
+	// ctx.add() ensures the tweens are tracked and reverted on navigation.
+	if (hasOrbital) {
+		setupOrbital(() => ctx?.add(() => setupHero(0)));
+	} else {
+		setupOrbital();
+	}
 
 	// Recalculate trigger positions once layout/images have settled.
 	ScrollTrigger.refresh();

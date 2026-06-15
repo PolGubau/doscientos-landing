@@ -3,106 +3,76 @@ import { StarIcon } from "@lucide/astro";
 import { copy } from "~/shared/lib/copy";
 import Button from "../ui/Button.astro";
 import ClientsCarousel from "./ClientsCarousel.astro";
-import ProjectsCarousel from "./ProjectsCarousel.astro";
+import HeroOrbital from "./HeroOrbital.astro";
 
 const { hero } = copy;
 ---
 
 <section
   id="hero"
-  class="relative flex flex-col gap-10 justify-center px-6 pt-20 items-center"
+  class="relative flex flex-col justify-center px-6 items-center min-h-screen"
 >
-  <!-- Main title con bounce impactante -->
-  <h1
-    data-reveal="scale"
-    data-speed="fast"
-    data-easing="bounce"
-    data-delay="100"
-    class="text-3xl sm:text-4xl max-md:max-w-xl text-balance md:max-w-4xl text-center md:text-6xl font-bold tracking-tight text-foreground"
-  >
-    {hero.title}
-  </h1>
-
-  <!-- Subtitle suave desde abajo -->
+  <!-- Title sits in the middle of the orbital ring; fades out on scroll -->
   <div
-    data-reveal="bottom"
-    data-speed="normal"
-    data-easing="soft"
-    data-delay="300"
-    data-distance="small"
-    class="text-muted-foreground max-w-xl text-center lg:text-lg"
+    id="hero-content"
+    class="relative z-20 flex flex-col items-center w-full"
   >
-    {hero.subtitle}
-  </div>
-
-  <!-- CTA con escala elástica -->
-  <div
-    data-reveal="scale"
-    data-speed="fast"
-    data-easing="elastic"
-    data-delay="500"
-    class="pt-4 flex flex-col items-center gap-4"
-  >
-    <div class="flex flex-wrap gap-4 justify-center">
-      <a href={`/contact`} id="hero-cta-primary">
-        <Button withArrow>
-          {hero.cta}
-        </Button>
-      </a>
-      <a href="/projects" id="hero-cta-secondary">
-        <Button variant="outline">Ver proyectos</Button>
-      </a>
-    </div>
-
-    <script is:inline>
-      ["hero-cta-primary", "hero-cta-secondary"].forEach((id) => {
-        document.getElementById(id)?.addEventListener("click", () => {
-          if ("gtag" in window) {
-            window.gtag("event", "cta_click", {
-              event_category: "engagement",
-              event_label: id,
-            });
-          }
-        });
-      });
-    </script>
-
-    <!-- Social proof -->
-    <div
-      class="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground pt-6"
-      data-reveal="bottom"
-      data-speed="normal"
-      data-easing="soft"
-      data-delay="700"
+    <!-- Main title con bounce impactante -->
+    <h1
+      data-reveal="scale"
+      data-speed="fast"
+      data-easing="bounce"
+      data-delay="100"
+      class="text-3xl sm:text-4xl max-md:max-w-xl text-balance md:max-w-2xl text-center md:text-4xl font-medium tracking-tight text-foreground"
     >
-      <div class="flex items-center gap-2">
-        <div class="flex items-center gap-1" aria-hidden="true">
-          {
-            new Array(5)
-              .fill(0)
-              .map(() => (
-                <StarIcon
-                  class="size-4 text-yellow-400"
-                  fill="currentColor"
-                  stroke="currentColor"
-                />
-              ))
-          }
-        </div>
-        <span>
-          <strong class="text-foreground">
-            <span class="sr-only">5 de 5 estrellas —</span>5/5
-          </strong>{" "}
-          en satisfacción de cliente
-        </span>
+      {hero.title}
+    </h1>
+  </div>
+
+  <!--
+    Subtitle + CTAs assemble in at the top as the ring grows on scroll
+    (revealed by orbital.ts). data-reveal hides it from first paint; on desktop
+    it is top-anchored, on mobile (no scroll choreography) it flows under the
+    title and orbital.ts reveals it statically.
+  -->
+  <div
+    id="hero-scroll-reveal"
+    data-reveal
+    class="relative md:absolute md:inset-x-0 md:top-0 z-20 flex flex-col gap-10 items-center w-full px-6 mt-10 md:mt-0 md:pt-24 lg:pt-32"
+  >
+    <!-- Subtitle -->
+    <div class="text-muted-foreground max-w-xl text-center lg:text-lg">
+      {hero.subtitle}
+    </div>
+
+    <!-- CTA -->
+    <div class="pt-4 flex flex-col items-center gap-4">
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href={`/contact`} id="hero-cta-primary">
+          <Button withArrow>
+            {hero.cta}
+          </Button>
+        </a>
+        <a href="/projects" id="hero-cta-secondary">
+          <Button variant="outline">Ver proyectos</Button>
+        </a>
       </div>
-      <span class="text-muted/50 hidden sm:block">·</span>
-      <span
-        ><strong class="text-foreground">+30 proyectos</strong> entregados</span
-      >
+
+      <script is:inline>
+        ["hero-cta-primary", "hero-cta-secondary"].forEach((id) => {
+          document.getElementById(id)?.addEventListener("click", () => {
+            if ("gtag" in window) {
+              window.gtag("event", "cta_click", {
+                event_category: "engagement",
+                event_label: id,
+              });
+            }
+          });
+        });
+      </script>
     </div>
   </div>
 
-  <ProjectsCarousel />
-  <ClientsCarousel />
+  <!-- Orbital ring — absolutely positioned, sits behind the hero content (z-10) -->
+  <HeroOrbital />
 </section>

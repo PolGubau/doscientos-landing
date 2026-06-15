@@ -1,0 +1,107 @@
+---
+import { Image } from "astro:assets";
+import { getProjects } from "~/shared/lib/collections";
+
+const projects = await getProjects();
+
+// Loop projects to fill the ring (~16 slots for a dense circle)
+const SLOTS = 16;
+const thumbnails = Array.from(
+  { length: SLOTS },
+  (_, i) => projects[i % projects.length],
+);
+---
+
+<!--
+  Orbital ring of project thumbnails.
+  JS (orbital.ts) handles all positioning + animation.
+  Starts hidden (opacity-0); GSAP reveals and places each thumb.
+-->
+<div
+  id="orbital-ring"
+  class="absolute inset-0 pointer-events-none select-none"
+  aria-hidden="true"
+>
+  {
+    thumbnails.map((project, i) => (
+      <a
+        href={`/projects/${project.id}`}
+        class="orbital-thumb absolute left-1/2 top-1/2 block rounded-lg pointer-events-auto overflow-hidden"
+        style={`background-color: ${project.data.color}`}
+        data-index={i}
+        data-title={project.data.title}
+        data-client={project.data.client}
+      >
+        <Image
+          src={project.data.cover}
+          alt={project.data.title}
+          width={300}
+          height={400}
+          class="orbital-img object-cover block"
+          loading="eager"
+          decoding="async"
+        />
+      </a>
+    ))
+  }
+</div>
+
+<!--
+  Floating hover label. Lives outside #orbital-ring so it is not affected by
+  the ring's scroll transforms/fade. Positioned in screen space by orbital.ts.
+-->
+<div id="orbital-label" class="orbital-label" aria-hidden="true">
+  <span class="orbital-label-title"></span>
+  <span class="orbital-label-client"></span>
+</div>
+
+<style>
+  .orbital-thumb {
+    /* Hidden from initial paint — GSAP reveals each card during the entrance animation */
+    opacity: 0;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+  }
+
+  .orbital-label {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 40;
+    pointer-events: none;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.5rem 0.95rem;
+    border-radius: 9999px;
+    white-space: nowrap;
+    background: var(--background, #fff);
+    color: var(--foreground, #111);
+    box-shadow: 0 10px 35px rgb(0 0 0 / 0.16);
+    will-change: transform, opacity;
+  }
+
+  .orbital-label-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
+  .orbital-label-client {
+    font-size: 0.72rem;
+    line-height: 1.1;
+    color: var(--muted-foreground, #6b7280);
+  }
+
+  /* Dimensions driven by orbital.ts via CSS vars */
+  .orbital-img {
+    width: var(--thumb-w, 64px);
+    height: var(--thumb-h, 96px);
+    display: block;
+    transition: box-shadow 0.25s ease;
+    /* The back face shows the same photo, mirrored, on the rotateY flip */
+    backface-visibility: visible;
+  }
+</style>
