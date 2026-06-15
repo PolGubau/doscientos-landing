@@ -10,7 +10,7 @@ const { hero } = copy;
 
 <section
   id="hero"
-  class="relative flex flex-col justify-center px-6 items-center min-h-screen"
+  class="relative flex flex-col justify-center px-6 items-center min-h-[100svh]"
 >
   <!-- Title sits in the middle of the orbital ring; fades out on scroll -->
   <div
@@ -38,7 +38,7 @@ const { hero } = copy;
   <div
     id="hero-scroll-reveal"
     data-reveal
-    class="relative md:absolute md:inset-x-0 md:top-0 z-20 flex flex-col gap-10 items-center w-full px-6 mt-10 md:mt-0 md:pt-24 lg:pt-32"
+    class="relative md:absolute md:inset-x-0 md:top-0 z-20 flex flex-col gap-6 md:gap-10 items-center w-full px-6 mt-8 md:mt-0 md:pt-24 lg:pt-32"
   >
     <!-- Subtitle -->
     <div class="text-muted-foreground max-w-xl text-center lg:text-lg">
@@ -46,15 +46,19 @@ const { hero } = copy;
     </div>
 
     <!-- CTA -->
-    <div class="pt-4 flex flex-col items-center gap-4">
-      <div class="flex flex-wrap gap-4 justify-center">
-        <a href={`/contact`} id="hero-cta-primary">
-          <Button withArrow>
+    <div class="pt-2 md:pt-4 flex flex-col items-center gap-4 w-full">
+      <div
+        class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full max-w-xs sm:max-w-none"
+      >
+        <a href={`/contact`} id="hero-cta-primary" class="w-full sm:w-auto">
+          <Button withArrow class="w-full sm:w-fit">
             {hero.cta}
           </Button>
         </a>
-        <a href="/projects" id="hero-cta-secondary">
-          <Button variant="outline">Ver proyectos</Button>
+        <a href="/projects" id="hero-cta-secondary" class="w-full sm:w-auto">
+          <Button variant="outline" class="w-full sm:w-fit"
+            >Ver proyectos</Button
+          >
         </a>
       </div>
 

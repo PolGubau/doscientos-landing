@@ -104,4 +104,66 @@ const thumbnails = Array.from(
     /* The back face shows the same photo, mirrored, on the rotateY flip */
     backface-visibility: visible;
   }
+
+  /*
+    Mobile (< 768px): the orbital choreography is disabled (orbital.ts returns
+    early), so lay the thumbnails out as a static, horizontally-scrollable strip
+    instead of an absolutely-positioned ring. Higher specificity (#id .class)
+    overrides the absolute/inset-0 utility classes on the thumbs.
+  */
+  @media (max-width: 767px) {
+    #orbital-ring {
+      position: relative;
+      inset: auto;
+      display: flex;
+      gap: 0.875rem;
+      width: 100%;
+      margin-top: 1.5rem;
+      /* Extra bottom padding leaves room for the card shadows */
+      padding: 0.5rem 1.5rem 1rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      /* Keep snapped cards inset from the edge so they read as "next" */
+      scroll-padding-inline: 1.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      /* Fade the leading/trailing edges to hint there is more to scroll */
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 1.25rem,
+        #000 calc(100% - 1.25rem),
+        transparent
+      );
+      mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 1.25rem,
+        #000 calc(100% - 1.25rem),
+        transparent
+      );
+    }
+    #orbital-ring::-webkit-scrollbar {
+      display: none;
+    }
+    #orbital-ring .orbital-thumb {
+      position: relative;
+      left: auto;
+      top: auto;
+      flex: 0 0 auto;
+      scroll-snap-align: center;
+      border-radius: 1rem;
+      box-shadow: 0 10px 24px -10px rgb(0 0 0 / 0.28);
+      transition: transform 0.18s ease;
+    }
+    /* Tactile press feedback (replaces the cursor-only proximity effect) */
+    #orbital-ring .orbital-thumb:active {
+      transform: scale(0.96);
+    }
+    #orbital-ring .orbital-img {
+      width: 8rem;
+      height: 10.5rem;
+    }
+  }
 </style>

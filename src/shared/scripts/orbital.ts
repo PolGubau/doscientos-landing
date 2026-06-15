@@ -447,9 +447,11 @@ export const setupOrbital = (onCircleReady?: () => void) => {
 
 	const layout = getLayout();
 	if (!layout) {
-		// Mobile — hide the ring (no scroll choreography runs here). Reveal the
-		// subtitle + CTAs statically and let the hero title animate in on its own.
-		gsap.set(ring, { display: "none" });
+		// Mobile — no scroll choreography. Show the thumbnails as a static
+		// horizontal strip (laid out via CSS in HeroOrbital.astro): clear any
+		// transform and reveal them. Subtitle + CTAs are revealed statically and
+		// the hero title animates in on its own.
+		gsap.set(thumbs, { clearProps: "transform", opacity: 1 });
 		const scrollReveal = document.getElementById("hero-scroll-reveal");
 		if (scrollReveal) gsap.set(scrollReveal, { autoAlpha: 1 });
 		onCircleReady?.();

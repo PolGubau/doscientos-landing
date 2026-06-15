@@ -11,8 +11,8 @@ const projects = await getProjects();
   title="Proyectos - 21+ casos de éxito | doscientos"
   description="500+ usuarios sin ads. ROI del 300% en 4 meses. -90% tiempo en procesos. Descubre cómo ayudamos a empresas como la tuya a crecer con productos digitales."
 >
-  <div class="min-h-screen py-24 px-6">
-    <div class="max-w-7xl mx-auto space-y-16">
+  <div class="min-h-screen py-16 px-4 sm:py-24 sm:px-6">
+    <div class="max-w-7xl mx-auto space-y-12 md:space-y-16">
       <!-- Header -->
       <header
         class="flex flex-col w-full max-w-2xl items-center justify-center text-center gap-6 mx-auto"
@@ -40,44 +40,59 @@ const projects = await getProjects();
       </header>
 
       <!-- Stats -->
-      <ul class="grid md:grid-cols-4 gap-4" data-stagger="100">
+      <ul
+        class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
+        data-stagger="100"
+      >
         <li
-          class="p-6 rounded-2xl bg-muted"
+          class="p-5 md:p-6 rounded-2xl bg-muted"
           data-reveal="scale"
           data-speed="normal"
           data-easing="bounce"
         >
-          <span class="text-4xl font-bold text-foreground">
+          <span class="text-3xl md:text-4xl font-bold text-foreground">
             {projects.length + 17}+
           </span>
-          <h3 class="text-muted-foreground">Proyectos completados</h3>
+          <h3 class="text-sm md:text-base text-muted-foreground">
+            Proyectos completados
+          </h3>
         </li>
         <li
-          class="p-6 rounded-2xl bg-muted"
+          class="p-5 md:p-6 rounded-2xl bg-muted"
           data-reveal="scale"
           data-speed="normal"
           data-easing="bounce"
         >
-          <span class="text-4xl font-bold text-foreground">100%</span>
-          <h3 class="text-muted-foreground">Sin interrupciones</h3>
+          <span class="text-3xl md:text-4xl font-bold text-foreground"
+            >100%</span
+          >
+          <h3 class="text-sm md:text-base text-muted-foreground">
+            Sin interrupciones
+          </h3>
         </li>
         <li
-          class="p-6 rounded-2xl bg-muted"
+          class="p-5 md:p-6 rounded-2xl bg-muted"
           data-reveal="scale"
           data-speed="normal"
           data-easing="bounce"
         >
-          <span class="text-4xl font-bold text-foreground">7+</span>
-          <h3 class="text-muted-foreground">Años de experiencia</h3>
+          <span class="text-3xl md:text-4xl font-bold text-foreground">7+</span>
+          <h3 class="text-sm md:text-base text-muted-foreground">
+            Años de experiencia
+          </h3>
         </li>
         <li
-          class="p-6 rounded-2xl bg-muted"
+          class="p-5 md:p-6 rounded-2xl bg-muted"
           data-reveal="scale"
           data-speed="normal"
           data-easing="bounce"
         >
-          <span class="text-4xl font-bold text-foreground">99.9%</span>
-          <h3 class="text-muted-foreground">Uptime promedio</h3>
+          <span class="text-3xl md:text-4xl font-bold text-foreground"
+            >99.9%</span
+          >
+          <h3 class="text-sm md:text-base text-muted-foreground">
+            Uptime promedio
+          </h3>
         </li>
       </ul>
 
@@ -96,21 +111,18 @@ const projects = await getProjects();
         {
           projects.map((project, index) => (
             <article
-              class="group"
               data-reveal={index % 2 === 0 ? "left" : "right"}
               data-speed="normal"
               data-easing="smooth"
             >
-              <a href={`/projects/${project.id}`}>
-                <ProjectCard
-                  id={project.id}
-                  title={project.data.title}
-                  summary={project.data.summary}
-                  services_provided={project.data.services_provided}
-                  color={project.data.color}
-                  cover={project.data.cover}
-                />
-              </a>
+              <ProjectCard
+                id={project.id}
+                title={project.data.title}
+                summary={project.data.summary}
+                services_provided={project.data.services_provided}
+                color={project.data.color}
+                cover={project.data.cover}
+              />
             </article>
           ))
         }
