@@ -6,16 +6,26 @@ interface Props {
 }
 
 const { number, label, description } = Astro.props;
+
+// Extract numeric value, prefix and suffix for GSAP counter
+const numericValue = number.replace(/[^0-9.-]/g, "");
+const prefix = number.match(/^[^0-9]+/)?.[0] || "";
+const suffix = number.match(/[0-9]([^0-9]+)$/)?.[1] || "";
 ---
 
 <div
   class="p-8 md:p-12 rounded-3xl bg-accent flex flex-col gap-4 h-full"
   data-reveal="scale"
   data-speed="normal"
-  data-easing="bounce"
+  data-easing="soft"
 >
   <!-- Number -->
-  <div class="text-5xl font-semibold">
+  <div
+    class="text-5xl font-semibold"
+    data-count={numericValue}
+    data-count-prefix={prefix}
+    data-count-suffix={suffix}
+  >
     {number}
   </div>
 

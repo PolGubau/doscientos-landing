@@ -44,7 +44,7 @@ export function Field({
     <div className="space-y-1.5 group">
       <label
         htmlFor={id}
-        className="flex items-center justify-between text-sm font-medium transition-colors group-has-[:focus-visible]:text-primary"
+        className="flex items-center text-muted-foreground justify-between text-sm font-medium transition-colors group-has-[:focus-visible]:text-primary"
       >
         <span>{label}</span>
         {optional && (
