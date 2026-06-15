@@ -48,8 +48,11 @@ const getAnimateFrom = (
 };
 
 const setupHero = () => {
-	const h1 = document.querySelector("h1");
+	const h1 = document.querySelector<HTMLElement>("h1");
 	if (!h1) return;
+	// Idempotency guard: never re-wrap an already-processed heading
+	if (h1.dataset.heroReady) return;
+	h1.dataset.heroReady = "true";
 
 	// Word-mask effect: wrap words in spans for granular control
 	const text = h1.innerText;
@@ -96,23 +99,24 @@ const setupScrollReveals = () => {
 
 		if (children.length === 0) continue;
 
-		children.forEach((child, i) => {
-			const type = child.getAttribute("data-reveal") || "bottom";
-			const distanceVal =
-				child.getAttribute("data-distance") === "small"
-					? 15
-					: CONFIG.defaults.distance;
+		// Single staggered tween + one ScrollTrigger per container.
+		// Far cheaper than one tween/trigger per child.
+		const first = children[0];
+		const type = first.getAttribute("data-reveal") || "bottom";
+		const distanceVal =
+			first.getAttribute("data-distance") === "small"
+				? 15
+				: CONFIG.defaults.distance;
 
-			gsap.from(child, {
-				scrollTrigger: {
-					trigger: container,
-					start: "top 85%",
-				},
-				...getAnimateFrom(type, distanceVal),
-				duration: CONFIG.defaults.duration,
-				ease: CONFIG.defaults.ease,
-				delay: i * staggerVal,
-			});
+		gsap.from(children, {
+			scrollTrigger: {
+				trigger: container,
+				start: "top 85%",
+			},
+			...getAnimateFrom(type, distanceVal),
+			duration: CONFIG.defaults.duration,
+			ease: CONFIG.defaults.ease,
+			stagger: staggerVal,
 		});
 	}
 
@@ -165,7 +169,14 @@ const setupCounters = () => {
 	}
 };
 
+// Tracks every tween/ScrollTrigger of the current page so they can be
+// reverted in one call before the next View Transitions navigation.
+let ctx: ReturnType<typeof gsap.context> | undefined;
+
 export const initAnimations = () => {
+	// Kill animations & ScrollTriggers left over from the previous page.
+	ctx?.revert();
+
 	// Respect prefers-reduced-motion
 	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 		for (const el of document.querySelectorAll("[data-reveal]")) {
@@ -174,20 +185,16 @@ export const initAnimations = () => {
 		return;
 	}
 
-	setupHero();
-	setupScrollReveals();
-	setupCounters();
+	ctx = gsap.context(() => {
+		setupHero();
+		setupScrollReveals();
+		setupCounters();
+	});
+
+	// Recalculate trigger positions once layout/images have settled.
+	ScrollTrigger.refresh();
 };
 
-// Auto-init on page load (Astro compatible)
+// Runs on the initial load AND after every View Transitions navigation.
+// (astro:page-load already fires on first load, so no manual call is needed.)
 document.addEventListener("astro:page-load", initAnimations);
-
-// Initial call for the first load
-if (
-	document.readyState === "complete" ||
-	document.readyState === "interactive"
-) {
-	initAnimations();
-} else {
-	document.addEventListener("DOMContentLoaded", initAnimations);
-}
