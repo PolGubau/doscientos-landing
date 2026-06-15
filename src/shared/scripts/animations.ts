@@ -181,7 +181,7 @@ const setupCounters = () => {
 				start: "top 90%",
 			},
 			onUpdate: () => {
-				el.textContent = `${prefix}${Math.floor(obj.value)}${suffix}`;
+				el.textContent = `${prefix}${Math.round(Math.abs(obj.value))}${suffix}`;
 			},
 		});
 	}
