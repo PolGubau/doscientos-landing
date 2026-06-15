@@ -27,23 +27,25 @@ const CONFIG = {
 	},
 };
 
-const getAnimateFrom = (
+// Returns explicit from→to pairs so gsap.fromTo() always reaches opacity:1
+// regardless of any CSS rule that might set opacity:0 on [data-reveal].
+const getReveal = (
 	type: string,
 	distance: number = CONFIG.defaults.distance,
-) => {
+): { from: gsap.TweenVars; to: gsap.TweenVars } => {
 	switch (type) {
 		case "bottom":
-			return { y: distance, opacity: 0 };
+			return { from: { y: distance, opacity: 0 }, to: { y: 0, opacity: 1 } };
 		case "top":
-			return { y: -distance, opacity: 0 };
+			return { from: { y: -distance, opacity: 0 }, to: { y: 0, opacity: 1 } };
 		case "left":
-			return { x: -distance, opacity: 0 };
+			return { from: { x: -distance, opacity: 0 }, to: { x: 0, opacity: 1 } };
 		case "right":
-			return { x: distance, opacity: 0 };
+			return { from: { x: distance, opacity: 0 }, to: { x: 0, opacity: 1 } };
 		case "scale":
-			return { scale: 0.9, opacity: 0 };
+			return { from: { scale: 0.9, opacity: 0 }, to: { scale: 1, opacity: 1 } };
 		default:
-			return { y: distance, opacity: 0 };
+			return { from: { y: distance, opacity: 0 }, to: { y: 0, opacity: 1 } };
 	}
 };
 
@@ -64,14 +66,21 @@ const setupHero = () => {
 		)
 		.join(" ");
 
-	gsap.from(".word-inner", {
-		yPercent: 100,
-		opacity: 0,
-		duration: 1,
-		stagger: 0.05,
-		ease: "power4.out",
-		delay: 0.2,
-	});
+	// h1 has data-reveal so CSS hides it; reveal it immediately before word anim
+	gsap.set(h1, { opacity: 1 });
+
+	gsap.fromTo(
+		".word-inner",
+		{ yPercent: 100, opacity: 0 },
+		{
+			yPercent: 0,
+			opacity: 1,
+			duration: 1,
+			stagger: 0.05,
+			ease: "power4.out",
+			delay: 0.2,
+		},
+	);
 
 	// Animate other hero elements
 	const heroReveal = document.querySelectorAll("#hero [data-reveal]:not(h1)");
@@ -79,9 +88,10 @@ const setupHero = () => {
 		const type = el.getAttribute("data-reveal") || "bottom";
 		const delay =
 			Number.parseFloat(el.getAttribute("data-delay") || "0") / 1000 + 0.5;
+		const { from, to } = getReveal(type);
 
-		gsap.from(el, {
-			...getAnimateFrom(type),
+		gsap.fromTo(el, from, {
+			...to,
 			duration: CONFIG.defaults.duration,
 			ease: CONFIG.defaults.ease,
 			delay,
@@ -108,12 +118,13 @@ const setupScrollReveals = () => {
 				? 15
 				: CONFIG.defaults.distance;
 
-		gsap.from(children, {
+		const { from, to } = getReveal(type, distanceVal);
+		gsap.fromTo(children, from, {
+			...to,
 			scrollTrigger: {
 				trigger: container,
 				start: "top 85%",
 			},
-			...getAnimateFrom(type, distanceVal),
 			duration: CONFIG.defaults.duration,
 			ease: CONFIG.defaults.ease,
 			stagger: staggerVal,
@@ -133,12 +144,13 @@ const setupScrollReveals = () => {
 		const delay =
 			Number.parseFloat(el.getAttribute("data-delay") || "0") / 1000;
 
-		gsap.from(el, {
+		const { from, to } = getReveal(type);
+		gsap.fromTo(el, from, {
+			...to,
 			scrollTrigger: {
 				trigger: el,
 				start: "top 90%",
 			},
-			...getAnimateFrom(type),
 			duration: CONFIG.speeds[speed] || CONFIG.defaults.duration,
 			ease: CONFIG.easings[easing] || CONFIG.defaults.ease,
 			delay,
