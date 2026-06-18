@@ -2,7 +2,7 @@ export const copy = {
 	hero: {
 		// Pain-forward: el target (clínica, empresa con Excel+SaaS+procesos manuales) se reconoce al instante.
 		// "No al revés" es el differentiator — apunta directamente al SAP, Salesforce, HubSpot que los obliga a adaptarse.
-		title: "El software que se adapta a tu negocio, no al revés",
+		title: "Sistemas internos a medida. De idea a producción en 6 semanas",
 		// 1 frase. Nombra exactamente qué reemplazamos (Excel, SaaS genérico, procesos manuales) y a quién va dirigido.
 		subtitle:
 			"Sistemas internos para empresas que ya no caben en Excel, el SaaS estándar ni los procesos manuales",

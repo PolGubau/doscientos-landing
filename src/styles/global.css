@@ -1,13 +1,17 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "./custom-styles.css";
-[data-reveal] {
-	opacity: 0;
-}
-
-[data-reveal-word] {
-	display: inline-block;
-	overflow: hidden;
+/*
+ * Section/title scroll reveals are handled by @polgubau/astro-reveal
+ * (pure CSS + IntersectionObserver). It owns the resting hidden state via
+ * [data-reveal]:not([data-state]) — do NOT re-declare opacity:0 here or it
+ * overrides the library's [data-state="visible"] and sections never appear.
+ *
+ * The #hero is GSAP-controlled, so neutralize astro-reveal's resting
+ * transform there: GSAP/orbital own the choreography and only flip opacity.
+ */
+#hero [data-reveal]:not([data-state="visible"]) {
+	transform: none !important;
 }
 @plugin "@tailwindcss/typography";
 @plugin "tailwindcss-intersect";

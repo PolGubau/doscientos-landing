@@ -5,8 +5,12 @@ import { killOrbital, setupOrbital } from "./orbital";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Premium GSAP Animation Engine
- * Replaces @polgubau/astro-reveal with high-performance, polished animations.
+ * GSAP Animation Engine — hero word-mask + orbital + counters ONLY.
+ *
+ * Section/title scroll reveals are handled by @polgubau/astro-reveal
+ * (pure CSS + IntersectionObserver). GSAP must NOT animate [data-reveal]
+ * elements outside #hero, or both systems fight over the same nodes and
+ * the sections stop appearing on scroll.
  */
 
 const CONFIG = {
@@ -108,65 +112,6 @@ const setupHero = (extraDelay = 0) => {
 	}
 };
 
-const setupScrollReveals = () => {
-	// Stagger containers
-	const containers = document.querySelectorAll("[data-stagger]");
-	for (const container of containers) {
-		const staggerVal =
-			Number.parseInt(container.getAttribute("data-stagger") || "100") / 1000;
-		const children = container.querySelectorAll("[data-reveal]");
-
-		if (children.length === 0) continue;
-
-		// Single staggered tween + one ScrollTrigger per container.
-		// Far cheaper than one tween/trigger per child.
-		const first = children[0];
-		const type = first.getAttribute("data-reveal") || "bottom";
-		const distanceVal =
-			first.getAttribute("data-distance") === "small"
-				? 15
-				: CONFIG.defaults.distance;
-
-		const { from, to } = getReveal(type, distanceVal);
-		gsap.fromTo(children, from, {
-			...to,
-			scrollTrigger: {
-				trigger: container,
-				start: "top 85%",
-			},
-			duration: CONFIG.defaults.duration,
-			ease: CONFIG.defaults.ease,
-			stagger: staggerVal,
-		});
-	}
-
-	// Standalone reveals
-	const standalone = document.querySelectorAll(
-		"[data-reveal]:not([data-stagger] [data-reveal]):not(#hero [data-reveal])",
-	);
-	for (const el of standalone) {
-		const type = el.getAttribute("data-reveal") || "bottom";
-		const speed =
-			(el.getAttribute("data-speed") as keyof typeof CONFIG.speeds) || "normal";
-		const easing =
-			(el.getAttribute("data-easing") as keyof typeof CONFIG.easings) || "soft";
-		const delay =
-			Number.parseFloat(el.getAttribute("data-delay") || "0") / 1000;
-
-		const { from, to } = getReveal(type);
-		gsap.fromTo(el, from, {
-			...to,
-			scrollTrigger: {
-				trigger: el,
-				start: "top 90%",
-			},
-			duration: CONFIG.speeds[speed] || CONFIG.defaults.duration,
-			ease: CONFIG.easings[easing] || CONFIG.defaults.ease,
-			delay,
-		});
-	}
-};
-
 const setupCounters = () => {
 	const counters = document.querySelectorAll("[data-count]");
 	for (const el of counters) {
@@ -212,7 +157,6 @@ export const initAnimations = () => {
 	ctx = gsap.context(() => {
 		// Without orbital ring (non-hero pages) reveal the hero immediately.
 		if (!hasOrbital) setupHero(0);
-		setupScrollReveals();
 		setupCounters();
 	});
 

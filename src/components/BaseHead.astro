@@ -5,11 +5,15 @@ import { ClientRouter } from "astro:transitions";
 import { getLangFromUrl } from "~/shared/i18n/utils";
 import { getMetadata } from "../shared/lib/constants";
 import "../styles/global.css";
+// Section/title scroll-reveal styles (pure CSS). Loaded after global.css so
+// the library's [data-state="visible"] rule wins over any equal-specificity
+// resting rule. Hero stays GSAP-controlled (see global.css #hero override).
+import "@polgubau/astro-reveal/styles";
 
 interface Props {
-	title?: string;
-	description?: string;
-	image?: string;
+  title?: string;
+  description?: string;
+  image?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -18,15 +22,15 @@ const lang = getLangFromUrl(Astro.url);
 const metadata = getMetadata();
 
 const {
-	title = metadata.title,
-	description = metadata.description,
-	image = "/og-image.png",
+  title = metadata.title,
+  description = metadata.description,
+  image = "/og-image.png",
 } = Astro.props;
 
 // Generate alternate language URL (single-locale site)
 const alternateUrl = new URL(
-	Astro.url.pathname.replace(/^\/(ca|en)/, ""),
-	Astro.site,
+  Astro.url.pathname.replace(/^\/(ca|en)/, ""),
+  Astro.site,
 );
 ---
 
@@ -42,8 +46,8 @@ const alternateUrl = new URL(
 <meta name="apple-mobile-web-app-title" content="doscientos" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta
-	name="apple-mobile-web-app-status-bar-style"
-	content="black-translucent"
+  name="apple-mobile-web-app-status-bar-style"
+  content="black-translucent"
 />
 <link rel="manifest" href="/site.webmanifest" />
 
@@ -57,10 +61,10 @@ const alternateUrl = new URL(
 <link rel="sitemap" href="/sitemap.xml" />
 <link rel="me" href="https://brandfetch.com/doscientos.es" />
 <link
-	rel="alternate"
-	type="application/rss+xml"
-	title={title}
-	href={new URL("rss.xml", Astro.site)}
+  rel="alternate"
+  type="application/rss+xml"
+  title={title}
+  href={new URL("rss.xml", Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
