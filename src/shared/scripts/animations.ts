@@ -63,23 +63,26 @@ const setupHero = (extraDelay = 0) => {
 		.split(" ")
 		.map(
 			(word) =>
-				`<span class="inline-block overflow-hidden"><span class="inline-block word-inner">${word}</span></span>`,
+				`<span class="inline-block overflow-hidden align-bottom" style="perspective:600px"><span class="inline-block word-inner" style="transform-origin:bottom center">${word}</span></span>`,
 		)
 		.join(" ");
 
 	// h1 has data-reveal so CSS hides it; reveal it immediately before word anim
 	gsap.set(h1, { opacity: 1 });
 
+	// Premium word-reveal: slides up from behind a clip mask with a 3-D tilt
+	// and a stagger wave (ease on the stagger itself gives the cascade feel).
 	gsap.fromTo(
-		".word-inner",
-		{ yPercent: 100, opacity: 0 },
+		"#hero h1 .word-inner",
+		{ yPercent: 110, rotateX: 55, opacity: 0 },
 		{
 			yPercent: 0,
+			rotateX: 0,
 			opacity: 1,
-			duration: 1,
-			stagger: 0.05,
+			duration: 0.85,
+			stagger: { each: 0.065, ease: "power1.in" },
 			ease: "power4.out",
-			delay: 0.2 + extraDelay,
+			delay: 0.15 + extraDelay,
 		},
 	);
 

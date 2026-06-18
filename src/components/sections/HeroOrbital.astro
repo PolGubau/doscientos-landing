@@ -22,28 +22,34 @@ const thumbnails = Array.from(
   class="absolute inset-0 pointer-events-none select-none"
   aria-hidden="true"
 >
-  {
-    thumbnails.map((project, i) => (
-      <a
-        href={`/projects/${project.id}`}
-        class="orbital-thumb absolute left-1/2 top-1/2 block rounded-lg pointer-events-auto overflow-hidden"
-        style={`background-color: ${project.data.color}`}
-        data-index={i}
-        data-title={project.data.title}
-        data-client={project.data.client}
-      >
-        <Image
-          src={project.data.cover}
-          alt={project.data.title}
-          width={300}
-          height={400}
-          class="orbital-img object-cover block"
-          loading="eager"
-          decoding="async"
-        />
-      </a>
-    ))
-  }
+  <!-- Inner wrapper rotated by the cursor (orbital.ts), independent of the
+       scroll transforms applied to #orbital-ring. -->
+  <div id="orbital-inner" class="absolute inset-0 pointer-events-none">
+    {
+      thumbnails.map((project, i) => (
+        <a
+          href={`/projects/${project.id}`}
+          class="orbital-thumb absolute left-1/2 top-1/2 block rounded-lg pointer-events-auto overflow-hidden"
+          style={`background-color: ${project.data.color}`}
+          data-index={i}
+          data-title={project.data.title}
+          data-client={project.data.client}
+        >
+          <Image
+            src={project.data.cover}
+            alt={project.data.title}
+            width={720}
+            height={1008}
+            format="webp"
+            quality={70}
+            class="orbital-img object-cover block"
+            loading="eager"
+            decoding="async"
+          />
+        </a>
+      ))
+    }
+  </div>
 </div>
 
 <!--
@@ -59,7 +65,21 @@ const thumbnails = Array.from(
   .orbital-thumb {
     /* Hidden from initial paint — GSAP reveals each card during the entrance animation */
     opacity: 0;
-    will-change: transform, opacity;
+    /* No permanent will-change: it pins the card to a base-resolution GPU layer,
+       which the ring's scale(3) then stretches → blurry border-radius + image on
+       the proximity 3D tilt. Letting Chrome rasterize on demand keeps it sharp at
+       the real screen-space scale. */
+    transform-style: preserve-3d;
+    --shadow-t: 0;
+    box-shadow:
+      0 calc(var(--shadow-t) * 6px) calc(var(--shadow-t) * 16px)
+        rgb(0 0 0 / calc(var(--shadow-t) * 0.12)),
+      0 calc(var(--shadow-t) * 2px) calc(var(--shadow-t) * 5px)
+        rgb(0 0 0 / calc(var(--shadow-t) * 0.06));
+  }
+
+  #orbital-inner {
+    will-change: transform;
     transform-style: preserve-3d;
   }
 
@@ -112,6 +132,11 @@ const thumbnails = Array.from(
     overrides the absolute/inset-0 utility classes on the thumbs.
   */
   @media (max-width: 767px) {
+    /* The cursor-rotation wrapper has no role on mobile; collapse it so the
+       flex strip lays out the thumbs directly. */
+    #orbital-inner {
+      display: contents;
+    }
     #orbital-ring {
       position: relative;
       inset: auto;

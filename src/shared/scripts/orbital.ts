@@ -11,6 +11,8 @@ gsap.registerPlugin(ScrollTrigger);
  * Returning visits: thumbs snap to their circle position + rotation and fade in.
  * Scroll: the whole ring scales up, drifts down and rotates so the lower arc
  *   fills the space below the hero (scrubbed to scroll progress).
+ * Pointer: moving the cursor left/right tilts the whole ring (#orbital-inner),
+ *   composed independently of the scroll rotation on #orbital-ring.
  * Mobile (< 768px): ring is hidden.
  */
 
@@ -88,6 +90,7 @@ let mainTl: gsap.core.Timeline | undefined;
 let hoverCleanup: (() => void) | undefined;
 let labelCleanup: (() => void) | undefined;
 let inertiaCleanup: (() => void) | undefined;
+let pointerRotateCleanup: (() => void) | undefined;
 let scrollTl: gsap.core.Timeline | undefined;
 /** Mutable state shared between addScrollExpand and addHoverLabels. */
 const ringState = { scrollProgress: 0 };
@@ -101,6 +104,8 @@ export const killOrbital = () => {
 	labelCleanup = undefined;
 	inertiaCleanup?.();
 	inertiaCleanup = undefined;
+	pointerRotateCleanup?.();
+	pointerRotateCleanup = undefined;
 	scrollTl?.scrollTrigger?.kill();
 	scrollTl?.kill();
 	scrollTl = undefined;
@@ -134,12 +139,19 @@ const addScrollExpand = (ring: HTMLElement): gsap.core.Timeline => {
 	// Ring natural center is at 50 % of its own height (absolute inset-0 = vh).
 	const yOffset = targetArcTop + scaledRadius - vh * 0.5;
 
+	// Measure how far the hero sits below the viewport top at load time
+	// (caused by the fixed-navbar spacer). Using that offset as the start
+	// point makes the pin activate immediately on the first scroll pixel.
+	const heroEl = document.getElementById("hero");
+	const heroOffset = Math.round(heroEl?.getBoundingClientRect().top ?? 0);
+	const startOffset = heroOffset > 0 ? `${heroOffset}px` : "top";
+
 	const tl = gsap.timeline({
 		scrollTrigger: {
 			trigger: "#hero",
-			start: "top top",
+			start: `top ${startOffset}`,
 			pin: true,
-			end: "+=400%",
+			end: "+=200%",
 			scrub: 1,
 			onUpdate: (self) => {
 				ringState.scrollProgress = self.progress;
@@ -149,10 +161,26 @@ const addScrollExpand = (ring: HTMLElement): gsap.core.Timeline => {
 
 	// 1) The centered title fades out as soon as the scroll begins — it lives in
 	//    the middle of the ring and clears the stage as the wheel takes over.
+	//    Explicit fromTo (not .to) with immediateRender:false so the reverse
+	//    target (autoAlpha:1, y:0) is fixed: scrubbing back to the top always
+	//    restores the title. A plain .to() lets ScrollTrigger.refresh() re-record
+	//    a faded autoAlpha:0 as the start, which made the title sometimes never
+	//    reappear when scrolling up.
 	if (content) {
-		tl.to(
+		// Title exits with a cinematic "dissolve into the distance" effect:
+		// scale down, drift up, and blur out — more dramatic than a plain fade.
+		tl.fromTo(
 			content,
-			{ autoAlpha: 0, y: -30, ease: "power2.in", duration: 0.15 },
+			{ autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)" },
+			{
+				autoAlpha: 0,
+				y: -60,
+				scale: 0.82,
+				filter: "blur(10px)",
+				ease: "power3.in",
+				duration: 0.2,
+				immediateRender: false,
+			},
 			0,
 		);
 	}
@@ -164,46 +192,64 @@ const addScrollExpand = (ring: HTMLElement): gsap.core.Timeline => {
 			scrollReveal,
 			{ autoAlpha: 0, y: 40 },
 			{ autoAlpha: 1, y: 0, ease: "power2.out", duration: 0.22 },
-			0.15,
+			0.45,
 		);
 	}
 
 	// 3) Ring scales up and descends so only the top arc of thumbnails is
 	//    visible in the lower portion of the viewport.  The y offset is
 	//    computed above to be consistent across all desktop screen sizes.
-	// Scale + descent: "power2.out" makes it rush down quickly at first and
-	// settle — independent of the rotation which stays linear.
+	// Scale + descent: "expo.inOut" eases in and out for a more cinematic
+	// reveal — independent of the rotation which stays linear.
+	// Small dead zone (first 5 % of scroll progress) where nothing moves,
+	// so a light first touch doesn't immediately animate the ring.
 	tl.fromTo(
 		ring,
 		{ scale: 1, y: 0, transformOrigin: "center center" },
-		{ scale: SCALE, y: yOffset, ease: "power2.out", duration: 1 },
-		0,
+		{ scale: SCALE, y: yOffset, ease: "expo.inOut", duration: 0.95 },
+		0.05,
 	);
-	// Rotation stays linear (ease: none) over the same duration.
+	// Match the same easing as scale so both properties move in lockstep
+	// and the rotation is imperceptible at the very start of the scroll.
 	tl.fromTo(
 		ring,
 		{ rotation: 0 },
-		{ rotation: 180, ease: "none", duration: 1 },
-		0,
+		{ rotation: 90, ease: "expo.inOut", duration: 0.95 },
+		0.05,
 	);
 
 	// 4) At the tail the message and the ring fade out, so the next section is
-	//    revealed only after the full spin.
+	//    revealed only after the full spin. Explicit fromTo with
+	//    immediateRender:false (same fix as the title) so a ScrollTrigger.refresh()
+	//    that fires while they're faded can't re-record autoAlpha:0 as the start
+	//    and freeze the reverse — scrubbing back up always restores them.
 	if (scrollReveal) {
-		tl.to(
+		tl.fromTo(
 			scrollReveal,
-			{ autoAlpha: 0, y: -40, ease: "none", duration: 0.12 },
+			{ autoAlpha: 1, y: 0 },
+			{
+				autoAlpha: 0,
+				y: -40,
+				ease: "none",
+				duration: 0.12,
+				immediateRender: false,
+			},
 			0.85,
 		);
 	}
-	tl.to(ring, { autoAlpha: 0, ease: "none", duration: 0.15 }, 0.85);
+	tl.fromTo(
+		ring,
+		{ autoAlpha: 1 },
+		{ autoAlpha: 0, ease: "none", duration: 0.15, immediateRender: false },
+		0.85,
+	);
 
 	return tl;
 };
 
 /**
  * Velocity-based scroll inertia: each card tilts (rotationX) and shears
- * (skewX) proportionally to scroll velocity with a per-card stagger offset.
+ * (skewX) proportionally to scroll velocity, propagated as a staggered wave.
  * Both effects spring back to 0 when scrolling stops.
  * Returns a cleanup function.
  */
@@ -217,63 +263,56 @@ const addScrollInertia = (thumbs: HTMLElement[]): (() => void) => {
 	/** Per-card stagger offset in seconds (wave lag). */
 	const STAGGER = 0.06;
 
-	// quickTo setters — one per card per property.
-	const setRX = thumbs.map((t) =>
-		gsap.quickTo(t, "rotationX", { duration: 0.25, ease: "power2.out" }),
-	);
-	const setSkew = thumbs.map((t) =>
-		gsap.quickTo(t, "skewX", { duration: 0.2, ease: "power2.out" }),
-	);
-
 	let lastScrollY = window.scrollY;
-	let velocity = 0;
-	let springRaf: number | undefined;
+	let idleTimer: ReturnType<typeof setTimeout> | undefined;
+	let rafId: number | undefined;
+	let pendingTilt = 0;
+	let pendingSkew = 0;
 
 	// Spring-back: both rotationX and skewX return to 0 with an elastic bounce.
-	// Kill ONLY the inertia quickTos (rotationX/skewX) first — using a property
-	// filter — so the proximity effect's tweens (rotationY/scaleX/scaleY/z) keep
-	// running. A blanket `overwrite: true` here would kill those too, which is
-	// why the cards stopped reacting to the cursor.
+	// Kill ONLY the inertia properties (rotationX/skewX) so the proximity
+	// effect's tweens (rotationY/scaleX/scaleY/z) keep running.
 	const springBack = () => {
-		thumbs.forEach((t, i) => {
-			gsap.killTweensOf(t, "rotationX,skewX");
-			gsap.to(t, {
-				rotationX: 0,
-				skewX: 0,
-				duration: 0.8 + i * 0.02,
-				ease: "elastic.out(1, 0.55)",
-			});
+		gsap.killTweensOf(thumbs, "rotationX,skewX");
+		gsap.to(thumbs, {
+			rotationX: 0,
+			skewX: 0,
+			duration: 0.8,
+			stagger: 0.02,
+			ease: "elastic.out(1, 0.55)",
 		});
 	};
 
-	let idleTimer: ReturnType<typeof setTimeout> | undefined;
+	// Apply the latest velocity-derived tilt/skew as a single staggered tween,
+	// coalesced to one per animation frame (replaces the old per-card
+	// setTimeout, which drifted and could not be overwritten cleanly).
+	const apply = () => {
+		rafId = undefined;
+		gsap.to(thumbs, {
+			rotationX: pendingTilt,
+			skewX: pendingSkew,
+			duration: 0.3,
+			stagger: STAGGER,
+			ease: "power2.out",
+			overwrite: "auto",
+		});
+	};
 
 	const onScroll = () => {
 		const now = window.scrollY;
-		velocity = now - lastScrollY; // px scrolled this frame
+		const velocity = now - lastScrollY; // px scrolled this frame
 		lastScrollY = now;
 
 		// Clamp influence to [-1, 1] then scale to each property's max.
 		const influence = Math.max(-1, Math.min(1, velocity * VEL_SCALE));
-		const tilt = influence * MAX_TILT;
-		const skew = influence * MAX_SKEW;
+		pendingTilt = influence * MAX_TILT;
+		pendingSkew = influence * MAX_SKEW;
 
-		thumbs.forEach((_, i) => {
-			// Stagger each card so the effect propagates as a wave.
-			setTimeout(
-				() => {
-					setRX[i](tilt);
-					setSkew[i](skew);
-				},
-				i * STAGGER * 1000,
-			);
-		});
+		if (rafId === undefined) rafId = requestAnimationFrame(apply);
 
 		// Reset idle timer — spring back ~120 ms after scrolling stops.
 		clearTimeout(idleTimer);
-		idleTimer = setTimeout(() => {
-			springBack();
-		}, 120);
+		idleTimer = setTimeout(springBack, 120);
 	};
 
 	window.addEventListener("scroll", onScroll, { passive: true });
@@ -281,9 +320,10 @@ const addScrollInertia = (thumbs: HTMLElement[]): (() => void) => {
 	return () => {
 		window.removeEventListener("scroll", onScroll);
 		clearTimeout(idleTimer);
-		if (springRaf !== undefined) cancelAnimationFrame(springRaf);
+		if (rafId !== undefined) cancelAnimationFrame(rafId);
+		gsap.killTweensOf(thumbs, "rotationX,skewX");
 		// Ensure cards are upright when the scene is killed.
-		for (const t of thumbs) gsap.set(t, { rotationX: 0, skewX: 0 });
+		gsap.set(thumbs, { rotationX: 0, skewX: 0 });
 	};
 };
 
@@ -315,8 +355,11 @@ const addHoverLabels = (
 
 	for (const thumb of thumbs) {
 		const enter = () => {
-			// Only show the label once the ring has started expanding on scroll.
-			if (ringState.scrollProgress < 0.2) return;
+			// Only show the label while the ring is expanded AND still on-screen:
+			// below 0.2 it hasn't grown yet; above 0.8 it's fading out at the tail,
+			// so a label would float over a vanishing ring.
+			const p = ringState.scrollProgress;
+			if (p < 0.2 || p > 0.8) return;
 			if (titleEl) titleEl.textContent = thumb.dataset.title ?? "";
 			if (clientEl) clientEl.textContent = thumb.dataset.client ?? "";
 			place(thumb);
@@ -352,11 +395,20 @@ const addHoverLabels = (
 };
 
 /**
- * Proximity-driven 3D effect.
- * A single mousemove listener on the document computes the distance from the
- * cursor to every card center. Influence falls off smoothly from 1 (cursor on
- * the card) to 0 (cursor ≥ PROXIMITY px away). Each property is driven by a
- * gsap.quickTo setter so the response is always interpolated, never jumpy.
+ * Proximity-driven effect: direction-aware tilt + magnetic pull + lift.
+ * All transforms are 2D only — no rotationY / translateZ. Any 3D transform
+ * promotes the card to a composited GPU layer rasterized once at base size;
+ * when the ring scales ×3 on scroll that cached texture stretches and looks
+ * pixelated. 2D transforms are re-rasterized every frame at screen resolution.
+ *
+ * Property ownership (avoids fighting scroll-inertia which owns rotationX/skewX):
+ *   scaleX / scaleY  — lift (card grows toward cursor)
+ *   skewY            — direction-aware tilt: cursor right → negative skewY,
+ *                      mimics a horizontal rotateY without 3D compositing
+ *   x / y            — magnetic pull: card drifts a few px toward the cursor
+ *   --shadow-t       — shadow depth grows with proximity
+ *
+ * rotationX is intentionally NOT driven here: scroll inertia is its sole owner.
  */
 const addProximityEffects = (
 	thumbs: HTMLElement[],
@@ -367,20 +419,32 @@ const addProximityEffects = (
 	const PROXIMITY = 220;
 
 	// One quickTo setter per property per card — zero allocation per frame.
-	const setRotY = thumbs.map((t) =>
-		gsap.quickTo(t, "rotationY", { duration: 0.6, ease: "power3.out" }),
-	);
 	const setSclX = thumbs.map((t) =>
-		gsap.quickTo(t, "scaleX", { duration: 0.6, ease: "power3.out" }),
+		gsap.quickTo(t, "scaleX", { duration: 0.55, ease: "power3.out" }),
 	);
 	const setSclY = thumbs.map((t) =>
-		gsap.quickTo(t, "scaleY", { duration: 0.6, ease: "power3.out" }),
+		gsap.quickTo(t, "scaleY", { duration: 0.55, ease: "power3.out" }),
 	);
-	const setZ = thumbs.map((t) =>
-		gsap.quickTo(t, "z", { duration: 0.6, ease: "power3.out" }),
+	// skewY driven by the cursor's horizontal offset from the card center:
+	// simulates a 3D horizontal tilt (like rotateY) without a 3D transform.
+	const setSkewY = thumbs.map((t) =>
+		gsap.quickTo(t, "skewY", { duration: 0.55, ease: "power3.out" }),
+	);
+	// NOTE: x/y drift is intentionally omitted — those properties are owned by
+	// the circle-positioning animation. Setting them here would override the
+	// card's orbital position and send it flying to the origin.
+	// Shadow driven by the proximity factor — animates the --shadow-t CSS
+	// variable that the card's box-shadow is built from.
+	const setShadow = thumbs.map((t) =>
+		gsap.quickTo(t, "--shadow-t", { duration: 0.6, ease: "power3.out" }),
 	);
 
-	// Bake perspective into every card once.
+	// Previous raw influence per card so onMove can skip out-of-range cards
+	// that are already at rest — eliminates most per-frame quickTo calls.
+	const prevT = thumbs.map(() => 0);
+
+	// Bake perspective into every card once — consumed by the scroll inertia
+	// effect's rotationX tilt (proximity itself is 2D-only).
 	gsap.set(thumbs, { transformPerspective: PERSPECTIVE });
 
 	const onMove = (e: MouseEvent) => {
@@ -393,26 +457,35 @@ const addProximityEffects = (
 			const cy = r.top + r.height / 2;
 			const dist = Math.hypot(mx - cx, my - cy);
 			const raw = Math.max(0, 1 - dist / PROXIMITY);
-			// Steeper curve: full flip is reached when cursor is within ~40% of
-			// PROXIMITY radius (~88 px), so the card visibly flips rather than
-			// just leaning. quickTo interpolates smoothly between frames.
+			// Skip cards out of range AND already at rest (single frame that
+			// brings t → 0 still runs so the card animates home before skipping).
+			if (raw === 0 && prevT[i] === 0) continue;
+			prevT[i] = raw;
+			// Steeper curve: full effect at ~40 % of PROXIMITY radius (~88 px).
 			const t = Math.min(raw * 2.5, 1);
 
-			setRotY[i](t * 180); // rotationY (GSAP name) — avoids "not eligible for reset" warning
-			setSclX[i](1 + t * 0.06); // subtle lift — split into scaleX/scaleY to avoid "not eligible for reset" warning
-			setSclY[i](1 + t * 0.06);
-			setZ[i](t * 50);
+			// Cursor position relative to the card center, normalised to ±1
+			// (clamped so values beyond the card edge don't over-drive the effect).
+			const relX = Math.max(-1, Math.min(1, (mx - cx) / (r.width * 0.6)));
+
+			setSclX[i](1 + t * 0.1);
+			setSclY[i](1 + t * 0.1);
+			// Negative correlation: cursor right → left-leaning skewY → the card
+			// appears to rotate its right side toward the viewer, like rotateY.
+			setSkewY[i](relX * t * -10);
+			setShadow[i](t);
 		}
 	};
 
 	// Cursor left the browser viewport — restore everything.
 	const onDocLeave = () => {
 		for (let i = 0; i < thumbs.length; i++) {
-			setRotY[i](0); // reset rotationY
 			setSclX[i](1);
 			setSclY[i](1);
-			setZ[i](0);
-			// Restore the radial rotation that the entrance animation set.
+			setSkewY[i](0);
+			setShadow[i](0);
+			prevT[i] = 0;
+			// Restore the radial rotation set by the entrance animation.
 			// Kill ONLY prior `rotation` tweens (not the inertia/proximity ones)
 			// so overwrite:"auto" doesn't try to reset rotationX/skewX and emit
 			// the "not eligible for reset" warning.
@@ -431,6 +504,38 @@ const addProximityEffects = (
 	return () => {
 		document.removeEventListener("mousemove", onMove);
 		document.removeEventListener("mouseleave", onDocLeave);
+	};
+};
+
+/**
+ * Pointer-driven ring rotation. Moving the cursor toward the right edge of the
+ * viewport tilts the whole ring clockwise; toward the left, counter-clockwise.
+ * Applied to #orbital-inner so it composes with — and never fights — the scroll
+ * timeline, which rotates the outer #orbital-ring. Returns a cleanup function.
+ */
+const addPointerRotation = (inner: HTMLElement): (() => void) => {
+	/** Max ring tilt in degrees at the far left/right edge of the viewport. */
+	const MAX = 6;
+
+	const setRot = gsap.quickTo(inner, "rotation", {
+		duration: 1.1,
+		ease: "power3.out",
+	});
+
+	const onMove = (e: MouseEvent) => {
+		// Normalize cursor X to [-1, 1]: -1 = left edge, +1 = right edge.
+		const nx = (e.clientX / window.innerWidth) * 2 - 1;
+		setRot(nx * MAX);
+	};
+	const onLeave = () => setRot(0);
+
+	document.addEventListener("mousemove", onMove);
+	document.addEventListener("mouseleave", onLeave);
+
+	return () => {
+		document.removeEventListener("mousemove", onMove);
+		document.removeEventListener("mouseleave", onLeave);
+		gsap.set(inner, { rotation: 0 });
 	};
 };
 
@@ -512,6 +617,8 @@ export const setupOrbital = (onCircleReady?: () => void) => {
 				const label = document.getElementById("orbital-label");
 				if (label) labelCleanup = addHoverLabels(thumbs, label);
 				inertiaCleanup = addScrollInertia(thumbs);
+				const inner = ring.querySelector<HTMLElement>("#orbital-inner");
+				if (inner) pointerRotateCleanup = addPointerRotation(inner);
 				onCircleReady?.();
 			},
 		});
