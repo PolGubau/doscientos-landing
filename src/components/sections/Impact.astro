@@ -8,18 +8,21 @@ const stats = [
     label: "Usuarios en 3 meses sin invertir en ads",
     description:
       "Flatmatch pasó de 0 a 500 usuarios orgánicos en su primer trimestre. Cuando el producto resuelve un problema real, los usuarios lo recomiendan solos.",
+    href: "/projects/flatmatch",
   },
   {
     number: "-90%",
     label: "Menos tiempo en procesos manuales",
     description:
       "Bitácora pasó de 3 horas procesando pedidos a 15 minutos automáticos. El sistema se pagó solo en 2 meses.",
+    href: "/projects/bitacora-erp",
   },
   {
     number: "€0",
     label: "Downtime en una migración de 1M+ registros",
     description:
       "IFCO Systems tenía un sistema legacy de 15 años. Lo migramos a arquitectura moderna sin parar el negocio ni un minuto.",
+    href: "/projects/ifco",
   },
 ];
 ---
@@ -41,6 +44,7 @@ const stats = [
           number={stat.number}
           label={stat.label}
           description={stat.description}
+          href={stat.href}
         />
       ))
     }

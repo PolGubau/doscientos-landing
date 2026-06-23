@@ -1,20 +1,31 @@
 ---
+import { ArrowUpRight } from "@lucide/astro";
+
 interface Props {
   number: string;
   label: string;
   description: string;
+  href?: string;
+  linkText?: string;
 }
 
-const { number, label, description } = Astro.props;
+const { number, label, description, href, linkText = "Ver caso" } = Astro.props;
 
 // Extract numeric value, prefix and suffix for GSAP counter
 const numericValue = number.replace(/[^0-9.-]/g, "");
 const prefix = number.match(/^[^0-9]+/)?.[0] || "";
 const suffix = number.match(/[0-9]([^0-9]+)$/)?.[1] || "";
+
+const Tag = href ? "a" : "div";
 ---
 
-<div
-  class="p-8 md:p-12 rounded-3xl bg-accent flex flex-col gap-4 h-full"
+<Tag
+  href={href}
+  class:list={[
+    "p-8 md:p-12 rounded-3xl bg-accent flex flex-col gap-4 h-full",
+    href &&
+      "group transition-all duration-300 hover:-translate-y-1 hover:shadow-pastel",
+  ]}
   data-reveal="scale"
   data-speed="normal"
   data-easing="soft"
@@ -38,4 +49,13 @@ const suffix = number.match(/[0-9]([^0-9]+)$/)?.[1] || "";
   <p class="text-muted-foreground">
     {description}
   </p>
-</div>
+
+  {
+    href && (
+      <span class="mt-auto pt-2 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+        {linkText}
+        <ArrowUpRight class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      </span>
+    )
+  }
+</Tag>

@@ -90,7 +90,7 @@ const benefits = [
           width={800}
           height={650}
           src={imagePhones}
-          alt="Captura de pantalla del panel de administración de NovaHair, mostrando un diseño limpio y moderno con gráficos de rendimiento y gestión de clientes."
+          alt="Apps móviles a medida desarrolladas por doscientos para gestión de clientes y pedidos"
           class="w-full h-full object-cover object-top"
         />
 
@@ -99,77 +99,54 @@ const benefits = [
         >
         </div>
       </div>
-      <li
-        class="col-span-2 panel flex flex-col justify-between gap-4"
-        data-reveal="top-right"
-        data-speed="normal"
-        data-easing="smooth"
-      >
-        <header class="flex flex-col gap-4">
-          <h3>{services[1].title}</h3>
-          <p>{services[1].description}</p>
-        </header>
-        {
-          benefits && (
-            <ul class="flex gap-2 flex-wrap max-w-md">
-              {benefits.map((step) => {
-                const IconComponent = step.icon;
-                return (
-                  <li class="py-1.5 px-3 bg-muted text-sm rounded-full flex gap-2 items-center text-foreground">
-                    <IconComponent class="size-3.5" />
-                    {step.label}
-                  </li>
-                );
-              })}
-            </ul>
-          )
-        }
-      </li>
-      <li
-        class="col-span-2 col-start-2 row-start-2 panel"
-        data-reveal="right"
-        data-speed="normal"
-        data-easing="smooth"
-      >
-        <div class="grid lg:grid-cols-[2fr_1fr] gap-4 h-full">
-          <div class="flex flex-col justify-between gap-6">
-            <header class="flex flex-col gap-4">
-              <h3>{services[2].title}</h3>
-              <p>{services[2].description}</p>
-            </header>
-            <CtaButton size="sm" />
-          </div>
-          <div class="relative w-full flex items-end justify-end">
-            <Image
-              width={500}
-              height={900}
-              src={imageMobile}
-              alt="Captura de pantalla del panel de administración de NovaHair, mostrando un diseño limpio y moderno con gráficos de rendimiento y gestión de clientes."
-              class="w-full max-h-[200px] border-4 border-b-0 border-primary bg-[#c7c7c7] p-1 rounded-t-[32px] object-cover object-top"
-            />
-
-            <div
-              class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-accent"
-            >
-            </div>
-          </div>
+    </li>
+    <li
+      class="col-span-2 panel flex flex-col justify-between gap-4"
+      data-reveal="top-right"
+      data-speed="normal"
+      data-easing="smooth"
+    >
+      <header class="flex flex-col gap-4">
+        <h3>{services[1].title}</h3>
+        <p>{services[1].description}</p>
+      </header>
+      {
+        benefits && (
+          <ul class="flex gap-2 flex-wrap max-w-md">
+            {benefits.map((step) => {
+              const IconComponent = step.icon;
+              return (
+                <li class="py-1.5 px-3 bg-muted text-sm rounded-full flex gap-2 items-center text-foreground">
+                  <IconComponent class="size-3.5" />
+                  {step.label}
+                </li>
+              );
+            })}
+          </ul>
+        )
+      }
+    </li>
+    <li
+      class="col-span-2 col-start-2 row-start-2 panel"
+      data-reveal="right"
+      data-speed="normal"
+      data-easing="smooth"
+    >
+      <div class="grid lg:grid-cols-[2fr_1fr] gap-4 h-full">
+        <div class="flex flex-col justify-between gap-6">
+          <header class="flex flex-col gap-4">
+            <h3>{services[2].title}</h3>
+            <p>{services[2].description}</p>
+          </header>
+          <CtaButton size="sm" />
         </div>
-      </li>
-      <li
-        class="col-span-2 row-start-3 panel"
-        data-reveal="bottom-left"
-        data-speed="normal"
-        data-easing="smooth"
-      >
-        <h3>{services[3].title}</h3>
-        <p>{services[3].description}</p>
-        <div class="relative w-full h-full">
+        <div class="relative w-full flex items-end justify-end">
           <Image
-            width={900}
-            height={300}
-            src={imageFooter}
-            alt="Captura de pantalla del panel de administración de NovaHair, mostrando un diseño limpio y moderno con gráficos de rendimiento y gestión de clientes."
-            class="w-full max-w-[700px] h-[110px] mt-4 border border-muted p-2 rounded-2xl object-cover object-top"
+            width={500}
+            height={900}
+            src={imageMobile}
+            alt="App móvil de Flatmatch mostrando el flujo de búsqueda y reserva de piso"
+            class="w-full max-h-[200px] border-4 border-b-0 border-primary bg-[#c7c7c7] p-1 rounded-t-[32px] object-cover object-top"
           />
 
           <div
@@ -177,21 +154,44 @@ const benefits = [
           >
           </div>
         </div>
-      </li>
-      <li
-        class="flex flex-col gap-4 bg-linear-60 from-primary/20 to-primary/30 rounded-2xl shadow-pastel p-7 justify-end"
-        data-reveal="bottom-right"
-        data-speed="normal"
-        data-easing="bounce"
-      >
-        <header class="h-full flex flex-col justify-end">
-          <h3 class="text-2xl font-semibold text-pretty">
-            {services[4].title}
-          </h3>
-          <p class="text-xl">{services[4].description}</p>
-        </header>
-        <CtaButton />
-      </li>
+      </div>
+    </li>
+    <li
+      class="col-span-2 row-start-3 panel"
+      data-reveal="bottom-left"
+      data-speed="normal"
+      data-easing="smooth"
+    >
+      <h3>{services[3].title}</h3>
+      <p>{services[3].description}</p>
+      <div class="relative w-full h-full">
+        <Image
+          width={900}
+          height={300}
+          src={imageFooter}
+          alt="Panel de administración a medida tras migrar un sistema legacy a arquitectura moderna"
+          class="w-full max-w-[700px] h-[110px] mt-4 border border-muted p-2 rounded-2xl object-cover object-top"
+        />
+
+        <div
+          class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-accent"
+        >
+        </div>
+      </div>
+    </li>
+    <li
+      class="flex flex-col gap-4 bg-linear-60 from-primary/20 to-primary/30 rounded-2xl shadow-pastel p-7 justify-end"
+      data-reveal="bottom-right"
+      data-speed="normal"
+      data-easing="bounce"
+    >
+      <header class="h-full flex flex-col justify-end">
+        <h3 class="text-2xl font-semibold text-pretty">
+          {services[4].title}
+        </h3>
+        <p class="text-xl">{services[4].description}</p>
+      </header>
+      <CtaButton />
     </li>
   </ul>
 </section>
