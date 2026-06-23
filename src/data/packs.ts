@@ -354,7 +354,7 @@ export const packs: Pack[] = [
 			{
 				question: "¿Sirve para mi sector concreto?",
 				answer:
-					"Sí. El pack está pensado para profesionales de servicios —abogados, asesorías, consultorías, autónomos— y adaptamos los textos a tu actividad.",
+					"Sí. El pack está pensado para profesionales de servicios ,abogados, asesorías, consultorías, autónomos— y adaptamos los textos a tu actividad.",
 			},
 			{
 				question: "¿Puedo añadir más páginas de servicios?",

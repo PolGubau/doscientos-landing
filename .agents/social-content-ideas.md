@@ -8,13 +8,13 @@
 
 ## 📌 Pilares de contenido
 
-| Pilar | Qué comunica | % del calendario |
-|-------|-------------|-----------------|
-| **Prueba social** | Resultados reales de clientes | 25% |
-| **Educación** | Te enseñamos algo útil | 30% |
-| **Proceso** | Cómo trabajamos por dentro | 20% |
-| **Opinión** | Punto de vista del equipo | 15% |
-| **Conversión directa** | CTA a propuesta | 10% |
+| Pilar                  | Qué comunica                  | % del calendario |
+| ---------------------- | ----------------------------- | ---------------- |
+| **Prueba social**      | Resultados reales de clientes | 25%              |
+| **Educación**          | Te enseñamos algo útil        | 30%              |
+| **Proceso**            | Cómo trabajamos por dentro    | 20%              |
+| **Opinión**            | Punto de vista del equipo     | 15%              |
+| **Conversión directa** | CTA a propuesta               | 10%              |
 
 ---
 
@@ -25,14 +25,14 @@
 **Post #1 — Antes/Después (carrusel)**
 - Slide 1: "De 3 horas a 15 minutos. Este es el proyecto que más nos enorgullece."
 - Slide 2: Contexto — empresa de logística, pedidos manuales por email
-- Slide 3: Lo que construimos — sistema de gestión automatizado
+- Slide 3: Lo que construimos , sistema de gestión automatizado
 - Slide 4: Resultado — €15K/mes ahorrados, ROI en 2 meses
 - Slide 5: "¿Tienes un proceso así? Cuéntanoslo."
 - **Caption:** "El software que nadie quería tocar. Nosotros sí lo tocamos. [historia]"
 
 **Post #2 — Stat card (estático)**
 - Visual: "500+ usuarios sin gastar un euro en ads"
-- Caption: "El mejor marketing es un producto que funciona. Flatmatch pasó de 0 a 500 usuarios en 3 meses — orgánicamente. Esto es lo que construimos."
+- Caption: "El mejor marketing es un producto que funciona. Flatmatch pasó de 0 a 500 usuarios en 3 meses , orgánicamente. Esto es lo que construimos."
 
 **Post #3 — Testimonio en formato quote (estático)**
 - Visual: Quote de Sofia Martínez con foto del proyecto Flatmatch
@@ -86,9 +86,9 @@
 ### PILAR: Proceso
 
 **Post #11 — "Una semana con doscientos" (carrusel)**
-- Slide 1: Lunes — revisión de sprint, planning
-- Slide 2: Miércoles — desarrollo, PR reviews
-- Slide 3: Viernes — demo al cliente
+- Slide 1: Lunes , revisión de sprint, planning
+- Slide 2: Miércoles , desarrollo, PR reviews
+- Slide 3: Viernes , demo al cliente
 - **Caption:** "Cada viernes el cliente ve lo que hemos construido esa semana. Sin sorpresas al final."
 
 **Post #12 — "La primera llamada" (estático)**
@@ -214,12 +214,12 @@
 
 ## 📅 Calendario sugerido (semana tipo)
 
-| Día | Formato | Pilar |
-|-----|---------|-------|
-| Lunes | Reel 60s | Educación o proceso |
-| Martes | Carrusel Instagram | Prueba social |
-| Jueves | Post estático | Opinión / hot take |
-| Viernes | Reel 30s | Detrás de cámaras |
+| Día     | Formato            | Pilar               |
+| ------- | ------------------ | ------------------- |
+| Lunes   | Reel 60s           | Educación o proceso |
+| Martes  | Carrusel Instagram | Prueba social       |
+| Jueves  | Post estático      | Opinión / hot take  |
+| Viernes | Reel 30s           | Detrás de cámaras   |
 
 ---
 

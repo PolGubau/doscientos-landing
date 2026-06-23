@@ -30,7 +30,7 @@ Nuestra postura: el software debe adaptarse al negocio, no al revés. Rechazamos
 Para empresas que gestionan clientes, pedidos o equipos en Excel o un CRM genérico que no encaja con su proceso. Construimos la herramienta exacta: seguimiento de ventas, gestión de facturas, control de stock, informes automáticos. Sin licencias mensuales, sin adaptar el negocio a una plantilla.
 
 ### 2. MVPs en 6 semanas (SaaS, marketplaces, apps B2B)
-Plataformas de reservas, marketplaces, herramientas B2B, apps de gestión interna. Lanzamos lo justo para validar con usuarios reales — los primeros clientes prueban el producto mientras la competencia sigue en Figma.
+Plataformas de reservas, marketplaces, herramientas B2B, apps de gestión interna. Lanzamos lo justo para validar con usuarios reales , los primeros clientes prueban el producto mientras la competencia sigue en Figma.
 
 ### 3. Automatización de procesos
 Conectamos tiendas, ERPs, CRMs y contabilidades. Los pedidos entran automáticamente en el ERP, las facturas se generan y envían sin intervención humana, los informes se generan solos. ROI medible en 2-3 meses.
@@ -106,7 +106,7 @@ Deploy a producción, analytics configurado y monitorización activa. Se entrega
 - ROI: 300%
 - Testimonial: "No solo programan - entienden de producto. Nos ayudaron a priorizar lo que importaba y en 6 semanas teníamos 500+ usuarios y €50K en funding."
 
-### IFCO Recollections — Migración de sistema crítico de trazabilidad
+### IFCO Recollections , Migración de sistema crítico de trazabilidad
 - Cliente: IFCO Systems (gestiona +300 millones de palés reutilizables globalmente) / Michael Schmidt (CTO)
 - Reto: sistema de 15 años en producción, migración sin downtime
 - Resultado: 0 minutos de downtime, +40% de rendimiento, €30K/año ahorrados

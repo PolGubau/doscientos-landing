@@ -85,7 +85,7 @@ const gridPositions = (n: number, thumbW: number, thumbH: number) => {
 	}));
 };
 
-// Module-level refs — destroyed on each navigation via killOrbital
+// Module-level refs , destroyed on each navigation via killOrbital
 let mainTl: gsap.core.Timeline | undefined;
 let hoverCleanup: (() => void) | undefined;
 let labelCleanup: (() => void) | undefined;
@@ -159,7 +159,7 @@ const addScrollExpand = (ring: HTMLElement): gsap.core.Timeline => {
 		},
 	});
 
-	// 1) The centered title fades out as soon as the scroll begins — it lives in
+	// 1) The centered title fades out as soon as the scroll begins , it lives in
 	//    the middle of the ring and clears the stage as the wheel takes over.
 	//    Explicit fromTo (not .to) with immediateRender:false so the reverse
 	//    target (autoAlpha:1, y:0) is fixed: scrubbing back to the top always
@@ -186,7 +186,7 @@ const addScrollExpand = (ring: HTMLElement): gsap.core.Timeline => {
 	}
 
 	// 2) Subtitle + CTAs slide in at the top, replacing the title while the
-	//    ring grows — the message completes itself as the wheel expands.
+	//    ring grows , the message completes itself as the wheel expands.
 	if (scrollReveal) {
 		tl.fromTo(
 			scrollReveal,
@@ -510,7 +510,7 @@ const addProximityEffects = (
 /**
  * Pointer-driven ring rotation. Moving the cursor toward the right edge of the
  * viewport tilts the whole ring clockwise; toward the left, counter-clockwise.
- * Applied to #orbital-inner so it composes with — and never fights — the scroll
+ * Applied to #orbital-inner so it composes with — and never fights , the scroll
  * timeline, which rotates the outer #orbital-ring. Returns a cleanup function.
  */
 const addPointerRotation = (inner: HTMLElement): (() => void) => {
