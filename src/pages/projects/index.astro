@@ -107,7 +107,10 @@ const projects = await getProjects();
       </h2>
 
       <!-- Projects grid -->
-      <section class="grid lg:grid-cols-2 gap-4" data-stagger="150">
+      <section
+        class="grid lg:grid-cols-2 gap-4 overflow-x-clip"
+        data-stagger="150"
+      >
         {
           projects.map((project, index) => (
             <article
