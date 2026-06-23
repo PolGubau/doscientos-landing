@@ -30,7 +30,7 @@ const thumbnails = Array.from(
         <a
           href={`/projects/${project.id}`}
           class="orbital-thumb absolute left-1/2 top-1/2 block rounded-lg pointer-events-auto overflow-hidden"
-          style={`background-color: ${project.data.color}`}
+          style={`background-color: ${project.data.color}; --i: ${i}`}
           data-index={i}
           data-title={project.data.title}
           data-client={project.data.client}
@@ -38,12 +38,12 @@ const thumbnails = Array.from(
           <Image
             src={project.data.cover}
             alt={project.data.title}
-            width={720}
-            height={1008}
+            widths={[240, 720]}
+            sizes="(max-width: 767px) 240px, 720px"
             format="webp"
             quality={70}
             class="orbital-img object-cover block"
-            loading="eager"
+            loading={i < 4 ? "eager" : "lazy"}
             decoding="async"
           />
         </a>
@@ -131,6 +131,17 @@ const thumbnails = Array.from(
     instead of an absolutely-positioned ring. Higher specificity (#id .class)
     overrides the absolute/inset-0 utility classes on the thumbs.
   */
+  @keyframes orbital-slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
   @media (max-width: 767px) {
     /* The cursor-rotation wrapper has no role on mobile; collapse it so the
        flex strip lays out the thumbs directly. */
@@ -181,6 +192,10 @@ const thumbnails = Array.from(
       border-radius: 1rem;
       box-shadow: 0 10px 24px -10px rgb(0 0 0 / 0.28);
       transition: transform 0.18s ease;
+      /* Staggered entrance: each card slides up with a delay based on its index.
+         animation-fill-mode: both keeps the card hidden before the delay fires. */
+      animation: orbital-slide-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: calc(var(--i, 0) * 55ms + 150ms);
     }
     /* Tactile press feedback (replaces the cursor-only proximity effect) */
     #orbital-ring .orbital-thumb:active {
