@@ -1,6 +1,7 @@
 ---
 import ContactForm from "~/components/forms/ContactForm";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
+import { branding } from "~/config/branding";
 import MainLayout from "~/layouts/MainLayout.astro";
 ---
 
@@ -16,11 +17,27 @@ import MainLayout from "~/layouts/MainLayout.astro";
         align="center"
       />
 
-      <article
-        class="bg-muted/30 w-full rounded-3xl px-4 py-6 md:px-6 md:py-8 max-w-2xl mx-auto"
-      >
-        <ContactForm client:load />
-      </article>
+      <div class="flex flex-col gap-8 items-center">
+        <article
+          class="bg-muted/30 w-full rounded-3xl px-4 py-6 md:px-6 md:py-8 max-w-2xl mx-auto"
+        >
+          <ContactForm client:load />
+        </article>
+
+        <p class="text-muted-foreground text-sm" data-reveal="bottom">
+          ¿Prefieres algo más directo?{" "}
+          <a
+            href={`https://wa.me/${branding.contact.whatsapp.number}?text=${encodeURIComponent(
+              branding.contact.whatsapp.defaultMessage,
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-primary font-bold hover:underline"
+          >
+            Chat por WhatsApp
+          </a>
+        </p>
+      </div>
     </div>
   </section>
 </MainLayout>

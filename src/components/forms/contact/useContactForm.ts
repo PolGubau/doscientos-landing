@@ -193,6 +193,14 @@ export function useContactForm() {
 					event_label: "contact_form_multistep",
 				});
 			}
+
+			if ("fbq" in window) {
+				// @ts-ignore
+				window.fbq("track", "Lead", {
+					content_name: "contact_form_multistep",
+					status: "success",
+				});
+			}
 		} catch (err) {
 			setStatus("error");
 			setErrorMessage("Error de conexión. Verifica tu internet.");

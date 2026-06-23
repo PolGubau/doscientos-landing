@@ -102,13 +102,16 @@ const socialLinks = [
                 {branding.contact.email}
               </a>
               <a
-                href={`tel:+${branding.contact.whatsapp.number}`}
+                href={`https://wa.me/${branding.contact.whatsapp.number}?text=${encodeURIComponent(branding.contact.whatsapp.defaultMessage)}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 class="group flex items-center gap-3 text-sm text-background/70 hover:text-background transition-colors"
               >
-                <Phone
+                <Icon
+                  name="simple-icons:whatsapp"
                   class="size-4 text-background/50 group-hover:text-background transition-colors"
                 />
-                {branding.contact.whatsapp.displayNumber}
+                WhatsApp: {branding.contact.whatsapp.displayNumber}
               </a>
               <p class="flex items-center gap-3 text-sm text-background/70">
                 <MapPin class="size-4 text-background/50" />
