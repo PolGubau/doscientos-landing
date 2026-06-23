@@ -12,6 +12,8 @@ const projects = defineCollection({
 		z.object({
 			title: z.string(),
 			summary: z.string(),
+			seoTitle: z.string().optional(),
+			metaDescription: z.string().optional(),
 			available: z.boolean(),
 			client: z.string(),
 			timeline: z.number().int().positive(),

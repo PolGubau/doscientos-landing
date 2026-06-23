@@ -1,4 +1,5 @@
 ---
+import { getMetadata } from "~/shared/lib/constants";
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Layout/footer.astro";
 import Navbar from "../components/Layout/navbar.astro";
@@ -29,10 +30,12 @@ interface Props {
   };
 }
 
+const metadata = getMetadata();
+
 const {
-  title,
-  description,
-  image,
+  title = metadata.title,
+  description = metadata.description,
+  image = "/og-image.png",
   robots,
   keywords,
   showFooterCta = true,
@@ -47,9 +50,8 @@ const {
     <BaseHead title={title} description={description} image={image} />
     <SEOHead robots={robots} keywords={keywords} />
     <OpenGraph
-      title={title || "doscientos - Desarrollo de producto digital"}
-      description={description ||
-        "Transformamos ideas en productos digitales que funcionan. Desarrollo web, apps y modernización de sistemas."}
+      title={title}
+      description={description}
       image={image}
       type={type}
       article={article}

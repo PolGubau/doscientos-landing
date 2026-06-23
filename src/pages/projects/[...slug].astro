@@ -29,11 +29,15 @@ const publishedTime =
   project.data.endedAt instanceof Date
     ? project.data.endedAt.toISOString()
     : project.data.endedAt;
+
+// SEO: title y meta description optimizados con fallback al contenido base
+const seoTitle = project.data.seoTitle ?? `${project.data.title} | doscientos`;
+const metaDescription = project.data.metaDescription ?? project.data.summary;
 ---
 
 <MainLayout
-  title={`${project.data.title} | Proyectos`}
-  description={project.data.summary}
+  title={seoTitle}
+  description={metaDescription}
   image={coverImage?.src}
   type="article"
   article={{
@@ -46,7 +50,7 @@ const publishedTime =
     type="project"
     project={{
       name: project.data.title,
-      description: project.data.summary,
+      description: metaDescription,
       image: coverImage?.src,
       client: project.data.client,
       datePublished: publishedTime,
