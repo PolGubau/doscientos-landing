@@ -1,0 +1,129 @@
+---
+title: "Optinergia CRM"
+summary: "CRM a medida para una asesoría energética. Centraliza clientes, contratos, renovaciones e incidencias en una sola herramienta — con alertas automáticas de vencimiento, historial de actividad y roles por perfil de usuario."
+available: true
+client: "Optinergia"
+endedAt: "2026-06-28"
+timeline: 2
+color: "#f6b9b5"
+services_provided:
+  - Web App
+  - CRM
+  - UX/UI
+cover: "../../assets/media/projects/optinergia/thumbnail.webp"
+logo: "../../assets/media/projects/optinergia/logo.svg"
+---
+
+import { Image } from "astro:assets";
+
+import dashboard from "../../assets/media/projects/optinergia/dashboard.webp";
+import dashboardMd from "../../assets/media/projects/optinergia/dashboard-md.webp";
+import clientDetails from "../../assets/media/projects/optinergia/client-details.webp";
+import renovations from "../../assets/media/projects/optinergia/renovations.webp";
+import incidentsTable from "../../assets/media/projects/optinergia/incidents-table.webp";
+import registerCall from "../../assets/media/projects/optinergia/register-call.webp";
+import searchMd from "../../assets/media/projects/optinergia/search-md.webp";
+import loginPage from "../../assets/media/projects/optinergia/login-page.webp";
+import settings from "../../assets/media/projects/optinergia/settings.webp";
+
+Una asesoría energética con centenares de clientes activos, varios comerciales y contratos con fechas de vencimiento distintas. El problema: todo vivía en hojas de cálculo, correos y la memoria de cada comercial. Cada renovación que se perdía era dinero que se iba.
+
+**Nos encargaron construir la herramienta que no existía en el mercado para ellos: un CRM diseñado desde cero para la operativa real de una asesoría energética.**
+
+<Image src={dashboard} alt="Dashboard del CRM con KPIs de cartera y renovaciones urgentes" class="rounded-2xl my-6" />
+
+<div class="not-prose grid grid-cols-2 sm:grid-cols-4 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">2</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">semanas de entrega</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">6</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">módulos entregados</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">0</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">renovaciones que se escapan</span></div>
+  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">PWA</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">funciona en móvil y escritorio</span></div>
+</div>
+
+---
+
+## El problema
+
+**El sector energético tiene un ritmo muy concreto: contratos con fecha de fin, renovaciones que hay que anticipar y clientes que necesitan seguimiento.** Gestionarlo en Excel no escala: no avisa, no prioriza, no recuerda quién habló con quién ni cuándo.
+
+El equipo perdía renovaciones por falta de visibilidad. No había forma rápida de saber qué contratos vencían ese mes, qué incidencias seguían abiertas o qué comercial era responsable de cada cliente. La información estaba, pero dispersa.
+
+---
+
+## La solución
+
+Construimos un panel de gestión que da al equipo lo que necesita de un vistazo: cuántos clientes activos hay, qué contratos están a punto de vencer, cuántas incidencias siguen abiertas y quién tiene que actuar.
+
+<Image src={dashboardMd} alt="Dashboard responsive en pantalla mediana" class="rounded-2xl my-6" />
+
+La ficha de cada cliente agrupa todo en un solo lugar: datos de contacto, contratos energéticos con sus CUPS, fechas de vigencia, importes y comisiones, documentos adjuntos, incidencias activas y un historial completo de cada acción registrada sobre esa cuenta.
+
+<Image src={clientDetails} alt="Ficha completa de cliente con contratos, documentos e historial de actividad" class="rounded-2xl my-6" />
+
+### Renovaciones con cola de prioridad
+
+El módulo de renovaciones fue el más crítico para el cliente. Muestra automáticamente todos los contratos que vencen en los próximos 60 días, ordenados por urgencia — vencidos, urgentes (menos de 30 días) y próximos — con el último contacto registrado y el canal usado (teléfono o email).
+
+<Image src={renovations} alt="Cola de renovaciones con urgencia, días restantes y último contacto" class="rounded-2xl my-6" />
+
+Desde esa misma pantalla, el comercial puede registrar un contacto, anotar el resultado y renovar el contrato directamente, sin salir del flujo.
+
+<Image src={registerCall} alt="Diálogo de registro de contacto de renovación" class="rounded-2xl my-6" />
+
+### Búsqueda y filtros que funcionan
+
+La búsqueda sobre clientes es en tiempo real — por nombre, DNI o empresa — con filtros combinables por estado, comercial asignado y periodo de alta. El listado se puede exportar a CSV con un clic, filtrado tal como está en pantalla.
+
+<Image src={searchMd} alt="Listado de clientes con búsqueda y filtros activos" class="rounded-2xl my-6" />
+
+### Incidencias con prioridad
+
+Las incidencias (facturas pendientes, DNI no entregado, contratos sin firma) se gestionan en una tabla separada con cuatro niveles de prioridad. Cualquier miembro del equipo puede abrirlas, actualizarlas y cerrarlas. El dashboard las refleja siempre en tiempo real.
+
+<Image src={incidentsTable} alt="Tabla de incidencias con prioridad y estado por cliente" class="rounded-2xl my-6" />
+
+---
+
+## Decisiones de diseño
+
+<div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
+  <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
+    <span class="text-sm font-semibold">Roles diferenciados por perfil</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">El sistema distingue entre propietario, administrador, comercial y solo lectura. Cada rol ve y puede hacer cosas distintas — los comerciales solo ven sus propios clientes; los admin ven todo el equipo.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
+    <span class="text-sm font-semibold">Historial de actividad automático</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">Cada acción queda registrada sin que nadie tenga que apuntarlo: alta de cliente, cambio de contrato, contacto de renovación, resolución de incidencia. El historial de cada cliente es la memoria del equipo.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
+    <span class="text-sm font-semibold">PWA: sin instalación, funciona en móvil</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">La app está optimizada como Progressive Web App. Los comerciales la usan desde el móvil entre visitas sin instalar nada. Modo oscuro incluido, con preferencia persistida por usuario.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
+    <span class="text-sm font-semibold">Documentos adjuntos por cliente</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">DNIs, contratos firmados y propuestas se suben directamente a la ficha del cliente. Los PDFs se pueden visualizar dentro de la propia herramienta sin descargar nada.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
+    <span class="text-sm font-semibold">Exportación a CSV filtrada</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">Clientes y contratos se pueden exportar con los filtros activos — por periodo, estado o comercial. El fichero resultante tiene todos los campos que necesita el equipo: DNI, IBAN, fecha de firma, renovación y servicios contratados.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
+    <span class="text-sm font-semibold">Entregado en 2 semanas</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">Fase 1 (desarrollo completo) en la primera semana. Fase 2 (importación de datos reales y validación conjunta con el cliente) en la segunda. Sin sorpresas, sin scope creep.</span>
+  </div>
+</div>
+
+<Image src={settings} alt="Panel de ajustes con gestión de equipo, roles y configuración de organización" class="rounded-2xl my-6" />
+
+<Image src={loginPage} alt="Pantalla de acceso con autenticación segura" class="rounded-2xl my-6" />
+
+---
+
+**Resultados**
+- **6 módulos** entregados y en producción: dashboard, clientes, contratos, renovaciones, incidencias y documentos
+- **0 renovaciones perdidas** desde la adopción del sistema
+- **Equipo completo migrado** desde Excel en menos de una semana
+- **Roles y permisos** configurados desde el primer día sin intervención técnica
+
+---
+
+> Antes teníamos todo en hojas de cálculo y dependíamos de que alguien se acordara. Ahora el sistema avisa solo y el equipo sabe en todo momento qué tiene que hacer.

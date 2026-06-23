@@ -119,7 +119,6 @@ const publishedTime =
       prose-ol:max-w-xl prose-ol:mx-auto
       prose-blockquote:max-w-xl prose-blockquote:mx-auto
       prose-headings:max-w-xl prose-headings:mx-auto
-      prose-img:max-w-xl prose-img:mx-auto
       prose-hr:max-w-xl prose-hr:mx-auto
       prose-table:max-w-xl prose-table:mx-auto
         prose-headings:font-bold prose-headings:text-foreground
@@ -152,5 +151,23 @@ const publishedTime =
   import mediumZoom from "medium-zoom";
   document.addEventListener("astro:page-load", () => {
     mediumZoom(".prose img", { background: "rgba(12,17,11,0.6)", margin: 24 });
+
+    // Scroll reveal para todas las imágenes del prose
+    const imgs = document.querySelectorAll<HTMLImageElement>(".prose img");
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const { target, isIntersecting } of entries) {
+          if (isIntersecting) {
+            target.classList.add("img-visible");
+            io.unobserve(target);
+          }
+        }
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+    );
+    for (const img of imgs) {
+      img.setAttribute("data-scroll-reveal", "");
+      io.observe(img);
+    }
   });
 </script>
