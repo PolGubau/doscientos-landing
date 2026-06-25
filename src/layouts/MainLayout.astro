@@ -19,14 +19,51 @@ interface Props {
   description?: string;
   image?: string;
   robots?: string;
-  keywords?: string[];
   showFooterCta?: boolean;
-  type?: "website" | "article";
+  type?: "organization" | "website" | "article" | "service" | "project";
   article?: {
     publishedTime?: string;
     modifiedTime?: string;
     author?: string;
     tags?: string[];
+  };
+  service?: {
+    name: string;
+    description: string;
+    image?: string;
+    url?: string;
+    serviceType?: string;
+    price?: number;
+    priceCurrency?: string;
+  };
+  project?: {
+    name: string;
+    description: string;
+    image?: string;
+    client?: string;
+    datePublished?: string;
+    url?: string;
+    services?: string[];
+  };
+  faqs?: {
+    question: string;
+    answer: string;
+  }[];
+  localBusiness?: {
+    name?: string;
+    description?: string;
+    image?: string;
+    telephone?: string;
+    address?: {
+      streetAddress?: string;
+      postalCode?: string;
+      addressLocality?: string;
+      addressRegion?: string;
+    };
+    geo?: {
+      latitude: string;
+      longitude: string;
+    };
   };
 }
 
@@ -37,10 +74,13 @@ const {
   description = metadata.description,
   image = "/og-image.png",
   robots,
-  keywords,
   showFooterCta = true,
   type = "website",
   article,
+  service,
+  project,
+  faqs,
+  localBusiness,
 } = Astro.props;
 ---
 
@@ -48,16 +88,16 @@ const {
   <head>
     <ConsentScript />
     <BaseHead title={title} description={description} image={image} />
-    <SEOHead robots={robots} keywords={keywords} />
+    <SEOHead robots={robots} />
     <OpenGraph
       title={title}
       description={description}
       image={image}
-      type={type}
+      type={type === "article" ? "article" : "website"}
       article={article}
     />
     <SchemaOrg
-      type={type === "article" ? "article" : "website"}
+      type={type}
       article={article
         ? {
             title,
@@ -68,6 +108,10 @@ const {
             author: article.author,
           }
         : undefined}
+      service={service}
+      project={project}
+      faqs={faqs}
+      localBusiness={localBusiness}
     />
     <GoogleAnalytics />
     <MicrosoftClarity />

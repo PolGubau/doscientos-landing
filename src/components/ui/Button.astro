@@ -5,15 +5,18 @@ export type ButtonProps = {
   size?: "sm" | "md" | "lg";
   variant?: "solid" | "outline";
   class?: string;
+  className?: string;
   withArrow?: boolean;
   arrowInverted?: boolean;
   type?: "button" | "submit" | "reset";
+  children?: any;
 };
 
 type Props = ButtonProps;
 
 const {
-  class: className = "",
+  class: classNameProp,
+  className,
   size = "md",
   variant = "solid",
   withArrow = false,
@@ -21,6 +24,8 @@ const {
   type = "button",
   ...rest
 } = Astro.props;
+
+const finalClassName = classNameProp || className || "";
 ---
 
 <button
@@ -40,7 +45,7 @@ const {
       "pr-3": withArrow && size === "md",
       "pr-5": withArrow && size === "lg",
     },
-    className,
+    finalClassName,
   )}
   {...rest}
 >

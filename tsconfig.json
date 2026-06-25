@@ -4,13 +4,13 @@
 	"exclude": ["dist", "node_modules", "public", "src/assets", "src/content"],
 	"compilerOptions": {
 		"strictNullChecks": true,
-		"jsx": "react-jsx",
-		"jsxImportSource": "react",
 		"baseUrl": ".",
 		"paths": {
 			"~/*": ["./src/*"]
 		},
-		
+		"moduleResolution": "bundler",
+		"jsx": "preserve",
+		"jsxImportSource": "react",
 		"skipLibCheck": true,
 		"incremental": true
 	}

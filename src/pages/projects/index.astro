@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import ProjectCard from "~/components/ui/ProjectCard.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
 import { getProjects } from "~/shared/lib/collections";
@@ -11,7 +12,9 @@ const projects = await getProjects();
   description="500+ usuarios sin ads. ROI del 300% en 4 meses. -90% tiempo en procesos. Descubre cómo ayudamos a empresas como la tuya a crecer con productos digitales."
 >
   <div class="min-h-screen py-16 px-4 sm:py-24 sm:px-6">
-    <div class="max-w-7xl mx-auto space-y-12 md:space-y-16">
+    <div class="max-w-7xl mx-auto space-y-12">
+      <Breadcrumbs items={[{ name: "Proyectos", url: "/projects" }]} />
+
       <!-- Header -->
       <header
         class="flex flex-col w-full max-w-2xl items-center justify-center text-center gap-6 mx-auto"

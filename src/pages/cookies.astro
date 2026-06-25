@@ -1,5 +1,5 @@
 ---
-import { ArrowLeft } from "@lucide/astro";
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
 import "~/styles/prose.css";
 import { getMetadata } from "~/shared/lib/constants";
@@ -12,16 +12,8 @@ const lastUpdated = "18 de mayo de 2026";
   title={"Política de Cookies"}
   description="Información sobre las cookies que utilizamos en nuestro sitio web y cómo puedes gestionarlas."
 >
-  <main class="w-full max-w-4xl mx-auto px-6 xl:px-10 py-20">
-    <div class="mb-10">
-      <a
-        href="/"
-        class="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
-      >
-        <ArrowLeft aria-hidden="true" class="size-4" />
-        Volver al inicio
-      </a>
-    </div>
+  <main class="w-full max-w-4xl mx-auto px-6 xl:px-10 py-10">
+    <Breadcrumbs items={[{ name: "Política de Cookies", url: "/cookies" }]} />
 
     <article class="prose prose-neutral max-w-none">
       <h1>Política de Cookies</h1>

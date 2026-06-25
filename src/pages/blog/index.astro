@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import SectionTag from "~/components/ui/SectionTag.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
 
@@ -14,7 +15,9 @@ const sortedPosts = blogPosts.sort(
   description="Artículos técnicos sobre desarrollo web, automatización de procesos, MVPs y transformación digital para empresas. Escrito por el equipo de doscientos, agencia en Barcelona."
 >
   <div class="min-h-screen py-32 px-6">
-    <div class="max-w-6xl mx-auto space-y-16">
+    <div class="max-w-6xl mx-auto space-y-12">
+      <Breadcrumbs items={[{ name: "Blog", url: "/blog" }]} />
+
       <header
         class="flex flex-col max-w-2xl items-center justify-center text-center gap-6 mx-auto"
       >
@@ -36,11 +39,7 @@ const sortedPosts = blogPosts.sort(
           <div class="grid md:grid-cols-2 gap-6">
             {sortedPosts.map((post) => (
               <article class="group">
-                <a
-                  href={`/blog/${post.id}`}
-                  class="flex flex-col h-full p-6 rounded-2xl gap-2 shadow-pastel border border-muted bg-accent hover:border-primary transition-colors"
-                >
-                  {/* Date */}
+                <div class="flex flex-col h-full p-6 rounded-2xl gap-2 shadow-pastel border border-muted bg-accent hover:border-primary transition-colors">
                   <time
                     class="text-sm text-muted-foreground mb-2"
                     datetime={post.data.publishDate.toISOString()}
@@ -52,12 +51,12 @@ const sortedPosts = blogPosts.sort(
                     })}
                   </time>
 
-                  {/* Title */}
-                  <h2 class="text-2xl font-bold text-foreground transition-colors">
-                    {post.data.title}
-                  </h2>
+                  <a href={`/blog/${post.id}`} class="group/title">
+                    <h2 class="text-2xl font-bold text-foreground group-hover/title:text-primary transition-colors">
+                      {post.data.title}
+                    </h2>
+                  </a>
 
-                  {/* Description */}
                   <p class="text-muted-foreground line-clamp-3">
                     {post.data.description}
                   </p>
@@ -65,32 +64,39 @@ const sortedPosts = blogPosts.sort(
                   {/* Tags */}
                   {post.data.tags && post.data.tags.length > 0 && (
                     <div class="flex flex-wrap gap-2 pt-2">
-                      {post.data.tags.map((tag) => (
-                        <span class="text-xs px-3 py-1 rounded-full bg-muted text-foreground">
+                      {post.data.tags.map((tag: string) => (
+                        <a
+                          href={`/blog/tags/${tag.toLowerCase()}`}
+                          class="text-xs px-3 py-1 rounded-full bg-muted text-foreground hover:bg-primary hover:text-background transition-colors"
+                        >
                           {tag}
-                        </span>
+                        </a>
                       ))}
                     </div>
                   )}
 
-                  {/* Read more */}
-                  <div class="flex items-center gap-2 text-foreground font-medium pt-2">
-                    Leer más
-                    <svg
-                      class="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                  <div class="mt-auto pt-4">
+                    <a
+                      href={`/blog/${post.id}`}
+                      class="flex items-center gap-2 text-foreground font-medium"
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
+                      Leer más
+                      <svg
+                        class="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+                    </a>
                   </div>
-                </a>
+                </div>
               </article>
             ))}
           </div>

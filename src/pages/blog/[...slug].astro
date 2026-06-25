@@ -15,6 +15,25 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+const relatedPosts = allPosts
+  .filter((p) => p.id !== post.id)
+  .filter((p) =>
+    p.data.tags?.some((tag: string) => post.data.tags?.includes(tag)),
+  )
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+
+const displayPosts =
+  relatedPosts.length > 0
+    ? relatedPosts
+    : allPosts
+        .filter((p) => p.id !== post.id)
+        .sort(
+          (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+        )
+        .slice(0, 3);
+
 const publishedTime =
   post.data.publishDate instanceof Date
     ? post.data.publishDate.toISOString()
@@ -77,10 +96,13 @@ const modifiedTime = post.data.updatedDate
           {
             post.data.tags && post.data.tags.length > 0 && (
               <div class="flex flex-wrap gap-2">
-                {post.data.tags.map((tag) => (
-                  <span class="text-sm px-4 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                {post.data.tags.map((tag: string) => (
+                  <a
+                    href={`/blog/tags/${tag.toLowerCase()}`}
+                    class="text-sm px-4 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+                  >
                     {tag}
-                  </span>
+                  </a>
                 ))}
               </div>
             )
@@ -113,6 +135,34 @@ const modifiedTime = post.data.updatedDate
       >
         <Content />
       </div>
+
+      <!-- Artículos relacionados -->
+      {
+        displayPosts.length > 0 && (
+          <div class="mt-20 border-t pt-20 space-y-8">
+            <h2 class="text-3xl font-bold text-foreground">
+              Artículos relacionados
+            </h2>
+            <div class="grid gap-6 md:grid-cols-3">
+              {displayPosts.map((p) => (
+                <a href={`/blog/${p.id}`} class="group space-y-3 block">
+                  <div class="aspect-video overflow-hidden rounded-xl border bg-accent/50 group-hover:bg-accent transition-colors flex items-center justify-center p-6 text-center">
+                    <span class="text-xs uppercase tracking-widest text-muted-foreground font-semibold group-hover:text-primary transition-colors">
+                      {p.data.tags?.[0] || "Blog"}
+                    </span>
+                  </div>
+                  <h3 class="font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                    {p.data.title}
+                  </h3>
+                  <p class="text-sm text-muted-foreground line-clamp-2">
+                    {p.data.description}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
     </div>
   </article>
 </MainLayout>

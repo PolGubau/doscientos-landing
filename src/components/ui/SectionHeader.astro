@@ -41,8 +41,10 @@ const alignClass = aligns[align] || "";
       data-speed="normal"
       data-easing="smooth"
     >
-      <h2 class="text-balance">{title}</h2>
-      {subtitle && <p class="text-primary/70 text-pretty">{subtitle}</p>}
+      <h2 class="text-balance flex flex-col">
+        <span>{title}</span>
+        {subtitle && <span class="text-primary/70 text-pretty">{subtitle}</span>}
+      </h2>
     </div>
     {
       description && (

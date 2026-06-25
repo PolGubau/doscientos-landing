@@ -1,29 +1,14 @@
 ---
 interface Props {
-  keywords?: string[];
   author?: string;
   robots?: string;
 }
 
 const {
-  keywords = [
-    "agencia desarrollo web Barcelona",
-    "desarrollo MVP",
-    "automatización procesos",
-    "software a medida",
-    "desarrollo web España",
-  ],
   author = "doscientos",
   robots = "index, follow",
 } = Astro.props;
 ---
 
-<meta name="keywords" content={keywords.join(", ")} />
 <meta name="author" content={author} />
 <meta name="robots" content={robots} />
-
-<!-- Geo tags para búsquedas locales -->
-<meta name="geo.region" content="ES-CT" />
-<meta name="geo.placename" content="Barcelona" />
-<meta name="geo.position" content="41.3851;2.1734" />
-<meta name="ICBM" content="41.3851, 2.1734" />

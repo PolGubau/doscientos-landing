@@ -1,5 +1,5 @@
 ---
-import { ArrowLeft } from "@lucide/astro";
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
 import "~/styles/prose.css";
 import { getMetadata } from "~/shared/lib/constants";
@@ -13,16 +13,8 @@ const fullAddress = `${legal.address.street}, ${legal.address.postalCode} ${lega
   title={"Aviso Legal"}
   description="Aviso legal e información sobre la titularidad y condiciones de uso de este sitio web."
 >
-  <main class="w-full max-w-4xl mx-auto px-6 xl:px-10 py-20">
-    <div class="mb-10">
-      <a
-        href="/"
-        class="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
-      >
-        <ArrowLeft aria-hidden="true" class="size-4" />
-        Volver al inicio
-      </a>
-    </div>
+  <main class="w-full max-w-4xl mx-auto px-6 xl:px-10 py-10">
+    <Breadcrumbs items={[{ name: "Aviso Legal", url: "/legal" }]} />
 
     <article class="prose prose-neutral max-w-none">
       <h1>Aviso Legal</h1>

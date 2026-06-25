@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import SectionTag from "~/components/ui/SectionTag.astro";
@@ -49,8 +50,32 @@ const benefits = [
 <MainLayout
   title="Desarrollo Web Barcelona - MVPs en 6 semanas | doscientos"
   description="Agencia de desarrollo web en Barcelona. Lanzamos MVPs en 6 semanas. Automatizaciones con ROI real. 500+ usuarios sin ads. Reuniones presenciales."
+  localBusiness={{
+    name: "doscientos - Desarrollo Web Barcelona",
+    description:
+      "Agencia de desarrollo web y automatización en Barcelona. Expertos en MVPs rápidos y software a medida.",
+    address: {
+      addressLocality: "Barcelona",
+      addressRegion: "Barcelona",
+      postalCode: "08001",
+    },
+    geo: {
+      latitude: "41.3851",
+      longitude: "2.1734",
+    },
+  }}
+  service={{
+    name: "Desarrollo de Aplicaciones Web y MVPs",
+    description:
+      "Creamos productos digitales escalables en tiempo récord (6 semanas) para startups y empresas de Barcelona.",
+    serviceType: "Software Development",
+  }}
+  type="website"
 >
-  <section class="px-6 max-w-7xl mx-auto pt-32 space-y-24">
+  <section class="px-6 max-w-7xl mx-auto pt-32 space-y-12">
+    <Breadcrumbs
+      items={[{ name: "Barcelona", url: "/desarrollo-web-barcelona" }]}
+    />
     <!-- Hero -->
     <header class="max-w-3xl mx-auto text-center space-y-8" data-stagger="100">
       <div data-reveal="top" data-speed="fast" data-easing="smooth">
@@ -160,6 +185,47 @@ const benefits = [
             </a>
           ))
         }
+      </div>
+    </section>
+
+    <!-- Blog section -->
+    <section class="space-y-12">
+      <SectionHeader
+        title="Consejos y guías"
+        subtitle="para tu proyecto"
+        description="Lecciones aprendidas lanzando productos digitales."
+        align="center"
+      />
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <a
+          href="/blog/validar-mvp-6-semanas"
+          class="p-6 rounded-2xl border border-muted hover:border-primary transition-colors space-y-2 group"
+        >
+          <h3
+            class="font-bold text-xl group-hover:text-primary transition-colors"
+          >
+            Cómo validar tu MVP en 6 semanas
+          </h3>
+          <p class="text-muted-foreground text-sm">
+            Metodología probada para validar una idea de negocio con usuarios
+            reales.
+          </p>
+        </a>
+        <a
+          href="/blog/automatizacion-procesos-empresariales"
+          class="p-6 rounded-2xl border border-muted hover:border-primary transition-colors space-y-2 group"
+        >
+          <h3
+            class="font-bold text-xl group-hover:text-primary transition-colors"
+          >
+            Automatización de procesos en 2026
+          </h3>
+          <p class="text-muted-foreground text-sm">
+            Guía práctica para identificar qué automatizar primero en tu
+            empresa.
+          </p>
+        </a>
       </div>
     </section>
 

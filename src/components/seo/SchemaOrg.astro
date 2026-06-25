@@ -33,9 +33,32 @@ interface Props {
     question: string;
     answer: string;
   }[];
+  localBusiness?: {
+    name?: string;
+    description?: string;
+    image?: string;
+    telephone?: string;
+    address?: {
+      streetAddress?: string;
+      postalCode?: string;
+      addressLocality?: string;
+      addressRegion?: string;
+    };
+    geo?: {
+      latitude: string;
+      longitude: string;
+    };
+  };
 }
 
-const { type = "organization", article, service, project, faqs } = Astro.props;
+const {
+  type = "organization",
+  article,
+  service,
+  project,
+  faqs,
+  localBusiness,
+} = Astro.props;
 
 // Strip trailing slash — Astro.site returns "https://doscientos.es/" which causes double slashes in paths
 const baseUrl = (Astro.site?.toString() ?? "https://doscientos.es").replace(
@@ -47,28 +70,34 @@ const baseUrl = (Astro.site?.toString() ?? "https://doscientos.es").replace(
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
-  name: branding.name,
+  "@id": `${baseUrl}/#organization`,
+  name: localBusiness?.name || branding.name,
   legalName: branding.legalName,
   taxID: branding.legal.nif,
   vatID: branding.legal.nif,
   url: baseUrl,
   logo: `${baseUrl}/og-image.png`,
-  image: `${baseUrl}/og-image.png`,
-  description: branding.slogan,
+  image: localBusiness?.image || `${baseUrl}/og-image.png`,
+  description: localBusiness?.description || branding.slogan,
   email: branding.contact.email,
-  telephone: branding.contact.whatsapp.displayNumber,
+  telephone:
+    localBusiness?.telephone || branding.contact.whatsapp.displayNumber,
   address: {
     "@type": "PostalAddress",
-    streetAddress: branding.legal.address.street,
-    postalCode: branding.legal.address.postalCode,
-    addressLocality: branding.legal.address.city,
-    addressRegion: branding.legal.address.province,
+    streetAddress:
+      localBusiness?.address?.streetAddress || branding.legal.address.street,
+    postalCode:
+      localBusiness?.address?.postalCode || branding.legal.address.postalCode,
+    addressLocality:
+      localBusiness?.address?.addressLocality || branding.legal.address.city,
+    addressRegion:
+      localBusiness?.address?.addressRegion || branding.legal.address.province,
     addressCountry: "ES",
   },
   geo: {
     "@type": "GeoCoordinates",
-    latitude: "41.3851",
-    longitude: "2.1734",
+    latitude: localBusiness?.geo?.latitude || "41.3851",
+    longitude: localBusiness?.geo?.longitude || "2.1734",
   },
   areaServed: {
     "@type": "Country",

@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import SectionTag from "~/components/ui/SectionTag.astro";
@@ -49,8 +50,32 @@ const benefits = [
 <MainLayout
   title="Desarrollo Web Castellón - Digitalización para empresas | doscientos"
   description="Agencia de desarrollo web en Castellón. Digitalizamos empresas industriales y cerámicas. Automatizaciones con ROI real. Presencia local."
+  localBusiness={{
+    name: "doscientos - Desarrollo Web Castellón",
+    description:
+      "Agencia de desarrollo web y automatización en Castellón. Especialistas en digitalización industrial y sector cerámico.",
+    address: {
+      addressLocality: "Castellón de la Plana",
+      addressRegion: "Castellón",
+      postalCode: "12001",
+    },
+    geo: {
+      latitude: "39.9864",
+      longitude: "-0.0513",
+    },
+  }}
+  service={{
+    name: "Digitalización y Desarrollo de Software Industrial",
+    description:
+      "Ayudamos a empresas de Castellón a modernizar sus procesos mediante software a medida y automatizaciones inteligentes.",
+    serviceType: "Software Development",
+  }}
+  type="website"
 >
-  <section class="px-6 max-w-7xl mx-auto pt-32 space-y-24">
+  <section class="px-6 max-w-7xl mx-auto pt-32 space-y-12">
+    <Breadcrumbs
+      items={[{ name: "Castellón", url: "/desarrollo-web-castellon" }]}
+    />
     <!-- Hero -->
     <header class="max-w-3xl mx-auto text-center space-y-8" data-stagger="100">
       <div data-reveal="top" data-speed="fast" data-easing="smooth">
@@ -159,6 +184,46 @@ const benefits = [
             </a>
           ))
         }
+      </div>
+    </section>
+
+    <!-- Blog section -->
+    <section class="space-y-12">
+      <SectionHeader
+        title="Consejos y guías"
+        subtitle="para tu proyecto"
+        description="Lecciones aprendidas sobre digitalización y software."
+        align="center"
+      />
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <a
+          href="/blog/automatizacion-procesos-empresariales"
+          class="p-6 rounded-2xl border border-muted hover:border-primary transition-colors space-y-2 group"
+        >
+          <h3
+            class="font-bold text-xl group-hover:text-primary transition-colors"
+          >
+            Automatización de procesos en 2026
+          </h3>
+          <p class="text-muted-foreground text-sm">
+            Guía práctica para identificar qué automatizar primero en tu
+            empresa.
+          </p>
+        </a>
+        <a
+          href="/blog/validar-mvp-6-semanas"
+          class="p-6 rounded-2xl border border-muted hover:border-primary transition-colors space-y-2 group"
+        >
+          <h3
+            class="font-bold text-xl group-hover:text-primary transition-colors"
+          >
+            Cómo validar tu MVP en 6 semanas
+          </h3>
+          <p class="text-muted-foreground text-sm">
+            Metodología probada para lanzar productos en tiempo récord.
+          </p>
+        </a>
       </div>
     </section>
 
