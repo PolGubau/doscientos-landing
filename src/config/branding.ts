@@ -57,6 +57,23 @@ export const branding = {
 		country: "España",
 	},
 
+	// Datos legales y fiscales (LSSICE Art. 10)
+	legal: {
+		nif: "B88873393",
+		registry: {
+			office: "Barcelona",
+			sheet: "658663",
+		},
+		address: {
+			street: "Carrer Can Pou, 12",
+			postalCode: "08330",
+			city: "Premià de Mar",
+			province: "Barcelona",
+			country: "España",
+		},
+		administrators: ["Pol Gubau Amores", "Gerard Martínez Alcocer"],
+	},
+
 	// Assets
 	assets: {
 		logo: "/assets/branding/logo.png",

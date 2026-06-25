@@ -2,88 +2,89 @@ import path from "node:path";
 import { branding } from "~/config/branding";
 
 export const paths = {
-  projects: path.join(process.cwd(), "src", "content", "projects"),
+	projects: path.join(process.cwd(), "src", "content", "projects"),
 };
 
 export const baseUrl = branding.url;
 
 export function getMetadata() {
-  return {
-    title: `${branding.name} | Productos digitales de calidad en España`,
+	return {
+		title: `${branding.name} | Productos digitales de calidad en España`,
 
-    description:
-      `${branding.name} ayuda a empresas y profesionales a ahorrar tiempo y dinero con automatización de procesos, inteligencia artificial y desarrollo web. Soluciones rápidas, escalables y sin complicaciones.`,
+		description: `${branding.name} ayuda a empresas y profesionales a ahorrar tiempo y dinero con automatización de procesos, inteligencia artificial y desarrollo web. Soluciones rápidas, escalables y sin complicaciones.`,
 
-    name: branding.name,
+		name: branding.name,
 
-    legalName: branding.legalName,
+		legalName: branding.legalName,
 
-    longName: `${branding.name} | Productos digitales y automatizaciones en España`,
+		legal: branding.legal,
 
-    slogan: branding.slogan,
+		longName: `${branding.name} | Productos digitales y automatizaciones en España`,
 
-    picture: branding.assets.logo,
+		slogan: branding.slogan,
 
-    getInTouch: {
-      label: "Contáctanos",
+		picture: branding.assets.logo,
 
-      short_label: "¡Hablemos!",
+		getInTouch: {
+			label: "Contáctanos",
 
-      href: "/contact",
-    },
+			short_label: "¡Hablemos!",
 
-    tags: [
-      branding.name,
+			href: "/contact",
+		},
 
-      "Automatización de Procesos",
+		tags: [
+			branding.name,
 
-      "IA Empresarial",
+			"Automatización de Procesos",
 
-      "Chatbots",
+			"IA Empresarial",
 
-      "Páginas Web",
+			"Chatbots",
 
-      "Automatización España",
+			"Páginas Web",
 
-      "Inteligencia Artificial",
+			"Automatización España",
 
-      "Ahorro de Tiempo",
+			"Inteligencia Artificial",
 
-      "Productividad",
+			"Ahorro de Tiempo",
 
-      "N8n",
+			"Productividad",
 
-      "SEO",
+			"N8n",
 
-      "Transformación Digital",
+			"SEO",
 
-      "Automatización Tareas",
+			"Transformación Digital",
 
-      "Digitalización",
+			"Automatización Tareas",
 
-      "Webs Corporativas",
+			"Digitalización",
 
-      "Landing Pages",
+			"Webs Corporativas",
 
-      branding.location.city,
+			"Landing Pages",
 
-      branding.location.country,
-    ],
+			branding.location.city,
 
-    links: {
-      website: branding.url,
+			branding.location.country,
+		],
 
-      twitter: branding.social.twitter,
+		links: {
+			website: branding.url,
 
-      github: branding.social.github,
+			twitter: branding.social.twitter,
 
-      linkedin: branding.social.linkedin,
+			github: branding.social.github,
 
-      email: `mailto:${branding.contact.email}`,
-    },
+			linkedin: branding.social.linkedin,
 
-    homeOgImage: branding.assets.thumbnail,
-  };
+			email: `mailto:${branding.contact.email}`,
+		},
+
+		homeOgImage: branding.assets.thumbnail,
+	};
 }
 
 export const defaultLocale = "es";

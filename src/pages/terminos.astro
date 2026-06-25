@@ -1,0 +1,170 @@
+---
+import { ArrowLeft } from "@lucide/astro";
+import MainLayout from "~/layouts/MainLayout.astro";
+import { getMetadata } from "~/shared/lib/constants";
+
+const { name, legalName, legal, links } = getMetadata();
+const lastUpdated = "25 de junio de 2026";
+const email = links.email.replace("mailto:", "");
+const fullAddress = `${legal.address.street}, ${legal.address.postalCode} ${legal.address.city} (${legal.address.province}), ${legal.address.country}`;
+---
+
+<MainLayout
+  title={"Términos y Condiciones"}
+  description="Condiciones generales de contratación: precios, pagos, cancelación de pedidos, devoluciones, reembolsos y prestación de servicios."
+>
+  <main class="w-full max-w-4xl mx-auto px-6 xl:px-10 py-20">
+    <div class="mb-10">
+      <a
+        href="/"
+        class="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
+      >
+        <ArrowLeft aria-hidden="true" class="size-4" />
+        Volver al inicio
+      </a>
+    </div>
+
+    <article class="prose prose-neutral max-w-none">
+      <h1>Términos y Condiciones</h1>
+      <p class="text-muted-foreground text-sm">
+        Última actualización: {lastUpdated}
+      </p>
+
+      <p>
+        Las presentes condiciones generales de contratación regulan la relación
+        entre <strong>{legalName}</strong> (nombre comercial <strong
+          >{name}</strong
+        >), con NIF {legal.nif} y domicilio en {fullAddress}, y los usuarios que
+        contraten los servicios ofrecidos a través de {links.website}. La
+        contratación de cualquier servicio implica la aceptación plena de estas
+        condiciones.
+      </p>
+
+      <h2>1. Objeto y servicios</h2>
+      <p>
+        {name} presta servicios digitales de desarrollo web, automatización de procesos
+        e inteligencia artificial, así como planes de mantenimiento y packs de presencia
+        online para negocios. Las características y el precio de cada servicio se
+        detallan en la página correspondiente o en el presupuesto aceptado por el
+        cliente.
+      </p>
+
+      <h2>2. Proceso de contratación</h2>
+      <p>
+        La contratación se formaliza mediante la aceptación de un presupuesto o
+        la confirmación de un pedido a través del sitio web, WhatsApp o correo
+        electrónico. Tras la confirmación y el pago correspondiente, {name}
+        iniciará la prestación del servicio en los plazos acordados.
+      </p>
+
+      <h2>3. Precios e impuestos</h2>
+      <p>
+        Todos los precios se expresan en euros (€). Salvo indicación expresa,
+        los importes no incluyen el IVA, que se aplicará según el tipo vigente
+        en el momento de la facturación. Los planes de mantenimiento se facturan
+        de forma recurrente según la periodicidad indicada (mensual o anual).
+      </p>
+
+      <h2>4. Formas de pago y seguridad</h2>
+      <p>
+        El pago podrá realizarse mediante transferencia bancaria o mediante
+        tarjeta a través de una pasarela de pago segura (TPV virtual) operada
+        por una entidad proveedora de servicios de pago. {name} no almacena los datos
+        completos de las tarjetas; estos son tratados directamente por la entidad
+        bancaria conforme al estándar PCI-DSS y bajo conexión cifrada (TLS).
+      </p>
+      <p>
+        La seguridad y la protección del comprador se complementan con nuestra{
+          " "
+        }
+        <a href="/privacy">Política de Privacidad</a> y nuestra{" "}
+        <a href="/cookies">Política de Cookies</a>.
+      </p>
+
+      <h2>5. Cancelación de pedidos</h2>
+      <p>
+        El cliente podrá cancelar un pedido sin coste siempre que la prestación
+        del servicio no haya comenzado. Una vez iniciados los trabajos, la
+        cancelación dará lugar a la facturación de la parte del servicio ya
+        ejecutada hasta la fecha de la solicitud de cancelación.
+      </p>
+      <p>
+        Las solicitudes de cancelación deben comunicarse por escrito a{" "}
+        <a href={links.email}>{email}</a>, indicando los datos del pedido.
+      </p>
+
+      <h2>6. Derecho de desistimiento, devoluciones y reembolsos</h2>
+      <p>
+        De acuerdo con el Real Decreto Legislativo 1/2007 (Ley General para la
+        Defensa de los Consumidores y Usuarios), el consumidor dispone de un
+        plazo de 14 días naturales para desistir del contrato sin necesidad de
+        justificación.
+      </p>
+      <p>
+        No obstante, el derecho de desistimiento no será aplicable cuando la
+        prestación del servicio haya comenzado, con el previo consentimiento
+        expreso del consumidor, y este reconozca que pierde dicho derecho una
+        vez ejecutado completamente el servicio. Para servicios de contenido
+        digital a medida, el desistimiento no aplica una vez iniciada la
+        ejecución.
+      </p>
+      <p>
+        Los reembolsos que procedan se realizarán por el mismo medio de pago
+        empleado en la compra, en un plazo máximo de 14 días naturales desde la
+        aceptación de la solicitud.
+      </p>
+
+      <h2>7. Entrega y prestación del servicio</h2>
+      <p>
+        Al tratarse de servicios digitales, no existe envío de bienes físicos.
+        La entrega se considera realizada con la publicación, despliegue o
+        puesta a disposición del cliente del servicio o entregable acordado, en
+        los plazos establecidos en el presupuesto.
+      </p>
+
+      <h2>8. Garantías y responsabilidad</h2>
+      <p>
+        {name} se compromete a prestar los servicios con la diligencia profesional
+        exigible. La responsabilidad de {name} se limita, en todo caso, al importe
+        efectivamente abonado por el servicio contratado. No se responde de daños
+        indirectos ni de interrupciones ajenas a nuestro control (proveedores de hosting,
+        fuerza mayor, etc.).
+      </p>
+
+      <h2>9. Atención al cliente y reclamaciones</h2>
+      <p>
+        Para cualquier consulta o reclamación relacionada con un pedido o
+        servicio, el cliente puede dirigirse a{" "}
+        <a href={links.email}>{email}</a>. Atenderemos toda reclamación en el
+        plazo más breve posible.
+      </p>
+
+      <h2>10. Resolución de litigios en línea</h2>
+      <p>
+        Conforme al Reglamento (UE) 524/2013, ponemos a disposición de los
+        consumidores la plataforma de resolución de litigios en línea de la
+        Comisión Europea, accesible en{" "}
+        <a
+          href="https://ec.europa.eu/consumers/odr"
+          target="_blank"
+          rel="noopener noreferrer">ec.europa.eu/consumers/odr</a
+        >.
+      </p>
+
+      <h2>11. Modificaciones</h2>
+      <p>
+        {name} se reserva el derecho a modificar estas condiciones en cualquier momento.
+        Las condiciones aplicables serán las vigentes en el momento de la contratación.
+        La versión actualizada estará siempre disponible en esta página.
+      </p>
+
+      <h2>12. Legislación aplicable y jurisdicción</h2>
+      <p>
+        Las presentes condiciones se rigen por la legislación española. Para la
+        resolución de cualquier controversia, las partes se someten a los
+        juzgados y tribunales que correspondan conforme a la normativa de
+        consumidores y usuarios aplicable.
+      </p>
+    </article>
+  </main>
+</MainLayout>

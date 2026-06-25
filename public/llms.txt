@@ -12,11 +12,11 @@ Lanzamos software funcional en 6 semanas a precio fijo. Sin sorpresas, sin presu
 
 **Pol Gubau** — Co-fundador · Frontend & Design
 Ingeniero de software especializado en interfaces de usuario y arquitectura frontend. Antes en equipos de producto de empresas tecnológicas europeas. Obsesionado con la velocidad y la experiencia de usuario.
-Perfil personal: https://polgubau.com
+[Perfil personal](https://polgubau.com)
 
 **Gerard Martínez** — Co-fundador · Backend & DevOps
 Ingeniero de software con experiencia en backend, infraestructura y DevOps. Ha trabajado en startups tecnológicas europeas liderando proyectos de migración a la nube y optimización de sistemas críticos.
-LinkedIn: https://www.linkedin.com/in/gerard-martinez-alcocer/
+[LinkedIn](https://www.linkedin.com/in/gerard-martinez-alcocer/)
 
 ### Filosofía
 
@@ -151,24 +151,22 @@ Un MVP típico: 6 semanas. Proyectos más complejos: 10-12 semanas, con entregas
 
 ## Páginas principales
 
-- Homepage: https://doscientos.es
-- Proyectos: https://doscientos.es/projects
-- Blog: https://doscientos.es/blog
-- Sobre nosotros: https://doscientos.es/sobre-nosotros
-- Contacto: https://doscientos.es/contact
-- Desarrollo web Barcelona: https://doscientos.es/desarrollo-web-barcelona
+- [Homepage](https://doscientos.es)
+- [Proyectos](https://doscientos.es/projects)
+- [Blog](https://doscientos.es/blog)
+- [Sobre nosotros](https://doscientos.es/sobre-nosotros)
+- [Packs de webs para empresas](https://doscientos.es/packs)
+- [Contacto](https://doscientos.es/contact)
 
 ## Contacto y redes sociales
 
 - Email: hola@doscientos.es
 - Teléfono: +34 671 17 15 25
-- Cal.com (llamada 30 min): https://cal.com/doscientos/30min
-- WhatsApp: +34 671 17 15 25
-- Ubicación: Barcelona, España
-- LinkedIn: https://www.linkedin.com/company/doscientos
-- Twitter/X: https://twitter.com/doscientos_es
-- GitHub: https://github.com/doscientos
-- Instagram: https://instagram.com/doscientos.es
+- [Agenda una llamada de 30 min](https://cal.com/doscientos/30min)
+- [LinkedIn](https://www.linkedin.com/company/doscientos)
+- [Twitter/X](https://twitter.com/doscientos_es)
+- [GitHub](https://github.com/doscientos)
+- [Instagram](https://instagram.com/doscientos.es)
 
 ## Keywords SEO principales
 

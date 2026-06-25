@@ -40,6 +40,8 @@ export default defineConfig({
     "/ca/contact": "/contact",
     "/en/legal": "/legal",
     "/ca/legal": "/legal",
+    "/en/terminos": "/terminos",
+    "/ca/terminos": "/terminos",
   },
 
   experimental: {

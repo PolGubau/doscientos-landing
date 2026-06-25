@@ -3,8 +3,9 @@ import { ArrowLeft } from "@lucide/astro";
 import MainLayout from "~/layouts/MainLayout.astro";
 import { getMetadata } from "~/shared/lib/constants";
 
-const { name, legalName, links } = getMetadata();
+const { name, legalName, legal, links } = getMetadata();
 const lastUpdated = "18 de mayo de 2026";
+const fullAddress = `${legal.address.street}, ${legal.address.postalCode} ${legal.address.city} (${legal.address.province}), ${legal.address.country}`;
 ---
 
 <MainLayout
@@ -38,7 +39,19 @@ const lastUpdated = "18 de mayo de 2026";
       <ul>
         <li><strong>Denominación social:</strong> {legalName}</li>
         <li><strong>Nombre comercial:</strong> {name}</li>
-        <li><strong>Domicilio social:</strong> Barcelona, España</li>
+        <li>
+          <strong>Forma jurídica:</strong> Sociedad de Responsabilidad Limitada
+        </li>
+        <li><strong>NIF:</strong> {legal.nif}</li>
+        <li><strong>Domicilio social:</strong> {fullAddress}</li>
+        <li>
+          <strong>Datos registrales:</strong> Inscrita en el Registro Mercantil de
+          {" "}{legal.registry.office}, Hoja {legal.registry.sheet}.
+        </li>
+        <li>
+          <strong>Administradores solidarios:</strong>{" "}
+          {legal.administrators.join(" y ")}.
+        </li>
         <li>
           <strong>Correo electrónico:</strong>{" "}
           <a href={links.email}>{links.email.replace("mailto:", "")}</a>

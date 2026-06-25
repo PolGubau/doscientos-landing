@@ -60,6 +60,7 @@ export const GET: APIRoute = async ({ site }) => {
 			lastmod: new Date().toISOString().split("T")[0],
 		},
 		{ url: "legal", priority: "0.3", changefreq: "yearly" },
+		{ url: "terminos", priority: "0.3", changefreq: "yearly" },
 		{ url: "privacy", priority: "0.3", changefreq: "yearly" },
 		{ url: "cookies", priority: "0.3", changefreq: "yearly" },
 	];
