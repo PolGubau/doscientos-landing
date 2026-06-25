@@ -1,6 +1,36 @@
+import { execFileSync } from "node:child_process";
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import { packs } from "~/data/packs";
+
+// Fecha de fallback cuando no hay historial git disponible (clones superficiales)
+const FALLBACK_DATE = "2025-01-01";
+
+/** Fecha (YYYY-MM-DD) del último commit que tocó el archivo; fallback si no hay historial */
+function gitLastmod(file: string, fallback = FALLBACK_DATE): string {
+	try {
+		const iso = execFileSync("git", ["log", "-1", "--format=%cI", "--", file], {
+			encoding: "utf8",
+		}).trim();
+		return iso ? iso.split("T")[0] : fallback;
+	} catch {
+		return fallback;
+	}
+}
+
+/** Fecha más reciente de una lista (ISO YYYY-MM-DD ordena cronológicamente) */
+function maxDate(dates: string[], fallback: string): string {
+	const sorted = dates.filter(Boolean).sort();
+	return sorted.length ? sorted[sorted.length - 1] : fallback;
+}
+
+interface StaticPage {
+	url: string;
+	source: string;
+	priority: string;
+	changefreq: string;
+	lastmod?: string;
+}
 
 export const GET: APIRoute = async ({ site }) => {
 	const baseUrl = (site?.toString() || "https://doscientos.es").replace(
@@ -15,61 +45,7 @@ export const GET: APIRoute = async ({ site }) => {
 	);
 	const blogPosts = await getCollection("blog", ({ data }) => !data.draft);
 
-	// Páginas estáticas con prioridad y metadata SEO
-	// lastmod fijo para páginas estables — evita señalizar frescura falsa al crawler
-	const staticPages = [
-		{ url: "", priority: "1.0", changefreq: "weekly", lastmod: "2025-01-01" }, // Homepage
-		{
-			url: "projects",
-			priority: "0.9",
-			changefreq: "weekly",
-			lastmod: "2025-01-01",
-		},
-		{
-			url: "blog",
-			priority: "0.9",
-			changefreq: "daily",
-			lastmod: new Date().toISOString().split("T")[0],
-		},
-		{
-			url: "contact",
-			priority: "0.8",
-			changefreq: "monthly",
-			lastmod: "2025-01-01",
-		},
-		{
-			url: "sobre-nosotros",
-			priority: "0.8",
-			changefreq: "monthly",
-			lastmod: "2025-01-01",
-		},
-		// Páginas SEO locales
-		{
-			url: "desarrollo-web-barcelona",
-			priority: "0.85",
-			changefreq: "monthly",
-			lastmod: "2025-01-01",
-		},
-		{
-			url: "desarrollo-web-castellon",
-			priority: "0.85",
-			changefreq: "monthly",
-			lastmod: "2025-01-01",
-		},
-		// Packs de webs para negocios locales
-		{
-			url: "packs",
-			priority: "0.85",
-			changefreq: "monthly",
-			lastmod: "2025-01-01",
-		},
-		{ url: "legal", priority: "0.3", changefreq: "yearly" },
-		{ url: "terminos", priority: "0.3", changefreq: "yearly" },
-		{ url: "privacy", priority: "0.3", changefreq: "yearly" },
-		{ url: "cookies", priority: "0.3", changefreq: "yearly" },
-	];
-
-	// Generar URLs de proyectos
+	// Generar URLs de proyectos — lastmod = fecha de finalización del proyecto
 	const projectUrls = projects.map((project) => ({
 		url: `projects/${project.id}`,
 		priority: "0.8",
@@ -80,23 +56,115 @@ export const GET: APIRoute = async ({ site }) => {
 				: project.data.endedAt,
 	}));
 
-	// Generar URLs de blog posts
-	const blogUrls = blogPosts.map((post) => ({
-		url: `blog/${post.id}`,
-		priority: "0.7",
-		changefreq: "monthly",
-		lastmod:
-			post.data.publishDate instanceof Date
-				? post.data.publishDate.toISOString().split("T")[0]
-				: post.data.publishDate,
-	}));
+	// Generar URLs de blog posts — lastmod = updatedDate o publishDate
+	const blogUrls = blogPosts.map((post) => {
+		const date = post.data.updatedDate ?? post.data.publishDate;
+		return {
+			url: `blog/${post.id}`,
+			priority: "0.7",
+			changefreq: "monthly",
+			lastmod: date instanceof Date ? date.toISOString().split("T")[0] : date,
+		};
+	});
 
-	// Generar URLs de packs (páginas SEO indexables)
+	// Generar URLs de packs — lastmod = último cambio en los datos de packs
+	const packsDataLastmod = gitLastmod("src/data/packs.ts");
 	const packUrls = packs.map((pack) => ({
 		url: `packs/${pack.slug}`,
 		priority: "0.8",
 		changefreq: "monthly",
-		lastmod: "2025-01-01",
+		lastmod: packsDataLastmod,
+	}));
+
+	// Páginas estáticas — lastmod automático desde el último commit del archivo fuente.
+	// Los índices usan la fecha del contenido más reciente, no la del template.
+	const staticPages: StaticPage[] = [
+		{
+			url: "",
+			source: "src/pages/index.astro",
+			priority: "1.0",
+			changefreq: "weekly",
+		}, // Homepage
+		{
+			url: "projects",
+			source: "src/pages/projects/index.astro",
+			priority: "0.9",
+			changefreq: "weekly",
+			lastmod: maxDate(
+				projectUrls.map((p) => p.lastmod),
+				gitLastmod("src/pages/projects/index.astro"),
+			),
+		},
+		{
+			url: "blog",
+			source: "src/pages/blog/index.astro",
+			priority: "0.9",
+			changefreq: "daily",
+			lastmod: maxDate(
+				blogUrls.map((p) => p.lastmod),
+				gitLastmod("src/pages/blog/index.astro"),
+			),
+		},
+		{
+			url: "contact",
+			source: "src/pages/contact.astro",
+			priority: "0.8",
+			changefreq: "monthly",
+		},
+		{
+			url: "sobre-nosotros",
+			source: "src/pages/sobre-nosotros.astro",
+			priority: "0.8",
+			changefreq: "monthly",
+		},
+		// Páginas SEO locales
+		{
+			url: "desarrollo-web-barcelona",
+			source: "src/pages/desarrollo-web-barcelona.astro",
+			priority: "0.85",
+			changefreq: "monthly",
+		},
+		{
+			url: "desarrollo-web-castellon",
+			source: "src/pages/desarrollo-web-castellon.astro",
+			priority: "0.85",
+			changefreq: "monthly",
+		},
+		// Packs de webs para negocios locales (índice movido por los datos)
+		{
+			url: "packs",
+			source: "src/pages/packs/index.astro",
+			priority: "0.85",
+			changefreq: "monthly",
+			lastmod: packsDataLastmod,
+		},
+		{
+			url: "legal",
+			source: "src/pages/legal.astro",
+			priority: "0.3",
+			changefreq: "yearly",
+		},
+		{
+			url: "terminos",
+			source: "src/pages/terminos.astro",
+			priority: "0.3",
+			changefreq: "yearly",
+		},
+		{
+			url: "privacy",
+			source: "src/pages/privacy.astro",
+			priority: "0.3",
+			changefreq: "yearly",
+		},
+		{
+			url: "cookies",
+			source: "src/pages/cookies.astro",
+			priority: "0.3",
+			changefreq: "yearly",
+		},
+	].map((page) => ({
+		...page,
+		lastmod: page.lastmod ?? gitLastmod(page.source),
 	}));
 
 	// Combinar todas las URLs
