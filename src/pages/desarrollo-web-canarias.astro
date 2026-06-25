@@ -13,30 +13,32 @@ const stats = [
   {
     number: "6 sem",
     label: "De idea a producto lanzado",
-    description: "MVPs validados con usuarios reales. Sin esperar trimestres.",
+    description: "MVPs y sistemas a medida validados con usuarios reales.",
   },
   {
     number: "100%",
     label: "Código en propiedad del cliente",
-    description: "Ni lock-in, ni licencias. El código es tuyo desde el día 1.",
+    description:
+      "Sin lock-in, sin licencias. El código es tuyo desde el día 1.",
   },
   {
     number: "5/5 ⭐",
     label: "Valoración media de clientes",
-    description: "Más de 30 proyectos entregados con precio fijo.",
+    description:
+      "Proyectos entregados a precio fijo en Canarias y toda España.",
   },
 ];
 
 const benefits = [
   {
-    title: "Trabajo 100% en remoto con empresas madrileñas",
+    title: "IGIC y fiscalidad canaria desde el primer día",
     description:
-      "Videollamadas semanales, canal Slack y demos cada viernes. Sin burocracia.",
+      "Conocemos el régimen fiscal canario. Los sistemas que construimos contemplan IGIC, ZEC y las particularidades del archipiélago desde el diseño.",
   },
   {
-    title: "Mismos plazos que si estuviéramos en tu oficina",
+    title: "Trabajo 100% en remoto con empresas canarias",
     description:
-      "Nuestro proceso de 6 semanas funciona independientemente de la ubicación.",
+      "Videollamadas semanales, canal Slack y demos cada viernes. La distancia peninsular no cambia la calidad ni los plazos.",
   },
   {
     title: "Precio fijo, sin presupuestos variables",
@@ -47,52 +49,60 @@ const benefits = [
 
 const faqs = [
   {
-    question: "¿Trabajáis con empresas de Madrid sin oficina allí?",
+    question: "¿Trabajáis con empresas de Canarias desde la península?",
     answer:
-      "Sí. Más del 60% de nuestros proyectos son en remoto. Nos reunimos por videollamada, compartimos demos semanalmente y usamos Slack. No hay diferencia en calidad ni en plazos.",
+      "Sí. Tenemos clientes en Las Palmas, Tenerife y otras islas. Trabajamos 100% en remoto con videollamadas, demos semanales y canal de comunicación directo. La distancia no afecta a los plazos ni a la calidad.",
   },
   {
-    question: "¿Cuánto cuesta un MVP para una empresa de Madrid?",
+    question: "¿Entendéis la fiscalidad canaria (IGIC)?",
     answer:
-      "Los MVPs parten desde 5.000€ para proyectos simples. Plataformas más complejas pueden llegar a 40.000€+. Siempre precio fijo acordado antes de empezar.",
+      "Sí. En proyectos como CashMóvil Canarias implementamos lógica fiscal que distingue entre IVA peninsular e IGIC canario. Lo contemplamos desde el diseño del sistema, no como un parche posterior.",
   },
   {
-    question: "¿En cuánto tiempo tenemos el primer prototipo funcional?",
+    question: "¿Cuánto cuesta un ecommerce o sistema a medida en Canarias?",
     answer:
-      "En 2 semanas ya tienes un prototipo funcional con el que dar feedback. A las 6 semanas, el producto está en producción con usuarios reales.",
+      "Depende del alcance. Un ecommerce a medida parte desde 15.000 €. Un CRM o backoffice propio puede ir desde 8.000 €. Siempre precio fijo acordado antes de empezar. Te damos un presupuesto en 48h.",
+  },
+  {
+    question: "¿Cuánto tiempo tarda en estar listo el sistema?",
+    answer:
+      "MVPs y sistemas básicos en 4-6 semanas. Proyectos más complejos con integraciones en 8-12 semanas. CashMóvil Canarias — ecommerce + backoffice completo — se entregó en 4 semanas.",
   },
 ];
 ---
 
 <MainLayout
-  title="Desarrollo Web Madrid - MVPs en 6 semanas | doscientos"
-  description="Agencia de desarrollo web para empresas de Madrid. MVPs en 6 semanas, precio fijo. Software a medida, automatizaciones y modernización de sistemas. Sin lock-in."
+  title="Desarrollo Web Canarias - Ecommerce y software a medida | doscientos"
+  description="Agencia de desarrollo web y software a medida para empresas de Canarias. Ecommerce, CRM y backoffice con IGIC. Precio fijo, código en propiedad. Clientes en Las Palmas y Tenerife."
   localBusiness={{
-    name: "doscientos - Desarrollo Web Madrid",
+    name: "doscientos - Desarrollo Web Canarias",
     description:
-      "Agencia de desarrollo web y automatización para empresas de Madrid. MVPs en 6 semanas, precio fijo, código en propiedad.",
+      "Agencia de desarrollo web y software a medida para empresas de Canarias. Ecommerce, CRM, backoffice con IGIC. Precio fijo.",
     address: {
-      addressLocality: "Madrid",
-      addressRegion: "Madrid",
-      postalCode: "28001",
+      addressLocality: "Las Palmas de Gran Canaria",
+      addressRegion: "Canarias",
+      postalCode: "35001",
+      addressCountry: "ES",
     },
-    geo: { latitude: "40.4168", longitude: "-3.7038" },
+    geo: { latitude: "28.1235", longitude: "-15.4366" },
   }}
   service={{
-    name: "Desarrollo Web y MVPs para empresas de Madrid",
+    name: "Desarrollo Web y Software a medida para empresas de Canarias",
     description:
-      "Lanzamos productos digitales en 6 semanas para empresas madrileñas. Software a medida, automatizaciones y modernización de sistemas legacy.",
+      "Ecommerce, CRM y backoffice a medida para empresas canarias. Contemplamos IGIC y la operativa del archipiélago desde el diseño del sistema.",
     serviceType: "Software Development",
   }}
   faqs={faqs}
   type="website"
 >
   <section class="px-6 max-w-7xl mx-auto pt-32 space-y-12">
-    <Breadcrumbs items={[{ name: "Madrid", url: "/desarrollo-web-madrid" }]} />
+    <Breadcrumbs
+      items={[{ name: "Canarias", url: "/desarrollo-web-canarias" }]}
+    />
 
     <header class="max-w-3xl mx-auto text-center space-y-8" data-stagger="100">
       <div data-reveal="top" data-speed="fast" data-easing="smooth">
-        <SectionTag>Madrid</SectionTag>
+        <SectionTag>Canarias</SectionTag>
       </div>
       <h1
         class="text-4xl md:text-6xl font-bold text-foreground"
@@ -100,8 +110,8 @@ const faqs = [
         data-speed="normal"
         data-easing="bounce"
       >
-        Desarrollo Web en Madrid
-        <span class="block text-primary mt-2">Precio fijo. Sin lock-in.</span>
+        Desarrollo Web en Canarias
+        <span class="block text-primary mt-2">Software a medida con IGIC.</span>
       </h1>
       <p
         class="text-xl text-muted-foreground max-w-2xl mx-auto"
@@ -109,9 +119,9 @@ const faqs = [
         data-speed="normal"
         data-easing="soft"
       >
-        Somos una agencia de desarrollo de software para empresas de Madrid.
-        Lanzamos MVPs, automatizamos procesos y modernizamos sistemas legacy en
-        6 semanas. 100% remoto, sin diferencia en calidad ni plazos.
+        Construimos ecommerce, CRM y backoffice para empresas de Las Palmas,
+        Tenerife y el resto del archipiélago. Entendemos la fiscalidad canaria y
+        la operativa de tiendas y negocios en las islas.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
         <a href="/contact">
@@ -135,11 +145,43 @@ const faqs = [
       }
     </div>
 
+    <section class="space-y-8 max-w-3xl mx-auto">
+      <SectionHeader
+        title="Caso real en Canarias"
+        subtitle="CashMóvil Canarias"
+        description="Ecommerce y backoffice a medida para una tienda de móviles en Las Palmas."
+        align="center"
+      />
+      <div class="p-8 rounded-2xl bg-accent space-y-4" data-reveal="bottom">
+        <p class="text-muted-foreground">
+          CashMóvil Canarias llevaba años con un PrestaShop parcheado: stock
+          desincronizado entre tienda física y web, fichas de cliente
+          inexistentes y cero datos sobre qué productos dejaban margen. Cada
+          dispositivo es único — con IMEI, batería y estado propios — y
+          PrestaShop no estaba pensado para eso.
+        </p>
+        <p class="text-muted-foreground">
+          En 4 semanas entregamos el sistema completo: ecommerce con inventario
+          por IMEI, backoffice con historial de cliente (compras, garantías,
+          reparaciones), módulo de servicio técnico integrado y dashboard con
+          márgenes reales. <strong class="text-foreground"
+            >Por primera vez, visibilidad real del negocio.</strong
+          >
+        </p>
+        <a
+          href="/projects/cash-movil-canarias"
+          class="inline-flex items-center gap-1 text-primary font-medium hover:underline"
+        >
+          Ver el caso completo →
+        </a>
+      </div>
+    </section>
+
     <section class="space-y-12">
       <SectionHeader
-        title="Por qué Madrid confía"
-        subtitle="en un equipo remoto"
-        description="El código de calidad no depende de la distancia."
+        title="Por qué empresas canarias"
+        subtitle="trabajan con nosotros"
+        description="Entendemos las particularidades de operar en el archipiélago."
         align="center"
       />
       <div class="grid md:grid-cols-3 gap-8" data-stagger="100">
@@ -188,7 +230,7 @@ const faqs = [
     <section class="space-y-12">
       <SectionHeader
         title="Recursos y guías"
-        subtitle="para empresas en Madrid"
+        subtitle="para empresas canarias"
         description="Analizamos el coste, los plazos y la rentabilidad del software a medida."
         align="center"
       />
@@ -196,19 +238,19 @@ const faqs = [
         {
           [
             {
-              title: "¿Cuánto cuesta un ERP a medida?",
+              title: "PrestaShop vs Ecommerce a medida",
+              url: "/blog/prestashop-vs-ecommerce-a-medida",
+              desc: "Cuándo dar el salto y qué ganas con un sistema propio. El caso de CashMóvil.",
+            },
+            {
+              title: "Cuánto cuesta un ERP a medida",
               url: "/blog/cuanto-cuesta-erp-a-medida",
               desc: "Guía de precios reales y qué factores determinan la inversión en 2026.",
             },
             {
-              title: "Migrar de Access a Web",
-              url: "/blog/migrar-access-a-web-2026",
-              desc: "Cómo modernizar sistemas antiguos sin parar el negocio. El caso de IFCO.",
-            },
-            {
-              title: "Landing Page B2B que convierte",
-              url: "/blog/landing-page-b2b-que-convierte",
-              desc: "Claves para captar clientes de alto ticket con una web enfocada a resultados.",
+              title: "Portal de cliente a medida",
+              url: "/blog/portal-de-cliente-a-medida",
+              desc: "Cómo reducir el soporte y mejorar la confianza de tus clientes.",
             },
           ].map((item) => (
             <a
@@ -228,7 +270,7 @@ const faqs = [
     <section class="space-y-8 max-w-3xl mx-auto">
       <SectionHeader
         title="Preguntas frecuentes"
-        subtitle="de empresas madrileñas"
+        subtitle="de empresas canarias"
         align="center"
       />
       <dl class="space-y-6">
@@ -249,11 +291,11 @@ const faqs = [
       class="bg-primary text-background rounded-3xl p-12 text-center space-y-6"
     >
       <h2 class="text-3xl md:text-4xl font-bold">
-        ¿Listo para lanzar tu proyecto?
+        ¿Tienes un proyecto en Canarias?
       </h2>
       <p class="text-xl opacity-90 max-w-2xl mx-auto">
-        Agenda una videollamada de 30 minutos. Sin compromiso. Respuesta en
-        menos de 24h.
+        Cuéntanos qué necesitas. Respondemos en menos de 24h con un presupuesto
+        real.
       </p>
       <a href="/contact">
         <Button
@@ -261,7 +303,7 @@ const faqs = [
           withArrow
           class="bg-background text-primary hover:bg-background/90"
         >
-          Agendar videollamada
+          Pedir presupuesto
         </Button>
       </a>
     </section>

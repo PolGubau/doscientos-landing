@@ -1,0 +1,141 @@
+---
+title: "Landing page B2B que convierte: cómo pasar de visitas a reuniones cualificadas"
+description: "Guía sobre cómo diseñar y construir una landing page B2B de alto ticket que convierta. Estructura, prueba social, fricción mínima y decisiones técnicas. Con el caso real de Cyberimpulsa."
+publishDate: "2026-06-25"
+draft: false
+tags: ["landing page B2B", "diseño web que convierte", "captación B2B", "web empresa", "conversión"]
+author: "doscientos"
+faqs:
+  - question: "¿Qué diferencia una landing B2B de una web corporativa?"
+    answer: "Una web corporativa informa sobre la empresa; una landing B2B está diseñada para una única acción: convertir al visitante en un lead cualificado eliminando cualquier distracción y centrándose en el problema del cliente."
+  - question: "¿Por qué mi landing B2B tiene visitas pero no convierte?"
+    answer: "Suele deberse a tres factores: falta de prueba social clara en los primeros segundos, un mensaje demasiado centrado en 'nosotros' y no en el cliente, o un proceso de contacto con demasiada fricción (formularios largos)."
+  - question: "¿Es mejor un formulario largo o corto para captación B2B?"
+    answer: "Corto. En la primera toma de contacto, solo necesitas el nombre, email y empresa. Cuantos más campos añadas, más cae la conversión. La cualificación profunda debe hacerse en la llamada, no en el formulario."
+  - question: "¿Cuánto tiempo se tarda en ver resultados tras lanzar una landing optimizada?"
+    answer: "Si ya tienes tráfico (vía Ads o SEO), la mejora en la tasa de conversión es casi inmediata. Una landing bien estructurada puede doblar o triplicar el número de leads en las primeras semanas."
+  - question: "¿Se puede integrar la landing con mi CRM actual (Salesforce, HubSpot)?"
+    answer: "Sí, es lo ideal. Conectamos los formularios y el calendario (Calendly) directamente con tu CRM para que el equipo comercial reciba los leads en tiempo real con toda la información necesaria."
+---
+
+import { Image } from "astro:assets";
+import cyberHero from "../../assets/media/projects/cyberimpulsa/hero.webp";
+import cyberCases from "../../assets/media/projects/cyberimpulsa/cases.webp";
+
+Una web corporativa bonita no convierte. Una landing page B2B de alto ticket tampoco convierte por defecto — convierte cuando está construida alrededor de una sola pregunta: ¿qué necesita ver alguien que nunca ha oído hablar de ti para agendar una llamada en los próximos 30 segundos?
+
+Si tu web tiene muchas visitas y pocas reuniones, el problema casi nunca es el tráfico. Es la página.
+
+<Image
+  src={cyberHero}
+  alt="Landing page B2B de Cyberimpulsa con hero segmentado por sectores y globo 3D interactivo de presencia internacional"
+  width={1200}
+  class="rounded-2xl my-8 border bg-muted"
+/>
+
+---
+
+## Por qué las webs B2B no convierten
+
+La mayoría de webs corporativas cometen los mismos errores:
+
+- Explican qué hace la empresa antes de demostrar que entienden el problema del cliente
+- No tienen prueba social visible en los primeros segundos (o la tienen enterrada al final)
+- El proceso de contacto tiene demasiados pasos — formulario largo, email de confirmación, espera
+- Hay demasiadas páginas y rutas posibles: el visitante no sabe qué hacer
+- El mensaje está escrito para el equipo interno, no para el decisor que llega de LinkedIn o Google
+
+En servicios B2B de alto ticket, el visitante llega con escepticismo. No busca más información — busca una razón para confiar.
+
+---
+
+## La estructura que funciona
+
+Una landing B2B de alto ticket que convierte tiene que resolver tres cosas en este orden:
+
+### 1. Prueba social en los primeros 3 segundos
+No un logo. Métricas reales o resultados concretos de clientes. "Hemos generado 250.000 € en presupuestos para empresas de ciberseguridad" convierte infinitamente más que "somos expertos en captación B2B".
+
+### 2. Claridad sobre el proceso
+El decisor B2B necesita saber qué pasa si da el siguiente paso. ¿Una llamada de 30 minutos? ¿Sin compromiso? ¿Con quién? La incertidumbre paraliza la acción. Un proceso en 3 pasos bien explicado elimina la fricción invisible.
+
+### 3. Fricción mínima para el siguiente paso
+Cada campo de formulario que añades reduce las conversiones. Si tu objetivo es una llamada, el CTA debería abrir un calendario directamente — no un formulario que alguien revisará en 48 horas. En servicios B2B, **la velocidad de respuesta percibida es parte del mensaje**.
+
+---
+
+## Caso real: Cyberimpulsa
+
+**Cyberimpulsa** ayuda a empresas de Ciberseguridad, Software e IA a conseguir clientes B2B. Tenían un sistema de captación probado, casos de éxito reales y credibilidad sobrada — pero la web no lo comunicaba. El tráfico que llegaba no se convertía en reuniones.
+
+Nos encargaron construir la landing desde cero con un objetivo claro: **agendar llamadas cualificadas con empresas tech**.
+
+La estructura que implementamos:
+
+1. **Hero con sectores + globo 3D interactivo** mostrando presencia internacional (Barcelona, Londres, Berlín, París, Nueva York). Mensaje de alto nivel, no genérico.
+2. **Casos de éxito con métricas reales**: 20.000 € captados en 2 meses, 27.000 € en 2 meses, 250.000 € en presupuestos generados. Los números antes que las palabras.
+3. **Proceso en 3 pasos** con progress bar animada al hacer scroll. Sin ambigüedad sobre qué pasa después.
+4. **CTA con Calendly integrado**: un clic para agendar sin salir de la página, sin formulario, sin espera.
+
+El resultado: en menos de un mes ya había primeras llamadas agendadas desde la web. Ver el [caso completo de Cyberimpulsa](/projects/cyberimpulsa).
+
+<Image
+  src={cyberCases}
+  alt="Sección de casos de éxito de la landing de Cyberimpulsa con métricas reales de captación B2B"
+  width={1200}
+  class="rounded-2xl my-8 border bg-muted"
+/>
+
+---
+
+## Decisiones técnicas que marcan la diferencia
+
+### Velocidad ante todo
+
+Una landing B2B con 98/100 en PageSpeed no es un capricho de rendimiento — es conversión directa. El visitante B2B que llega desde una búsqueda o un anuncio tiene muy poca tolerancia a esperar. Cada segundo adicional de carga reduce las conversiones en un 7% de media.
+
+Usar [Astro estático](/blog/software-a-medida-vs-saas) en lugar de un WordPress con plugins garantiza carga desde CDN en menos de 1 segundo sin sacrificar ninguna funcionalidad de conversión.
+
+### Sin distracciones
+
+Una sola página. Sin menú de navegación que lleve a otras secciones. Sin links externos. Cada elemento debe empujar hacia un único objetivo: el CTA. Las landing pages con múltiples rutas tienen tasas de conversión sistemáticamente más bajas que las que mantienen al visitante enfocado.
+
+### Calendly embebido vs formulario
+
+Para servicios B2B de alto ticket donde el siguiente paso es una llamada, el Calendly embebido convierte mejor que cualquier formulario. El visitante ve disponibilidad real, elige su franja y confirma en 45 segundos. El formulario introduce una espera percibida que enfría el interés.
+
+### Prueba social con nombres y números
+
+Logos de clientes sin contexto no convierten. Un caso de éxito con sector, problema y resultado numérico concreto sí. La diferencia está en si el decisor puede imaginarse a sí mismo en ese resultado.
+
+---
+
+## Qué no hacer
+
+- **No expliques tu metodología antes de la prueba social.** Nadie quiere saber cómo trabajas antes de creer que funciona.
+- **No pongas un formulario de 10 campos.** Nombre, email y empresa es suficiente para cualificar.
+- **No diseñes para el móvil si tu cliente B2B está en escritorio.** Analiza tus datos antes de optimizar.
+- **No lances sin medir.** Si no sabes cuánto tiempo pasan en la página, dónde abandonan y cuántos clican el CTA, no puedes mejorar.
+
+---
+
+## ¿Cuánto cuesta una landing B2B bien hecha?
+
+| Tipo | Coste aproximado | Plazo |
+|---|---|---|
+| Landing básica (sin diseño diferencial) | 1.500 € – 4.000 € | 1-2 semanas |
+| Landing con diseño diferencial + CRO | 4.000 € – 10.000 € | 2-4 semanas |
+| Landing + integración (Calendly, HubSpot, analytics) | 6.000 € – 15.000 € | 3-5 semanas |
+
+El error más común es invertir en tráfico (ads, SEO) antes de tener una landing que convierte. Es exactamente al revés: primero optimiza la conversión, luego escala el tráfico.
+
+---
+
+## Artículos relacionados
+- [Portal de cliente a medida: mejora tu retención](/blog/portal-de-cliente-a-medida)
+- [Software a medida vs SaaS: qué elegir para tu empresa](/blog/software-a-medida-vs-saas)
+- [Integración de sistemas y APIs: conecta tus herramientas](/blog/integracion-de-sistemas-apis)
+
+---
+
+<BlogCTA variant="contact" />

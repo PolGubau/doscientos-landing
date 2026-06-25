@@ -5,9 +5,28 @@ publishDate: "2026-06-20"
 draft: false
 tags: ["CRM", "software a medida", "Barcelona", "automatización", "gestión de clientes"]
 author: "doscientos"
+faqs:
+  - question: "¿Cuándo es mejor un CRM a medida que uno genérico?"
+    answer: "Un CRM a medida es mejor cuando tu proceso comercial tiene reglas que las herramientas estándar no cubren sin parches complejos, cuando pagas por funciones que no usas, o cuando el coste de licencias mensuales para todo tu equipo ya supera los 500-1000€."
+  - question: "¿Cuánto se tarda en desarrollar un CRM personalizado?"
+    answer: "Un MVP funcional con gestión de contactos, pipeline y alertas suele estar listo en 6 semanas. Proyectos con integraciones profundas y automatizaciones avanzadas pueden tardar entre 10 y 16 semanas según el alcance."
+  - question: "¿Cómo se migran los datos de mi CRM actual?"
+    answer: "Exportamos los datos de tu sistema actual (Salesforce, HubSpot, Excel, etc.), los limpiamos y normalizamos, y los importamos al nuevo CRM asegurando que no se pierda el historial de interacciones con tus clientes."
+  - question: "¿Se puede integrar con mi ERP?"
+    answer: "Sí, es una de las mayores ventajas. Podemos conectar el CRM con tu sistema de facturación, ERP o tienda online para que los comerciales vean el stock real, las facturas pendientes o el estado de los pedidos sin cambiar de pestaña."
+  - question: "¿Qué pasa si mi negocio crece y necesito más funciones?"
+    answer: "Al ser código propio, el sistema es totalmente escalable. Puedes añadir módulos, nuevos roles de usuario o integraciones adicionales en cualquier momento sin depender de las limitaciones de un proveedor de software externo."
 ---
 
+import { Image } from "astro:assets";
+import BlogCTA from "../../components/blog/BlogCTA.astro";
+
+import crmBitacora from "../../assets/media/projects/bitacora/crm.webp";
+import crmCyberimpulsa from "../../assets/media/projects/cyberimpulsa/crm.webp";
+
 Si llevas más de un año pagando una licencia de Salesforce, HubSpot o Pipedrive y tu equipo tiene una hoja de Excel paralela donde apunta "lo que el CRM no hace", ya tienes la respuesta.
+
+<Image src={crmBitacora} alt="Panel de gestión de CRM a medida - Proyecto Bitácora ERP" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 Un CRM genérico está diseñado para el 80% de los equipos comerciales. Si tu proceso de ventas, tu producto o tu sector tienen particularidades — y casi siempre las tienen — estás pagando por funcionalidades que no usas y te faltan las que necesitas. **La brecha entre lo que un CRM genérico hace y lo que tu negocio necesita se convierte en trabajo manual.**
 
@@ -42,6 +61,8 @@ Cuando un presupuesto lleva 5 días sin respuesta, el CRM envía un email person
 
 ### Informes sin exportar
 Los dashboards muestran exactamente lo que tu dirección necesita ver: conversión por comercial, tiempo medio de cierre por tipo de cliente, revenue por zona geográfica. Sin Excel.
+
+<Image src={crmCyberimpulsa} alt="Dashboard de ventas y captación B2B - Proyecto Cyberimpulsa" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 ---
 
@@ -82,9 +103,9 @@ El error más común al encargar un CRM a medida es querer construirlo todo desd
 
 ## Casos de empresas que dieron el paso
 
-En **Bitácora**, una empresa de gestión de instalaciones, el sistema genérico no contemplaba el ciclo de vida específico de sus contratos de mantenimiento. Construimos un sistema a medida que integró la gestión comercial con el planning de técnicos. El resultado: el proceso que tardaba 3 horas se redujo a 15 minutos.
+En **[Bitácora](/projects/bitacora-erp)**, una empresa de gestión de instalaciones, el sistema genérico no contemplaba el ciclo de vida específico de sus contratos de mantenimiento. Construimos un sistema a medida que integró la gestión comercial con el planning de técnicos. El resultado: el proceso que tardaba 3 horas se redujo a 15 minutos.
 
-En **IFCO Systems**, la complejidad de gestionar +300 millones de palés a nivel global hacía imposible usar una herramienta estándar. El sistema a medida permitió trazabilidad completa sin downtime durante la migración.
+En **[IFCO Systems](/projects/ifco)**, la complejidad de gestionar +300 millones de palés a nivel global hacía imposible usar una herramienta estándar. El sistema a medida permitió trazabilidad completa sin downtime durante la migración.
 
 ---
 
@@ -99,6 +120,13 @@ Un CRM a medida no es para todas las empresas. Tiene sentido cuando:
 
 Si cumples estas condiciones, merece la pena analizar el alcance antes de renovar otra licencia.
 
-> ¿Tu empresa está en Barcelona o el área metropolitana? Agenda una llamada de 30 minutos para analizar si un CRM a medida tiene sentido en tu caso. Sin compromiso.
+---
 
-[Hablar con el equipo →](/contact)
+## Artículos relacionados
+- [¿Cuánto cuesta un ERP a medida en 2026?](/blog/cuanto-cuesta-erp-a-medida)
+- [Portal de cliente a medida: por qué tu empresa lo necesita](/blog/portal-de-cliente-a-medida)
+- [Integración de sistemas y APIs: el pegamento de tu negocio](/blog/integracion-de-sistemas-apis)
+
+---
+
+<BlogCTA />

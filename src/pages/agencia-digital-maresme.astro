@@ -218,6 +218,46 @@ const faqs = [
       </div>
     </section>
 
+    <section class="space-y-12">
+      <SectionHeader
+        title="Recursos y guías"
+        subtitle="para empresas del Maresme"
+        description="Analizamos el coste, los plazos y la rentabilidad del software a medida."
+        align="center"
+      />
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          [
+            {
+              title: "CRM a medida en Barcelona",
+              url: "/blog/crm-a-medida-barcelona",
+              desc: "Cuándo dejar el genérico y construir el tuyo. Casos locales.",
+            },
+            {
+              title: "Software a medida vs SaaS",
+              url: "/blog/software-a-medida-vs-saas",
+              desc: "Guía honesta para elegir la mejor opción según tu volumen.",
+            },
+            {
+              title: "Integración de sistemas y APIs",
+              url: "/blog/integracion-de-sistemas-apis",
+              desc: "Cómo conectar tu ERP, tienda y CRM sin trabajo manual.",
+            },
+          ].map((item) => (
+            <a
+              href={item.url}
+              class="group p-6 rounded-2xl bg-accent hover:bg-muted transition-all border border-transparent hover:border-primary/20"
+            >
+              <h3 class="text-lg font-semibold group-hover:text-primary transition-colors">
+                {item.title}
+              </h3>
+              <p class="text-sm text-muted-foreground mt-2">{item.desc}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
     <section class="space-y-8 max-w-3xl mx-auto">
       <SectionHeader
         title="Preguntas frecuentes"

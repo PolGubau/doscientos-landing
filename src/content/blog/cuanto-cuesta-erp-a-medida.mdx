@@ -5,9 +5,26 @@ publishDate: "2026-06-18"
 draft: false
 tags: ["ERP", "software a medida", "costes", "digitalización", "gestión empresarial"]
 author: "doscientos"
+faqs:
+  - question: "¿Cuánto tiempo se tarda en implantar un ERP a medida?"
+    answer: "Un ERP básico suele estar listo en 6-8 semanas. Proyectos más complejos con integraciones industriales y migración de datos pueden extenderse de 4 a 6 meses. La clave es el enfoque incremental: poner en producción los módulos más críticos primero."
+  - question: "¿El ERP a medida es más caro que Odoo o SAP?"
+    answer: "A corto plazo, la inversión inicial es mayor. Sin embargo, a partir del tercer año suele ser más rentable al no pagar licencias por usuario. Para empresas de +15 usuarios, el ahorro en licencias paga el desarrollo en 18-24 meses."
+  - question: "¿Quién es el dueño del código?"
+    answer: "En doscientos, el código es propiedad absoluta del cliente desde el primer día. Sin licencias, sin lock-in y sin dependencias. Puedes llevarte el sistema a otro proveedor o gestionarlo internamente cuando quieras."
+  - question: "¿Qué mantenimiento requiere un ERP a medida?"
+    answer: "El mantenimiento técnico es mínimo: hosting y actualizaciones de seguridad. Lo habitual es un acuerdo de soporte mensual para pequeñas evoluciones y ajustes según el negocio crece, pero no hay cuotas obligatorias por uso."
+  - question: "¿Se puede integrar con mi software actual?"
+    answer: "Sí, siempre que el software actual tenga una API o permita acceso a la base de datos. Integramos habitualmente con Holded, PrestaShop, Shopify, Salesforce y sistemas de logística o facturación externa."
 ---
 
+import { Image } from "astro:assets";
+import erpAdmin from "../../assets/media/projects/bitacora/admin.webp";
+import erpDashboard from "../../assets/media/projects/optinergia/dashboard.webp";
+
 La primera pregunta que hace casi todo el mundo cuando empieza a explorar un ERP a medida es "¿cuánto cuesta?". La respuesta honesta es: depende. Pero hay rangos reales, y los compartimos sin rodeos.
+
+<Image src={erpDashboard} alt="Dashboard de control de costes y renovaciones en ERP a medida - Proyecto Optinergia" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 En este artículo cubrimos los factores que determinan el precio, los rangos típicos por tipo de proyecto y cómo compararlo con el coste total de un ERP genérico como SAP Business One, Odoo o Sage. **La conclusión que sorprende a muchos: para empresas de 15-100 empleados, un ERP a medida a menudo sale más barato a 3 años.**
 
@@ -48,6 +65,8 @@ Un sistema para 5 usuarios es más sencillo que uno para 50, con roles diferenci
 | ERP medio | + Stock, compras, dashboard | 20.000€ – 40.000€ | 10-14 semanas |
 | ERP completo | + Producción, RRHH, integraciones | 40.000€ – 80.000€ | 16-24 semanas |
 | ERP industrial | Trazabilidad, MRP, calidad | 60.000€ – 120.000€ | 20-30 semanas |
+
+<Image src={erpAdmin} alt="Interfaz de administración y gestión de contratos industrial - Proyecto Bitácora ERP" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 Estos precios incluyen diseño, desarrollo, pruebas, migración de datos y formación. No incluyen hosting (habitual: 50-200€/mes según infraestructura).
 
@@ -96,7 +115,7 @@ La diferencia clave: con el ERP a medida no pagas por funcionalidades que no usa
 
 ---
 
-## Caso real: Bitácora ERP
+## Caso real: [Bitácora ERP](/projects/bitacora-erp)
 
 Para Bitácora, una empresa de gestión de instalaciones industriales, construimos un sistema que integró la gestión de contratos de mantenimiento, el planning de técnicos y la facturación automática.
 
@@ -118,6 +137,13 @@ El error más caro en proyectos ERP — tanto genérico como a medida — es no 
 4. **Listar las integraciones imprescindibles** vs. las deseables
 5. **Pedir precio fijo** — si el proveedor no puede darlo, es una señal de alarma
 
-> ¿Quieres saber si un ERP a medida tiene sentido para tu empresa? En 30 minutos analizamos tu situación y te damos una estimación honesta. Sin compromiso.
+---
 
-[Hablar con el equipo →](/contact)
+## Artículos relacionados
+- [CRM a medida en Barcelona: cuándo dejar el genérico](/blog/crm-a-medida-barcelona)
+- [Software a medida vs SaaS: guía de decisión](/blog/software-a-medida-vs-saas)
+- [Integración de sistemas y APIs: el pegamento de tu negocio](/blog/integracion-de-sistemas-apis)
+
+---
+
+<BlogCTA />

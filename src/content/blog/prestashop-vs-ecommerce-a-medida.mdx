@@ -1,0 +1,130 @@
+---
+title: "PrestaShop vs ecommerce a medida: cuándo tiene sentido dar el salto"
+description: "Guía para decidir si tu tienda online necesita PrestaShop, WooCommerce o un ecommerce a medida. Señales concretas, coste real y el caso de CashMóvil Canarias que sustituyó PrestaShop por un sistema propio."
+publishDate: "2026-06-25"
+draft: false
+tags: ["ecommerce", "PrestaShop", "tienda online", "software a medida", "backoffice"]
+author: "doscientos"
+faqs:
+  - question: "¿Cuándo debo dejar PrestaShop por un ecommerce a medida?"
+    answer: "Cuando el sistema estándar se convierte en un cuello de botella: desincronizaciones de stock constantes, procesos manuales para gestionar variantes únicas (como IMEI) o cuando el checkout es lento y poco flexible."
+  - question: "¿Qué ventajas tiene un ecommerce a medida sobre PrestaShop?"
+    answer: "Control total sobre el modelo de datos (puedes modelar productos únicos), velocidad de carga superior (sin deuda de plugins), checkout optimizado al 100% y un backoffice que integra todas tus operaciones de negocio."
+  - question: "¿Es difícil migrar datos de PrestaShop a un sistema propio?"
+    answer: "No es difícil, pero requiere rigor. Migramos clientes, pedidos históricos y catálogo de productos para que el cambio sea transparente tanto para tu equipo como para tus usuarios finales."
+  - question: "¿Cómo afecta el desarrollo a medida a la velocidad de carga?"
+    answer: "Positivamente. Al no cargar módulos de terceros innecesarios, las tiendas a medida suelen ser mucho más rápidas, lo que mejora tanto la experiencia de usuario como el posicionamiento SEO."
+  - question: "¿Cuánto cuesta mantener un ecommerce a medida frente a PrestaShop?"
+    answer: "Aunque la inversión inicial es mayor, el mantenimiento es más previsible. Eliminas los costes de licencias de módulos y los problemas de compatibilidad al actualizar versiones de PrestaShop."
+---
+
+import { Image } from "astro:assets";
+import cashProducto from "../../assets/media/projects/cash-movil-canarias/detalle-producto.webp";
+import cashClientes from "../../assets/media/projects/cash-movil-canarias/clientes.webp";
+
+Cuando montas tu primera tienda online, PrestaShop o WooCommerce son la respuesta correcta. Están listos en días, son baratos y cubren el 80% de los casos. El problema llega cuando tu negocio crece y ese 20% restante empieza a costarte tiempo, dinero y ventas perdidas.
+
+Este artículo no es contra PrestaShop — es una guía honesta para saber cuándo ya no es la herramienta adecuada para ti y qué implica dar el salto a un sistema propio.
+
+---
+
+## Por qué PrestaShop tiene sentido al principio
+
+PrestaShop y WooCommerce resuelven lo esencial sin necesidad de desarrollo: catálogo de productos, carrito, pasarela de pago, gestión de pedidos y un panel básico. Para una tienda que empieza o con catálogo estándar, el coste de oportunidad de construir algo a medida no tiene sentido.
+
+El problema es que están diseñados para el caso general. Y el caso general no es tu negocio.
+
+---
+
+## Las señales de que PrestaShop ya no escala contigo
+
+### Tu inventario no encaja en el modelo estándar
+
+PrestaShop gestiona productos con variantes predefinidas: talla, color, material. Si tu inventario tiene artículos únicos —móviles con IMEI individual, coches de segunda mano, maquinaria con número de serie— cada variante se convierte en un trabajo manual que el sistema no contempla.
+
+**CashMóvil Canarias** lo vivió en primera persona: cada dispositivo era único, con batería, estado y precio propios. PrestaShop no tenía forma de modelar eso bien, y cada venta exigía edición manual. **Pasaron de PrestaShop a un sistema propio con inventario por IMEI, y las desincronizaciones de stock entre tienda física y web desaparecieron.**
+
+<Image
+  src={cashProducto}
+  alt="Ficha de producto del ecommerce a medida de CashMóvil Canarias con inventario por IMEI y estado del dispositivo"
+  width={1200}
+  class="rounded-2xl my-8 border bg-muted"
+/>
+
+### Necesitas conectar la tienda con otras operaciones del negocio
+
+El servicio postventa, las reparaciones, el historial de un cliente a lo largo del tiempo. PrestaShop sabe que alguien compró un producto; no sabe que ese mismo cliente volvió tres meses después con una garantía, que lo atendió el técnico y que ahora es un cliente de alto valor.
+
+Cuando las operaciones del negocio van más allá de "vender y enviar", necesitas que el sistema de tienda y el sistema de gestión interna hablen el mismo idioma.
+
+### El checkout tarda demasiado
+
+Cada módulo de terceros que instalas añade JavaScript, peticiones y tiempo de carga. En comercio electrónico, cada segundo adicional en el checkout reduce las conversiones. Un sistema propio no arrastra deuda de plugins acumulados durante años.
+
+### Estás pagando más en módulos que en desarrollo
+
+Cuando la suma de módulos de pago, conectores, licencias y mantenimiento de compatibilidad entre versiones supera los 3.000–5.000 € al año, empieza a tener sentido hacer el cálculo real de qué costaría un sistema que cubra exactamente tus necesidades.
+
+---
+
+## Qué ganas con un ecommerce a medida
+
+Un sistema construido para tu negocio específico puede incluir lo que no existe en PrestaShop:
+
+- **Catálogo para artículos únicos**: IMEI, número de serie, estado del producto, historial de propietarios anteriores
+- **Backoffice integrado**: la misma herramienta para gestionar la tienda online, el stock físico y el servicio técnico
+- **Checkout optimizado para tu cliente**: el flujo de pasos exacto que convierte mejor en tu contexto
+- **Datos reales de negocio**: márgenes reales por producto, ranking de ventas, valor de vida del cliente
+
+---
+
+## Los números reales
+
+No hay un precio estándar porque el alcance varía mucho, pero estos son los rangos habituales:
+
+| Tipo de solución | Coste aproximado | Plazo |
+|---|---|---|
+| PrestaShop/WooCommerce configurado | 2.000 € – 5.000 € | 2-4 semanas |
+| Ecommerce a medida básico | 15.000 € – 30.000 € | 6-10 semanas |
+| Ecommerce + backoffice integrado | 25.000 € – 50.000 € | 10-16 semanas |
+
+La pregunta correcta no es "¿cuánto cuesta?" sino "¿cuánto me cuesta seguir con lo que tengo?". Si el sistema actual genera desincronizaciones de stock, errores manuales y fricción en el equipo, ese coste existe aunque no lo tengas en una factura.
+
+---
+
+## Cuándo NO tiene sentido el desarrollo a medida
+
+- Tu catálogo es estándar y no tiene particularidades de inventario
+- Vendes menos de 100 pedidos al mes
+- No tienes operaciones offline conectadas a la tienda
+- Tu presupuesto no llega a 15.000 €
+
+En esos casos, PrestaShop o Shopify siguen siendo la respuesta correcta. El desarrollo a medida se justifica cuando el sistema genérico es el cuello de botella real del negocio, no antes.
+
+---
+
+## Cómo fue la migración de CashMóvil Canarias
+
+Llevaban años con un PrestaShop parcheado: stock desincronizado entre tienda física y web, fichas de cliente inexistentes y cero datos sobre qué productos dejaban margen. Cada decisión se tomaba a ojo.
+
+Construimos el sistema completo en 4 semanas: ecommerce con inventario por IMEI, backoffice con historial de cliente unificado (compras, garantías, reparaciones), módulo de servicio técnico integrado y un dashboard con márgenes reales. El resultado fue un solo sistema para gestionar todo — y por primera vez, visibilidad real del negocio.
+
+Ver el [caso completo de CashMóvil Canarias](/projects/cash-movil-canarias).
+
+<Image
+  src={cashClientes}
+  alt="Backoffice de CashMóvil Canarias con historial unificado de cliente: compras, garantías y reparaciones"
+  width={1200}
+  class="rounded-2xl my-8 border bg-muted"
+/>
+
+---
+
+## Artículos relacionados
+- [Portal de cliente a medida: mejora tu retención](/blog/portal-de-cliente-a-medida)
+- [Software de gestión para asesorías energéticas: el caso de Optinergia](/blog/software-gestion-asesoria-energetica)
+- [Cuánto cuesta un ERP a medida en 2026](/blog/cuanto-cuesta-erp-a-medida)
+
+---
+
+<BlogCTA variant="contact" />

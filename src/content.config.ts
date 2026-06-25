@@ -41,6 +41,14 @@ const blog = defineCollection({
 			tags: z.array(z.string()).optional(),
 			author: z.string().default("doscientos"),
 			draft: z.boolean().default(false),
+			faqs: z
+				.array(
+					z.object({
+						question: z.string(),
+						answer: z.string(),
+					}),
+				)
+				.optional(),
 		}),
 });
 

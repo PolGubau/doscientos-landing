@@ -5,11 +5,28 @@ publishDate: "2026-06-12"
 draft: false
 tags: ["software a medida", "SaaS", "decisión de compra", "digitalización", "gestión empresarial"]
 author: "doscientos"
+faqs:
+  - question: "¿Cuál es la principal diferencia entre SaaS y software a medida?"
+    answer: "El SaaS es un alquiler de software estándar que usas junto a miles de empresas; el software a medida es una propiedad exclusiva diseñada exactamente para tus procesos únicos, sin pagar licencias por usuario."
+  - question: "¿Cuándo es más rentable el software a medida que el SaaS?"
+    answer: "Suele serlo a partir de los 2-3 años cuando el coste acumulado de las licencias mensuales (SaaS) supera la inversión inicial del desarrollo a medida, o cuando el SaaS te obliga a hacer procesos manuales por falta de flexibilidad."
+  - question: "¿Qué es el 'lock-in' en un SaaS?"
+    answer: "Es la dependencia total del proveedor: si suben precios, cambian funciones o cierran el servicio, tu empresa se ve obligada a adaptarse. A medida, tú tienes el código y el control total sobre el futuro de la herramienta."
+  - question: "¿Puedo migrar mis datos de un SaaS a un software a medida?"
+    answer: "Sí, siempre que el SaaS permita exportar datos (vía API o CSV). En el desarrollo a medida, la migración de datos históricos es una fase crítica para asegurar que empiezas a trabajar con toda tu información desde el primer día."
+  - question: "¿Cuánto tiempo se tarda en desarrollar una solución a medida frente a un SaaS?"
+    answer: "El SaaS es instantáneo. Un software a medida suele requerir de 8 a 16 semanas para una primera versión sólida, dependiendo de la complejidad y las integraciones necesarias con otros sistemas."
 ---
+
+import { Image } from "astro:assets";
+import saasVsCustom from "../../assets/media/projects/optinergia/dashboard.webp";
+import customProcess from "../../assets/media/projects/bitacora/crm.webp";
 
 Casi todas las empresas llegan al mismo cruce: el proceso ya no cabe en una hoja de cálculo y hay que decidir entre contratar un SaaS de suscripción o construir algo a medida. La respuesta fácil ("a medida es mejor" o "el SaaS es más barato") suele ser equivocada, porque **la decisión correcta depende de cuánto se parece tu proceso al del resto del mercado.**
 
 Este artículo no defiende ninguna de las dos opciones por defecto. Da los criterios para que decidas con datos, no por moda.
+
+<Image src={saasVsCustom} alt="Comparativa visual entre software a medida y soluciones SaaS - Proyecto Optinergia" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 ---
 
@@ -39,6 +56,8 @@ El SaaS engaña con su entrada barata. El número que importa es el acumulado:
 | Coste por usuario | Crece con cada empleado | No existe |
 | A 3-5 años | Puede dispararse | Se amortiza y se estabiliza |
 | Propiedad | Alquilas | Es tuyo |
+
+<Image src={customProcess} alt="Panel de gestión de procesos comerciales a medida - Proyecto Bitácora ERP" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 Para el desglose con cifras reales, ver [cuánto cuesta un ERP a medida](/blog/cuanto-cuesta-erp-a-medida).
 
@@ -104,6 +123,13 @@ Hazte estas tres preguntas:
 
 Si tu proceso es propio, las licencias se disparan y el sistema es estratégico, el software a medida deja de ser un gasto y pasa a ser una inversión. Si no, el SaaS es la respuesta sensata.
 
-> ¿No tienes claro de qué lado caes? En 30 minutos analizamos tu proceso y te decimos con honestidad si te conviene SaaS, a medida o una mezcla. Sin compromiso.
+---
 
-[Hablar con el equipo →](/contact)
+## Artículos relacionados
+- [CRM a medida en Barcelona: cuándo dar el paso](/blog/crm-a-medida-barcelona)
+- [¿Cuánto cuesta un ERP a medida? Precios y plazos reales](/blog/cuanto-cuesta-erp-a-medida)
+- [Migrar de Access a web en 2026: guía completa](/blog/migrar-access-a-web-2026)
+
+---
+
+<BlogCTA variant="contact" />

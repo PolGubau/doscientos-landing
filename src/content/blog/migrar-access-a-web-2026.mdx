@@ -5,9 +5,26 @@ publishDate: "2026-06-15"
 draft: false
 tags: ["Access", "migración", "legacy", "modernización", "desarrollo web", "bases de datos"]
 author: "doscientos"
+faqs:
+  - question: "¿Es seguro migrar una base de datos Access a la web?"
+    answer: "Es mucho más seguro que mantener el archivo local. Al migrar a la web, los datos se alojan en servidores profesionales con backups automáticos, cifrado de datos y control de acceso por usuario, eliminando el riesgo de archivos corrompidos o pérdida de datos por fallos de hardware local."
+  - question: "¿Qué base de datos se usa para sustituir a Access?"
+    answer: "Habitualmente migramos los datos a PostgreSQL o MySQL, que son motores de base de datos profesionales, robustos y escalables que permiten miles de conexiones simultáneas sin pérdida de rendimiento, algo que Access no puede gestionar."
+  - question: "¿Se puede usar el nuevo sistema desde el móvil?"
+    answer: "Sí, esa es una de las mayores ventajas. Al ser una aplicación web, puedes acceder a tus datos, crear registros o consultar informes desde cualquier dispositivo (PC, tablet o móvil) con conexión a internet, sin necesidad de VPNs complejas."
+  - question: "¿Cuánto tiempo tarda la migración de Access?"
+    answer: "Un proyecto medio suele tardar entre 8 y 14 semanas. La duración depende del número de tablas, la complejidad de las reglas de negocio y el volumen de datos históricos que haya que limpiar y migrar."
+  - question: "¿Tengo que parar de trabajar mientras se hace la migración?"
+    answer: "No. El desarrollo se realiza en paralelo. Tu equipo sigue usando el Access actual mientras nosotros construimos la nueva plataforma. Solo hay un breve periodo de transición al final para asegurar que los últimos datos introducidos están en el nuevo sistema."
 ---
 
+import { Image } from "astro:assets";
+import legacyMigration from "../../assets/media/projects/ifco/showcase.webp";
+import modernLogin from "../../assets/media/projects/optinergia/login-page.webp";
+
 Si tu empresa lleva años funcionando con una base de datos Access, no estás solo. Hay miles de PYMEs en España que gestionan pedidos, clientes, inventarios o producción con una solución que en su momento funcionó perfectamente y que hoy se ha convertido en un cuello de botella.
+
+<Image src={modernLogin} alt="Acceso seguro y moderno a aplicación web - Sustituyendo la fragilidad de Access" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 Los síntomas son conocidos: el archivo se corrompe periódicamente, solo puede abrirlo una persona a la vez, no funciona desde el móvil, no se integra con nada, y el único que sabe mantenerlo se va a jubilar. **La pregunta no es si hay que migrar, sino cuándo y cómo hacerlo sin parar el negocio.**
 
@@ -112,7 +129,9 @@ Si alguna de estas preguntas genera evasivas, es una señal de alerta.
 
 ---
 
-## Caso real: migración de sistema crítico en IFCO Systems
+## Caso real: migración de sistema crítico en [IFCO Systems](/projects/ifco)
+
+<Image src={legacyMigration} alt="Modernización de sistema crítico global - Proyecto IFCO Systems" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 IFCO Systems gestionaba la trazabilidad de +300 millones de palés reutilizables con un sistema de 15 años en producción. La migración no podía generar ni un minuto de downtime.
 
@@ -120,6 +139,13 @@ Desarrollamos el nuevo sistema en paralelo, migramos los datos de forma incremen
 
 No todos los proyectos son tan complejos — pero el principio es el mismo: migrar sin parar.
 
-> ¿Tienes un Access que necesita modernizarse? Cuéntanos qué hace y te decimos cuánto costaría pasarlo a web y cuánto tardaríamos. Sin compromiso.
+---
 
-[Hablar con el equipo →](/contact)
+## Artículos relacionados
+- [Software a medida vs SaaS: guía de decisión](/blog/software-a-medida-vs-saas)
+- [CRM a medida en Barcelona: cuándo dar el paso](/blog/crm-a-medida-barcelona)
+- [Integración de sistemas y APIs: el pegamento de tu negocio](/blog/integracion-de-sistemas-apis)
+
+---
+
+<BlogCTA />

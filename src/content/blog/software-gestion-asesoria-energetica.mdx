@@ -1,0 +1,140 @@
+---
+title: "Software de gestión para asesorías energéticas: contratos, renovaciones y clientes sin Excel"
+description: "Guía práctica sobre qué necesita el software de una asesoría energética: gestión de contratos con fechas de vencimiento, alertas de renovación, historial de clientes e incidencias. Con el caso real de Optinergia."
+publishDate: "2026-06-25"
+draft: false
+tags: ["software asesoría energética", "CRM energía", "gestión contratos energía", "software a medida", "automatización"]
+author: "doscientos"
+faqs:
+  - question: "¿Qué debe incluir un software para asesoría energética?"
+    answer: "Debe centralizar el CRM de clientes, la gestión de CUPS, la carga automática de facturas (OCR/API), el cálculo de márgenes por comercial y un sistema de alertas para renovaciones de contratos."
+  - question: "¿Cómo automatiza el CRM de energía la carga de facturas?"
+    answer: "Usamos sistemas de lectura inteligente que extraen los datos de consumo y precio de los PDFs de las comercializadoras, eliminando la entrada manual de datos y los errores de cálculo."
+  - question: "¿Se puede integrar con las distribuidoras eléctricas?"
+    answer: "Sí, podemos conectar el sistema con plataformas de datos energéticos para obtener consumos históricos reales, lo que permite realizar estudios de ahorro mucho más precisos para el cliente final."
+  - question: "¿Cómo ayuda el software a la retención de clientes?"
+    answer: "Al automatizar las alertas de renovación, el asesor puede contactar con el cliente antes de que el contrato expire, ofreciéndole una mejor tarifa y evitando que la competencia se adelante."
+  - question: "¿Qué ahorro de tiempo supone digitalizar una asesoría energética?"
+    answer: "Empresas como Optinergia han reducido en un 60% el tiempo dedicado a tareas administrativas, permitiendo que el equipo comercial se centre en cerrar nuevos contratos en lugar de picar datos."
+---
+
+import { Image } from "astro:assets";
+import optiDashboard from "../../assets/media/projects/optinergia/dashboard.webp";
+import optiRenovations from "../../assets/media/projects/optinergia/renovations.webp";
+
+Una asesoría energética tiene un reto de gestión muy específico que los CRMs genéricos no resuelven bien: contratos con fechas de vencimiento concretas, clientes que hay que renovar antes de que se vayan solos y comerciales que deben priorizar su agenda según urgencias reales.
+
+Cuando ese proceso vive en hojas de cálculo, la pregunta no es si vas a perder renovaciones — es cuántas estás perdiendo ya.
+
+---
+
+## El problema de gestionar una asesoría energética con Excel
+
+Excel no avisa, no prioriza y no recuerda. Cuando tienes 100 clientes con contratos a diferentes fechas, la persona que tiene que actuar depende de su propia memoria o de buscar en el archivo cada mañana. Ninguna de las dos es fiable a escala.
+
+Los síntomas más comunes:
+
+- Contratos que vencen sin que nadie los haya contactado a tiempo
+- Comerciales que no saben cuántas renovaciones tienen pendientes esta semana
+- Clientes que llaman para saber el estado de su factura y nadie tiene la información a mano
+- Informes que requieren consolidar datos de tres sitios diferentes
+- Sin visibilidad de cuánto factura cada comercial ni qué clientes son más rentables
+
+**Cada renovación que se escapa es ingresos recurrentes que se van — con contrato firmado por la competencia.**
+
+---
+
+## Qué necesita el software de una asesoría energética
+
+El sector tiene peculiaridades que los CRMs generales no modelan bien por defecto:
+
+### Gestión de contratos energéticos
+- CUPS (Código Unificado de Punto de Suministro) asociado a cada contrato
+- Fecha de inicio y fin de vigencia, con alertas automáticas antes del vencimiento
+- Tarifas, importes y comisiones por contrato
+- Historial de modificaciones y renovaciones
+
+### Cola de renovaciones priorizada
+Lo más crítico: saber en todo momento qué contratos vencen pronto, ordenados por urgencia. No una lista plana sino una cola que distingue entre vencidos, urgentes (menos de 30 días) y próximos (30-60 días), con el último contacto registrado para cada uno.
+
+<Image
+  src={optiRenovations}
+  alt="Cola de renovaciones del CRM de Optinergia con niveles de urgencia, último contacto y canal"
+  width={1200}
+  class="rounded-2xl my-8 border bg-muted"
+/>
+
+### Historial de actividad por cliente
+Quién habló con quién, cuándo, a través de qué canal y con qué resultado. Sin esto, cuando un comercial está de vacaciones o cambia de empresa, la relación con el cliente empieza de cero.
+
+### Roles por perfil de usuario
+Los comerciales no deberían ver la cartera de sus compañeros ni las comisiones globales. Los administradores necesitan visibilidad total. El propietario necesita los números de rentabilidad. Un buen sistema separa lo que cada perfil necesita ver y hacer.
+
+---
+
+## Caso real: Optinergia CRM
+
+**Optinergia** es una asesoría energética con cientos de clientes activos y varios comerciales. Gestionaban todo en hojas de cálculo: contratos en un Excel, incidencias en otro, y el historial de contactos en la memoria de cada comercial.
+
+Nos encargaron construir la herramienta que no existía en el mercado para ellos.
+
+En **2 semanas** entregamos:
+
+- **Dashboard** con KPIs en tiempo real: contratos activos, renovaciones urgentes, incidencias abiertas por comercial
+- **Ficha de cliente** con todos los contratos energéticos (CUPS, fechas, importes, comisiones), documentos adjuntos e historial completo de actividad
+- **Cola de renovaciones** con tres niveles de urgencia, último contacto y canal, y registro de llamada sin salir del flujo
+- **Gestión de incidencias** (facturas pendientes, DNI no entregado, contratos sin firma) con prioridad y seguimiento por todo el equipo
+- **Roles diferenciados**: propietario, administrador, comercial (solo su cartera) y solo lectura
+- **Exportación a CSV** filtrada para informes en los que el cliente ya necesitaba datos específicos
+- **PWA** funciona en móvil sin instalar nada — los comerciales lo usan entre visitas desde el teléfono
+
+Ver el [caso completo de Optinergia](/projects/optinergia).
+
+<Image
+  src={optiDashboard}
+  alt="Dashboard del CRM de Optinergia con KPIs en tiempo real: contratos activos, renovaciones urgentes e incidencias por comercial"
+  width={1200}
+  class="rounded-2xl my-8 border bg-muted"
+/>
+
+---
+
+El equipo migró desde Excel en menos de una semana, con todos los datos históricos importados.
+
+---
+
+## ¿CRM genérico o desarrollo a medida?
+
+| | CRM genérico (Salesforce, HubSpot) | CRM a medida |
+|---|---|---|
+| Tiempo de implantación | 2-8 semanas (configuración) | 2-6 semanas (desarrollo) |
+| Coste mensual | 50-200 € por usuario | 0 (no hay suscripción) |
+| CUPS y contratos energéticos | No nativo, requiere personalización cara | Nativo, modelado según tu operativa |
+| Cola de renovaciones con urgencia | No existe, hay que construirla | Incluida |
+| Exportación filtrada | Limitada o de pago | Exactamente lo que necesitas |
+| Roles por comercial | Básico | Granular |
+
+El problema del CRM genérico no es que sea malo — es que está diseñado para el caso general. Una asesoría energética tiene flujos suficientemente específicos (CUPS, vencimientos, comisiones por contrato, regulación del sector) como para que la personalización de un CRM genérico cueste más que construirlo bien desde cero.
+
+---
+
+## Cuánto cuesta un CRM para el sector energético
+
+Depende del tamaño de la cartera, el número de usuarios y las integraciones que necesites:
+
+| Tamaño | Coste aproximado | Plazo |
+|---|---|---|
+| Equipo pequeño (2-5 comerciales, hasta 500 clientes) | 8.000 € – 15.000 € | 2-4 semanas |
+| Equipo medio (5-15 comerciales, hasta 2.000 clientes) | 15.000 € – 30.000 € | 4-8 semanas |
+| Integración con facturación o APIs de comercializadoras | +5.000 € – +15.000 € | +2-4 semanas |
+
+---
+
+## Artículos relacionados
+- [CRM a medida en Barcelona: cuándo dar el paso](/blog/crm-a-medida-barcelona)
+- [Portal de cliente a medida: mejora tu retención](/blog/portal-de-cliente-a-medida)
+- [Integración de sistemas y APIs: el pegamento de tu negocio](/blog/integracion-de-sistemas-apis)
+
+---
+
+<BlogCTA />

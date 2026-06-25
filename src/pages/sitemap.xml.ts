@@ -142,6 +142,12 @@ export const GET: APIRoute = async ({ site }) => {
 			priority: "0.85",
 			changefreq: "monthly",
 		},
+		{
+			url: "desarrollo-web-canarias",
+			source: "src/pages/desarrollo-web-canarias.astro",
+			priority: "0.85",
+			changefreq: "monthly",
+		},
 		// Packs de webs para negocios locales (índice movido por los datos)
 		{
 			url: "packs",
