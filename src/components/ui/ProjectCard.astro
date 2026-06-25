@@ -13,7 +13,6 @@ type Props = {
 } & ProjectProps;
 
 const { id, title, services_provided, cover } = Astro.props;
-const imageResolution = 800;
 ---
 
 <a href={`/projects/${id}`} class="w-full">
@@ -27,10 +26,12 @@ const imageResolution = 800;
         class="w-full h-full bg-gradient-to-br from-muted to-primary/20 flex items-center justify-center relative overflow-hidden"
       >
         <Image
-          width={imageResolution * 1.5}
-          height={imageResolution}
           src={cover}
           alt={`Imagen de portada del proyecto ${title}, mostrando una vista previa visual del trabajo realizado para el cliente. La imagen refleja el estilo y la esencia del proyecto, utilizando colores y elementos gráficos relacionados con ${title}.`}
+          widths={[400, 800, 1200]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          loading="lazy"
+          decoding="async"
           class="w-full h-full object-cover object-center transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
         />
       </div>

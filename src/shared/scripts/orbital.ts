@@ -451,8 +451,11 @@ const addProximityEffects = (
 		const mx = e.clientX;
 		const my = e.clientY;
 
+		// 1. Batch all reads first to avoid layout thrashing within the loop.
+		const rects = thumbs.map((t) => t.getBoundingClientRect());
+
 		for (let i = 0; i < thumbs.length; i++) {
-			const r = thumbs[i].getBoundingClientRect();
+			const r = rects[i];
 			const cx = r.left + r.width / 2;
 			const cy = r.top + r.height / 2;
 			const dist = Math.hypot(mx - cx, my - cy);

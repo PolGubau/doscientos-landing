@@ -1,0 +1,2 @@
+/* Typography plugin — only imported on pages that use .prose */
+@plugin "@tailwindcss/typography";

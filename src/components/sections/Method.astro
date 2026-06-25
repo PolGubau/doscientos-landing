@@ -21,7 +21,10 @@ const { method } = copy;
       />
 
       <div class="hidden lg:block">
-        <a href="/blog/proceso-en-flatmatch">
+        <a
+          href="/blog/proceso-en-flatmatch"
+          aria-label="Leer el artículo: Descubre cómo implementamos nuestro método en la práctica"
+        >
           <article
             class="group p-2 rounded-3xl shadow-pastel hover:shadow-pastel-sm bg-accent hover:bg-accent/80 transition-all duration-300"
           >
@@ -97,27 +100,44 @@ const { method } = copy;
 </section>
 
 <script>
-  // Animate progress bar on scroll
-  function updateProgressBar() {
-    const progressLine = document.getElementById("progress-line");
+  let cachedPositions: {
+    containerTop: number;
+    maxHeight: number;
+    badgeCenters: number[];
+  } | null = null;
+
+  function refreshPositions() {
     const stepsContainer =
       document.querySelector(".method-step")?.parentElement;
     const stepBadges = document.querySelectorAll(".step-badge");
 
-    if (!progressLine || !stepsContainer || stepBadges.length === 0) return;
+    if (!stepsContainer || stepBadges.length === 0) return;
 
     const containerRect = stepsContainer.getBoundingClientRect();
     const containerTop = containerRect.top + window.scrollY;
-    const scrollPosition = window.scrollY + window.innerHeight / 2;
 
-    // Get the last badge position
-    const lastBadge = stepBadges[stepBadges.length - 1];
-    const lastBadgeRect = lastBadge.getBoundingClientRect();
-    const lastBadgeTop = lastBadgeRect.top + window.scrollY;
-    const lastBadgeCenter = lastBadgeTop + lastBadgeRect.height / 2;
+    const badgeCenters = Array.from(stepBadges).map((badge) => {
+      const badgeRect = badge.getBoundingClientRect();
+      return badgeRect.top + window.scrollY + badgeRect.height / 2;
+    });
 
-    // Calculate the maximum height (from container top to last badge center)
+    const lastBadgeCenter = badgeCenters[badgeCenters.length - 1];
     const maxHeight = lastBadgeCenter - containerTop;
+
+    cachedPositions = {
+      containerTop,
+      maxHeight,
+      badgeCenters,
+    };
+  }
+
+  // Animate progress bar on scroll
+  function updateProgressBar() {
+    const progressLine = document.getElementById("progress-line");
+    if (!progressLine || !cachedPositions) return;
+
+    const { containerTop, maxHeight, badgeCenters } = cachedPositions;
+    const scrollPosition = window.scrollY + window.innerHeight / 2;
 
     // Calculate current progress
     const relativeScroll = scrollPosition - containerTop;
@@ -127,13 +147,11 @@ const { method } = copy;
     progressLine.style.height = `${currentHeight}px`;
 
     // Activate badges when progress line reaches them
-    stepBadges.forEach((badge) => {
-      const badgeRect = badge.getBoundingClientRect();
-      const badgeTop = badgeRect.top + window.scrollY;
-      const badgeCenter = badgeTop + badgeRect.height / 2;
+    const progressLineBottom = containerTop + currentHeight;
+    const stepBadges = document.querySelectorAll(".step-badge");
 
-      // Check if progress line has reached this badge
-      const progressLineBottom = containerTop + currentHeight;
+    stepBadges.forEach((badge, i) => {
+      const badgeCenter = badgeCenters[i];
 
       if (progressLineBottom >= badgeCenter) {
         badge.classList.add("active");
@@ -144,11 +162,23 @@ const { method } = copy;
   }
 
   // Update on scroll
-  window.addEventListener("scroll", updateProgressBar);
-  window.addEventListener("resize", updateProgressBar);
+  window.addEventListener("scroll", updateProgressBar, { passive: true });
+  window.addEventListener("resize", () => {
+    refreshPositions();
+    updateProgressBar();
+  });
 
   // Initial update
-  setTimeout(updateProgressBar, 100);
+  window.addEventListener("load", () => {
+    refreshPositions();
+    updateProgressBar();
+  });
+
+  // Also refresh after a short delay to account for layout shifts
+  setTimeout(() => {
+    refreshPositions();
+    updateProgressBar();
+  }, 1000);
 </script>
 
 <style>

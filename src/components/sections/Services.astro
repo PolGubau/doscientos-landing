@@ -87,10 +87,12 @@ const benefits = [
       </header>
       <div class="relative w-full h-full overflow-hidden max-h-[360px]">
         <Image
-          width={800}
-          height={650}
           src={imagePhones}
           alt="Apps móviles a medida desarrolladas por doscientos para gestión de clientes y pedidos"
+          widths={[400, 800]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          loading="lazy"
+          decoding="async"
           class="w-full h-full object-cover object-top"
         />
 
@@ -146,6 +148,8 @@ const benefits = [
             height={900}
             src={imageMobile}
             alt="App móvil de Flatmatch mostrando el flujo de búsqueda y reserva de piso"
+            loading="lazy"
+            decoding="async"
             class="w-full max-h-[200px] border-4 border-b-0 border-primary bg-[#c7c7c7] p-1 rounded-t-[32px] object-cover object-top"
           />
 
@@ -166,10 +170,12 @@ const benefits = [
       <p>{services[3].description}</p>
       <div class="relative w-full h-full">
         <Image
-          width={900}
-          height={300}
           src={imageFooter}
           alt="Panel de administración a medida tras migrar un sistema legacy a arquitectura moderna"
+          widths={[400, 700, 900]}
+          sizes="(min-width: 1024px) 66vw, 100vw"
+          loading="lazy"
+          decoding="async"
           class="w-full max-w-[700px] h-[110px] mt-4 border border-muted p-2 rounded-2xl object-cover object-top"
         />
 
