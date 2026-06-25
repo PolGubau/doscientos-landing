@@ -1,0 +1,108 @@
+---
+title: "Integración de sistemas y APIs: cómo conectar tu ERP, tienda y CRM sin fricción"
+description: "Guía práctica para integrar los sistemas de tu empresa vía API. Qué es una integración real, cuándo usar Zapier o desarrollo a medida, costes y errores que evitar."
+publishDate: "2026-06-23"
+draft: false
+tags: ["integración de sistemas", "API", "automatización", "ERP", "CRM", "software a medida"]
+author: "doscientos"
+---
+
+La mayoría de empresas no tienen un problema de software: tienen un problema de software que no se habla entre sí. El ERP por un lado, la tienda online por otro, el CRM en una tercera pestaña y, en medio, una persona copiando datos de un sistema a otro varias veces al día. **Cada vez que un dato se introduce a mano dos veces, hay un error esperando a ocurrir.**
+
+Integrar sistemas significa que esos programas se sincronicen solos. Este artículo explica cómo se hace de verdad, cuándo basta con una herramienta no-code y cuándo necesitas desarrollo a medida.
+
+---
+
+## Qué es una integración de sistemas (y qué no)
+
+Una integración conecta dos o más aplicaciones para que compartan datos automáticamente. Cuando entra un pedido en la tienda, el stock baja en el ERP, se crea el cliente en el CRM y se dispara la factura. Sin que nadie toque nada.
+
+No es una integración:
+
+- Exportar un CSV de un sistema e importarlo en otro a mano.
+- Tener los dos programas abiertos y copiar a ojo.
+- Un "conector" que falla cada semana y nadie sabe por qué.
+
+La pieza técnica que lo hace posible casi siempre es una **API** (Application Programming Interface): la puerta por la que un sistema permite que otro lea y escriba datos de forma controlada.
+
+---
+
+## Las tres formas de integrar (de menos a más robusta)
+
+### 1. Conectores no-code (Zapier, Make)
+
+Herramientas visuales que unen apps populares sin programar. Perfectas para empezar y para flujos simples.
+
+- **A favor:** rápidas, baratas, sin desarrollo.
+- **En contra:** límites de volumen, reintentos frágiles, dependes del catálogo de conectores y de un tercero más en la cadena.
+- **Cuándo:** flujos sencillos, bajo volumen, apps estándar.
+
+### 2. Integración a medida vía API
+
+Desarrollo que conecta tus sistemas directamente, con la lógica exacta de tu negocio.
+
+- **A favor:** fiable, rápida, sin límites artificiales, control total de errores y reintentos.
+- **En contra:** requiere desarrollo inicial.
+- **Cuándo:** volumen relevante, reglas propias, sistemas críticos.
+
+### 3. Capa de integración central (middleware)
+
+Cuando hay muchos sistemas, en lugar de conectarlos todos contra todos, se construye una capa central que orquesta el flujo de datos. Es la base de cualquier proyecto de [modernización de sistemas legacy](/blog/modernizacion-sistemas-legacy) serio.
+
+---
+
+## Señales de que necesitas integrar ya
+
+- Alguien dedica horas a la semana a copiar datos entre programas.
+- El stock de la web y el del ERP nunca coinciden.
+- Los comerciales no ven en el CRM lo que pasa en facturación.
+- Cada informe requiere juntar datos de tres sitios a mano.
+- Has tenido errores caros por datos desactualizados.
+
+Si te suenan, el coste de no integrar ya es mayor que el de hacerlo. Es el mismo cálculo de [qué automatizar primero](/blog/automatizacion-procesos-empresariales).
+
+---
+
+## Cuánto cuesta una integración a medida
+
+Depende del número de sistemas, la complejidad de las reglas y el volumen de datos:
+
+| Tipo de integración | Coste aproximado | Plazo |
+|---|---|---|
+| Conexión simple (2 sistemas, flujo único) | 2.500 € – 6.000 € | 1-3 semanas |
+| Integración media (reglas propias, varios flujos) | 6.000 € – 15.000 € | 3-6 semanas |
+| Capa de integración (múltiples sistemas) | 15.000 € – 40.000 € | 6-12 semanas |
+
+Frente a las suscripciones de un conector no-code de pago para alto volumen, una integración a medida suele amortizarse en 1-2 años y elimina al intermediario de la ecuación.
+
+---
+
+## Errores que encarecen el proyecto
+
+### Integrar antes de ordenar el proceso
+Automatizar un proceso roto solo hace que se rompa más rápido. Primero se define el flujo, luego se conecta.
+
+### Depender de una API sin contrato estable
+Algunas APIs de terceros cambian sin aviso. Hay que diseñar la integración para tolerar cambios y avisar cuando algo falla, no asumir que siempre responderá igual.
+
+### No registrar ni vigilar los errores
+Una integración sin monitorización es una bomba de relojería. Cada fallo debe quedar registrado y notificar a alguien. Una integración bien hecha **falla de forma visible, no en silencio.**
+
+### Conectar todo contra todo
+Con 5 sistemas conectados entre sí sin orden, cualquier cambio rompe varias cosas. Una capa central evita el caos.
+
+---
+
+## Cómo se hace bien, paso a paso
+
+1. **Mapear el flujo de datos**: qué dato nace dónde y a dónde tiene que llegar.
+2. **Elegir el método**: no-code para lo simple, a medida para lo crítico.
+3. **Diseñar el manejo de errores**: reintentos, alertas y registro desde el día uno.
+4. **Probar con datos reales** antes de poner en producción.
+5. **Monitorizar** y ajustar tras el lanzamiento.
+
+Es el mismo principio de migrar sin parar el negocio que aplicamos al [pasar un Access a web](/blog/migrar-access-a-web-2026): nada en producción se rompe durante el proceso.
+
+> ¿Tus sistemas no se hablan entre sí? Cuéntanos qué programas usas y te decimos qué se puede integrar, cómo y cuánto costaría. Sin compromiso.
+
+[Hablar con el equipo →](/contact)

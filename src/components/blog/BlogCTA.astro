@@ -1,0 +1,95 @@
+---
+/**
+ * BlogCTA — CTA de conversión al final de cada artículo del blog.
+ * Enlaza al servicio más relevante según el tipo de artículo.
+ */
+interface Props {
+  variant?: "contact" | "packs" | "projects" | "barcelona" | "madrid" | "maresme";
+  headline?: string;
+  body?: string;
+}
+
+const {
+  variant = "contact",
+  headline,
+  body,
+} = Astro.props;
+
+const defaults: Record<
+  NonNullable<Props["variant"]>,
+  { headline: string; body: string; cta: string; href: string }
+> = {
+  contact: {
+    headline: "¿Tienes un proyecto en mente?",
+    body: "Cuéntanos qué necesitas. Respuesta en menos de 24h, sin compromiso.",
+    cta: "Hablar con el equipo",
+    href: "/contact",
+  },
+  packs: {
+    headline: "¿Buscas una web rápida y profesional?",
+    body: "Nuestros packs incluyen diseño, desarrollo y lanzamiento. Precio fijo, sin sorpresas.",
+    cta: "Ver packs de webs",
+    href: "/packs",
+  },
+  projects: {
+    headline: "¿Quieres ver resultados reales?",
+    body: "Casos de éxito con métricas concretas: usuarios, ahorro, ROI.",
+    cta: "Ver proyectos",
+    href: "/projects",
+  },
+  barcelona: {
+    headline: "¿Tu empresa está en Barcelona?",
+    body: "Somos una agencia con base en el Maresme. Reuniones presenciales, sin costes extra.",
+    cta: "Desarrollo web en Barcelona",
+    href: "/desarrollo-web-barcelona",
+  },
+  madrid: {
+    headline: "¿Tu empresa está en Madrid?",
+    body: "Trabajamos con empresas madrileñas en remoto con la misma dedicación que si estuviéramos a la vuelta de la esquina.",
+    cta: "Desarrollo web en Madrid",
+    href: "/desarrollo-web-madrid",
+  },
+  maresme: {
+    headline: "¿Tu negocio está en el Maresme?",
+    body: "Estamos en Premià de Mar. Reuniones presenciales en toda la comarca, sin desplazamientos extra.",
+    cta: "Agencia digital en el Maresme",
+    href: "/agencia-digital-maresme",
+  },
+};
+
+const config = defaults[variant];
+const finalHeadline = headline ?? config.headline;
+const finalBody = body ?? config.body;
+---
+
+<div
+  class="not-prose my-16 rounded-2xl bg-primary px-8 py-10 text-background space-y-4"
+>
+  <p class="text-xs font-semibold uppercase tracking-widest opacity-70">
+    doscientos · Software a medida
+  </p>
+  <h2 class="text-2xl md:text-3xl font-bold leading-tight">
+    {finalHeadline}
+  </h2>
+  <p class="text-lg opacity-85 max-w-xl">
+    {finalBody}
+  </p>
+  <a
+    href={config.href}
+    class="inline-flex items-center gap-2 mt-2 rounded-xl bg-background text-primary font-semibold px-6 py-3 text-sm hover:bg-background/90 transition-colors"
+  >
+    {config.cta}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="size-4"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+  </a>
+</div>

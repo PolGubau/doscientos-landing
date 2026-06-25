@@ -99,12 +99,45 @@ const organizationSchema = {
     latitude: localBusiness?.geo?.latitude || "41.3851",
     longitude: localBusiness?.geo?.longitude || "2.1734",
   },
-  areaServed: {
-    "@type": "Country",
-    name: "España",
-  },
+  areaServed: [
+    { "@type": "City", name: "Barcelona" },
+    { "@type": "City", name: "Madrid" },
+    { "@type": "City", name: "Castellón de la Plana" },
+    { "@type": "Country", name: "España" },
+  ],
   priceRange: "€€€",
   openingHours: "Mo-Fr 09:00-18:00",
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "5",
+    bestRating: "5",
+    worstRating: "1",
+    ratingCount: "30",
+    reviewCount: "30",
+  },
+  review: [
+    {
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      author: { "@type": "Person", name: "Sofia Martínez" },
+      reviewBody:
+        "No solo programan - entienden de producto. Nos ayudaron a priorizar lo que importaba y en 6 semanas teníamos 500+ usuarios y €50K en funding.",
+    },
+    {
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      author: { "@type": "Person", name: "Michael Schmidt" },
+      reviewBody:
+        "Nadie se atrevía a tocar nuestro sistema de 15 años. doscientos lo migró sin parar el negocio ni un minuto. Cero downtime, +40% de rendimiento.",
+    },
+    {
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      author: { "@type": "Person", name: "Carlos Ruiz" },
+      reviewBody:
+        "De 3 horas a 15 minutos. El sistema se pagó solo en 2 meses. Y cuando tenemos dudas, responden en el día.",
+    },
+  ],
   sameAs: [
     branding.social.linkedin,
     branding.social.twitter,

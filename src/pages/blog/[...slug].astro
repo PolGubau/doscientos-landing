@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
+import BlogCTA from "~/components/blog/BlogCTA.astro";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
 import "~/styles/prose.css";
@@ -135,6 +136,9 @@ const modifiedTime = post.data.updatedDate
       >
         <Content />
       </div>
+
+      <!-- CTA de conversión -->
+      <BlogCTA variant="contact" />
 
       <!-- Artículos relacionados -->
       {

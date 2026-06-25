@@ -130,6 +130,18 @@ export const GET: APIRoute = async ({ site }) => {
 			priority: "0.85",
 			changefreq: "monthly",
 		},
+		{
+			url: "desarrollo-web-madrid",
+			source: "src/pages/desarrollo-web-madrid.astro",
+			priority: "0.85",
+			changefreq: "monthly",
+		},
+		{
+			url: "agencia-digital-maresme",
+			source: "src/pages/agencia-digital-maresme.astro",
+			priority: "0.85",
+			changefreq: "monthly",
+		},
 		// Packs de webs para negocios locales (índice movido por los datos)
 		{
 			url: "packs",

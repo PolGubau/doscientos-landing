@@ -1,0 +1,125 @@
+---
+title: "Migrar de Access a una aplicación web en 2026: guía práctica para empresas"
+description: "Cómo migrar una base de datos Access a una aplicación web moderna sin parar el negocio. Costes reales, plazos, riesgos y qué preguntar al proveedor antes de empezar."
+publishDate: "2026-06-15"
+draft: false
+tags: ["Access", "migración", "legacy", "modernización", "desarrollo web", "bases de datos"]
+author: "doscientos"
+---
+
+Si tu empresa lleva años funcionando con una base de datos Access, no estás solo. Hay miles de PYMEs en España que gestionan pedidos, clientes, inventarios o producción con una solución que en su momento funcionó perfectamente y que hoy se ha convertido en un cuello de botella.
+
+Los síntomas son conocidos: el archivo se corrompe periódicamente, solo puede abrirlo una persona a la vez, no funciona desde el móvil, no se integra con nada, y el único que sabe mantenerlo se va a jubilar. **La pregunta no es si hay que migrar, sino cuándo y cómo hacerlo sin parar el negocio.**
+
+---
+
+## Por qué las empresas siguen usando Access en 2026
+
+Access cumplió su función durante años. Es fácil de configurar, no requiere servidor, y permite construir formularios y consultas sin saber programar. Para una empresa de 5-10 personas en los años 2000, era la herramienta correcta.
+
+El problema llega cuando la empresa crece:
+
+- **Multiusuario**: Access no está diseñado para trabajo simultáneo de más de 3-4 personas
+- **Acceso remoto**: sin VPN compleja, no hay acceso desde fuera de la oficina
+- **Seguridad**: los datos viven en un archivo .mdb/.accdb sin cifrado real
+- **Integraciones**: conectar Access con una tienda online, un ERP o una API es difícil y frágil
+- **Rendimiento**: con más de 50.000-100.000 registros, las consultas se ralentizan notablemente
+- **Mantenimiento**: depende de que alguien en la empresa sepa Access — y esa persona no siempre está disponible
+
+---
+
+## Qué implica migrar de Access a una aplicación web
+
+La migración no es solo "pasar los datos a otro sitio". Es rediseñar cómo funciona la herramienta para que se adapte a cómo trabaja tu empresa hoy, no hace 15 años.
+
+### Fase 1: Auditoría del sistema actual
+
+Antes de escribir una sola línea de código, hay que entender qué hace el sistema actual:
+- Qué tablas y relaciones existen
+- Qué formularios se usan a diario y cuáles están en desuso
+- Qué informes y consultas son críticos
+- Qué datos hay que migrar y cuántos hay
+- Quién usa el sistema y cómo
+
+Esta fase suele tomar 1 semana y es donde se detectan los problemas que nadie había documentado.
+
+### Fase 2: Diseño de la nueva arquitectura
+
+La aplicación web que sustituye a Access no es una copia — es una versión mejorada que resuelve los problemas que tenía:
+- Base de datos en servidor (PostgreSQL, MySQL) con backups automáticos
+- Aplicación web accesible desde cualquier dispositivo con navegador
+- Roles y permisos por usuario
+- Historial de cambios y auditoría
+- Exportación e informes nativos
+
+### Fase 3: Desarrollo en paralelo
+
+El sistema antiguo sigue funcionando mientras se construye el nuevo. No hay downtime, no hay fechas de corte que pongan en riesgo la operación.
+
+### Fase 4: Migración de datos
+
+Los datos del Access se migran, limpian y verifican antes de la puesta en marcha. Es habitual encontrar inconsistencias en datos de 10-15 años que hay que resolver manualmente.
+
+### Fase 5: Periodo de transición
+
+Durante 2-4 semanas, ambos sistemas coexisten. El equipo usa el nuevo mientras verifica que todo está correcto. El antiguo queda como respaldo.
+
+---
+
+## Cuánto cuesta migrar de Access
+
+Los rangos dependen de la complejidad del sistema existente:
+
+| Complejidad del Access | Coste aproximado | Plazo |
+|---|---|---|
+| Simple (5-10 tablas, pocos usuarios) | 8.000€ – 15.000€ | 6-8 semanas |
+| Medio (15-30 tablas, procesos definidos) | 15.000€ – 35.000€ | 10-14 semanas |
+| Complejo (+30 tablas, integraciones, mucho volumen) | 35.000€ – 70.000€ | 16-24 semanas |
+
+El coste de hosting de la nueva aplicación es habitual: 50-150€/mes en un servidor cloud (AWS, Google Cloud, Azure).
+
+---
+
+## Riesgos reales y cómo evitarlos
+
+### Pérdida de datos durante la migración
+El mayor miedo — y con razón. Se evita con una estrategia de migración por fases, verificación sistemática y periodo de transición con sistemas paralelos.
+
+### Resistencia del equipo al cambio
+El equipo está acostumbrado a la interfaz del Access. La nueva aplicación tiene que ser más fácil, no solo más moderna. Implica al equipo desde el principio en el diseño de la interfaz.
+
+### Dependencia del proveedor para futuros cambios
+El código tiene que ser tuyo. Exige que el contrato incluya entrega del código fuente y documentación técnica. Sin lock-in.
+
+### Plazos que se alargan indefinidamente
+Define el alcance de la versión 1 antes de empezar. No intentes migrar todo en el primer proyecto — prioriza los 3-5 módulos críticos y amplía después.
+
+---
+
+## Preguntas que hacer al proveedor antes de contratar
+
+Antes de firmar nada con una empresa de desarrollo, asegúrate de que responde con claridad a:
+
+1. ¿El precio es fijo o por horas?
+2. ¿El código fuente queda en propiedad nuestra?
+3. ¿Cómo gestionáis la migración de datos históricos?
+4. ¿El sistema antiguo sigue funcionando durante el desarrollo?
+5. ¿Qué pasa si aparecen problemas imprevistos en los datos del Access?
+6. ¿Incluye formación para el equipo?
+7. ¿Qué soporte hay después del lanzamiento?
+
+Si alguna de estas preguntas genera evasivas, es una señal de alerta.
+
+---
+
+## Caso real: migración de sistema crítico en IFCO Systems
+
+IFCO Systems gestionaba la trazabilidad de +300 millones de palés reutilizables con un sistema de 15 años en producción. La migración no podía generar ni un minuto de downtime.
+
+Desarrollamos el nuevo sistema en paralelo, migramos los datos de forma incremental y pusimos en marcha el nuevo sistema sin interrumpir la operación. Resultado: 0 minutos de downtime, +40% de rendimiento del sistema, €30.000/año ahorrados en mantenimiento.
+
+No todos los proyectos son tan complejos — pero el principio es el mismo: migrar sin parar.
+
+> ¿Tienes un Access que necesita modernizarse? Cuéntanos qué hace y te decimos cuánto costaría pasarlo a web y cuánto tardaríamos. Sin compromiso.
+
+[Hablar con el equipo →](/contact)
