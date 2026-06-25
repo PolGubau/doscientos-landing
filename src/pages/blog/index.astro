@@ -10,8 +10,8 @@ const sortedPosts = blogPosts.sort(
 ---
 
 <MainLayout
-  title="Blog | doscientos"
-  description="Artículos sobre modernización de sistemas, arquitectura de software y mejores prácticas técnicas."
+  title="Blog de desarrollo web y automatización | doscientos"
+  description="Artículos técnicos sobre desarrollo web, automatización de procesos, MVPs y transformación digital para empresas. Escrito por el equipo de doscientos, agencia en Barcelona."
 >
   <div class="min-h-screen py-32 px-6">
     <div class="max-w-6xl mx-auto space-y-16">
@@ -41,7 +41,10 @@ const sortedPosts = blogPosts.sort(
                   class="flex flex-col h-full p-6 rounded-2xl gap-2 shadow-pastel border border-muted bg-accent hover:border-primary transition-colors"
                 >
                   {/* Date */}
-                  <time class="text-sm text-muted-foreground mb-2">
+                  <time
+                    class="text-sm text-muted-foreground mb-2"
+                    datetime={post.data.publishDate.toISOString()}
+                  >
                     {post.data.publishDate.toLocaleDateString("es-ES", {
                       year: "numeric",
                       month: "long",

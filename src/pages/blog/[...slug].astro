@@ -19,6 +19,12 @@ const publishedTime =
   post.data.publishDate instanceof Date
     ? post.data.publishDate.toISOString()
     : post.data.publishDate;
+
+const modifiedTime = post.data.updatedDate
+  ? post.data.updatedDate instanceof Date
+    ? post.data.updatedDate.toISOString()
+    : post.data.updatedDate
+  : publishedTime;
 ---
 
 <MainLayout
@@ -27,6 +33,7 @@ const publishedTime =
   type="article"
   article={{
     publishedTime,
+    modifiedTime,
     author: post.data.author,
     tags: post.data.tags,
   }}

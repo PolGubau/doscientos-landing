@@ -1,5 +1,6 @@
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
+import { packs } from "~/data/packs";
 
 export const GET: APIRoute = async ({ site }) => {
 	const baseUrl = (site?.toString() || "https://doscientos.es").replace(
@@ -15,18 +16,14 @@ export const GET: APIRoute = async ({ site }) => {
 	const blogPosts = await getCollection("blog", ({ data }) => !data.draft);
 
 	// Páginas estáticas con prioridad y metadata SEO
+	// lastmod fijo para páginas estables — evita señalizar frescura falsa al crawler
 	const staticPages = [
-		{
-			url: "",
-			priority: "1.0",
-			changefreq: "weekly",
-			lastmod: new Date().toISOString().split("T")[0],
-		}, // Homepage
+		{ url: "", priority: "1.0", changefreq: "weekly", lastmod: "2025-01-01" }, // Homepage
 		{
 			url: "projects",
 			priority: "0.9",
 			changefreq: "weekly",
-			lastmod: new Date().toISOString().split("T")[0],
+			lastmod: "2025-01-01",
 		},
 		{
 			url: "blog",
@@ -38,26 +35,33 @@ export const GET: APIRoute = async ({ site }) => {
 			url: "contact",
 			priority: "0.8",
 			changefreq: "monthly",
-			lastmod: new Date().toISOString().split("T")[0],
+			lastmod: "2025-01-01",
 		},
 		{
 			url: "sobre-nosotros",
 			priority: "0.8",
 			changefreq: "monthly",
-			lastmod: new Date().toISOString().split("T")[0],
+			lastmod: "2025-01-01",
 		},
 		// Páginas SEO locales
 		{
 			url: "desarrollo-web-barcelona",
 			priority: "0.85",
 			changefreq: "monthly",
-			lastmod: new Date().toISOString().split("T")[0],
+			lastmod: "2025-01-01",
 		},
 		{
 			url: "desarrollo-web-castellon",
 			priority: "0.85",
 			changefreq: "monthly",
-			lastmod: new Date().toISOString().split("T")[0],
+			lastmod: "2025-01-01",
+		},
+		// Packs de webs para negocios locales
+		{
+			url: "packs",
+			priority: "0.85",
+			changefreq: "monthly",
+			lastmod: "2025-01-01",
 		},
 		{ url: "legal", priority: "0.3", changefreq: "yearly" },
 		{ url: "terminos", priority: "0.3", changefreq: "yearly" },
@@ -87,8 +91,16 @@ export const GET: APIRoute = async ({ site }) => {
 				: post.data.publishDate,
 	}));
 
+	// Generar URLs de packs (páginas SEO indexables)
+	const packUrls = packs.map((pack) => ({
+		url: `packs/${pack.slug}`,
+		priority: "0.8",
+		changefreq: "monthly",
+		lastmod: "2025-01-01",
+	}));
+
 	// Combinar todas las URLs
-	const allUrls = [...staticPages, ...projectUrls, ...blogUrls];
+	const allUrls = [...staticPages, ...projectUrls, ...blogUrls, ...packUrls];
 
 	// Generar XML
 	const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

@@ -108,27 +108,34 @@ const websiteSchema = {
   },
 };
 
-// Article Schema (para blog posts)
+// Article Schema (para blog posts) — BlogPosting es más específico que Article
 const articleSchema = article
   ? {
       "@context": "https://schema.org",
-      "@type": "Article",
+      "@type": "BlogPosting",
       headline: article.title,
       description: article.description,
       image: article.image || `${baseUrl}/og-image.png`,
       datePublished: article.datePublished,
       dateModified: article.dateModified || article.datePublished,
+      inLanguage: "es-ES",
       author: {
         "@type": "Person",
-        name: article.author,
+        name: article.author || branding.name,
+        url: baseUrl,
       },
       publisher: {
         "@type": "Organization",
         name: branding.name,
+        url: baseUrl,
         logo: {
           "@type": "ImageObject",
           url: `${baseUrl}/og-image.png`,
         },
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": `${baseUrl}${Astro.url.pathname}`,
       },
     }
   : null;
