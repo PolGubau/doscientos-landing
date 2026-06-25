@@ -3,8 +3,23 @@ title: "Cómo validar tu MVP en 6 semanas: de 0 a 500 usuarios reales"
 description: "Metodología probada para validar una idea de negocio con usuarios reales en 6 semanas. Caso real de Flatmatch: de 0 a 500+ usuarios activos sin invertir un euro en publicidad."
 publishDate: "2026-03-16"
 tags: ["MVP", "Startup", "Validación", "Producto"]
+author: "doscientos"
 draft: false
+faqs:
+  - question: "¿Qué mide exactamente una validación de MVP?"
+    answer: "Una validación real mide retención (¿los usuarios vuelven?), activación (¿completan el flujo principal?) y, si aplica, conversión a pago. Un MVP 'validado' solo por descargas o registros no está validado."
+  - question: "¿Cuántos usuarios necesito para que la validación sea significativa?"
+    answer: "Con 100-500 usuarios activos puedes obtener patrones claros de comportamiento si son tu target real. La calidad del perfil importa más que el volumen. 50 usuarios perfectos > 500 usuarios casuales."
+  - question: "¿6 semanas es tiempo suficiente para construir algo real?"
+    answer: "Sí, si tienes el alcance bien definido. La clave es construir una sola cosa excepcionalmente bien en lugar de muchas cosas a medias. Flatmatch arrancó con solo 3 pantallas funcionales."
+  - question: "¿Qué pasa si el MVP no valida la hipótesis?"
+    answer: "Es el mejor resultado posible: has aprendido que esa dirección no funciona gastando el mínimo. Los datos te señalan qué ajustar. Un MVP que falla y te enseña algo vale más que un producto completo que fracasa silenciosamente."
 ---
+
+import { Image } from "astro:assets";
+import BlogCTA from "../../components/blog/BlogCTA.astro";
+import mvpCities from "../../assets/media/projects/flatmatch/cities.webp";
+import mvpChat from "../../assets/media/projects/flatmatch/chat.webp";
 
 ## El problema: La mayoría de MVPs fracasan antes de validarse
 
@@ -76,6 +91,8 @@ EXCHANGE STUDENT necesitaba validar su idea con inversores. Tenían 6 semanas y 
 **Entregable:** MVP funcional en staging
 
 ---
+
+<Image src={mvpCities} alt="Selección de ciudades y mercados en el MVP de Flatmatch - validación con usuarios reales" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 ### Semana 5: Testing y Ajustes
 

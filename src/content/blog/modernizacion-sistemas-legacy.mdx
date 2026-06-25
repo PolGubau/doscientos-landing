@@ -6,11 +6,25 @@ updatedDate: "2026-03-25"
 tags: ["modernización", "legacy", "arquitectura", "refactoring", "sistemas legacy"]
 author: "doscientos"
 draft: false
+faqs:
+  - question: "¿Es necesario reescribir el sistema completo para modernizarlo?"
+    answer: "Casi nunca. La reescritura total es el enfoque más caro y arriesgado. La modernización progresiva — extrayendo módulos uno a uno — permite reducir deuda técnica sin parar operaciones ni perder el conocimiento de negocio acumulado en el sistema actual."
+  - question: "¿Cuánto cuesta modernizar un sistema legacy?"
+    answer: "Depende del tamaño y la tecnología. Un módulo aislado puede modernizarse en 4-8 semanas. Un sistema complejo puede requerir 6-18 meses en fases. Lo que sí es seguro: el coste de no modernizarlo (bugs, parches, velocidad de entrega) suele superar el de hacerlo en 2-3 años."
+  - question: "¿Se puede migrar sin perder datos históricos?"
+    answer: "Sí. Una migración bien planificada incluye una fase de paridad de datos donde ambos sistemas corren en paralelo hasta verificar que los datos son consistentes. Nadie pierde nada."
+  - question: "¿Mi equipo puede seguir trabajando durante la modernización?"
+    answer: "Sí, es el objetivo. El patrón Strangler Fig permite añadir funcionalidad nueva en el sistema moderno mientras el legacy sigue operando. El equipo no para en ningún momento."
 ---
 
-# Modernización de sistemas legacy: guía completa 2026
+import { Image } from "astro:assets";
+import BlogCTA from "../../components/blog/BlogCTA.astro";
+import legacyGraph from "../../assets/media/projects/ifco/graph.webp";
+import legacyShowcase from "../../assets/media/projects/ifco/showcase.webp";
 
 ¿Tienes un sistema que lleva años funcionando, que nadie se atreve a tocar y que cada vez cuesta más mantener? Bienvenido al problema más común —y más costoso— del software empresarial.
+
+<Image src={legacyGraph} alt="Visualización de integración de sistemas complejos a escala global - Proyecto IFCO Systems" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 **Un sistema legacy no es sinónimo de sistema roto.** Es un sistema que funciona, que tiene valor de negocio real, pero que acumula deuda técnica que frena el crecimiento.
 
@@ -125,6 +139,8 @@ Extraer funcionalidades del monolito como microservicios independientes. No se h
 **Precaución:** Los microservicios añaden complejidad operacional. No siempre son la solución correcta.
 
 ---
+
+<Image src={legacyShowcase} alt="Interfaz moderna para sistema de trazabilidad global a escala - Proyecto IFCO Systems" width={1200} class="rounded-2xl my-8 border bg-muted" />
 
 ## Señales de que tu sistema necesita modernización urgente
 
