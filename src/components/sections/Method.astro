@@ -30,7 +30,7 @@ const { method } = copy;
           >
             <Image
               src={flatmatchThumbnail}
-              alt="Overview of our method"
+              alt="Vista general de nuestro método de trabajo paso a paso"
               width={600}
               height={400}
               class="rounded-3xl object-cover -mt-14 group-hover:scale-102 transition-transform duration-300"
@@ -161,8 +161,18 @@ const { method } = copy;
     });
   }
 
-  // Update on scroll
-  window.addEventListener("scroll", updateProgressBar, { passive: true });
+  // Update on scroll — throttled with requestAnimationFrame to avoid layout
+  // thrash on every scroll event.
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(() => {
+      updateProgressBar();
+      ticking = false;
+    });
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", () => {
     refreshPositions();
     updateProgressBar();

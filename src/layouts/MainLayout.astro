@@ -153,15 +153,20 @@ const {
     <Footer showCta={showFooterCta} />
     {Astro.url.pathname !== "/contact" && <FloatingCTA />}
     <CookieBanner />
-    <!-- GoHighLevel CRM tracking: solo con consent de marketing -->
+    <!-- GoHighLevel CRM tracking: única fuente de carga (con guard anti-doble-carga).
+         CookieBanner reutiliza window.__loadGHL() al aceptar consent de marketing. -->
     <script is:inline>
       window.GHL_TRACKING_ID_PENDING = "tk_bd6c82a0afde449a8ffd7dd348ef5130";
-      if (window.__DOS_CONSENT?.marketing) {
+      window.__loadGHL = function () {
+        if (!window.GHL_TRACKING_ID_PENDING) return;
+        if (document.getElementById("ghl-tracking")) return;
         var s = document.createElement("script");
+        s.id = "ghl-tracking";
         s.src = "https://link.msgsndr.com/js/external-tracking.js";
         s.dataset.trackingId = window.GHL_TRACKING_ID_PENDING;
         document.body.appendChild(s);
-      }
+      };
+      if (window.__DOS_CONSENT?.marketing) window.__loadGHL();
     </script>
   </body>
 </html>

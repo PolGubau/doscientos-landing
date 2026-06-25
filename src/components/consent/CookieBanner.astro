@@ -215,12 +215,9 @@
         fbq("init", window.META_PIXEL_ID_PENDING);
         fbq("track", "PageView");
       }
-      // Marketing: GoHighLevel
-      if (consent.marketing && window.GHL_TRACKING_ID_PENDING) {
-        const s = document.createElement("script");
-        s.src = "https://link.msgsndr.com/js/external-tracking.js";
-        s.dataset.trackingId = window.GHL_TRACKING_ID_PENDING;
-        document.body.appendChild(s);
+      // Marketing: GoHighLevel (única fuente de carga definida en MainLayout)
+      if (consent.marketing) {
+        window.__loadGHL?.();
       }
     }
 

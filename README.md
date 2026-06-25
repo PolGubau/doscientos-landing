@@ -5,7 +5,7 @@ Landing page premium de **doscientos** construida con Astro 5, especializada en 
 ## 🚀 Características
 
 - ✅ **Diseño Premium** - Minimalista, moderno y profesional
-- ✅ **Dark/Light Mode** con persistencia
+- ✅ **Consentimiento de cookies (RGPD)** con activación condicional de analytics y marketing
 - ✅ **Configuración Centralizada** - Branding y contenido en archivos TypeScript
 - ✅ **Content Collections** - Blog y proyectos con MDX
 - ✅ **SEO Optimizado** - Meta tags, sitemap, y estructura semántica
@@ -30,7 +30,7 @@ Toda la configuración de branding está centralizada en `src/config/branding.ts
 ```typescript
 export const branding = {
   name: "doscientos",
-  slogan: "Automatiza tu negocio, gana tiempo, crece sin esfuerzo",
+  slogan: "Modernizamos sistemas críticos sin detener tu negocio",
   domain: "doscientos.es",
   url: "https://doscientos.es",
 
@@ -44,7 +44,7 @@ export const branding = {
   },
 
   social: {
-    twitter: "https://twitter.com/doscientos.es",
+    twitter: "https://twitter.com/doscientos_es",
     github: "https://github.com/doscientos",
     linkedin: "https://www.linkedin.com/company/doscientos",
     instagram: "https://instagram.com/doscientos.es",
@@ -57,7 +57,7 @@ export const branding = {
 
   assets: {
     logo: "/assets/branding/logo.png",
-    thumbnail: "/assets/thumbnail.png",
+    thumbnail: "/assets/media/og-image.png",
   },
 };
 ```
@@ -87,19 +87,19 @@ pnpm lint
 │   ├── components/
 │   │   ├── sections/          # Secciones de la landing
 │   │   │   ├── Hero.astro
-│   │   │   ├── Problem.astro
-│   │   │   ├── Positioning.astro
-│   │   │   ├── WhatWeDo.astro
-│   │   │   ├── Method.astro
-│   │   │   ├── CaseStudies.astro
+│   │   │   ├── Services.astro
 │   │   │   ├── ForWho.astro
-│   │   │   ├── WhyUs.astro
+│   │   │   ├── Method.astro
+│   │   │   ├── Impact.astro
+│   │   │   ├── Testimonials.astro
+│   │   │   ├── CaseStudies.astro
+│   │   │   ├── Comparison.astro
+│   │   │   ├── FAQ.astro
+│   │   │   ├── Hype.astro
 │   │   │   └── FinalCTA.astro
 │   │   ├── Layout/
-│   │   │   ├── navbar/
-│   │   │   │   └── SimpleNavbar.astro
-│   │   │   └── footer/
-│   │   │       └── SimpleFooter.astro
+│   │   │   ├── navbar.astro
+│   │   │   └── footer.astro
 │   │   └── ui/                # Componentes UI reutilizables
 │   ├── config/
 │   │   └── branding.ts        # Configuración de marca centralizada
@@ -108,7 +108,7 @@ pnpm lint
 │   │   └── projects/          # Proyectos (MDX)
 │   ├── layouts/
 │   │   └── MainLayout.astro   # Layout principal
-│   ├── lib/
+│   ├── shared/lib/
 │   │   ├── copy.ts            # Contenido centralizado (preparado para i18n)
 │   │   └── constants.ts       # Constantes y metadata
 │   ├── pages/
@@ -131,14 +131,15 @@ pnpm lint
 La landing está estructurada en secciones estratégicas:
 
 1. **Hero** - Presentación principal con propuesta de valor
-2. **Problem** - Identificación del problema del cliente
-3. **Positioning** - Diferenciación y enfoque único
-4. **What We Do** - Servicios y soluciones
-5. **Method** - Método 200™ (proceso de 5 pasos)
-6. **Case Studies** - Casos de éxito reales
-7. **For Who** - Segmentación de clientes ideales
-8. **Why Us** - Razones para elegir doscientos
-9. **Final CTA** - Llamada a la acción principal
+2. **Services** - Servicios y soluciones
+3. **ForWho** - Segmentación de clientes ideales
+4. **Method** - Proceso de trabajo (6 semanas)
+5. **Impact** - Resultados e impacto
+6. **Testimonials** - Opiniones de clientes
+7. **CaseStudies** - Casos de éxito reales
+8. **Comparison** - Comparativa frente a alternativas
+9. **FAQ** - Preguntas frecuentes
+10. **FinalCTA** - Llamada a la acción principal
 
 ## 🎨 Personalización
 
@@ -153,7 +154,7 @@ Edita `src/config/branding.ts` para cambiar:
 
 ### Contenido
 
-Edita `src/lib/copy.ts` para modificar:
+Edita `src/shared/lib/copy.ts` para modificar:
 - Textos de todas las secciones
 - Casos de estudio
 - Pasos del método

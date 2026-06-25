@@ -47,7 +47,7 @@ export const copy = {
 		// Elimina la fricción del primer paso: no prometemos vender, prometemos ayudar.
 		description:
 			"Cuéntanos el problema. En menos de 24 horas te damos feedback honesto y un plan de acción - aunque al final no trabajemos juntos.",
-		cta: "Pedir propuesta",
+		cta: "Cuéntanos tu proyecto",
 	},
 
 	nav: {

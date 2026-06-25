@@ -45,17 +45,7 @@ const faqs = [
   {
     question: "¿Usáis WordPress, Wix o plantillas?",
     answer:
-      "Desarrollamos a medida porque tu negocio es único. Las plantillas limitan tu crecimiento y rendimiento. Nuestro código es 3x más rápido, 100% escalable y se adapta exactamente a tus necesidades. Sin limitaciones técnicas, sin plugins innecesarios, sin sorpresas.",
-  },
-  {
-    question: "¿Qué pasa si necesito cambios después del lanzamiento?",
-    answer:
-      "Ofrecemos soporte continuo y muchos clientes trabajan con nosotros de forma recurrente. Respondemos en menos de 24h y podemos implementar cambios rápidamente. También te entregamos documentación completa para que tu equipo pueda hacer ajustes menores.",
-  },
-  {
-    question: "¿Cómo garantizáis que el proyecto se entregue a tiempo?",
-    answer:
-      "Trabajamos con sprints semanales y entregas incrementales. Ves el progreso cada semana y puedes dar feedback continuo. Si hay algún retraso, te avisamos inmediatamente con un plan de acción. Transparencia total, sin sorpresas de última hora.",
+      "Desarrollamos a medida porque tu negocio es único. Las plantillas y los constructores genéricos limitan tu crecimiento, tu rendimiento y tu control. Nuestro código es ligero, escalable y se adapta exactamente a tus necesidades. Sin plugins innecesarios, sin dependencias forzadas, sin sorpresas.",
   },
 ];
 ---
@@ -79,9 +69,9 @@ const faqs = [
           data-distance="small"
         >
           <summary class="flex justify-between items-center cursor-pointer list-none p-2">
-            <h3 class="text-lg font-semibold text-foreground pr-8">
+            <span class="text-lg font-semibold text-foreground pr-8">
               {faq.question}
-            </h3>
+            </span>
             <svg
               class="size-5 text-muted-foreground transition-transform group-open:rotate-180 shrink-0"
               fill="none"

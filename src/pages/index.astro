@@ -1,7 +1,6 @@
 ---
 import MainLayout from "~/layouts/MainLayout.astro";
 
-import { StarIcon } from "@lucide/astro";
 import CaseStudies from "~/components/sections/CaseStudies.astro";
 import ClientsCarousel from "~/components/sections/ClientsCarousel.astro";
 import Comparison from "~/components/sections/Comparison.astro";
@@ -13,6 +12,7 @@ import Impact from "~/components/sections/Impact.astro";
 import Method from "~/components/sections/Method.astro";
 import Services from "~/components/sections/Services.astro";
 import Testimonials from "~/components/sections/Testimonials.astro";
+import Button from "~/components/ui/Button.astro";
 
 const title =
   "Agencia de Desarrollo Web en Barcelona · MVPs en 6 semanas | doscientos";
@@ -33,28 +33,6 @@ const description =
     data-easing="soft"
     data-delay="700"
   >
-    <div class="flex items-center gap-2">
-      <div class="flex items-center gap-1" aria-hidden="true">
-        {
-          new Array(5)
-            .fill(0)
-            .map(() => (
-              <StarIcon
-                class="size-4 text-yellow-400"
-                fill="currentColor"
-                stroke="currentColor"
-              />
-            ))
-        }
-      </div>
-      <span>
-        <strong class="text-foreground">
-          <span class="sr-only">5 de 5 estrellas ,</span>5/5
-        </strong>{" "}
-        en satisfacción de cliente
-      </span>
-    </div>
-    <span class="text-muted/50 hidden sm:block">·</span>
     <span
       ><strong class="text-foreground">+30 proyectos</strong> entregados</span
     >
@@ -64,9 +42,12 @@ const description =
     <ClientsCarousel />
   </div>
   <Services />
+  <ForWho />
+  <Method />
   <Impact />
   <Testimonials />
   <CaseStudies />
+  <Comparison />
 
   <!-- Mid-page CTA -->
   <section class="px-6 max-w-4xl mx-auto w-full" data-reveal="bottom">
@@ -81,29 +62,21 @@ const description =
       </div>
       <a
         href="/contact?subject=Interés General&ref=home-mid"
-        class="shrink-0 inline-flex items-center gap-2 rounded-full px-5 py-3 text-lg font-semibold bg-background text-foreground hover:bg-background/90 transition-colors"
-        aria-label="Pedir propuesta — contactar con doscientos"
+        class="shrink-0"
+        aria-label="Cuéntanos tu proyecto — contactar con doscientos"
       >
-        Pedir propuesta
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="size-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-          ><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg
+        <Button
+          size="lg"
+          withArrow
+          arrowInverted={false}
+          class="bg-background text-foreground hover:bg-background/90 shadow-none"
         >
+          Cuéntanos tu proyecto
+        </Button>
       </a>
     </div>
   </section>
 
-  <Method />
-  <ForWho />
-  <Comparison />
   <FAQ />
   <Hype />
 </MainLayout>

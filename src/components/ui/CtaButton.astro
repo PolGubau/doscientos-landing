@@ -9,14 +9,15 @@ import Button, { type ButtonProps } from "./Button.astro";
 
 type Props = {
   labelKey?: TranslationKey;
+  label?: string;
 } & ButtonProps;
 
-const { labelKey = "contact", ...buttonProps } = Astro.props;
+const { labelKey = "contact", label, ...buttonProps } = Astro.props;
 const { getInTouch } = getMetadata();
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
 <a href={getInTouch.href}>
-  <Button withArrow {...buttonProps}> {t(labelKey)} </Button>
+  <Button withArrow {...buttonProps}> {label ?? t(labelKey)} </Button>
 </a>
