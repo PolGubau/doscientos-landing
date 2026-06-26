@@ -3,7 +3,6 @@ import { getCollection, render } from "astro:content";
 import BlogCTA from "~/components/blog/BlogCTA.astro";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
-import "~/styles/prose.css";
 
 export async function getStaticPaths() {
   const blogPosts = await getCollection("blog", ({ data }) => !data.draft);

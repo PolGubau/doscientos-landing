@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "./custom-styles.css";
+@plugin "@tailwindcss/typography";
 /*
  * Section/title scroll reveals are handled by @polgubau/astro-reveal
  * (pure CSS + IntersectionObserver). It owns the resting hidden state via
