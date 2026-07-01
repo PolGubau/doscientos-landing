@@ -150,29 +150,26 @@
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
       window.__DOS_CONSENT = consent;
+
+      // Google Consent Mode v2 — actualizar estado en cuanto el usuario decide
+      if (window.gtag) {
+        window.gtag("consent", "update", {
+          analytics_storage: analytics ? "granted" : "denied",
+          ad_storage: marketing ? "granted" : "denied",
+          ad_user_data: marketing ? "granted" : "denied",
+          ad_personalization: marketing ? "granted" : "denied",
+        });
+      }
+
       banner.classList.add("hidden");
       loadTrackers(consent);
     }
 
     function loadTrackers(consent) {
-      // Analytics: GA4
-      if (consent.analytics && window.GA_MEASUREMENT_ID_PENDING) {
-        const s = document.createElement("script");
-        s.async = true;
-        s.src =
-          "https://www.googletagmanager.com/gtag/js?id=" +
-          window.GA_MEASUREMENT_ID_PENDING;
-        document.head.appendChild(s);
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
-        gtag("config", window.GA_MEASUREMENT_ID_PENDING, {
-          page_path: window.location.pathname,
-        });
-      }
-      // Analytics: Clarity
+      // GA4 ya carga siempre vía GoogleAnalytics.astro + Consent Mode v2.
+      // Aquí solo cargamos trackers que no soportan Consent Mode (hard-block).
+
+      // Analytics: Clarity (no soporta Consent Mode → hard-block)
       if (consent.analytics && window.CLARITY_ID_PENDING) {
         (function (c, l, a, r, i, t, y) {
           c[a] =
@@ -187,7 +184,7 @@
           y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", window.CLARITY_ID_PENDING);
       }
-      // Marketing: Meta Pixel
+      // Marketing: Meta Pixel (no soporta Consent Mode → hard-block)
       if (consent.marketing && window.META_PIXEL_ID_PENDING) {
         !(function (f, b, e, v, n, t, s) {
           if (f.fbq) return;
@@ -220,6 +217,19 @@
         window.__loadGHL?.();
       }
     }
+
+    // Reabrir preferencias desde cualquier enlace (footer, /cookies) —
+    // requisito RGPD: retirar el consentimiento debe ser tan fácil como darlo.
+    window.__openCookieSettings = function () {
+      banner.classList.remove("hidden");
+      managePanel.classList.remove("hidden");
+      const stored = window.__DOS_CONSENT;
+      document.getElementById("consent-analytics").checked =
+        !!stored?.analytics;
+      document.getElementById("consent-marketing").checked =
+        !!stored?.marketing;
+      banner.scrollIntoView({ behavior: "smooth", block: "end" });
+    };
 
     // Show banner only if no consent stored
     if (!window.__DOS_CONSENT) {

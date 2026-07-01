@@ -246,14 +246,20 @@ const lastUpdated = "18 de mayo de 2026";
       </p>
 
       <hr />
-      <p class="text-sm">
+      <div class="not-prose flex flex-wrap items-center gap-4">
+        <button
+          onclick="window.__openCookieSettings?.()"
+          class="text-sm px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+        >
+          Gestionar preferencias de cookies
+        </button>
         <button
           onclick="localStorage.removeItem('doscientos-consent'); window.location.reload();"
-          class="underline cursor-pointer text-primary hover:opacity-80 transition-opacity"
+          class="text-sm underline cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
         >
           Restablecer mis preferencias de cookies
         </button>
-      </p>
+      </div>
     </article>
   </main>
 </MainLayout>

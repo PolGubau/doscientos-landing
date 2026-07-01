@@ -1,17 +1,101 @@
 ---
 /**
  * ConsentScript — debe ir PRIMERO en <head>, antes de cualquier tracker.
- * Lee las preferencias guardadas y las expone en window.__DOS_CONSENT.
+ *
+ * Implementa Google Consent Mode v2 (gtag.js):
+ *  1. Inicializa window.dataLayer y window.gtag.
+ *  2. Llama consent 'default' con todo denied para la EEA;
+ *     granted por defecto para el resto del mundo (sin banner allí).
+ *  3. Si el usuario ya había guardado preferencias, emite consent 'update'
+ *     de inmediato para que GA4 no espere innecesariamente.
+ *  4. Expone window.__DOS_CONSENT para el resto de componentes.
  */
 ---
 
 <script is:inline>
   (function () {
+    // ── 1. dataLayer + gtag (deben existir antes del consent 'default') ──
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () {
+      dataLayer.push(arguments);
+    };
+
+    // ── 2. Países EEA donde se muestra el banner (ISO 3166-1 alpha-2) ──
+    var EEA = [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE",
+      "IS",
+      "LI",
+      "NO",
+      "CH",
+    ];
+
+    // Default denied para EEA (banner activo)
+    gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+      functionality_storage: "granted",
+      security_storage: "granted",
+      wait_for_update: 500,
+      region: EEA,
+    });
+
+    // Default granted fuera de EEA (sin banner, sin pérdida de medición)
+    gtag("consent", "default", {
+      ad_storage: "granted",
+      ad_user_data: "granted",
+      ad_personalization: "granted",
+      analytics_storage: "granted",
+    });
+
+    // Redacción de IDs de clic + URL passthrough cuando ad_storage es denied
+    gtag("set", "ads_data_redaction", true);
+    gtag("set", "url_passthrough", true);
+
+    // ── 3. Leer preferencias guardadas ──
     try {
-      const stored = localStorage.getItem("doscientos-consent");
+      var stored = localStorage.getItem("doscientos-consent");
       window.__DOS_CONSENT = stored ? JSON.parse(stored) : null;
     } catch (_) {
       window.__DOS_CONSENT = null;
+    }
+
+    // ── 4. Si ya hay consent guardado, actualizar estado antes de que GA4 cargue ──
+    if (window.__DOS_CONSENT) {
+      var c = window.__DOS_CONSENT;
+      gtag("consent", "update", {
+        analytics_storage: c.analytics ? "granted" : "denied",
+        ad_storage: c.marketing ? "granted" : "denied",
+        ad_user_data: c.marketing ? "granted" : "denied",
+        ad_personalization: c.marketing ? "granted" : "denied",
+      });
     }
   })();
 </script>

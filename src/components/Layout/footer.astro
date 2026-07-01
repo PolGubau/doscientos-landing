@@ -157,6 +157,17 @@ const socialLinks = [
                     </a>
                   </li>
                 ))}
+                {column.title === "Legal" && (
+                  <li>
+                    <button
+                      type="button"
+                      onclick="window.__openCookieSettings?.()"
+                      class="inline-block tracking-tight text-left text-background/70 hover:text-background hover:translate-x-1 transition-all cursor-pointer"
+                    >
+                      Preferencias de cookies
+                    </button>
+                  </li>
+                )}
               </ul>
             </div>
           ))
