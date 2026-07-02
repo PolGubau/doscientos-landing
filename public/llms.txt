@@ -162,7 +162,7 @@ Un MVP típico: 6 semanas. Proyectos más complejos: 10-12 semanas, con entregas
 
 - Email: hola@doscientos.es
 - Teléfono: +34 671 17 15 25
-- [Agenda una llamada de 30 min](https://cal.com/doscientos/30min)
+- [Agenda una llamada de 30 min](https://cal.eu/doscientos/30min)
 - [LinkedIn](https://www.linkedin.com/company/doscientos)
 - [Twitter/X](https://twitter.com/doscientos_es)
 - [GitHub](https://github.com/doscientos)

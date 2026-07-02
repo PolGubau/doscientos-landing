@@ -34,7 +34,7 @@ export const branding = {
 			defaultMessage:
 				"Hola, quiero saber más sobre las soluciones de automatización, IA y desarrollo web que ofrecéis.",
 		},
-		email: "hola@doscientos.es",
+		email: "gerard@doscientos.es",
 	},
 
 	// Redes sociales
