@@ -20,6 +20,14 @@ export const COMPANY_SIZE_OPTIONS = [
 	"Más de 200 empleados",
 ] as const;
 
+// Opciones de urgencia — el backend las usa para priorizar el lead
+export const URGENCY_OPTIONS = [
+	"Inmediata",
+	"Este mes",
+	"Este trimestre",
+	"Explorando",
+] as const;
+
 // Mensajes de error según el código de respuesta de la acción
 export const ERROR_MESSAGES: Record<number, string> = {
 	400: "Revisa los datos del formulario e inténtalo de nuevo.",
@@ -36,6 +44,7 @@ export const EMPTY_FORM = {
 	phone: "",
 	company: "",
 	companySize: "",
+	urgency: "",
 	budget: "",
 };
 

@@ -3,7 +3,7 @@ import { BudgetPicker } from "./contact/BudgetPicker";
 import { CalEmbed } from "./contact/CalEmbed";
 import { Field } from "./contact/Field";
 import { ProgressBar } from "./contact/ProgressBar";
-import { COMPANY_SIZE_OPTIONS } from "./contact/types";
+import { COMPANY_SIZE_OPTIONS, URGENCY_OPTIONS } from "./contact/types";
 import { useContactForm } from "./contact/useContactForm";
 
 const TOTAL_STEPS = 2;
@@ -22,6 +22,7 @@ export default function ContactForm() {
     handleStep1KeyDown,
     selectBudget,
     selectCompanySize,
+    selectUrgency,
     nextStep,
     prevStep,
     handleSubmit,
@@ -151,6 +152,28 @@ export default function ContactForm() {
               >
                 <option value="">Selecciona un rango</option>
                 {COMPANY_SIZE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label
+                htmlFor="urgency"
+                className="flex items-center justify-between text-sm font-medium text-muted-foreground"
+              >
+                <span>¿Cuándo quieres empezar?</span>
+                <span className="text-xs font-normal">Opcional</span>
+              </label>
+              <select
+                id="urgency"
+                name="urgency"
+                value={formData.urgency}
+                onChange={(e) => selectUrgency(e.target.value)}
+                className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm text-foreground transition-all focus:border-primary focus:ring-1 focus:ring-primary"
+              >
+                <option value="">Selecciona una opción</option>
+                {URGENCY_OPTIONS.map((opt) => (
                   <option key={opt} value={opt}>{opt}</option>
                 ))}
               </select>

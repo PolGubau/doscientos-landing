@@ -106,6 +106,9 @@ export function useContactForm() {
 	const selectCompanySize = (value: string) =>
 		setFormData((prev) => ({ ...prev, companySize: value }));
 
+	const selectUrgency = (value: string) =>
+		setFormData((prev) => ({ ...prev, urgency: value }));
+
 	const nextStep = () => {
 		const nameOk = validateField("name", formData.name);
 		const emailOk = validateField("email", formData.email);
@@ -162,6 +165,7 @@ export function useContactForm() {
 			phone: formData.phone,
 			company: formData.company,
 			companySize: formData.companySize,
+			urgency: formData.urgency,
 			message: "Lead desde formulario corto (multi-step)",
 			budget: formData.budget,
 			dedupeKey: dedupeKey.current,
@@ -228,6 +232,7 @@ export function useContactForm() {
 		handleStep1KeyDown,
 		selectBudget,
 		selectCompanySize,
+		selectUrgency,
 		nextStep,
 		prevStep,
 		handleSubmit,

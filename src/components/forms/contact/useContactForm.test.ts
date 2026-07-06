@@ -118,6 +118,7 @@ describe("useContactForm — submit", () => {
 		act(() => {
 			result.current.handleChange({ target: { name: "company", value: "Acme SL" } } as React.ChangeEvent<HTMLInputElement>);
 			result.current.selectCompanySize("10-50 empleados");
+			result.current.selectUrgency("Este mes");
 			result.current.selectBudget("5.000€ - 10.000€");
 		});
 
@@ -126,13 +127,14 @@ describe("useContactForm — submit", () => {
 		expect(fetchMock).toHaveBeenCalledOnce();
 		const sent = JSON.parse(fetchMock.mock.calls[0][1].body as string);
 		expect(Object.keys(sent).sort()).toEqual(
-			["budget", "company", "companySize", "dedupeKey", "email", "message", "name", "phone", "referrer", "utm_campaign", "utm_medium", "utm_source", "website"].sort()
+			["budget", "company", "companySize", "dedupeKey", "email", "message", "name", "phone", "referrer", "urgency", "utm_campaign", "utm_medium", "utm_source", "website"].sort()
 		);
 		expect(sent.name).toBe("Ana García");
 		expect(sent.email).toBe("ana@test.es");
 		expect(sent.phone).toBe("666 123 456");
 		expect(sent.company).toBe("Acme SL");
 		expect(sent.companySize).toBe("10-50 empleados");
+		expect(sent.urgency).toBe("Este mes");
 		expect(sent.budget).toBe("5.000€ - 10.000€");
 		expect(sent.message).toBe("Lead desde formulario corto (multi-step)");
 		expect(sent.website).toBe("");
