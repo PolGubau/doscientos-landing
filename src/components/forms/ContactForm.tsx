@@ -3,6 +3,7 @@ import { BudgetPicker } from "./contact/BudgetPicker";
 import { CalEmbed } from "./contact/CalEmbed";
 import { Field } from "./contact/Field";
 import { ProgressBar } from "./contact/ProgressBar";
+import { COMPANY_SIZE_OPTIONS } from "./contact/types";
 import { useContactForm } from "./contact/useContactForm";
 
 const TOTAL_STEPS = 2;
@@ -20,6 +21,7 @@ export default function ContactForm() {
     handleBlur,
     handleStep1KeyDown,
     selectBudget,
+    selectCompanySize,
     nextStep,
     prevStep,
     handleSubmit,
@@ -131,6 +133,28 @@ export default function ContactForm() {
               enterKeyHint="send"
               optional
             />
+
+            <div className="space-y-1.5">
+              <label
+                htmlFor="companySize"
+                className="flex items-center justify-between text-sm font-medium text-muted-foreground"
+              >
+                <span>Tamaño de empresa</span>
+                <span className="text-xs font-normal">Opcional</span>
+              </label>
+              <select
+                id="companySize"
+                name="companySize"
+                value={formData.companySize}
+                onChange={(e) => selectCompanySize(e.target.value)}
+                className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm text-foreground transition-all focus:border-primary focus:ring-1 focus:ring-primary"
+              >
+                <option value="">Selecciona un rango</option>
+                {COMPANY_SIZE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+            </div>
 
             <BudgetPicker value={formData.budget} onSelect={selectBudget} />
 

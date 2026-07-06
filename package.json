@@ -52,8 +52,11 @@
 		"**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
 	},
 	"devDependencies": {
+		"@testing-library/react": "^16.3.2",
+		"@testing-library/user-event": "^14.6.1",
 		"@types/canvas-confetti": "^1.9.0",
 		"astro-meta-tags": "^0.3.1",
+		"jsdom": "^29.1.1",
 		"oxlint": "^1.0.0",
 		"sharp": "^0.34.1",
 		"tailwindcss-intersect": "^2.0.1",

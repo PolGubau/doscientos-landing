@@ -103,6 +103,9 @@ export function useContactForm() {
 	const selectBudget = (value: string) =>
 		setFormData((prev) => ({ ...prev, budget: value }));
 
+	const selectCompanySize = (value: string) =>
+		setFormData((prev) => ({ ...prev, companySize: value }));
+
 	const nextStep = () => {
 		const nameOk = validateField("name", formData.name);
 		const emailOk = validateField("email", formData.email);
@@ -154,15 +157,19 @@ export function useContactForm() {
 		}
 
 		const body = {
-			...formData,
+			name: formData.name,
+			email: formData.email,
+			phone: formData.phone,
+			company: formData.company,
+			companySize: formData.companySize,
+			message: "Lead desde formulario corto (multi-step)",
+			budget: formData.budget,
+			dedupeKey: dedupeKey.current,
+			website, // honeypot — debe quedar vacío
 			utm_source: contextParams.current.utm_source,
 			utm_medium: contextParams.current.utm_medium,
 			utm_campaign: contextParams.current.utm_campaign,
 			referrer: document.referrer ?? "",
-			language: navigator.language ?? "",
-			dedupeKey: dedupeKey.current,
-			website, // honeypot — debe quedar vacío
-			message: "Lead desde formulario corto (multi-step)",
 		};
 
 		try {
@@ -220,6 +227,7 @@ export function useContactForm() {
 		handleBlur,
 		handleStep1KeyDown,
 		selectBudget,
+		selectCompanySize,
 		nextStep,
 		prevStep,
 		handleSubmit,
