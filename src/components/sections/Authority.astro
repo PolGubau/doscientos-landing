@@ -1,0 +1,64 @@
+---
+import { BadgeCheck, FileCheck, ShieldCheck } from "@lucide/astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+
+const proof = [
+  {
+    icon: ShieldCheck,
+    title: "Duermes tranquilo",
+    description:
+      "Tu facturación cumple la normativa desde la primera factura. Sin sustos si llega una inspección.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Referencia en el sector",
+    description:
+      "Otros equipos confían en nuestra herramienta para cumplir la ley. Ese es el nivel que aplicamos a tu proyecto.",
+  },
+  {
+    icon: FileCheck,
+    title: "Cero multas, cero dolores de cabeza",
+    description:
+      "Nos ocupamos de que sigas cumpliendo también el año que viene. Tú solo facturas.",
+  },
+];
+---
+
+<section class="landing-section">
+  <SectionHeader
+    title="Con Hacienda no se juega."
+    subtitle="Por eso lo hacemos nosotros."
+    description="La nueva ley obliga a que tu facturación sea imposible de manipular. Nosotros no solo cumplimos esa norma: hemos creado la herramienta que otros desarrolladores usan para cumplirla. Cuando algo tiene que estar bien hecho, mejor que lo lleve quien lo entiende de verdad."
+    align="center"
+  />
+
+  <ul class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto w-full">
+    {
+      proof.map(({ icon: Icon, title, description }, i) => (
+        <li
+          class="panel gap-5"
+          data-reveal="bottom"
+          data-speed="normal"
+          data-easing="smooth"
+          data-delay={i * 100}
+        >
+          <span class="flex items-center justify-center size-11 rounded-xl bg-primary/10 text-primary shrink-0">
+            <Icon class="size-6" aria-hidden="true" />
+          </span>
+          <div class="flex flex-col gap-2">
+            <h3 class="text-lg font-bold text-pretty">{title}</h3>
+            <p class="text-sm text-muted-foreground text-pretty leading-relaxed">
+              {description}
+            </p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="text-xs text-muted-foreground/70 text-center max-w-md mx-auto">
+    Para técnicos: nuestra librería <code
+      class="text-foreground font-medium">@doscientos/verifactu</code
+    > es open source y está publicada en npm.
+  </p>
+</section>
