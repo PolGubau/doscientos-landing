@@ -1,5 +1,8 @@
 declare module "@lucide/astro" {
-	import type { LucideProps } from "lucide-react";
+	import type { LucideProps as ReactLucideProps } from "lucide-react";
+	export interface LucideProps extends ReactLucideProps {
+		class?: string;
+	}
 	export type Icon = (props: LucideProps) => any;
 	export const ArrowLeft: Icon;
 	export const ArrowRight: Icon;
