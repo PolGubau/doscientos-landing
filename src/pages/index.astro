@@ -16,12 +16,40 @@ import Testimonials from "~/components/sections/Testimonials.astro";
 import Button from "~/components/ui/Button.astro";
 
 const title =
-  "Agencia de Desarrollo Web en Barcelona · MVPs en 6 semanas | doscientos";
+  "Backoffice y automatización para PYMEs en Barcelona · Precio fijo | doscientos";
 const description =
-  "doscientos es una agencia de desarrollo web y automatización en Barcelona. Lanzamos MVPs en 6 semanas a precio cerrado. +30 proyectos entregados. Sin sorpresas, sin tiempos muertos.";
+  "Desarrollamos CRMs, ERPs y automatizaciones a medida para PYMEs. Precio fijo, entrega en 6 semanas, +30 proyectos entregados en Barcelona y toda España.";
+
+const faqs = [
+  {
+    question: "¿Cuánto cuesta desarrollar un backoffice o ERP a medida?",
+    answer:
+      "Trabajamos siempre a precio fijo acordado antes de empezar. El coste varía según el alcance, pero el precio no cambia una vez firmado. Sin sorpresas ni presupuestos variables.",
+  },
+  {
+    question: "¿En cuánto tiempo estará en producción mi proyecto?",
+    answer:
+      "El plazo habitual es de 4 a 6 semanas desde el inicio. Hacemos una demo semanal para que veas el progreso en tiempo real.",
+  },
+  {
+    question: "¿Quién se queda con el código al terminar?",
+    answer:
+      "El código es 100% tuyo desde el primer commit. Sin lock-in, sin licencias de uso, sin dependencia de nuestra plataforma.",
+  },
+  {
+    question: "¿Trabajáis solo en Barcelona o también en el resto de España?",
+    answer:
+      "Trabajamos en remoto con clientes de toda España — Barcelona, Madrid, Valencia, Canarias, Castellón y más. La comunicación es vía Slack y demos semanales.",
+  },
+  {
+    question: "¿Qué ocurre si necesito cambios tras el lanzamiento?",
+    answer:
+      "Incluimos 30 días de soporte post-lanzamiento sin coste. Después ofrecemos mantenimiento y evolución del producto con condiciones acordadas.",
+  },
+];
 ---
 
-<MainLayout title={title} description={description}>
+<MainLayout title={title} description={description} faqs={faqs}>
   <!-- Block-level wrapper so ScrollTrigger's pin-spacer lives in normal flow.
        Pinning a direct flex child of <main> collapses pin-spacing to 0. -->
   <div class="block">

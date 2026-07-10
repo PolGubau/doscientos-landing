@@ -138,7 +138,7 @@ export default function ContactForm() {
             <div className="space-y-1.5">
               <label
                 htmlFor="companySize"
-                className="flex items-center justify-between text-sm font-medium text-muted-foreground"
+                className="flex items-center justify-between text-sm font-medium text-foreground"
               >
                 <span>Tamaño de empresa</span>
                 <span className="text-xs font-normal">Opcional</span>
@@ -160,7 +160,7 @@ export default function ContactForm() {
             <div className="space-y-1.5">
               <label
                 htmlFor="urgency"
-                className="flex items-center justify-between text-sm font-medium text-muted-foreground"
+                className="flex items-center justify-between text-sm font-medium text-foreground"
               >
                 <span>¿Cuándo quieres empezar?</span>
                 <span className="text-xs font-normal">Opcional</span>
@@ -186,7 +186,7 @@ export default function ContactForm() {
                 type="button"
                 onClick={prevStep}
                 aria-label="Volver al paso anterior"
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-muted-foreground/30 font-semibold transition-all hover:bg-muted/10 sm:w-auto sm:px-6"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-muted-foreground/30 font-semibold text-foreground transition-all hover:bg-muted/10 sm:w-auto sm:px-6"
               >
                 <ArrowLeft className="w-5 h-5 sm:hidden" aria-hidden="true" />
                 <span className="hidden sm:inline">Atrás</span>

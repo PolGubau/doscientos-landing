@@ -1,0 +1,231 @@
+---
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
+import Button from "~/components/ui/Button.astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+import SectionTag from "~/components/ui/SectionTag.astro";
+import StatCard from "~/components/ui/StatCard.astro";
+import MainLayout from "~/layouts/MainLayout.astro";
+import { getProjects } from "~/shared/lib/collections";
+
+const projects = await getProjects(3);
+
+const stats = [
+  {
+    number: "6 sem",
+    label: "De idea a producto lanzado",
+    description: "MVPs validados con usuarios reales. Sin esperar trimestres.",
+  },
+  {
+    number: "100%",
+    label: "Código en propiedad del cliente",
+    description: "Ni lock-in, ni licencias. El código es tuyo desde el día 1.",
+  },
+  {
+    number: "5/5 ⭐",
+    label: "Valoración media de clientes",
+    description: "Más de 30 proyectos entregados con precio fijo.",
+  },
+];
+
+const benefits = [
+  {
+    title: "Trabajo remoto con empresas sevillanas",
+    description:
+      "Videollamadas semanales, demos cada viernes y canal Slack. Misma agilidad que si estuviéramos en tu oficina.",
+  },
+  {
+    title: "Mercado del sur bien cubierto",
+    description:
+      "Entendemos el ecosistema empresarial andaluz: industria, turismo, agrotech y exportación.",
+  },
+  {
+    title: "Precio fijo, sin presupuestos variables",
+    description:
+      "Acordamos alcance y precio antes de empezar. Sin sorpresas al final del proyecto.",
+  },
+];
+
+const faqs = [
+  {
+    question: "¿Trabajáis con empresas de Sevilla sin oficina allí?",
+    answer:
+      "Sí. Trabajamos en remoto con más del 60% de nuestros clientes. Demos semanales, Slack y reuniones por videollamada. La distancia no afecta ni a la calidad ni a los plazos.",
+  },
+  {
+    question: "¿Cuánto cuesta un MVP para una empresa de Sevilla?",
+    answer:
+      "Los MVPs parten desde 5.000€ para proyectos simples. Plataformas más complejas pueden llegar a 40.000€+. Siempre precio fijo acordado antes de empezar.",
+  },
+  {
+    question: "¿Hacéis reuniones presenciales en Sevilla?",
+    answer:
+      "Puntualmente sí. Pero nuestro proceso funciona igual en remoto — con demos semanales y comunicación directa por Slack.",
+  },
+];
+---
+
+<MainLayout
+  title="Desarrollo Web Sevilla - MVPs en 6 semanas | doscientos"
+  description="Agencia de desarrollo web para empresas de Sevilla. MVPs en 6 semanas, precio fijo. Software a medida, automatizaciones y modernización de sistemas. Sin lock-in."
+  localBusiness={{
+    name: "doscientos - Desarrollo Web Sevilla",
+    description:
+      "Agencia de desarrollo web y automatización para empresas de Sevilla. MVPs en 6 semanas, precio fijo, código en propiedad.",
+    address: {
+      addressLocality: "Sevilla",
+      addressRegion: "Sevilla",
+      postalCode: "41001",
+    },
+    geo: { latitude: "37.3891", longitude: "-5.9845" },
+  }}
+  service={{
+    name: "Desarrollo Web y MVPs para empresas de Sevilla",
+    description:
+      "Lanzamos productos digitales en 6 semanas para empresas sevillanas. Software a medida, automatizaciones y modernización de sistemas legacy.",
+    serviceType: "Software Development",
+  }}
+  faqs={faqs}
+  type="website"
+>
+  <section class="px-6 max-w-7xl mx-auto pt-32 space-y-12">
+    <Breadcrumbs
+      items={[{ name: "Sevilla", url: "/desarrollo-web-sevilla" }]}
+    />
+
+    <header class="max-w-3xl mx-auto text-center space-y-8" data-stagger="100">
+      <div data-reveal="top" data-speed="fast" data-easing="smooth">
+        <SectionTag>Sevilla</SectionTag>
+      </div>
+      <h1
+        class="text-4xl md:text-6xl font-bold text-foreground"
+        data-reveal="scale"
+        data-speed="normal"
+        data-easing="bounce"
+      >
+        Desarrollo Web en Sevilla
+        <span class="block text-primary mt-2">Precio fijo. Sin lock-in.</span>
+      </h1>
+      <p
+        class="text-xl text-muted-foreground max-w-2xl mx-auto"
+        data-reveal="bottom"
+        data-speed="normal"
+        data-easing="soft"
+      >
+        Somos una agencia de desarrollo de software para empresas de Sevilla.
+        Lanzamos MVPs, automatizamos procesos y modernizamos sistemas legacy en
+        6 semanas. 100% remoto, sin diferencia en calidad ni plazos.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="/contact">
+          <Button size="lg" withArrow>Hablar con el equipo</Button>
+        </a>
+        <a href="/projects">
+          <Button size="lg">Ver proyectos</Button>
+        </a>
+      </div>
+    </header>
+
+    <div class="grid md:grid-cols-3 gap-6" data-stagger="150">
+      {
+        stats.map((stat) => (
+          <StatCard
+            number={stat.number}
+            label={stat.label}
+            description={stat.description}
+          />
+        ))
+      }
+    </div>
+
+    <section class="space-y-12">
+      <SectionHeader
+        title="Por qué Sevilla confía"
+        subtitle="en un equipo remoto"
+        description="El código de calidad no depende de la distancia."
+        align="center"
+      />
+      <div class="grid md:grid-cols-3 gap-8" data-stagger="100">
+        {
+          benefits.map((benefit) => (
+            <div
+              class="p-8 rounded-2xl bg-accent space-y-4"
+              data-reveal="bottom"
+              data-speed="normal"
+              data-easing="soft"
+            >
+              <h3 class="text-xl font-semibold text-foreground">
+                {benefit.title}
+              </h3>
+              <p class="text-muted-foreground">{benefit.description}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="space-y-12">
+      <SectionHeader
+        title="Proyectos entregados"
+        subtitle="con resultados medibles"
+        description="Casos de éxito reales. Métricas concretas."
+        align="center"
+      />
+      <div class="grid md:grid-cols-3 gap-6">
+        {
+          projects.map((project) => (
+            <a
+              href={`/projects/${project.id}`}
+              class="group block p-6 rounded-2xl bg-accent hover:bg-muted transition-colors"
+            >
+              <h3 class="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                {project.data.title}
+              </h3>
+              <p class="text-muted-foreground mt-2">{project.data.summary}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="space-y-8 max-w-3xl mx-auto">
+      <SectionHeader
+        title="Preguntas frecuentes"
+        subtitle="de empresas sevillanas"
+        align="center"
+      />
+      <dl class="space-y-6">
+        {
+          faqs.map((faq) => (
+            <div class="p-6 rounded-2xl bg-accent space-y-2">
+              <dt class="font-semibold text-foreground text-lg">
+                {faq.question}
+              </dt>
+              <dd class="text-muted-foreground">{faq.answer}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section
+      class="bg-primary text-background rounded-3xl p-12 text-center space-y-6"
+    >
+      <h2 class="text-3xl md:text-4xl font-bold">
+        ¿Listo para lanzar tu proyecto?
+      </h2>
+      <p class="text-xl opacity-90 max-w-2xl mx-auto">
+        Agenda una videollamada de 30 minutos. Sin compromiso. Respuesta en
+        menos de 24h.
+      </p>
+      <a href="/contact">
+        <Button
+          size="lg"
+          withArrow
+          class="bg-background text-primary hover:bg-background/90"
+        >
+          Agendar videollamada
+        </Button>
+      </a>
+    </section>
+  </section>
+</MainLayout>

@@ -28,9 +28,39 @@ const proof = [
   <SectionHeader
     title="Con Hacienda no se juega."
     subtitle="Por eso lo hacemos nosotros."
-    description="La nueva ley obliga a que tu facturación sea imposible de manipular. Nosotros no solo cumplimos esa norma: hemos creado la herramienta que otros desarrolladores usan para cumplirla. Cuando algo tiene que estar bien hecho, mejor que lo lleve quien lo entiende de verdad."
+    description="Si Hacienda inspecciona tu negocio y las facturas no cumplen VeriFactu, la sanción es directa. Nosotros construimos la librería técnica que otros equipos usan como referencia para cumplir esa norma — y la aplicamos en cada proyecto que tocamos."
     align="center"
   />
+
+  <div
+    class="flex flex-col items-center gap-4"
+    data-reveal="bottom"
+    data-speed="normal"
+    data-easing="smooth"
+  >
+    <span
+      class="text-xs font-medium uppercase tracking-widest text-muted-foreground/70"
+    >
+      Cumplimiento con la normativa
+    </span>
+    <div
+      class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 grayscale opacity-80"
+    >
+      <img
+        src="/logos/agencia-tributaria.svg"
+        alt="Agencia Tributaria (Hacienda)"
+        class="h-10 w-auto"
+        loading="lazy"
+        decoding="async"
+      />
+      <span
+        class="text-2xl font-bold tracking-tight text-foreground"
+        aria-label="VERI*FACTU"
+      >
+        VERI<span class="text-primary">*</span>FACTU
+      </span>
+    </div>
+  </div>
 
   <ul class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto w-full">
     {
@@ -57,8 +87,8 @@ const proof = [
   </ul>
 
   <p class="text-xs text-muted-foreground/70 text-center max-w-md mx-auto">
-    Para técnicos: nuestra librería <code
-      class="text-foreground font-medium">@doscientos/verifactu</code
+    Para técnicos: nuestra librería <code class="text-foreground font-medium"
+      >@doscientos/verifactu</code
     > es open source y está publicada en npm.
   </p>
 </section>

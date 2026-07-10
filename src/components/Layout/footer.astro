@@ -21,6 +21,19 @@ const linkColumns = [
       { label: "Proyectos", href: "/projects" },
       { label: "Blog", href: "/blog" },
       { label: "Sobre nosotros", href: "/sobre-nosotros" },
+      { label: "Trabaja con nosotros", href: "/jobs" },
+    ],
+  },
+  {
+    title: "Zonas",
+    links: [
+      { label: "Barcelona", href: "/desarrollo-web-barcelona" },
+      { label: "Madrid", href: "/desarrollo-web-madrid" },
+      { label: "Valencia", href: "/desarrollo-web-valencia" },
+      { label: "Sevilla", href: "/desarrollo-web-sevilla" },
+      { label: "Castellón", href: "/desarrollo-web-castellon" },
+      { label: "Maresme", href: "/agencia-digital-maresme" },
+      { label: "Canarias", href: "/desarrollo-web-canarias" },
     ],
   },
   {
@@ -142,7 +155,7 @@ const socialLinks = [
         <!-- Links columns -->
         {
           linkColumns.map((column) => (
-            <div class="lg:col-span-3 space-y-6">
+            <div class="lg:col-span-2 space-y-6">
               <h4 class="text-sm font-medium text-background/50 uppercase tracking-wider">
                 {column.title}
               </h4>

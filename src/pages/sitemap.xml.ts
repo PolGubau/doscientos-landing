@@ -117,7 +117,25 @@ export const GET: APIRoute = async ({ site }) => {
 			priority: "0.8",
 			changefreq: "monthly",
 		},
+		{
+			url: "jobs",
+			source: "src/pages/jobs.astro",
+			priority: "0.6",
+			changefreq: "monthly",
+		},
 		// Páginas SEO locales
+		{
+			url: "desarrollo-web-valencia",
+			source: "src/pages/desarrollo-web-valencia.astro",
+			priority: "0.85",
+			changefreq: "monthly",
+		},
+		{
+			url: "desarrollo-web-sevilla",
+			source: "src/pages/desarrollo-web-sevilla.astro",
+			priority: "0.85",
+			changefreq: "monthly",
+		},
 		{
 			url: "desarrollo-web-barcelona",
 			source: "src/pages/desarrollo-web-barcelona.astro",

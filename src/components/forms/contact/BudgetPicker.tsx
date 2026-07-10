@@ -8,7 +8,7 @@ type BudgetPickerProps = {
 export function BudgetPicker({ value, onSelect }: BudgetPickerProps) {
   return (
     <fieldset className="space-y-2">
-      <legend className="flex w-full items-center justify-between text-sm font-medium">
+      <legend className="flex w-full items-center justify-between text-sm font-medium text-foreground">
         <span>Presupuesto estimado</span>
         <span className="text-xs font-normal text-muted-foreground">
           Opcional

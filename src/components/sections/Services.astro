@@ -1,5 +1,13 @@
 ---
-import { Code, Database, Palette, Smartphone } from "@lucide/astro";
+import {
+  Award,
+  Code,
+  Database,
+  Lock,
+  Rocket,
+  Smartphone,
+  Users,
+} from "@lucide/astro";
 import Image from "astro/components/Image.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import CtaButton from "../ui/CtaButton.astro";
@@ -10,64 +18,65 @@ import imagePhones from "~/assets/media/landing/phones.webp";
 
 const services = [
   {
-    title: "CRMs, gestores de pedidos y portales de cliente a medida",
+    title: "Todo tu negocio en una herramienta, no en diez Excel",
     description:
-      "¿Gestionas clientes en Excel o un CRM genérico que no encaja con tu proceso? Construimos la herramienta exacta: seguimiento de ventas, gestión de facturas, control de stock, informes automáticos. Sin licencias mensuales ni adaptar tu negocio a una plantilla.",
+      "Clientes, pedidos, facturas y stock en un sistema hecho exactamente para tu proceso. Sin licencias por usuario, sin adaptar cómo trabajas a Salesforce o HubSpot.",
   },
   {
-    title: "Tu idea en producción en 6 semanas: marketplace, SaaS o app B2B",
+    title: "De idea a producción en 6 semanas",
     description:
-      "Plataformas de reservas, marketplaces, herramientas B2B, apps de gestión interna. Lanzamos lo justo para validar con usuarios reales, tus primeros clientes prueban el producto mientras tu competencia sigue en Figma.",
+      "Marketplaces, herramientas B2B, apps de reservas, gestión interna. Lanzamos lo mínimo viable con usuarios reales mientras tu competencia sigue en Figma.",
   },
   {
-    title: "Pedidos, facturas e informes que se procesan solos",
+    title: "El trabajo que tu equipo repite cada semana, hecho solo",
     description:
-      "Conectamos tu tienda, ERP, CRM y contabilidad. Los pedidos entran automáticamente en el ERP, las facturas se generan y envían sin tocarlas, y el informe del lunes llega el domingo. ROI medible en 2–3 meses.",
+      "Conectamos tienda, ERP y contabilidad. Los pedidos entran solos, las facturas salen cumpliendo VeriFactu y el informe llega sin que nadie lo prepare. ROI en 2-3 meses.",
   },
   {
-    title: "Tu sistema de hace 10 años está frenando tu negocio",
+    title: "Ese Access o Excel de hace 10 años te cuesta dinero cada semana",
     description:
-      "Migramos de Access, PHP monolítico o Excel a arquitecturas modernas. Mientras construimos el nuevo sistema, el antiguo sigue funcionando. Tus clientes no notan nada — tú sí.",
+      "Lo sustituimos sin parar la operativa. Mientras construimos el nuevo, el antiguo sigue funcionando. Tus clientes no notan nada, tú sí.",
   },
   {
-    title: "Arquitectura que aguanta ×10 usuarios sin reescribir nada",
-    description: "Pensada para escalar, no para el siguiente sprint.",
+    title: "Preparado para cuando crezcas ×10",
+    description:
+      "Arquitectura que no te frena cuando llegas a 10.000 usuarios.",
   },
 ];
 
 const benefits = [
   {
-    label: "Precio fijo",
-    icon: Code,
+    label: "Precio fijo desde día 1",
+    icon: Lock,
   },
   {
-    label: "Entrega en 6 semanas",
-    icon: Palette,
+    label: "En producción en 6 semanas",
+    icon: Rocket,
   },
   {
     label: "Demo semanal",
     icon: Smartphone,
   },
   {
-    label: "Código 100% tuyo",
-    icon: Database,
-  },
-  {
-    label: "Sin lock-in",
+    label: "El código es tuyo",
     icon: Code,
   },
   {
-    label: "Senior desde día 1",
-    icon: Palette,
+    label: "Sin cuotas por usuario",
+    icon: Users,
+  },
+  {
+    label: "Ingenieros senior",
+    icon: Award,
   },
 ];
 ---
 
 <section class="landing-section">
   <SectionHeader
-    title="Problemas de negocio"
-    subtitle="que resolvemos con software."
-    description="ERPs, CRMs, automatizaciones y MVPs. No webs corporativas, sistemas que operan en producción y generan ROI medible."
+    title="Menos tareas manuales,"
+    subtitle="más negocio."
+    description="Backoffices, CRMs y automatizaciones a medida para PYMEs. Sin cuotas mensuales, sin adaptar tu proceso a ninguna plantilla, en producción en semanas."
   />
 
   <!-- bento con stagger -->

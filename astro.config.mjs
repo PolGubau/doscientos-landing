@@ -22,6 +22,9 @@ export default defineConfig({
   prefetch: true,
 
   redirects: {
+    "/trabaja-con-nosotros": "/jobs",
+    "/careers": "/jobs",
+    "/carrer": "/jobs",
     "/en": "/",
     "/ca": "/",
     "/en/blog": "/blog",

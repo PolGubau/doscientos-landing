@@ -1,0 +1,242 @@
+---
+import { ArrowUpRight, CircleCheck, MapPin } from "@lucide/astro";
+import Button from "~/components/ui/Button.astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+import SectionTag from "~/components/ui/SectionTag.astro";
+import { branding } from "~/config/branding";
+import MainLayout from "~/layouts/MainLayout.astro";
+
+// Motivos para unirse al equipo — honestos y ligados al modelo de la agencia.
+const reasons = [
+  {
+    title: "Trabajo real, en producción",
+    description:
+      "Nada de tareas de relleno. Desde el primer día tocas código y decisiones que llegan a usuarios reales.",
+  },
+  {
+    title: "Ritmo sano, sin héroes",
+    description:
+      "Precio cerrado y plazos realistas: no vivimos de horas extra ni de urgencias inventadas.",
+  },
+  {
+    title: "Remoto con flexibilidad",
+    description:
+      "Trabajamos por objetivos, no por horas de silla. Organiza tu día como mejor rindas.",
+  },
+  {
+    title: "Equipo pequeño, decisiones grandes",
+    description:
+      "Sin capas de burocracia. Tu opinión técnica pesa y se nota en el producto final.",
+  },
+  {
+    title: "Stack moderno",
+    description:
+      "Tecnologías actuales y arquitecturas limpias. Aquí no se arrastra deuda técnica ajena eternamente.",
+  },
+  {
+    title: "Aprendizaje continuo",
+    description:
+      "Cada proyecto es un dominio distinto. Creces en producto, no solo en código.",
+  },
+];
+
+// Perfiles que buscamos — candidaturas abiertas, no ofertas cerradas.
+const roles = [
+  {
+    title: "Frontend Engineer",
+    location: "Remoto / Barcelona",
+    description:
+      "Interfaces rápidas y accesibles con React y Astro. Te obsesiona la experiencia de usuario y el detalle.",
+  },
+  {
+    title: "Backend Engineer",
+    location: "Remoto / Barcelona",
+    description:
+      "APIs, bases de datos e infraestructura. Piensas en escalabilidad y en código que aguanta producción.",
+  },
+  {
+    title: "Product Designer",
+    location: "Remoto / Barcelona",
+    description:
+      "Diseño de producto de principio a fin. Del problema al prototipo, con criterio y velocidad.",
+  },
+  {
+    title: "Marketing & Growth",
+    location: "Remoto",
+    description:
+      "SEO, contenido B2B, email y posicionamiento. Entiendes el ciclo de venta de software a medida y sabes atraer leads que sí compran.",
+  },
+  {
+    title: "Social Media & Contenido",
+    location: "Remoto",
+    description:
+      "LinkedIn, Instagram y X para una audiencia técnica y empresarial. Creas contenido que educa, no que vende a gritos.",
+  },
+  {
+    title: "Closer / Business Development",
+    location: "Remoto",
+    description:
+      "Gestionas el pipeline desde el primer contacto hasta el cierre. Entiendes lo que vendemos, escuchas antes de proponer y no presionas a quien no encaja.",
+  },
+];
+
+// Proceso de selección — corto y sin fricción.
+const process = [
+  {
+    step: "01",
+    title: "Nos escribes",
+    description:
+      "Envíanos un correo con tu perfil, tu portfolio o GitHub y qué te gustaría construir.",
+  },
+  {
+    step: "02",
+    title: "Una llamada honesta",
+    description:
+      "30 minutos para conocernos, hablar de tu experiencia y resolver dudas sin postureo.",
+  },
+  {
+    step: "03",
+    title: "Reto real",
+    description:
+      "Un ejercicio breve y pagado sobre un problema parecido a los que resolvemos cada día.",
+  },
+];
+
+const applyMailto = `mailto:${branding.contact.email}?subject=${encodeURIComponent(
+  "Candidatura — Trabaja con nosotros",
+)}&body=${encodeURIComponent(
+  "Hola equipo doscientos,\n\nMe gustaría uniros. Os dejo mi perfil:\n\n- Nombre:\n- Rol que me interesa:\n- Portfolio / GitHub / LinkedIn:\n- Por qué doscientos:\n\nUn saludo.",
+)}`;
+---
+
+<MainLayout
+  title="Trabaja con nosotros | doscientos, agencia de desarrollo web en Barcelona"
+  description="Únete a doscientos, agencia de desarrollo web en Barcelona. Trabajo real en producción, remoto flexible, stack moderno y un equipo senior pequeño. Envíanos tu candidatura."
+>
+  <div
+    class="space-y-32 max-w-7xl w-full px-6 md:px-10 flex mx-auto flex-col items-center"
+  >
+    <!-- Hero -->
+    <header
+      class="px-6 max-w-7xl w-full mx-auto pt-28 lg:pt-36"
+      data-reveal="bottom"
+    >
+      <SectionTag>Trabaja con nosotros</SectionTag>
+      <h1 class="font-bold text-foreground leading-tight mt-4 mb-6">
+        <span class="text-3xl lg:text-4xl">Construye producto que llega</span>
+        <br />
+        <span class="text-primary text-4xl lg:text-5xl">a usuarios reales</span>
+      </h1>
+      <p class="text-xl text-muted-foreground leading-relaxed max-w-2xl">
+        Somos un equipo pequeño y deliberadamente así. Buscamos gente que se
+        implique de verdad — tanto si construyes producto como si lo comunicas o
+        lo vendes. Aquí cada rol impacta directamente en el negocio.
+      </p>
+    </header>
+
+    <!-- Por qué trabajar aquí -->
+    <section class="w-full">
+      <SectionHeader
+        title="Por qué trabajar en doscientos"
+        description="No te vendemos futbolines ni frutas gratis. Te ofrecemos condiciones que importan cuando tu trabajo genera impacto real."
+      />
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
+        {
+          reasons.map((r) => (
+            <article
+              class="bg-accent rounded-2xl p-6 space-y-3"
+              data-reveal="bottom"
+            >
+              <CircleCheck class="size-6 text-primary" />
+              <h3 class="font-semibold text-foreground">{r.title}</h3>
+              <p class="text-sm text-muted-foreground leading-relaxed">
+                {r.description}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Perfiles que buscamos -->
+    <section class="w-full">
+      <SectionHeader
+        title="Perfiles que buscamos"
+        description="No siempre tenemos vacantes abiertas, pero siempre leemos a buena gente. Si encajas, escríbenos."
+      />
+      <div class="grid md:grid-cols-3 gap-6 mt-12">
+        {
+          roles.map((role) => (
+            <article
+              class="group bg-accent rounded-2xl p-6 flex flex-col gap-4"
+              data-reveal="bottom"
+            >
+              <div class="space-y-2">
+                <h3 class="text-xl font-bold text-foreground">{role.title}</h3>
+                <p class="flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <MapPin class="size-4 text-primary shrink-0" />
+                  {role.location}
+                </p>
+              </div>
+              <p class="text-muted-foreground text-sm leading-relaxed flex-1">
+                {role.description}
+              </p>
+              <a
+                href={applyMailto}
+                class="group inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+              >
+                Aplicar
+                <ArrowUpRight
+                  aria-hidden="true"
+                  class="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Proceso de selección -->
+    <section class="w-full">
+      <SectionHeader
+        title="Cómo es el proceso"
+        description="Sin rondas infinitas ni pruebas absurdas. Respetamos tu tiempo tanto como el nuestro."
+      />
+      <div class="grid md:grid-cols-3 gap-8 mt-12">
+        {
+          process.map((p) => (
+            <div class="space-y-3" data-reveal="bottom">
+              <span class="text-4xl font-bold text-primary/40">{p.step}</span>
+              <h3 class="text-lg font-semibold text-foreground">{p.title}</h3>
+              <p class="text-sm text-muted-foreground leading-relaxed max-w-xs">
+                {p.description}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- CTA candidatura espontánea -->
+    <section class="pb-20 w-full">
+      <div
+        class="bg-foreground text-background rounded-3xl p-10 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-8"
+        data-reveal="bottom"
+      >
+        <div class="space-y-3 max-w-xl">
+          <h2 class="text-3xl lg:text-4xl font-bold">
+            ¿No ves tu perfil pero encajas?
+          </h2>
+          <p class="text-neutral-400 text-lg">
+            Mándanos una candidatura espontánea. Si aportas valor, encontraremos
+            la forma de trabajar juntos.
+          </p>
+        </div>
+        <a href={applyMailto}>
+          <Button size="lg" withArrow>Enviar candidatura</Button>
+        </a>
+      </div>
+    </section>
+  </div>
+</MainLayout>
