@@ -57,55 +57,13 @@ const faqs = [
   <div class="block">
     <Hero />
   </div>
-  <div
-    class="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground pt-6"
-    data-reveal="bottom"
-    data-speed="normal"
-    data-easing="soft"
-    data-delay="700"
-  >
-    <span
-      ><strong class="text-foreground">+30 proyectos</strong> entregados</span
-    >
-  </div>
+  <ProjectsBadge />
   <!-- Clients carousel below the hero, full-width -->
   <div class="relative z-20 w-full">
     <ClientsCarousel />
   </div>
   <Services />
-  <section class="px-6 max-w-7xl mx-auto w-full space-y-8">
-    <div class="max-w-2xl space-y-4" data-reveal="left">
-      <p class="text-sm uppercase tracking-[0.2em] text-primary font-semibold">
-        Soluciones por problema
-      </p>
-      <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
-        Automatización para procesos que ya duelen.
-      </h2>
-      <p class="text-muted-foreground leading-relaxed">
-        Si tu equipo opera entre Excel, WhatsApp, contratos, incidencias o
-        renovaciones, empieza por el diagnóstico o por el caso que más se parece
-        a tu negocio.
-      </p>
-    </div>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" data-stagger="100">
-      {
-        commercialProblemLinks.map((landing) => (
-          <a
-            href={landing.href}
-            class="group rounded-2xl border border-muted p-5 hover:border-primary hover:bg-accent transition-colors"
-            data-reveal="bottom"
-          >
-            <h3 class="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-              {landing.label}
-            </h3>
-            <p class="text-sm text-muted-foreground mt-2 leading-relaxed">
-              {landing.description}
-            </p>
-          </a>
-        ))
-      }
-    </div>
-  </section>
+  <SolutionsGrid />
   <ForWho />
   <Method />
   <Impact />
@@ -113,37 +71,7 @@ const faqs = [
   <CaseStudies />
   <Authority />
   <Comparison />
-
-  <!-- Mid-page CTA -->
-  <section class="px-6 max-w-4xl mx-auto w-full" data-reveal="bottom">
-    <div
-      class="bg-foreground text-background rounded-2xl px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6"
-    >
-      <div class="space-y-1 text-center sm:text-left">
-        <p class="text-xl font-bold">
-          ¿Qué proceso deberías automatizar primero?
-        </p>
-        <p class="text-background/60 text-sm">
-          Revisamos tu caso y te damos una prioridad clara, sin compromiso.
-        </p>
-      </div>
-      <a
-        href="/diagnostico-procesos?ref=home-mid"
-        class="shrink-0"
-        aria-label="Pedir diagnóstico de procesos"
-      >
-        <Button
-          size="lg"
-          withArrow
-          arrowInverted={false}
-          class="bg-background text-foreground hover:bg-background/90 shadow-none"
-        >
-          Pedir diagnóstico
-        </Button>
-      </a>
-    </div>
-  </section>
-
+  <MidCTA />
   <FAQ />
   <Hype />
 </MainLayout>

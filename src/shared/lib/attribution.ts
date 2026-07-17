@@ -150,3 +150,51 @@ export function buildTrackedWhatsappUrl({
 	if (landingRef) url.searchParams.set("landing_ref", landingRef);
 	return url.toString();
 }
+
+/**
+ * Client-only attribution bootstrap. Deliberately minimal: no network calls,
+ * no global click hijacking, no page_view beacon (that's what GA/Clarity are
+ * for). It only does the two things sales actually rely on:
+ *
+ * 1. Capture first-touch (referrer/UTMs) once per visitor, so the eventual
+ *    lead submission can report both first- and last-touch attribution.
+ * 2. Stamp the visitor/event id + current touch onto WhatsApp CTA links so
+ *    the click — logged server-side by /api/public/whatsapp-click — can be
+ *    linked back to the lead once it converts.
+ */
+export function hydrateWhatsappLinks(): void {
+	if (typeof document === "undefined") return;
+	const touch = currentTouch();
+	readFirstTouch(touch); // side-effect only: persists first-touch once per visitor
+	const eventId = getOrCreateEventId();
+	const visitorId = getOrCreateVisitorId();
+
+	const links = document.querySelectorAll<HTMLAnchorElement>(
+		'a[href*="/api/public/whatsapp-click"]',
+	);
+	for (const link of links) {
+		try {
+			const url = new URL(link.href);
+			url.searchParams.set("event_id", eventId);
+			url.searchParams.set("visitor_id", visitorId);
+			url.searchParams.set("landing_path", touch.landing_path);
+			if (touch.referrer) url.searchParams.set("referrer", touch.referrer);
+			for (const key of [
+				"utm_source",
+				"utm_medium",
+				"utm_campaign",
+				"utm_term",
+				"utm_content",
+			] as const) {
+				if (touch[key]) url.searchParams.set(key, touch[key]);
+			}
+			link.href = url.toString();
+		} catch {
+			// Leave the original href untouched if URL parsing fails.
+		}
+	}
+}
+
+export function initAttribution(): void {
+	hydrateWhatsappLinks();
+}
