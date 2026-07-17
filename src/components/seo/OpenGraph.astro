@@ -16,7 +16,10 @@ interface Props {
 
 const { title, description, image, type = "website", article } = Astro.props;
 
-const baseUrl = Astro.site?.toString() || "https://doscientos.es";
+const baseUrl = (Astro.site?.toString() || "https://doscientos.es").replace(
+  /\/$/,
+  "",
+);
 const currentUrl = new URL(Astro.url.pathname, baseUrl).toString();
 
 // Default OG image si no se proporciona una

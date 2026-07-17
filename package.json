@@ -11,7 +11,8 @@
 		"preview": "astro preview",
 		"clean": "rm -rf .astro node_modules/.vite dist",
 		"test": "vitest run",
-		"test:build": "astro build && vitest run",
+		"seo:check": "node scripts/seo-check.mjs",
+		"test:build": "pnpm seo:check && astro build && vitest run",
 		"astro": "astro"
 	},
 	"dependencies": {

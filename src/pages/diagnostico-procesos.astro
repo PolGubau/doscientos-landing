@@ -1,0 +1,283 @@
+---
+import ContactForm from "~/components/forms/ContactForm";
+import CostCalculator from "~/components/conversion/CostCalculator.astro";
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
+import Button from "~/components/ui/Button.astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+import SectionTag from "~/components/ui/SectionTag.astro";
+import { branding } from "~/config/branding";
+import MainLayout from "~/layouts/MainLayout.astro";
+
+const title = "Diagnostico de procesos para pymes | doscientos";
+const description =
+  "Diagnostico gratis de 20 minutos: revisamos tu proceso, calculamos el coste oculto y te decimos que automatizar primero o si no merece la pena construir.";
+
+const steps = [
+  {
+    title: "Nos cuentas el proceso real",
+    description:
+      "El que pasa un martes cualquiera: herramientas, personas, pasos manuales y donde se bloquea.",
+  },
+  {
+    title: "Calculamos coste y riesgo",
+    description:
+      "Tiempo repetido, errores, retrasos, oportunidades perdidas y dependencia de personas clave.",
+  },
+  {
+    title: "Salimos con una decision",
+    description:
+      "Construir un modulo pequeno, simplificar con lo que ya tienes o no tocarlo todavia.",
+  },
+];
+
+const examples = [
+  "Copiar datos de emails a Excel",
+  "Revisar contratos o renovaciones a mano",
+  "Generar informes recurrentes",
+  "Perseguir documentos por WhatsApp",
+  "Gestionar incidencias sin estados claros",
+  "Crear presupuestos o partes repetidos",
+];
+
+const deliverables = [
+  {
+    title: "Prioridad clara",
+    description:
+      "Te diremos que proceso atacar primero y cual dejar para mas adelante.",
+  },
+  {
+    title: "Estimacion de impacto",
+    description:
+      "Calculamos horas, coste de error y senales de retorno antes de hablar de construir.",
+  },
+  {
+    title: "Primer modulo recomendado",
+    description:
+      "Si tiene sentido avanzar, salimos con un alcance inicial pequeno y medible.",
+  },
+];
+
+const fitSignals = [
+  "Hay una tarea que se repite cada semana y depende de copiar datos.",
+  "Una hoja, chat o email decide el estado real del negocio.",
+  "Hay errores caros, retrasos o oportunidades que aparecen tarde.",
+  "El proceso ya tiene responsables y reglas, aunque ahora vivan en la cabeza del equipo.",
+];
+
+const proofCases = [
+  {
+    title: "Optinergia",
+    description:
+      "CRM operativo para una asesoria energetica con contratos, clientes y seguimiento comercial.",
+    href: "/projects/optinergia",
+  },
+  {
+    title: "Bitacora ERP",
+    description:
+      "Sistema interno para ordenar operaciones, trazabilidad y reporting sin depender de hojas sueltas.",
+    href: "/projects/bitacora-erp",
+  },
+  {
+    title: "Flatmatch",
+    description:
+      "Validacion de producto con alcance cerrado antes de invertir de mas en desarrollo.",
+    href: "/projects/flatmatch",
+  },
+];
+
+const faqs = [
+  {
+    question: "El diagnostico es realmente gratis?",
+    answer:
+      "Si. Es una llamada corta para entender si hay un problema claro y si tiene sentido automatizarlo. Si no compensa, te lo diremos.",
+  },
+  {
+    question: "Tengo que tener claro que quiero construir?",
+    answer:
+      "No. De hecho, lo normal es llegar con un proceso que duele, no con una especificacion tecnica.",
+  },
+  {
+    question: "Que recibo despues de la llamada?",
+    answer:
+      "Una recomendacion concreta: que automatizar primero, que evitar y cual seria el primer modulo si decidimos construir.",
+  },
+];
+---
+
+<MainLayout
+  title={title}
+  description={description}
+  type="service"
+  service={{
+    name: "Diagnostico de procesos para pymes",
+    description,
+    serviceType: "Business Process Automation",
+    url: "/diagnostico-procesos",
+  }}
+  faqs={faqs}
+>
+  <section class="px-6 max-w-7xl mx-auto pt-32 space-y-20">
+    <Breadcrumbs
+      items={[{ name: "Diagnostico de procesos", url: "/diagnostico-procesos" }]}
+    />
+
+    <header class="grid lg:grid-cols-[1fr_0.85fr] gap-12 items-center">
+      <div class="space-y-8">
+        <SectionTag>Diagnostico gratis de 20 min</SectionTag>
+        <div class="space-y-5">
+          <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-foreground text-balance">
+            Te decimos que proceso automatizar primero
+            <span class="block text-primary mt-2">y cuanto te esta costando.</span>
+          </h1>
+          <p class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+            Revisamos un proceso real de tu empresa, ponemos numeros al coste
+            oculto y salimos con una recomendacion concreta. Sin venderte una
+            app innecesaria.
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="#formulario">
+            <Button size="lg" withArrow>Quiero el diagnostico</Button>
+          </a>
+          <a href="#calculadora-coste">
+            <Button size="lg" variant="outline">Calcular coste primero</Button>
+          </a>
+        </div>
+      </div>
+
+      <aside class="rounded-3xl bg-foreground text-background p-6 md:p-8 space-y-6">
+        <p class="text-sm text-background/60">Lo que te llevas</p>
+        <ul class="space-y-4">
+          {
+            steps.map((step, index) => (
+              <li class="grid grid-cols-[2rem_1fr] gap-3">
+                <span class="size-8 rounded-full bg-background text-foreground flex items-center justify-center text-sm font-bold">
+                  {index + 1}
+                </span>
+                <span>
+                  <strong class="block">{step.title}</strong>
+                  <span class="text-sm text-background/70 leading-relaxed">
+                    {step.description}
+                  </span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+    </header>
+
+    <CostCalculator />
+
+    <section class="grid lg:grid-cols-[0.95fr_1fr] gap-8 items-start">
+      <div class="space-y-5">
+        <SectionTag>Decision, no demo generica</SectionTag>
+        <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+          Sales con una recomendacion accionable.
+        </h2>
+        <p class="text-muted-foreground leading-relaxed">
+          El objetivo no es venderte una app. Es decidir si hay una
+          automatizacion rentable, cual seria el primer paso y que deberias
+          evitar para no construir de mas.
+        </p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-4">
+        {
+          deliverables.map((item) => (
+            <article class="rounded-2xl border border-muted bg-background p-5 space-y-2">
+              <h3 class="font-bold text-foreground">{item.title}</h3>
+              <p class="text-sm text-muted-foreground leading-relaxed">
+                {item.description}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="space-y-10">
+      <SectionHeader
+        title="Procesos que solemos revisar"
+        subtitle="en empresas que ya operan a mano"
+        description="No hace falta cambiarlo todo. La oportunidad suele estar en una tarea concreta que se repite demasiado."
+        align="center"
+      />
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {
+          examples.map((example) => (
+            <div class="rounded-2xl border border-muted bg-background p-5 font-medium text-foreground">
+              {example}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="grid lg:grid-cols-2 gap-8 items-start">
+      <article class="rounded-3xl bg-accent/50 p-6 md:p-8 space-y-5">
+        <SectionTag>Buen encaje</SectionTag>
+        <h2 class="text-3xl font-bold tracking-tight text-foreground">
+          Merece revisarlo si reconoces dos o mas senales.
+        </h2>
+        <ul class="space-y-3">
+          {
+            fitSignals.map((signal) => (
+              <li class="flex gap-3 text-muted-foreground leading-relaxed">
+                <span class="mt-2 size-2 rounded-full bg-primary shrink-0" />
+                <span>{signal}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
+      <article class="rounded-3xl border border-muted p-6 md:p-8 space-y-5">
+        <SectionTag>Casos cercanos</SectionTag>
+        <h2 class="text-3xl font-bold tracking-tight text-foreground">
+          Ya hemos resuelto problemas parecidos.
+        </h2>
+        <div class="space-y-3">
+          {
+            proofCases.map((project) => (
+              <a
+                href={project.href}
+                class="block rounded-2xl border border-muted bg-background p-4 hover:border-primary transition-colors"
+              >
+                <h3 class="font-bold text-foreground">{project.title}</h3>
+                <p class="text-sm text-muted-foreground leading-relaxed mt-1">
+                  {project.description}
+                </p>
+              </a>
+            ))
+          }
+        </div>
+      </article>
+    </section>
+
+    <section id="formulario" class="scroll-mt-28 grid lg:grid-cols-[0.85fr_1fr] gap-10 items-start">
+      <div class="space-y-5">
+        <SectionTag>Siguiente paso</SectionTag>
+        <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+          Agenda el diagnostico.
+        </h2>
+        <p class="text-muted-foreground leading-relaxed">
+          Responde el formulario corto y despues agenda una llamada. Si prefieres
+          ir directo, tambien puedes escribir por WhatsApp con el proceso que
+          quieres revisar.
+        </p>
+        <a
+          href={`https://wa.me/${branding.contact.whatsapp.number}?text=${encodeURIComponent(
+            "Hola, quiero hacer un diagnostico de procesos. El proceso que quiero revisar es: ",
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex rounded-full border-2 border-muted px-5 py-3 font-semibold text-foreground hover:border-primary transition-colors"
+        >
+          Escribir por WhatsApp
+        </a>
+      </div>
+      <article class="bg-muted/30 w-full rounded-3xl px-4 py-6 md:px-6 md:py-8">
+        <ContactForm client:load />
+      </article>
+    </section>
+  </section>
+</MainLayout>

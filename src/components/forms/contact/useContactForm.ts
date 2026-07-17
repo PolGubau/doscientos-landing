@@ -8,13 +8,32 @@ import {
 	type FormStatus,
 	STORAGE_KEY,
 } from "./types";
+import { buildAttributionPayload } from "~/shared/lib/attribution";
 
 const LEADS_ENDPOINT =
 	import.meta.env.PUBLIC_LEADS_ENDPOINT ||
 	"https://app.doscientos.es/api/public/leads";
+const EVENTS_ENDPOINT =
+	import.meta.env.PUBLIC_TRACKING_ENDPOINT ||
+	"https://app.doscientos.es";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^\+?[\d\s-]{9,}$/;
+const DEDUPE_STORAGE_KEY = `${STORAGE_KEY}:dedupe-key`;
+
+function trackFormEvent(eventName: string, payload: Record<string, unknown>) {
+	try {
+		const url = new URL("/api/public/events", EVENTS_ENDPOINT).toString();
+		fetch(url, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ event_name: eventName, ...payload }),
+			keepalive: true,
+		}).catch(() => {});
+	} catch {
+		// Analytics must never block the form.
+	}
+}
 
 function validate(name: string, value: string): string {
 	switch (name) {
@@ -42,7 +61,21 @@ export function useContactForm() {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 	const [touched, setTouched] = useState<Record<string, boolean>>({});
-	const dedupeKey = useRef(crypto.randomUUID());
+	const [submittedLeadId, setSubmittedLeadId] = useState<string | null>(null);
+	const dedupeKey = useRef(
+		(() => {
+			if (typeof window === "undefined") return crypto.randomUUID();
+			try {
+				const existing = window.sessionStorage.getItem(DEDUPE_STORAGE_KEY);
+				if (existing) return existing;
+				const next = crypto.randomUUID();
+				window.sessionStorage.setItem(DEDUPE_STORAGE_KEY, next);
+				return next;
+			} catch {
+				return crypto.randomUUID();
+			}
+		})(),
+	);
 
 	const [formData, setFormData] = useState<ContactValues>(() => {
 		if (typeof window === "undefined") return EMPTY_FORM;
@@ -58,6 +91,13 @@ export function useContactForm() {
 		utm_source: "",
 		utm_medium: "",
 		utm_campaign: "",
+		utm_term: "",
+		utm_content: "",
+		ref: "",
+		subject: "",
+		coste: "",
+		horas: "",
+		page_path: "",
 	});
 
 	useEffect(() => {
@@ -66,6 +106,13 @@ export function useContactForm() {
 			utm_source: params.get("utm_source") || "",
 			utm_medium: params.get("utm_medium") || "",
 			utm_campaign: params.get("utm_campaign") || "",
+			utm_term: params.get("utm_term") || "",
+			utm_content: params.get("utm_content") || "",
+			ref: params.get("ref") || "",
+			subject: params.get("subject") || "",
+			coste: params.get("coste") || "",
+			horas: params.get("horas") || "",
+			page_path: window.location.pathname,
 		};
 	}, []);
 
@@ -150,6 +197,24 @@ export function useContactForm() {
 			"website",
 		);
 		const website = honeypot instanceof HTMLInputElement ? honeypot.value : "";
+		const hasLeadContext = Boolean(
+			contextParams.current.subject ||
+				contextParams.current.ref ||
+				contextParams.current.coste ||
+				contextParams.current.horas ||
+				(contextParams.current.page_path && contextParams.current.page_path !== "/"),
+		);
+		const contextLines = [
+			contextParams.current.subject && `Asunto: ${contextParams.current.subject}`,
+			contextParams.current.ref && `Ref: ${contextParams.current.ref}`,
+			hasLeadContext &&
+				contextParams.current.page_path &&
+				`Pagina: ${contextParams.current.page_path}`,
+			contextParams.current.coste &&
+				`Coste calculado: ${contextParams.current.coste}`,
+			contextParams.current.horas &&
+				`Horas calculadas: ${contextParams.current.horas}`,
+		].filter(Boolean);
 
 		// Si el honeypot está lleno, simulamos éxito para despistar al bot
 		if (website) {
@@ -159,21 +224,46 @@ export function useContactForm() {
 			return;
 		}
 
+		const attribution = buildAttributionPayload();
+		trackFormEvent("form_submit", {
+			...attribution,
+			landing_path: contextParams.current.page_path,
+			landing_ref: contextParams.current.ref,
+			landing_subject: contextParams.current.subject,
+			referrer: document.referrer ?? "",
+			utm_source: contextParams.current.utm_source,
+			utm_medium: contextParams.current.utm_medium,
+			utm_campaign: contextParams.current.utm_campaign,
+			utm_term: contextParams.current.utm_term,
+			utm_content: contextParams.current.utm_content,
+			payload: { step, budget: formData.budget, companySize: formData.companySize, urgency: formData.urgency },
+		});
 		const body = {
+			...attribution,
 			name: formData.name,
 			email: formData.email,
 			phone: formData.phone,
 			company: formData.company,
 			companySize: formData.companySize,
 			urgency: formData.urgency,
-			message: "Lead desde formulario corto (multi-step)",
+			message: contextLines.length
+				? `Lead desde formulario corto (multi-step)\n${contextLines.join("\n")}`
+				: "Lead desde formulario corto (multi-step)",
 			budget: formData.budget,
 			dedupeKey: dedupeKey.current,
 			website, // honeypot — debe quedar vacío
 			utm_source: contextParams.current.utm_source,
 			utm_medium: contextParams.current.utm_medium,
 			utm_campaign: contextParams.current.utm_campaign,
+			utm_term: contextParams.current.utm_term,
+			utm_content: contextParams.current.utm_content,
 			referrer: document.referrer ?? "",
+			language: navigator.language ?? "",
+			landing_path: contextParams.current.page_path,
+			landing_ref: contextParams.current.ref,
+			landing_subject: contextParams.current.subject,
+			calculator_cost: contextParams.current.coste,
+			calculator_hours: contextParams.current.horas,
 		};
 
 		try {
@@ -189,10 +279,26 @@ export function useContactForm() {
 				return;
 			}
 
+			const payload =
+				typeof response.json === "function"
+					? ((await response.json().catch(() => null)) as { leadId?: string } | null)
+					: null;
+
 			setStatus("success");
+			setSubmittedLeadId(payload?.leadId ?? null);
+			if (payload?.leadId) {
+				trackFormEvent("lead_created", {
+					...attribution,
+					lead_id: payload.leadId,
+					landing_path: contextParams.current.page_path,
+					landing_ref: contextParams.current.ref,
+					referrer: document.referrer ?? "",
+				});
+			}
 			setStep(3);
 			try {
 				window.localStorage.removeItem(STORAGE_KEY);
+				window.sessionStorage.removeItem(DEDUPE_STORAGE_KEY);
 			} catch {
 				// localStorage no disponible
 			}
@@ -202,6 +308,11 @@ export function useContactForm() {
 				window.gtag("event", "generate_lead", {
 					event_category: "contact",
 					event_label: "contact_form_multistep",
+					page_path: contextParams.current.page_path,
+					lead_ref: contextParams.current.ref,
+					lead_subject: contextParams.current.subject,
+					event_id: attribution.event_id,
+					conversion_step: attribution.conversion_step,
 				});
 			}
 
@@ -210,6 +321,7 @@ export function useContactForm() {
 				window.fbq("track", "Lead", {
 					content_name: "contact_form_multistep",
 					status: "success",
+					eventID: attribution.event_id,
 				});
 			}
 		} catch (err) {
@@ -227,6 +339,8 @@ export function useContactForm() {
 		fieldErrors,
 		touched,
 		formData,
+		submittedLeadId,
+		dedupeKey: dedupeKey.current,
 		handleChange,
 		handleBlur,
 		handleStep1KeyDown,

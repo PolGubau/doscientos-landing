@@ -26,6 +26,7 @@ const {
   description = metadata.description,
   image = "/og-image.png",
 } = Astro.props;
+const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
 // Generate alternate language URL (single-locale site)
 const alternateUrl = new URL(
@@ -67,6 +68,11 @@ const alternateUrl = new URL(
   href={new URL("rss.xml", Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+{
+  googleSiteVerification && (
+    <meta name="google-site-verification" content={googleSiteVerification} />
+  )
+}
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

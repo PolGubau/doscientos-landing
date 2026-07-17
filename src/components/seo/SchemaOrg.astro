@@ -107,34 +107,23 @@ const organizationSchema = {
   ],
   priceRange: "€€€",
   openingHours: "Mo-Fr 09:00-18:00",
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5",
-    bestRating: "5",
-    worstRating: "1",
-    ratingCount: "30",
-    reviewCount: "30",
-  },
-  review: [
+  testimonial: [
     {
-      "@type": "Review",
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      "@type": "Quotation",
       author: { "@type": "Person", name: "Sofia Martínez" },
-      reviewBody:
+      text:
         "No solo programan - entienden de producto. Nos ayudaron a priorizar lo que importaba y en 6 semanas teníamos 500+ usuarios y €50K en funding.",
     },
     {
-      "@type": "Review",
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      "@type": "Quotation",
       author: { "@type": "Person", name: "Michael Schmidt" },
-      reviewBody:
+      text:
         "Nadie se atrevía a tocar nuestro sistema de 15 años. doscientos lo migró sin parar el negocio ni un minuto. Cero downtime, +40% de rendimiento.",
     },
     {
-      "@type": "Review",
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      "@type": "Quotation",
       author: { "@type": "Person", name: "Carlos Ruiz" },
-      reviewBody:
+      text:
         "De 3 horas a 15 minutos. El sistema se pagó solo en 2 meses. Y cuando tenemos dudas, responden en el día.",
     },
   ],
@@ -203,18 +192,30 @@ const articleSchema = article
   : null;
 
 // Service Schema
+const serviceUrl = service
+  ? service.url?.startsWith("http")
+    ? service.url
+    : `${baseUrl}${service.url?.startsWith("/") ? service.url : `/${service.url ?? ""}`}`
+  : null;
+
 const serviceSchema = service
   ? {
       "@context": "https://schema.org",
       "@type": "Service",
+      "@id": `${serviceUrl || `${baseUrl}${Astro.url.pathname}`}#service`,
       name: service.name,
       description: service.description,
       image: service.image,
       ...(service.serviceType && { serviceType: service.serviceType }),
-      url: service.url || baseUrl,
+      url: serviceUrl || `${baseUrl}${Astro.url.pathname}`,
       inLanguage: "es-ES",
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": `${baseUrl}${Astro.url.pathname}`,
+      },
       provider: {
         "@type": "Organization",
+        "@id": `${baseUrl}/#organization`,
         name: branding.name,
         url: baseUrl,
       },
@@ -227,7 +228,7 @@ const serviceSchema = service
           "@type": "Offer",
           price: service.price,
           priceCurrency: service.priceCurrency || "EUR",
-          url: service.url || baseUrl,
+          url: serviceUrl || baseUrl,
           availability: "https://schema.org/InStock",
         },
       }),

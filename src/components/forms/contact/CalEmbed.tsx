@@ -9,9 +9,11 @@ const CAL_ORIGIN = new URL(branding.contact.calCom.bookingUrl).origin; // "https
 type CalEmbedProps = {
   name: string;
   email: string;
+  leadId: string | null;
+  dedupeKey: string;
 };
 
-export function CalEmbed({ name, email }: CalEmbedProps) {
+export function CalEmbed({ name, email, leadId, dedupeKey }: CalEmbedProps) {
   useEffect(() => {
     (async () => {
       const cal = await getCalApi({ embedJsUrl: `${CAL_ORIGIN}/embed/embed.js` });
@@ -39,7 +41,12 @@ export function CalEmbed({ name, email }: CalEmbedProps) {
         calLink={CAL_LINK}
         calOrigin={CAL_ORIGIN}
         style={{ width: "100%", height: "100%", minHeight: "500px" }}
-        config={{ name, email, layout: "month_view" }}
+        config={{
+          name,
+          email,
+          layout: "month_view",
+          metadata: { leadId, landingDedupeKey: dedupeKey },
+        }}
       />
     </div>
   );

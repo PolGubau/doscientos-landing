@@ -11,9 +11,11 @@ import Hero from "~/components/sections/Hero.astro";
 import Hype from "~/components/sections/Hype.astro";
 import Impact from "~/components/sections/Impact.astro";
 import Method from "~/components/sections/Method.astro";
+import MidCTA from "~/components/sections/MidCTA.astro";
 import Services from "~/components/sections/Services.astro";
+import SolutionsGrid from "~/components/sections/SolutionsGrid.astro";
 import Testimonials from "~/components/sections/Testimonials.astro";
-import Button from "~/components/ui/Button.astro";
+import ProjectsBadge from "~/components/ui/ProjectsBadge.astro";
 
 const title =
   "Backoffice y automatización para PYMEs en Barcelona · Precio fijo | doscientos";
@@ -71,6 +73,39 @@ const faqs = [
     <ClientsCarousel />
   </div>
   <Services />
+  <section class="px-6 max-w-7xl mx-auto w-full space-y-8">
+    <div class="max-w-2xl space-y-4" data-reveal="left">
+      <p class="text-sm uppercase tracking-[0.2em] text-primary font-semibold">
+        Soluciones por problema
+      </p>
+      <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+        Automatización para procesos que ya duelen.
+      </h2>
+      <p class="text-muted-foreground leading-relaxed">
+        Si tu equipo opera entre Excel, WhatsApp, contratos, incidencias o
+        renovaciones, empieza por el diagnóstico o por el caso que más se parece
+        a tu negocio.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" data-stagger="100">
+      {
+        commercialProblemLinks.map((landing) => (
+          <a
+            href={landing.href}
+            class="group rounded-2xl border border-muted p-5 hover:border-primary hover:bg-accent transition-colors"
+            data-reveal="bottom"
+          >
+            <h3 class="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+              {landing.label}
+            </h3>
+            <p class="text-sm text-muted-foreground mt-2 leading-relaxed">
+              {landing.description}
+            </p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
   <ForWho />
   <Method />
   <Impact />
@@ -85,15 +120,17 @@ const faqs = [
       class="bg-foreground text-background rounded-2xl px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6"
     >
       <div class="space-y-1 text-center sm:text-left">
-        <p class="text-xl font-bold">¿Tiene pinta de que encajamos?</p>
+        <p class="text-xl font-bold">
+          ¿Qué proceso deberías automatizar primero?
+        </p>
         <p class="text-background/60 text-sm">
-          Cuéntanos el problema. Respuesta en menos de 24h, sin compromiso.
+          Revisamos tu caso y te damos una prioridad clara, sin compromiso.
         </p>
       </div>
       <a
-        href="/contact?subject=Interés General&ref=home-mid"
+        href="/diagnostico-procesos?ref=home-mid"
         class="shrink-0"
-        aria-label="Cuéntanos tu proyecto — contactar con doscientos"
+        aria-label="Pedir diagnóstico de procesos"
       >
         <Button
           size="lg"
@@ -101,7 +138,7 @@ const faqs = [
           arrowInverted={false}
           class="bg-background text-foreground hover:bg-background/90 shadow-none"
         >
-          Cuéntanos tu proyecto
+          Pedir diagnóstico
         </Button>
       </a>
     </div>

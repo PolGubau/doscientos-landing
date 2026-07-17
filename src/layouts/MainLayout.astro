@@ -3,6 +3,7 @@ import { getMetadata } from "~/shared/lib/constants";
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Layout/footer.astro";
 import Navbar from "../components/Layout/navbar.astro";
+import AttributionScript from "../components/analytics/AttributionScript.astro";
 import GoogleAnalytics from "../components/analytics/GoogleAnalytics.astro";
 import MetaPixel from "../components/analytics/MetaPixel.astro";
 import MicrosoftClarity from "../components/analytics/MicrosoftClarity.astro";
@@ -114,6 +115,7 @@ const {
       localBusiness={localBusiness}
     />
     <GoogleAnalytics />
+    <AttributionScript />
     <MicrosoftClarity />
     <MetaPixel />
     <script>

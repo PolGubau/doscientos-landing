@@ -1,14 +1,6 @@
 ---
-import {
-  Award,
-  Code,
-  Database,
-  Lock,
-  Rocket,
-  Smartphone,
-  Users,
-} from "@lucide/astro";
-import Image from "astro/components/Image.astro";
+import { Image } from "astro:assets";
+import { Award, Code, Lock, Rocket, Smartphone, Users } from "@lucide/astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import CtaButton from "../ui/CtaButton.astro";
 
@@ -81,7 +73,7 @@ const benefits = [
 
   <!-- bento con stagger -->
   <ul
-    class="bento flex flex-col lg:grid grid-cols-3 auto-rows-auto gap-4 w-full"
+    class="bento flex flex-col lg:grid grid-cols-3 gap-4 w-full"
     data-stagger="120"
   >
     <li
@@ -122,7 +114,7 @@ const benefits = [
         <p>{services[1].description}</p>
       </header>
       {
-        benefits && (
+        benefits.length > 0 && (
           <ul class="flex gap-2 flex-wrap max-w-md">
             {benefits.map((step) => {
               const IconComponent = step.icon;
@@ -195,16 +187,14 @@ const benefits = [
       </div>
     </li>
     <li
-      class="flex flex-col gap-4 bg-linear-60 from-primary/20 to-primary/30 rounded-2xl shadow-pastel p-7 justify-end"
+      class="panel bg-linear-60 from-primary/20 to-primary/30 justify-end"
       data-reveal="bottom-right"
       data-speed="normal"
       data-easing="bounce"
     >
       <header class="h-full flex flex-col justify-end">
-        <h3 class="text-2xl font-semibold text-pretty">
-          {services[4].title}
-        </h3>
-        <p class="text-xl">{services[4].description}</p>
+        <h3>{services[4].title}</h3>
+        <p>{services[4].description}</p>
       </header>
       <CtaButton />
     </li>

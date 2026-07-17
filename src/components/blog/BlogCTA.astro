@@ -3,14 +3,10 @@
  * BlogCTA — CTA de conversión al final de cada artículo del blog.
  * Enlaza al servicio más relevante según el tipo de artículo.
  */
+import type { BlogCtaVariant } from "~/data/commercialRoutes";
+
 interface Props {
-  variant?:
-    | "contact"
-    | "packs"
-    | "projects"
-    | "barcelona"
-    | "madrid"
-    | "maresme";
+  variant?: BlogCtaVariant;
   headline?: string;
   body?: string;
 }
@@ -26,6 +22,36 @@ const defaults: Record<
     body: "Cuéntanos qué necesitas. Respuesta en menos de 24h, sin compromiso.",
     cta: "Hablar con el equipo",
     href: "/contact",
+  },
+  diagnostic: {
+    headline: "Detecta qué proceso te está costando dinero",
+    body: "En 20 minutos revisamos tu flujo, calculamos el coste oculto y te decimos qué automatizar primero.",
+    cta: "Pedir diagnóstico gratis",
+    href: "/diagnostico-procesos?ref=blog-cta",
+  },
+  automation: {
+    headline: "Automatiza el proceso que más horas consume",
+    body: "Excel, renovaciones, incidencias o partes de trabajo: revisamos el caso y priorizamos el primer módulo rentable.",
+    cta: "Ver diagnóstico de procesos",
+    href: "/diagnostico-procesos?ref=blog-automation",
+  },
+  legacy: {
+    headline: "Moderniza sin parar el negocio",
+    body: "Auditamos el sistema actual, identificamos el módulo más crítico y diseñamos una migración progresiva sin big bang.",
+    cta: "Revisar mi sistema",
+    href: "/diagnostico-procesos?ref=blog-legacy",
+  },
+  mvp: {
+    headline: "Valida antes de construir de más",
+    body: "Te ayudamos a convertir una idea en un primer producto medible, con alcance cerrado y aprendizaje real.",
+    cta: "Definir mi MVP",
+    href: "/diagnostico-procesos?ref=blog-mvp",
+  },
+  app: {
+    headline: "Antes de hacer una app, valida el flujo",
+    body: "Muchas apps de negocio empiezan como portal, PWA o automatización interna. Revisamos qué formato tiene más ROI.",
+    cta: "Elegir el enfoque correcto",
+    href: "/diagnostico-procesos?ref=blog-app",
   },
   packs: {
     headline: "¿Buscas una web rápida y profesional?",
@@ -59,7 +85,7 @@ const defaults: Record<
   },
 };
 
-const config = defaults[variant as NonNullable<Props["variant"]>];
+const config = defaults[variant];
 const finalHeadline = headline ?? config.headline;
 const finalBody = body ?? config.body;
 ---

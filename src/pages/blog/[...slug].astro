@@ -2,6 +2,11 @@
 import { getCollection, render } from "astro:content";
 import BlogCTA from "~/components/blog/BlogCTA.astro";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
+import {
+  commercialBlogCtaBySlug,
+  commercialBlogLinks,
+  type BlogCtaVariant,
+} from "~/data/commercialRoutes";
 import MainLayout from "~/layouts/MainLayout.astro";
 
 export async function getStaticPaths() {
@@ -44,6 +49,9 @@ const modifiedTime = post.data.updatedDate
     ? post.data.updatedDate.toISOString()
     : post.data.updatedDate
   : publishedTime;
+
+const ctaVariant: BlogCtaVariant =
+  commercialBlogCtaBySlug[post.id] ?? "diagnostic";
 ---
 
 <MainLayout
@@ -138,7 +146,25 @@ const modifiedTime = post.data.updatedDate
       </div>
 
       <!-- CTA de conversión -->
-      <BlogCTA variant="contact" />
+      <BlogCTA variant={ctaVariant} />
+
+      <aside class="not-prose rounded-2xl border bg-accent/40 p-6 space-y-4">
+        <h2 class="text-xl font-bold text-foreground">
+          Rutas útiles si quieres convertir esto en ahorro real
+        </h2>
+        <div class="grid gap-3 sm:grid-cols-2">
+          {
+            commercialBlogLinks.map((link) => (
+              <a
+                href={`${link.href}?ref=blog-internal-${post.id}`}
+                class="rounded-xl border bg-background px-4 py-3 text-sm font-semibold text-foreground hover:border-primary hover:text-primary transition-colors"
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </div>
+      </aside>
 
       <!-- Artículos relacionados -->
       {

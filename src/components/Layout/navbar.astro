@@ -1,14 +1,9 @@
 ---
 import Button from "~/components/ui/Button.astro";
 import { branding } from "~/config/branding";
-import { copy } from "~/shared/lib/copy";
+import { diagnosticRoute, headerNavItems } from "~/data/commercialRoutes";
 
-const desktopNavItems = [
-  { href: "/projects", label: copy.nav.projects },
-  { href: "/sobre-nosotros", label: "Nosotros" },
-  { href: "/blog", label: copy.nav.blog },
-];
-
+const desktopNavItems = headerNavItems;
 const mobileNavItems = [{ href: "/", label: "Inicio" }, ...desktopNavItems];
 
 const pathname = Astro.url.pathname;
@@ -18,12 +13,10 @@ const pathname = Astro.url.pathname;
   data-reveal="top"
   class="fixed w-[calc(100vw-2rem)] max-w-[90vw] lg:w-fit rounded-full top-6 left-1/2 -translate-x-1/2 z-50 bg-accent/90 backdrop-blur-md shadow-pastel-sm flex items-center justify-between p-1 gap-2 lg:gap-6"
 >
-  <!-- Logo -->
   <a
     href="/"
     class="flex cursor-pointer items-center gap-2 hover:opacity-80 transition-opacity px-2"
   >
-    <!-- ISO: se colapsa al hacer scroll -->
     <div
       id="nav-logo-iso"
       class="overflow-hidden transition-all duration-300 ease-in-out"
@@ -36,11 +29,9 @@ const pathname = Astro.url.pathname;
         class="h-7 w-auto object-contain"
       />
     </div>
-    <!-- Nombre siempre visible -->
     <span class="text-xl font-bold text-primary">{branding.name}</span>
   </a>
 
-  <!-- Desktop Navigation -->
   <nav class="hidden lg:flex items-center">
     {
       desktopNavItems.map((item) => {
@@ -59,7 +50,6 @@ const pathname = Astro.url.pathname;
     }
   </nav>
 
-  <!-- Mobile Menu Button -->
   <button
     id="mobile-menu-button"
     class="lg:hidden p-2 text-foreground hover:bg-accent rounded-full transition-colors"
@@ -82,15 +72,13 @@ const pathname = Astro.url.pathname;
     </svg>
   </button>
 
-  <!-- Actions -->
   <div class="hidden lg:flex items-center gap-4">
-    <a href={`/contact`}>
-      <Button size="sm" withArrow> Contactar </Button>
+    <a href={`${diagnosticRoute.href}?ref=nav-cta`}>
+      <Button size="sm" withArrow> Diagnostico gratis </Button>
     </a>
   </div>
 </header>
 
-<!-- Mobile Menu -->
 <div
   id="mobile-menu"
   class="fixed inset-0 z-40 lg:hidden bg-background/95 backdrop-blur-md pointer-events-none opacity-0 transition-opacity duration-300"
@@ -114,18 +102,17 @@ const pathname = Astro.url.pathname;
       })
     }
     <a
-      href="/contact"
+      href={`${diagnosticRoute.href}?ref=mobile-nav-cta`}
       class="mobile-menu-link translate-y-4 opacity-0"
       style={`transition: opacity 300ms ${80 + mobileNavItems.length * 60}ms, transform 300ms ${80 + mobileNavItems.length * 60}ms;`}
     >
-      <Button size="lg" withArrow> Contactar </Button>
+      <Button size="lg" withArrow> Diagnostico gratis </Button>
     </a>
   </nav>
 </div>
 
 <script>
   function initNavbar() {
-    // Logo ISO collapse on scroll
     const logoIso = document.getElementById("nav-logo-iso");
     const updateLogo = () => {
       if (!logoIso) return;
@@ -142,7 +129,6 @@ const pathname = Astro.url.pathname;
     window.addEventListener("scroll", updateLogo, { passive: true });
     updateLogo();
 
-    // Mobile menu
     const menuButton = document.getElementById("mobile-menu-button");
     const mobileMenu = document.getElementById("mobile-menu");
     const barTop = document.getElementById("bar-top") as SVGLineElement | null;
@@ -173,7 +159,6 @@ const pathname = Astro.url.pathname;
           el.style.transform = "translateY(0)";
         });
 
-      // Move focus to first focusable item after animation
       setTimeout(() => {
         const first = mobileMenu?.querySelector<HTMLElement>("a, button");
         first?.focus();
@@ -202,11 +187,9 @@ const pathname = Astro.url.pathname;
           el.style.transform = "translateY(1rem)";
         });
 
-      // Return focus to the trigger
       menuButton?.focus();
     }
 
-    // Focus trap inside open menu
     mobileMenu?.addEventListener("keydown", (e: KeyboardEvent) => {
       if (!isOpen) return;
       const focusable = Array.from(
@@ -244,11 +227,9 @@ const pathname = Astro.url.pathname;
     });
   }
 
-  // Re-init on every page load (View Transitions compatible)
   document.addEventListener("astro:page-load", initNavbar);
 </script>
 
-<!-- Spacer to prevent content from going under fixed header -->
 <div class="h-20"></div>
 
 <style>

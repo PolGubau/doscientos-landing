@@ -17,6 +17,8 @@ export default function ContactForm() {
     fieldErrors,
     touched,
     formData,
+    submittedLeadId,
+    dedupeKey,
     handleChange,
     handleBlur,
     handleStep1KeyDown,
@@ -29,7 +31,14 @@ export default function ContactForm() {
   } = useContactForm();
 
   if (step === 3) {
-    return <CalEmbed name={formData.name} email={formData.email} />;
+    return (
+      <CalEmbed
+        name={formData.name}
+        email={formData.email}
+        leadId={submittedLeadId}
+        dedupeKey={dedupeKey}
+      />
+    );
   }
 
   return (

@@ -1,0 +1,250 @@
+---
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
+import Button from "~/components/ui/Button.astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+import SectionTag from "~/components/ui/SectionTag.astro";
+import { commercialRoutes, diagnosticRoute } from "~/data/commercialRoutes";
+import MainLayout from "~/layouts/MainLayout.astro";
+
+const title =
+  "Automatizacion de procesos para pymes | Que automatizar primero";
+const description =
+  "Guia practica para automatizar procesos en pymes: que tareas priorizar, cuando no construir software y como calcular si una automatizacion compensa.";
+
+const automationCandidates = [
+  {
+    title: "Excel critico",
+    description:
+      "Hojas que deciden ventas, operaciones, cobros o reporting y que solo entiende una persona.",
+  },
+  {
+    title: "Renovaciones y contratos",
+    description:
+      "Vencimientos, responsables, estados y seguimiento comercial que hoy se revisan tarde.",
+  },
+  {
+    title: "Incidencias y tareas",
+    description:
+      "Peticiones que entran por email o WhatsApp y pierden contexto antes de cerrarse.",
+  },
+  {
+    title: "Documentos repetidos",
+    description:
+      "Presupuestos, partes de trabajo, informes o avisos que se generan con pasos manuales.",
+  },
+  {
+    title: "Reporting operativo",
+    description:
+      "Informes que se rehacen cada semana copiando datos entre herramientas.",
+  },
+  {
+    title: "Portales internos",
+    description:
+      "Equipos que necesitan una fuente de verdad para clientes, estados, documentos y acciones.",
+  },
+];
+
+const prioritizationRules = [
+  "Frecuencia alta: ocurre varias veces por semana o afecta a varias personas.",
+  "Reglas claras: se puede explicar cuando cambia de estado o que aviso se dispara.",
+  "Coste visible: consume horas, genera errores o retrasa ventas/cobros.",
+  "Datos disponibles: ya existe una hoja, CRM, email o herramienta con parte del proceso.",
+];
+
+const avoidAutomation = [
+  {
+    title: "El proceso cambia cada semana",
+    description:
+      "Primero conviene estabilizarlo. Automatizar caos solo lo hace mas rapido.",
+  },
+  {
+    title: "No hay responsable claro",
+    description:
+      "Si nadie decide estados, prioridades o excepciones, el software no arreglara el bloqueo.",
+  },
+  {
+    title: "La herramienta actual ya lo cubre",
+    description:
+      "A veces basta con configurar mejor el CRM, ERP o SaaS existente antes de construir.",
+  },
+];
+
+const faqs = [
+  {
+    question: "Que proceso deberia automatizar primero una pyme?",
+    answer:
+      "El que combine frecuencia alta, reglas claras, coste de error y datos disponibles. Normalmente aparece en Excel, renovaciones, incidencias, documentos o reporting.",
+  },
+  {
+    question: "Siempre hace falta software a medida?",
+    answer:
+      "No. Si una herramienta existente resuelve el flujo con poca configuracion, es mejor usarla. El software a medida compensa cuando el proceso es diferencial o no encaja en SaaS generico.",
+  },
+  {
+    question: "Como se calcula el ROI de una automatizacion?",
+    answer:
+      "Se miden horas repetidas, coste por persona, frecuencia, errores evitados, retrasos reducidos y oportunidades recuperadas. Por eso empezamos con un diagnostico corto.",
+  },
+];
+---
+
+<MainLayout
+  title={title}
+  description={description}
+  type="service"
+  service={{
+    name: "Automatizacion de procesos para pymes",
+    description,
+    serviceType: "Business Process Automation",
+    url: "/automatizacion-procesos",
+  }}
+  faqs={faqs}
+>
+  <section class="px-6 max-w-7xl mx-auto pt-32 space-y-20">
+    <Breadcrumbs
+      items={[
+        { name: "Automatizacion de procesos", url: "/automatizacion-procesos" },
+      ]}
+    />
+
+    <header class="grid lg:grid-cols-[1fr_0.85fr] gap-12 items-center">
+      <div class="space-y-8">
+        <SectionTag>Automatizacion rentable para pymes</SectionTag>
+        <div class="space-y-5">
+          <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-foreground text-balance">
+            Automatiza el proceso que mas dinero pierde
+            <span class="block text-primary mt-2">antes de construir de mas.</span>
+          </h1>
+          <p class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+            Te ayudamos a priorizar automatizaciones con impacto real: menos
+            trabajo manual, menos errores y una fuente de verdad para operar.
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href={`${diagnosticRoute.href}?ref=automatizacion-procesos-hero`}>
+            <Button size="lg" withArrow>Pedir diagnostico gratis</Button>
+          </a>
+          <a href="#procesos">
+            <Button size="lg" variant="outline">Ver procesos candidatos</Button>
+          </a>
+        </div>
+      </div>
+
+      <aside class="rounded-3xl bg-foreground text-background p-6 md:p-8 space-y-5">
+        <p class="text-sm text-background/60">Prioridad recomendada</p>
+        <ol class="space-y-4">
+          {
+            prioritizationRules.map((rule, index) => (
+              <li class="grid grid-cols-[2rem_1fr] gap-3">
+                <span class="size-8 rounded-full bg-background text-foreground flex items-center justify-center text-sm font-bold">
+                  {index + 1}
+                </span>
+                <span class="text-sm text-background/75 leading-relaxed">
+                  {rule}
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </aside>
+    </header>
+
+    <section id="procesos" class="scroll-mt-28 space-y-10">
+      <SectionHeader
+        title="Procesos que suelen compensar"
+        subtitle="cuando ya hay coste oculto"
+        description="No buscamos automatizarlo todo. Buscamos el cuello de botella con mejor retorno y menor riesgo."
+        align="center"
+      />
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {
+          automationCandidates.map((item) => (
+            <article class="rounded-2xl border border-muted bg-background p-5 space-y-2">
+              <h2 class="text-lg font-bold text-foreground">{item.title}</h2>
+              <p class="text-sm text-muted-foreground leading-relaxed">
+                {item.description}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="grid lg:grid-cols-[0.9fr_1fr] gap-10 items-start">
+      <div class="space-y-5">
+        <SectionTag>Evitar mal gasto</SectionTag>
+        <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+          Cuando no conviene automatizar todavia.
+        </h2>
+        <p class="text-muted-foreground leading-relaxed">
+          Una buena automatizacion empieza por una decision honesta. Si el
+          proceso no esta listo, es mejor ordenar el flujo antes que pagar por
+          software que nadie adoptara.
+        </p>
+      </div>
+      <div class="space-y-4">
+        {
+          avoidAutomation.map((item) => (
+            <article class="rounded-2xl border border-muted bg-accent/40 p-5">
+              <h3 class="font-bold text-foreground">{item.title}</h3>
+              <p class="text-sm text-muted-foreground leading-relaxed mt-2">
+                {item.description}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="space-y-10">
+      <SectionHeader
+        title="Soluciones segun el problema"
+        subtitle="rutas especificas para aterrizar"
+        description="Si ya reconoces el proceso, entra por la landing concreta. Si no, empieza por el diagnostico."
+        align="center"
+      />
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {
+          commercialRoutes.map((route) => (
+            <a
+              href={`${route.href}?ref=automatizacion-procesos`}
+              class="group rounded-2xl border border-muted p-5 hover:border-primary hover:bg-accent transition-colors"
+            >
+              <h2 class="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                {route.label}
+              </h2>
+              <p class="text-sm text-muted-foreground mt-2 leading-relaxed">
+                {route.description}
+              </p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="rounded-3xl bg-foreground text-background p-8 md:p-10 flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
+      <div class="space-y-2 max-w-2xl">
+        <h2 class="text-2xl md:text-4xl font-bold">
+          Decide que automatizar esta semana.
+        </h2>
+        <p class="text-background/70">
+          En 20 minutos revisamos tu proceso y te decimos si compensa construir,
+          configurar mejor lo que tienes o no tocarlo todavia.
+        </p>
+      </div>
+      <a
+        href={`${diagnosticRoute.href}?ref=automatizacion-procesos-final`}
+        class="shrink-0"
+      >
+        <Button
+          size="lg"
+          withArrow
+          arrowInverted={false}
+          class="bg-background text-foreground hover:bg-background/90 shadow-none"
+        >
+          Pedir diagnostico
+        </Button>
+      </a>
+    </section>
+  </section>
+</MainLayout>

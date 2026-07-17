@@ -111,7 +111,7 @@ describe("useContactForm — submit", () => {
 	});
 
 	it("payload contiene exactamente las claves del contrato", async () => {
-		const fetchMock = vi.fn().mockResolvedValue({ ok: true });
+		const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ leadId: "lead-1" }) });
 		vi.stubGlobal("fetch", fetchMock);
 		const { result } = renderHook(() => useContactForm());
 		goToStep2(result);
@@ -124,10 +124,51 @@ describe("useContactForm — submit", () => {
 
 		await act(async () => { await result.current.handleSubmit(makeFormEvent()); });
 
-		expect(fetchMock).toHaveBeenCalledOnce();
-		const sent = JSON.parse(fetchMock.mock.calls[0][1].body as string);
+		const leadCall = fetchMock.mock.calls.find(([url]) => String(url).includes("/api/public/leads"));
+		expect(leadCall).toBeTruthy();
+		const sent = JSON.parse(leadCall?.[1].body as string);
 		expect(Object.keys(sent).sort()).toEqual(
-			["budget", "company", "companySize", "dedupeKey", "email", "message", "name", "phone", "referrer", "urgency", "utm_campaign", "utm_medium", "utm_source", "website"].sort()
+			[
+				"budget",
+				"calculator_cost",
+				"calculator_hours",
+				"company",
+				"companySize",
+				"dedupeKey",
+				"email",
+				"event_id",
+				"visitor_id",
+				"conversion_step",
+				"first_landing_path",
+				"first_referrer",
+				"first_utm_source",
+				"first_utm_medium",
+				"first_utm_campaign",
+				"first_utm_term",
+				"first_utm_content",
+				"landing_path",
+				"landing_ref",
+				"landing_subject",
+				"language",
+				"last_landing_path",
+				"last_referrer",
+				"last_utm_source",
+				"last_utm_medium",
+				"last_utm_campaign",
+				"last_utm_term",
+				"last_utm_content",
+				"message",
+				"name",
+				"phone",
+				"referrer",
+				"urgency",
+				"utm_campaign",
+				"utm_content",
+				"utm_medium",
+				"utm_source",
+				"utm_term",
+				"website",
+			].sort()
 		);
 		expect(sent.name).toBe("Ana García");
 		expect(sent.email).toBe("ana@test.es");
@@ -138,6 +179,7 @@ describe("useContactForm — submit", () => {
 		expect(sent.budget).toBe("5.000€ - 10.000€");
 		expect(sent.message).toBe("Lead desde formulario corto (multi-step)");
 		expect(sent.website).toBe("");
+		expect(result.current.submittedLeadId).toBe("lead-1");
 		expect(sent.dedupeKey).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
 	});
 
@@ -148,8 +190,9 @@ describe("useContactForm — submit", () => {
 		goToStep2(result);
 		await act(async () => { await result.current.handleSubmit(makeFormEvent()); });
 		await act(async () => { await result.current.handleSubmit(makeFormEvent()); });
-		const key1 = JSON.parse(fetchMock.mock.calls[0][1].body as string).dedupeKey;
-		const key2 = JSON.parse(fetchMock.mock.calls[1][1].body as string).dedupeKey;
+		const leadCalls = fetchMock.mock.calls.filter(([url]) => String(url).includes("/api/public/leads"));
+		const key1 = JSON.parse(leadCalls[0][1].body as string).dedupeKey;
+		const key2 = JSON.parse(leadCalls[1][1].body as string).dedupeKey;
 		expect(key1).toBe(key2);
 	});
 

@@ -1,8 +1,10 @@
 ---
-import { Mail, MapPin, Phone, Star } from "@lucide/astro";
+import { Mail, MapPin } from "@lucide/astro";
 import { Icon } from "astro-icon/components";
 import { branding } from "~/config/branding";
+import { footerLinkColumns } from "~/data/commercialRoutes";
 import { copy } from "~/shared/lib/copy";
+import { buildTrackedWhatsappUrl } from "~/shared/lib/attribution";
 import FinalCTA from "../sections/FinalCTA.astro";
 
 interface Props {
@@ -11,41 +13,13 @@ interface Props {
 
 const { showCta = true } = Astro.props;
 const currentYear = new Date().getFullYear();
-
-const linkColumns = [
-  {
-    title: "Producto",
-    links: [
-      { label: "Inicio", href: "/" },
-      { label: "Packs", href: "/packs" },
-      { label: "Proyectos", href: "/projects" },
-      { label: "Blog", href: "/blog" },
-      { label: "Sobre nosotros", href: "/sobre-nosotros" },
-      { label: "Trabaja con nosotros", href: "/jobs" },
-    ],
-  },
-  {
-    title: "Zonas",
-    links: [
-      { label: "Barcelona", href: "/desarrollo-web-barcelona" },
-      { label: "Madrid", href: "/desarrollo-web-madrid" },
-      { label: "Valencia", href: "/desarrollo-web-valencia" },
-      { label: "Sevilla", href: "/desarrollo-web-sevilla" },
-      { label: "Castellón", href: "/desarrollo-web-castellon" },
-      { label: "Maresme", href: "/agencia-digital-maresme" },
-      { label: "Canarias", href: "/desarrollo-web-canarias" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Aviso Legal", href: "/legal" },
-      { label: "Términos y Condiciones", href: "/terminos" },
-      { label: "Privacidad", href: "/privacy" },
-      { label: "Cookies", href: "/cookies" },
-    ],
-  },
-];
+const linkColumns = footerLinkColumns;
+const whatsappHref = buildTrackedWhatsappUrl({
+  phone: branding.contact.whatsapp.number,
+  text: branding.contact.whatsapp.defaultMessage,
+  conversionStep: "whatsapp_footer",
+  landingRef: "footer",
+});
 
 const socialLinks = [
   {
@@ -87,7 +61,6 @@ const socialLinks = [
 
   <footer class="bg-foreground text-background py-20 px-6">
     <div class="max-w-7xl mx-auto">
-      <!-- Main footer content -->
       <div class="grid md:grid-cols-2 lg:grid-cols-12 gap-12">
         <div class="lg:col-span-6 space-y-8">
           <div class="space-y-4">
@@ -116,7 +89,7 @@ const socialLinks = [
                 {branding.contact.email}
               </a>
               <a
-                href={`https://wa.me/${branding.contact.whatsapp.number}?text=${encodeURIComponent(branding.contact.whatsapp.defaultMessage)}`}
+                href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="group flex items-center gap-3 text-sm text-background/70 hover:text-background transition-colors"
@@ -134,7 +107,6 @@ const socialLinks = [
             </div>
           </div>
 
-          <!-- Social -->
           <div class="flex items-center gap-3 pt-2">
             {
               socialLinks.map((social) => (
@@ -152,7 +124,6 @@ const socialLinks = [
           </div>
         </div>
 
-        <!-- Links columns -->
         {
           linkColumns.map((column) => (
             <div class="lg:col-span-2 space-y-6">
@@ -170,45 +141,41 @@ const socialLinks = [
                     </a>
                   </li>
                 ))}
-                {column.title === "Legal" && (
-                  <li>
-                    <button
-                      type="button"
-                      onclick="window.__openCookieSettings?.()"
-                      class="inline-block tracking-tight text-left text-background/70 hover:text-background hover:translate-x-1 transition-all cursor-pointer"
-                    >
-                      Preferencias de cookies
-                    </button>
-                  </li>
-                )}
               </ul>
             </div>
           ))
         }
       </div>
 
-      <!-- Bottom bar -->
       <div
         class="mt-16 pt-8 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-6"
       >
         <p class="text-sm text-background/50">
           {copy.footer.copyright.replace("2026", currentYear.toString())}
         </p>
-        <a
-          href={branding.reviews.googleReviewUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-2 text-sm text-background/70 hover:text-background transition-colors group"
+        <div
+          class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-background/50"
         >
-          <span class="flex text-yellow-400" aria-hidden="true">
-            <Star class="size-4 fill-current" />
-            <Star class="size-4 fill-current" />
-            <Star class="size-4 fill-current" />
-            <Star class="size-4 fill-current" />
-            <Star class="size-4 fill-current" />
-          </span>
-          <span>Déjanos una reseña en Google</span>
-        </a>
+          <a href="/legal" class="hover:text-background transition-colors">
+            Aviso legal
+          </a>
+          <a href="/terminos" class="hover:text-background transition-colors">
+            Terminos
+          </a>
+          <a href="/privacy" class="hover:text-background transition-colors">
+            Privacidad
+          </a>
+          <a href="/cookies" class="hover:text-background transition-colors">
+            Cookies
+          </a>
+          <button
+            type="button"
+            onclick="window.__openCookieSettings?.()"
+            class="hover:text-background transition-colors cursor-pointer"
+          >
+            Preferencias
+          </button>
+        </div>
       </div>
     </div>
   </footer>

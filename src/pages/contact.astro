@@ -3,6 +3,14 @@ import ContactForm from "~/components/forms/ContactForm";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import { branding } from "~/config/branding";
 import MainLayout from "~/layouts/MainLayout.astro";
+import { buildTrackedWhatsappUrl } from "~/shared/lib/attribution";
+
+const whatsappHref = buildTrackedWhatsappUrl({
+  phone: branding.contact.whatsapp.number,
+  text: branding.contact.whatsapp.defaultMessage,
+  conversionStep: "whatsapp_contact",
+  landingRef: "contact",
+});
 ---
 
 <MainLayout
@@ -27,9 +35,7 @@ import MainLayout from "~/layouts/MainLayout.astro";
         <p class="text-muted-foreground text-sm" data-reveal="bottom">
           ¿Prefieres algo más directo?{" "}
           <a
-            href={`https://wa.me/${branding.contact.whatsapp.number}?text=${encodeURIComponent(
-              branding.contact.whatsapp.defaultMessage,
-            )}`}
+            href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
             class="text-primary font-bold hover:underline"

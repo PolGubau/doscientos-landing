@@ -1,0 +1,428 @@
+---
+import {
+	ArrowRight,
+	CheckCircle2,
+	ClipboardList,
+	FileSearch,
+	Workflow,
+} from "@lucide/astro";
+import CostCalculator from "~/components/conversion/CostCalculator.astro";
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
+import Button from "~/components/ui/Button.astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+import SectionTag from "~/components/ui/SectionTag.astro";
+import MainLayout from "~/layouts/MainLayout.astro";
+import {
+	getSpecificLanding,
+	specificLandings,
+	type SpecificLanding,
+} from "~/data/specificLandings";
+
+export function getStaticPaths() {
+	return specificLandings.map((landing) => ({
+		params: { specificLanding: landing.slug },
+		props: { landing },
+	}));
+}
+
+interface Props {
+	landing: SpecificLanding;
+}
+
+const { landing } = Astro.props;
+const currentLanding = getSpecificLanding(landing.slug) ?? landing;
+const contactHref = `/contact?subject=${encodeURIComponent(
+	currentLanding.subject,
+)}&ref=${currentLanding.slug}`;
+const otherLandings = specificLandings.filter(
+	(item) => item.slug !== currentLanding.slug,
+);
+const resourcesBySlug: Record<
+	string,
+	{ title: string; href: string; description: string }[]
+> = {
+	"crm-renovaciones": [
+		{
+			title: "CRM para renovaciones de contratos",
+			href: "/blog/crm-renovaciones-contratos-pymes",
+			description:
+				"Que debe tener una cola de vencimientos para no perder contratos.",
+		},
+		{
+			title: "Caso Optinergia",
+			href: "/projects/optinergia",
+			description:
+				"CRM con clientes, contratos, renovaciones, incidencias y documentos.",
+		},
+	],
+	"automatizar-excel": [
+		{
+			title: "Excel como CRM",
+			href: "/blog/excel-como-crm-cuando-cambiar",
+			description:
+				"Senales de que una hoja ya no aguanta la operativa comercial.",
+		},
+		{
+			title: "Migrar Access a web",
+			href: "/blog/migrar-access-a-web-2026",
+			description:
+				"Que revisar antes de modernizar una herramienta interna antigua.",
+		},
+	],
+	"software-administradores-fincas": [
+		{
+			title: "Ordenar incidencias en fincas",
+			href: "/blog/software-administradores-fincas-incidencias",
+			description:
+				"Como pasar de WhatsApp y carpetas a trazabilidad operativa.",
+		},
+		{
+			title: "Portal de cliente a medida",
+			href: "/blog/portal-de-cliente-a-medida",
+			description:
+				"Cuando conviene abrir una parte del sistema a clientes o usuarios externos.",
+		},
+	],
+	"crm-asesoria-energetica": [
+		{
+			title: "Caso Optinergia",
+			href: "/projects/optinergia",
+			description:
+				"De hojas de calculo a CRM operativo para una asesoria energetica.",
+		},
+		{
+			title: "Software de gestion para asesoria energetica",
+			href: "/blog/software-gestion-asesoria-energetica",
+			description:
+				"Clientes, CUPS, contratos, renovaciones e incidencias en una fuente de verdad.",
+		},
+	],
+	"automatizacion-empresas-servicios": [
+		{
+			title: "Automatizar partes de trabajo",
+			href: "/blog/automatizar-partes-trabajo-empresas-servicios",
+			description:
+				"Como reducir administracion en mantenimiento, instalaciones y servicios tecnicos.",
+		},
+		{
+			title: "Integracion de sistemas y APIs",
+			href: "/blog/integracion-de-sistemas-apis",
+			description:
+				"Como conectar herramientas existentes sin rehacer toda la operativa.",
+		},
+	],
+};
+const relatedResources = resourcesBySlug[currentLanding.slug] ?? [];
+const showCostCalculator = currentLanding.slug === "automatizar-excel";
+---
+
+<MainLayout
+	title={currentLanding.title}
+	description={currentLanding.description}
+	type="service"
+	service={{
+		name: currentLanding.label,
+		description: currentLanding.description,
+		serviceType: "Software Development",
+		url: `/${currentLanding.slug}`,
+	}}
+	faqs={currentLanding.faqs}
+>
+	<section class="px-6 max-w-7xl mx-auto pt-32 space-y-20">
+		<Breadcrumbs
+			items={[{ name: currentLanding.label, url: `/${currentLanding.slug}` }]}
+		/>
+
+		<header class="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
+			<div class="space-y-8" data-stagger="100">
+				<div data-reveal="top" data-speed="fast" data-easing="smooth">
+					<SectionTag>{currentLanding.eyebrow}</SectionTag>
+				</div>
+				<div class="space-y-5">
+					<h1
+						class="text-4xl md:text-6xl font-bold tracking-tight text-foreground text-balance"
+						data-reveal="scale"
+						data-speed="normal"
+						data-easing="bounce"
+					>
+						{currentLanding.heroTitle}
+						<span class="block text-primary mt-2">
+							{currentLanding.heroHighlight}
+						</span>
+					</h1>
+					<p
+						class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed"
+						data-reveal="bottom"
+						data-speed="normal"
+						data-easing="soft"
+					>
+						{currentLanding.heroDescription}
+					</p>
+				</div>
+				<div class="flex flex-col sm:flex-row gap-4" data-reveal="bottom">
+					<a href={contactHref}>
+						<Button size="lg" withArrow>{currentLanding.primaryCta}</Button>
+					</a>
+					<a href="#diagnostico">
+						<Button size="lg" variant="outline">
+							{currentLanding.secondaryCta}
+						</Button>
+					</a>
+				</div>
+			</div>
+
+			<div
+				class="rounded-3xl border border-muted bg-accent/60 p-5 md:p-7 space-y-5"
+				data-reveal="right"
+				data-speed="normal"
+				data-easing="soft"
+			>
+				<div class="flex items-center justify-between gap-4 border-b border-muted pb-4">
+					<div>
+						<p class="text-sm text-muted-foreground">Diagnostico inicial</p>
+						<p class="text-xl font-semibold text-foreground">
+							Que automatizar primero
+						</p>
+					</div>
+					<FileSearch class="size-8 text-primary" />
+				</div>
+				<div class="space-y-3">
+					{
+						currentLanding.process.map((step, index) => (
+							<div class="grid grid-cols-[2rem_1fr] gap-3 items-start">
+								<div class="size-8 rounded-full bg-background border border-muted flex items-center justify-center text-sm font-semibold text-primary">
+									{index + 1}
+								</div>
+								<div>
+									<h2 class="font-semibold text-foreground">{step.title}</h2>
+									<p class="text-sm text-muted-foreground leading-relaxed">
+										{step.description}
+									</p>
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</header>
+
+		<section class="grid md:grid-cols-3 gap-6" data-stagger="120">
+			{
+				currentLanding.stats.map((stat) => (
+					<div
+						class="rounded-2xl bg-background border border-muted p-6 space-y-3"
+						data-reveal="bottom"
+						data-speed="normal"
+						data-easing="soft"
+					>
+						<p class="text-4xl font-bold text-primary">{stat.value}</p>
+						<h2 class="text-lg font-semibold text-foreground">{stat.label}</h2>
+						<p class="text-sm text-muted-foreground leading-relaxed">
+							{stat.description}
+						</p>
+					</div>
+				))
+			}
+		</section>
+
+		<section class="space-y-10">
+			<SectionHeader
+				title="El problema no es la herramienta"
+				subtitle="es el trabajo que sigue fuera"
+				description="Estas landings estan pensadas para leads que ya tienen dolor operativo, no para vender tecnologia generica."
+				align="center"
+			/>
+			<div class="grid md:grid-cols-3 gap-6" data-stagger="100">
+				{
+					currentLanding.pains.map((pain) => (
+						<div
+							class="rounded-2xl bg-accent p-6 space-y-3"
+							data-reveal="bottom"
+							data-speed="normal"
+							data-easing="soft"
+						>
+							<ClipboardList class="size-7 text-primary" />
+							<h2 class="text-xl font-semibold text-foreground">{pain.title}</h2>
+							<p class="text-muted-foreground leading-relaxed">
+								{pain.description}
+							</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="grid lg:grid-cols-[0.9fr_1.1fr] gap-10 items-start">
+			<div class="space-y-5 lg:sticky lg:top-28">
+				<SectionTag>Solucion</SectionTag>
+				<h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground text-balance">
+					Construimos solo lo que el proceso necesita.
+				</h2>
+				<p class="text-muted-foreground leading-relaxed max-w-xl">
+					La primera version debe hacer una cosa bien: que el equipo sepa que
+					toca hacer, con que datos y quien es responsable.
+				</p>
+				<a href={contactHref} class="inline-flex">
+					<Button size="lg" withArrow>Quiero el diagnostico</Button>
+				</a>
+			</div>
+			<div class="space-y-4">
+				{
+					currentLanding.solution.map((item) => (
+						<article class="rounded-2xl border border-muted p-6 flex gap-4 items-start">
+							<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+								<Workflow class="size-5 text-primary" />
+							</div>
+							<div class="space-y-2">
+								<h3 class="text-xl font-semibold text-foreground">
+									{item.title}
+								</h3>
+								<p class="text-muted-foreground leading-relaxed">
+									{item.description}
+								</p>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section id="diagnostico" class="space-y-10 scroll-mt-28">
+			<SectionHeader
+				title="Como cerramos el alcance"
+				subtitle="sin venderte humo"
+				description="El objetivo del diagnostico es decidir si compensa construir y cual debe ser el primer modulo."
+				align="center"
+			/>
+			<div class="grid md:grid-cols-3 gap-6">
+				{
+					currentLanding.process.map((step, index) => (
+						<div class="rounded-2xl bg-foreground text-background p-6 space-y-4">
+							<p class="text-sm opacity-60">Paso {index + 1}</p>
+							<h2 class="text-xl font-semibold">{step.title}</h2>
+							<p class="text-background/70 leading-relaxed">{step.description}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		{
+			showCostCalculator && (
+				<CostCalculator />
+			)
+		}
+
+		<section class="grid lg:grid-cols-2 gap-10 items-start">
+			<div class="space-y-5">
+				<SectionTag>Encaje</SectionTag>
+				<h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+					Para quien tiene sentido
+				</h2>
+				<p class="text-muted-foreground leading-relaxed">
+					No todo proceso merece software a medida. Estas son las señales que
+					hacen que el diagnostico tenga sentido.
+				</p>
+			</div>
+			<ul class="space-y-3">
+				{
+					currentLanding.fit.map((item) => (
+						<li class="flex gap-3 items-start rounded-xl border border-muted p-4">
+							<CheckCircle2 class="size-5 text-primary shrink-0 mt-0.5" />
+							<span class="text-foreground">{item}</span>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<section class="space-y-8">
+			<SectionHeader
+				title="Recursos relacionados"
+				subtitle="para ampliar contexto"
+				description="Enlaces internos con casos y guias relacionados con esta busqueda."
+				align="center"
+			/>
+			<div class="grid md:grid-cols-2 gap-4">
+				{
+					relatedResources.map((resource) => (
+						<a
+							href={resource.href}
+							class="group rounded-2xl border border-muted p-5 hover:border-primary transition-colors"
+						>
+							<h2 class="font-semibold text-foreground group-hover:text-primary transition-colors">
+								{resource.title}
+							</h2>
+							<p class="text-sm text-muted-foreground mt-2 leading-relaxed">
+								{resource.description}
+							</p>
+						</a>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="space-y-8">
+			<SectionHeader
+				title="Otras landings especificas"
+				subtitle="para comparar problemas"
+				description="Cada pagina ataca una intencion distinta: renovaciones, Excel, fincas, energia o servicios."
+				align="center"
+			/>
+			<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+				{
+					otherLandings.map((item) => (
+						<a
+							href={`/${item.slug}`}
+							class="group rounded-2xl border border-muted p-5 hover:border-primary transition-colors flex items-center justify-between gap-4"
+						>
+							<span class="font-medium text-foreground group-hover:text-primary transition-colors">
+								{item.label}
+							</span>
+							<ArrowRight class="size-5 text-muted-foreground group-hover:text-primary transition-colors" />
+						</a>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="space-y-8">
+			<SectionHeader
+				title="Preguntas frecuentes"
+				subtitle={currentLanding.label}
+				align="center"
+			/>
+			<div class="grid md:grid-cols-3 gap-6">
+				{
+					currentLanding.faqs.map((faq) => (
+						<article class="rounded-2xl bg-accent p-6 space-y-3">
+							<h2 class="font-semibold text-foreground">{faq.question}</h2>
+							<p class="text-sm text-muted-foreground leading-relaxed">
+								{faq.answer}
+							</p>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="rounded-3xl bg-primary text-background p-8 md:p-12 text-center space-y-6">
+			<h2 class="text-3xl md:text-5xl font-bold tracking-tight">
+				Te decimos que automatizar primero.
+			</h2>
+			<p class="text-lg text-background/80 max-w-2xl mx-auto">
+				En una llamada corta revisamos tu proceso y salimos con una decision:
+				construir, simplificar o no tocarlo todavia.
+			</p>
+			<a href={`/diagnostico-procesos?ref=${currentLanding.slug}`} class="inline-flex">
+				<Button
+					size="lg"
+					withArrow
+					class="bg-background text-primary hover:bg-background/90"
+				>
+					Agendar diagnostico
+				</Button>
+			</a>
+		</section>
+	</section>
+</MainLayout>

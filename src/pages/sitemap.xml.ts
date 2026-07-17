@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
+import { commercialRoutes } from "~/data/commercialRoutes";
 import { packs } from "~/data/packs";
 
 // Fecha de fallback cuando no hay historial git disponible (clones superficiales)
@@ -76,6 +77,22 @@ export const GET: APIRoute = async ({ site }) => {
 		lastmod: packsDataLastmod,
 	}));
 
+	const commercialRoutesLastmod = maxDate(
+		[
+			gitLastmod("src/data/commercialRoutes.ts"),
+			gitLastmod("src/data/specificLandings.ts"),
+		],
+		FALLBACK_DATE,
+	);
+	const commercialRouteUrls = commercialRoutes
+		.filter((route) => route.href !== "/diagnostico-procesos")
+		.map((route) => ({
+			url: route.href.replace(/^\//, ""),
+			priority: route.priority === "primary" ? "0.95" : "0.9",
+			changefreq: "monthly",
+			lastmod: commercialRoutesLastmod,
+		}));
+
 	// Páginas estáticas — lastmod automático desde el último commit del archivo fuente.
 	// Los índices usan la fecha del contenido más reciente, no la del template.
 	const staticPages: StaticPage[] = [
@@ -109,6 +126,12 @@ export const GET: APIRoute = async ({ site }) => {
 			url: "contact",
 			source: "src/pages/contact.astro",
 			priority: "0.8",
+			changefreq: "monthly",
+		},
+		{
+			url: "diagnostico-procesos",
+			source: "src/pages/diagnostico-procesos.astro",
+			priority: "0.95",
 			changefreq: "monthly",
 		},
 		{
@@ -204,7 +227,13 @@ export const GET: APIRoute = async ({ site }) => {
 	}));
 
 	// Combinar todas las URLs
-	const allUrls = [...staticPages, ...projectUrls, ...blogUrls, ...packUrls];
+	const allUrls = [
+		...staticPages,
+		...commercialRouteUrls,
+		...projectUrls,
+		...blogUrls,
+		...packUrls,
+	];
 
 	// Generar XML
 	const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
