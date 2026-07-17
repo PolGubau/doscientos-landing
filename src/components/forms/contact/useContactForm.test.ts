@@ -126,6 +126,7 @@ describe("useContactForm — submit", () => {
 
 		const leadCall = fetchMock.mock.calls.find(([url]) => String(url).includes("/api/public/leads"));
 		expect(leadCall).toBeTruthy();
+		expect(fetchMock).toHaveBeenCalledTimes(1);
 		const sent = JSON.parse(leadCall?.[1].body as string);
 		expect(Object.keys(sent).sort()).toEqual(
 			[

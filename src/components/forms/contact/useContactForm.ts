@@ -13,27 +13,10 @@ import { buildAttributionPayload } from "~/shared/lib/attribution";
 const LEADS_ENDPOINT =
 	import.meta.env.PUBLIC_LEADS_ENDPOINT ||
 	"https://app.doscientos.es/api/public/leads";
-const EVENTS_ENDPOINT =
-	import.meta.env.PUBLIC_TRACKING_ENDPOINT ||
-	"https://app.doscientos.es";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^\+?[\d\s-]{9,}$/;
 const DEDUPE_STORAGE_KEY = `${STORAGE_KEY}:dedupe-key`;
-
-function trackFormEvent(eventName: string, payload: Record<string, unknown>) {
-	try {
-		const url = new URL("/api/public/events", EVENTS_ENDPOINT).toString();
-		fetch(url, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ event_name: eventName, ...payload }),
-			keepalive: true,
-		}).catch(() => {});
-	} catch {
-		// Analytics must never block the form.
-	}
-}
 
 function validate(name: string, value: string): string {
 	switch (name) {
@@ -225,19 +208,6 @@ export function useContactForm() {
 		}
 
 		const attribution = buildAttributionPayload();
-		trackFormEvent("form_submit", {
-			...attribution,
-			landing_path: contextParams.current.page_path,
-			landing_ref: contextParams.current.ref,
-			landing_subject: contextParams.current.subject,
-			referrer: document.referrer ?? "",
-			utm_source: contextParams.current.utm_source,
-			utm_medium: contextParams.current.utm_medium,
-			utm_campaign: contextParams.current.utm_campaign,
-			utm_term: contextParams.current.utm_term,
-			utm_content: contextParams.current.utm_content,
-			payload: { step, budget: formData.budget, companySize: formData.companySize, urgency: formData.urgency },
-		});
 		const body = {
 			...attribution,
 			name: formData.name,
@@ -286,15 +256,6 @@ export function useContactForm() {
 
 			setStatus("success");
 			setSubmittedLeadId(payload?.leadId ?? null);
-			if (payload?.leadId) {
-				trackFormEvent("lead_created", {
-					...attribution,
-					lead_id: payload.leadId,
-					landing_path: contextParams.current.page_path,
-					landing_ref: contextParams.current.ref,
-					referrer: document.referrer ?? "",
-				});
-			}
 			setStep(3);
 			try {
 				window.localStorage.removeItem(STORAGE_KEY);
