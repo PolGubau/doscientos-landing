@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
 
 type Props = {
   cover: ImageMetadata;
@@ -15,69 +15,133 @@ const loading = eager ? "eager" : "lazy";
 ---
 
 <div class="ot-root">
-  <!-- Phone/device mockup frame -->
-  <div class="ot-phone">
-    <Image
-      src={cover}
-      alt={title}
-      widths={[240, 720]}
-      sizes="(max-width: 767px) 240px, 720px"
-      format="webp"
-      quality={70}
-      loading={loading}
-      decoding="async"
-      class="ot-screen"
-    />
-  </div>
+  <!--
+    ot-inner: badge + phone move as one unit on hover.
+    The spring lift is applied here; individual pieces add their own micro-motion.
+  -->
+  <div class="ot-inner">
+    <!-- Logo pill sits above the phone frame -->
+    {
+      logo && (
+        <div class="ot-badge">
+          <Image
+            src={logo}
+            alt={`${title} logo`}
+            width={80}
+            height={16}
+            loading={loading}
+            decoding="async"
+            class="ot-logo"
+          />
+        </div>
+      )
+    }
 
-  <!-- Logo badge -->
-  {
-    logo && (
-      <div class="ot-badge">
-        <Image
-          src={logo}
-          alt={`${title} logo`}
-          width={80}
-          height={16}
-          loading={loading}
-          decoding="async"
-          class="ot-logo"
-        />
-      </div>
-    )
-  }
+    <!-- Phone mockup -->
+    <div class="ot-phone">
+      <Image
+        src={cover}
+        alt={title}
+        widths={[240, 720]}
+        sizes="(max-width: 767px) 240px, 720px"
+        format="webp"
+        quality={70}
+        loading={loading}
+        decoding="async"
+        class="ot-screen"
+      />
+      <!-- Shimmer: sweeps left→right on hover, snaps back instantly on leave -->
+      <div class="ot-shine" aria-hidden="true"></div>
+    </div>
+  </div>
 </div>
 
 <style>
-  /* ── Container ── */
+  /* ── Root container ── */
   .ot-root {
-    /* Sizing driven by CSS vars set on #orbital-ring by orbital.ts */
     width: var(--thumb-w, 64px);
     height: var(--thumb-h, 96px);
     position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Clip shadows/overflow inside the parent orbital-thumb border-radius */
-    overflow: hidden;
+  }
+
+  /* ── Inner stack: badge on top, phone below ── */
+  .ot-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* gap as fraction of card height */
+    gap: 5%;
+    /* 55 % of card width → phone fits in height with the badge above */
+    width: 55%;
+    /* spring lift on hover — overshoot then settle */
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .ot-root:hover .ot-inner {
+    transform: translateY(-9%);
+  }
+
+  /* ── Logo badge ── */
+  .ot-badge {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 999px;
+    padding: 3px 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 2px 8px rgba(0, 0, 0, 0.16);
+    /* slightly delayed spring so it "pops" just after the phone starts moving */
+    transition:
+      transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.04s,
+      box-shadow 0.35s ease;
+  }
+
+  .ot-root:hover .ot-badge {
+    transform: scale(1.1);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7) inset,
+      0 5px 18px rgba(0, 0, 0, 0.26);
+  }
+
+  .ot-logo {
+    height: 10px;
+    width: auto;
+    max-width: 46px;
+    display: block;
+    object-fit: contain;
   }
 
   /* ── Phone frame ── */
   .ot-phone {
-    width: 62%;
+    width: 100%;
     aspect-ratio: 9 / 16;
     border-radius: 14%;
-    border: 2px solid rgba(255, 255, 255, 0.45);
+    border: 2px solid rgba(255, 255, 255, 0.42);
     overflow: hidden;
-    box-shadow:
-      0 0 0 1px rgba(0, 0, 0, 0.1),
-      0 6px 20px rgba(0, 0, 0, 0.32);
+    position: relative;
     flex-shrink: 0;
-    transition: border-color 0.28s ease;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.08),
+      0 5px 16px rgba(0, 0, 0, 0.28);
+    transition:
+      border-color 0.35s ease,
+      box-shadow 0.45s ease;
   }
 
   .ot-root:hover .ot-phone {
-    border-color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.88);
+    /* deeper shadow → phone reads as physically lifted */
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.12),
+      0 16px 40px rgba(0, 0, 0, 0.48);
   }
 
   /* ── Screen image ── */
@@ -87,46 +151,36 @@ const loading = eager ? "eager" : "lazy";
     object-fit: cover;
     object-position: top center;
     display: block;
-    transition: transform 0.45s ease;
+    transition: transform 0.55s ease;
   }
 
   .ot-root:hover .ot-screen {
-    transform: scale(1.07);
+    /* zoom in + scroll up to reveal more content */
+    transform: scale(1.07) translateY(-4%);
   }
 
-  /* ── Logo badge ── */
-  .ot-badge {
+  /* ── Shimmer sweep ── */
+  .ot-shine {
     position: absolute;
-    bottom: 9%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.93);
-    border-radius: 999px;
-    padding: 3px 8px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
-    opacity: 0.8;
-    transition:
-      opacity 0.28s ease,
-      transform 0.28s ease;
-    white-space: nowrap;
+    inset: 0;
+    background: linear-gradient(
+      108deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.22) 50%,
+      transparent 70%
+    );
+    /* starts off-screen left; no transition → snaps back instantly on mouse leave */
+    transform: translateX(-120%) skewX(-10deg);
+    pointer-events: none;
   }
 
-  .ot-root:hover .ot-badge {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-3px);
+  /* Transition only defined here so it fires on hover-in; on leave it snaps back */
+  .ot-root:hover .ot-shine {
+    transform: translateX(160%) skewX(-10deg);
+    transition: transform 0.55s ease 0.07s;
   }
 
-  .ot-logo {
-    height: 11px;
-    width: auto;
-    max-width: 50px;
-    display: block;
-    object-fit: contain;
-  }
-
-  /* ── Mobile horizontal strip ── */
+  /* ── Mobile strip ── */
   @media (max-width: 767px) {
     .ot-root {
       width: 8rem;
@@ -134,8 +188,21 @@ const loading = eager ? "eager" : "lazy";
     }
 
     .ot-logo {
-      height: 14px;
-      max-width: 62px;
+      height: 13px;
+      max-width: 58px;
+    }
+  }
+
+  /* ── Respeta preferencias de movimiento reducido ── */
+  @media (prefers-reduced-motion: reduce) {
+    .ot-inner,
+    .ot-badge,
+    .ot-screen,
+    .ot-phone {
+      transition: none !important;
+    }
+    .ot-shine {
+      display: none;
     }
   }
 </style>

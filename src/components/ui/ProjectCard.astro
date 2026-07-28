@@ -17,7 +17,7 @@ const { id, title, services_provided, cover } = Astro.props;
 
 <a href={`/projects/${id}`} class="w-full">
   <article
-    class="group h-full flex flex-col gap-4 rounded-[1.75rem] bg-accent shadow-pastel overflow-hidden p-1 transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-xl"
+    class="group h-full flex flex-col gap-4 rounded-[1.75rem] bg-accent shadow-pastel overflow-hidden p-1 transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-xl [will-change:transform]"
   >
     <header
       class="w-full aspect-[1.5] max-h-72 rounded-[1.5rem] overflow-hidden"
@@ -32,7 +32,7 @@ const { id, title, services_provided, cover } = Astro.props;
           sizes="(min-width: 1024px) 50vw, 100vw"
           loading="lazy"
           decoding="async"
-          class="w-full h-full object-cover object-center transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
+          class="w-full h-full object-cover object-center transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04] [will-change:transform]"
         />
       </div>
     </header>
