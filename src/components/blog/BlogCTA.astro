@@ -9,9 +9,11 @@ interface Props {
   variant?: BlogCtaVariant;
   headline?: string;
   body?: string;
+  cta?: string;
+  href?: string;
 }
 
-const { variant = "contact", headline, body } = Astro.props;
+const { variant = "contact", headline, body, cta, href } = Astro.props;
 
 const defaults: Record<
   NonNullable<Props["variant"]>,
@@ -88,6 +90,8 @@ const defaults: Record<
 const config = defaults[variant];
 const finalHeadline = headline ?? config.headline;
 const finalBody = body ?? config.body;
+const finalCta = cta ?? config.cta;
+const finalHref = href ?? config.href;
 ---
 
 <div
@@ -100,10 +104,10 @@ const finalBody = body ?? config.body;
     {finalBody}
   </p>
   <a
-    href={config.href}
+    href={finalHref}
     class="inline-flex items-center gap-2 mt-2 rounded-xl bg-background text-primary font-semibold px-6 py-3 text-sm hover:bg-background/90 transition-colors"
   >
-    {config.cta}
+    {finalCta}
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="size-4"

@@ -39,6 +39,26 @@ const blog = defineCollection({
 				.optional(),
 			coverImage: image().optional(),
 			tags: z.array(z.string()).optional(),
+			resourceType: z
+				.enum([
+					"articulo",
+					"guia",
+					"checklist",
+					"plantilla",
+					"calculadora",
+					"caso",
+					"newsletter",
+				])
+				.default("articulo"),
+			buyerStage: z.enum(["awareness", "consideration", "decision"]).default("consideration"),
+			leadMagnet: z
+				.object({
+					title: z.string(),
+					description: z.string(),
+					cta: z.string().default("Recibir recurso"),
+					href: z.string().optional(),
+				})
+				.optional(),
 			author: z.string().default("doscientos"),
 			draft: z.boolean().default(false),
 			faqs: z

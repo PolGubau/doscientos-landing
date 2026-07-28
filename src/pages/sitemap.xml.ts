@@ -57,11 +57,11 @@ export const GET: APIRoute = async ({ site }) => {
 				: project.data.endedAt,
 	}));
 
-	// Generar URLs de blog posts — lastmod = updatedDate o publishDate
+	// Generar URLs de recursos — lastmod = updatedDate o publishDate
 	const blogUrls = blogPosts.map((post) => {
 		const date = post.data.updatedDate ?? post.data.publishDate;
 		return {
-			url: `blog/${post.id}`,
+			url: `recursos/${post.id}`,
 			priority: "0.7",
 			changefreq: "monthly",
 			lastmod: date instanceof Date ? date.toISOString().split("T")[0] : date,
@@ -113,13 +113,13 @@ export const GET: APIRoute = async ({ site }) => {
 			),
 		},
 		{
-			url: "blog",
-			source: "src/pages/blog/index.astro",
+			url: "recursos",
+			source: "src/pages/recursos/index.astro",
 			priority: "0.9",
 			changefreq: "daily",
 			lastmod: maxDate(
 				blogUrls.map((p) => p.lastmod),
-				gitLastmod("src/pages/blog/index.astro"),
+				gitLastmod("src/pages/recursos/index.astro"),
 			),
 		},
 		{

@@ -101,9 +101,11 @@ export function inferConversionStep(): string {
 	const path = typeof window === "undefined" ? "" : window.location.pathname;
 	if (ref.includes("calculadora")) return "calculator";
 	if (ref.startsWith("blog-")) return "blog_cta";
+	if (ref.startsWith("recurso-")) return "resource_cta";
 	if (ref.includes("pack") || path.startsWith("/packs")) return "pack_cta";
 	if (path === "/contact") return "contact_form";
 	if (path.startsWith("/blog")) return "blog_cta";
+	if (path.startsWith("/recursos")) return "resource_cta";
 	if (path.startsWith("/diagnostico")) return "diagnostic_form";
 	return "landing_form";
 }

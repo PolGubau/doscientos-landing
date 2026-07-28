@@ -162,6 +162,7 @@ describe("useContactForm — submit", () => {
 				"name",
 				"phone",
 				"referrer",
+				"resource",
 				"urgency",
 				"utm_campaign",
 				"utm_content",

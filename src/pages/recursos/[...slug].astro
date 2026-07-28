@@ -1,0 +1,217 @@
+﻿---
+import { getCollection, render } from "astro:content";
+import BlogCTA from "~/components/blog/BlogCTA.astro";
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
+import {
+  commercialBlogCtaBySlug,
+  commercialBlogLinks,
+  type BlogCtaVariant,
+} from "~/data/commercialRoutes";
+import MainLayout from "~/layouts/MainLayout.astro";
+import { getBuyerStageLabel, getResourceLabel } from "~/shared/lib/resources";
+
+export async function getStaticPaths() {
+  const resources = await getCollection("blog", ({ data }) => !data.draft);
+  return resources.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+const relatedPosts = allPosts
+  .filter((p) => p.id !== post.id)
+  .filter((p) =>
+    p.data.tags?.some((tag: string) => post.data.tags?.includes(tag)),
+  )
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+
+const displayPosts =
+  relatedPosts.length > 0
+    ? relatedPosts
+    : allPosts
+        .filter((p) => p.id !== post.id)
+        .sort(
+          (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+        )
+        .slice(0, 3);
+
+const publishedTime =
+  post.data.publishDate instanceof Date
+    ? post.data.publishDate.toISOString()
+    : post.data.publishDate;
+
+const modifiedTime = post.data.updatedDate
+  ? post.data.updatedDate instanceof Date
+    ? post.data.updatedDate.toISOString()
+    : post.data.updatedDate
+  : publishedTime;
+
+const ctaVariant: BlogCtaVariant =
+  commercialBlogCtaBySlug[post.id] ?? "diagnostic";
+---
+
+<MainLayout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  article={{
+    publishedTime,
+    modifiedTime,
+    author: post.data.author,
+    tags: post.data.tags,
+  }}
+  faqs={post.data.faqs}
+>
+  <article class="min-h-screen py-20 px-6">
+    <div class="max-w-4xl mx-auto space-y-12">
+      <Breadcrumbs
+        className="pl-4"
+        items={[
+          { name: "Recursos", url: "/recursos" },
+          { name: post.data.title, url: `/recursos/${post.id}` },
+        ]}
+      />
+
+      <header class="space-y-6">
+        <div class="space-y-4">
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs px-3 py-1 rounded-full bg-primary text-background font-semibold">
+              {getResourceLabel(post.data.resourceType)}
+            </span>
+            <span class="text-xs px-3 py-1 rounded-full bg-muted text-foreground">
+              {getBuyerStageLabel(post.data.buyerStage)}
+            </span>
+          </div>
+
+          <h1
+            class="text-2xl max-w-xl text-balance md:text-4xl font-bold text-foreground"
+          >
+            {post.data.title}
+          </h1>
+
+          <div
+            class="flex items-center gap-4 text-neutral-600 dark:text-neutral-400"
+          >
+            <time datetime={post.data.publishDate.toISOString()}>
+              {
+                post.data.publishDate.toLocaleDateString("es-ES", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              }
+            </time>
+            <span>&bull;</span>
+            <span>{post.data.author}</span>
+          </div>
+
+          {
+            post.data.tags && post.data.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2">
+                {post.data.tags.map((tag: string) => (
+                  <a
+                    href={`/recursos/tags/${tag.toLowerCase()}`}
+                    class="text-sm px-4 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+                  >
+                    {tag}
+                  </a>
+                ))}
+              </div>
+            )
+          }
+        </div>
+      </header>
+
+      <div
+        class="px-2
+      prose prose-neutral prose-sm w-full
+        prose-headings:font-bold prose-headings:text-foreground
+        prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
+        prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
+        prose-h4:text-xl prose-h4:mt-6 prose-h4:mb-3
+        prose-p:text-muted-foreground
+        prose-p:leading-relaxed
+        prose-a:text-foreground
+        prose-a:underline
+        hover:prose-a:no-underline
+        prose-strong:text-foreground
+        prose-ul:text-muted-foreground
+        prose-ol:text-muted-foreground
+        prose-li:marker:text-neutral-500
+        prose-blockquote:border-l-4
+        prose-blockquote:border-neutral-300
+        prose-blockquote:italic
+        prose-blockquote:text-neutral-600
+        prose-code:text-foreground
+        prose-pre:bg-foreground"
+      >
+        <Content />
+      </div>
+
+      <BlogCTA
+        variant={ctaVariant}
+        headline={post.data.leadMagnet?.title}
+        body={post.data.leadMagnet?.description}
+        cta={post.data.leadMagnet?.cta}
+        href={post.data.leadMagnet?.href}
+      />
+
+      <aside class="not-prose rounded-2xl border bg-accent/40 p-6 space-y-4">
+        <h2 class="text-xl font-bold text-foreground">
+          Rutas utiles si quieres convertir esto en ahorro real
+        </h2>
+        <div class="grid gap-3 sm:grid-cols-2">
+          {
+            commercialBlogLinks.map((link) => (
+              <a
+                href={`${link.href}?ref=recurso-interno-${post.id}`}
+                class="rounded-xl border bg-background px-4 py-3 text-sm font-semibold text-foreground hover:border-primary hover:text-primary transition-colors"
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </div>
+      </aside>
+
+      {
+        displayPosts.length > 0 && (
+          <div class="mt-20 border-t pt-20 space-y-8">
+            <h2 class="text-3xl font-bold text-foreground">
+              Recursos relacionados
+            </h2>
+            <div class="grid gap-6 md:grid-cols-3">
+              {displayPosts.map((p) => (
+                <a href={`/recursos/${p.id}`} class="group space-y-3 block">
+                  <div class="aspect-video overflow-hidden rounded-xl border bg-accent/50 group-hover:bg-accent transition-colors flex items-center justify-center p-6 text-center">
+                    <span class="text-xs uppercase tracking-widest text-muted-foreground font-semibold group-hover:text-primary transition-colors">
+                      {getResourceLabel(p.data.resourceType)}
+                    </span>
+                  </div>
+                  <h3 class="font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                    {p.data.title}
+                  </h3>
+                  <p class="text-sm text-muted-foreground line-clamp-2">
+                    {p.data.description}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </article>
+</MainLayout>
+
+<script>
+  import mediumZoom from "medium-zoom";
+  document.addEventListener("astro:page-load", () => {
+    mediumZoom(".prose img", { background: "rgba(12,17,11,0.6)", margin: 24 });
+  });
+</script>

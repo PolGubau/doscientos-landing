@@ -1,0 +1,152 @@
+---
+import { getCollection } from "astro:content";
+import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
+import SectionTag from "~/components/ui/SectionTag.astro";
+import MainLayout from "~/layouts/MainLayout.astro";
+import { getBuyerStageLabel, getResourceLabel } from "~/shared/lib/resources";
+
+const resources = await getCollection("blog", ({ data }) => !data.draft);
+const sortedResources = resources.sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+);
+
+const featuredResources = sortedResources.filter((post) => post.data.leadMagnet).slice(0, 3);
+---
+
+<MainLayout
+  title="Recursos gratis sobre automatizacion y software a medida | doscientos"
+  description="Guias, checklists, calculadoras y articulos para detectar procesos manuales, priorizar automatizaciones y decidir que construir primero."
+>
+  <div class="min-h-screen py-32 px-6">
+    <div class="max-w-6xl mx-auto space-y-12">
+      <Breadcrumbs items={[{ name: "Recursos", url: "/recursos" }]} />
+
+      <header
+        class="flex flex-col max-w-3xl items-center justify-center text-center gap-6 mx-auto"
+      >
+        <SectionTag>Recursos gratis</SectionTag>
+        <h1
+          class="font-semibold text-foreground flex flex-col text-3xl md:text-5xl items-center text-center text-pretty"
+        >
+          <span>Herramientas y guias para decidir que automatizar</span>
+        </h1>
+        <p class="text-muted-foreground max-w-2xl text-pretty">
+          Contenido practico para detectar coste oculto, comparar opciones y
+          preparar una decision antes de invertir en software.
+        </p>
+      </header>
+
+      {
+        featuredResources.length > 0 && (
+          <section class="grid gap-4 md:grid-cols-3">
+            {featuredResources.map((post) => (
+              <a
+                href={`/recursos/${post.id}?ref=recurso-destacado`}
+                class="group rounded-2xl border border-primary/20 bg-primary text-background p-6 space-y-4 shadow-pastel hover:opacity-95 transition-opacity"
+              >
+                <div class="flex items-center justify-between gap-3">
+                  <span class="text-xs font-semibold uppercase tracking-[0.16em] opacity-80">
+                    {getResourceLabel(post.data.resourceType)}
+                  </span>
+                  <span class="rounded-full bg-background/15 px-3 py-1 text-xs font-semibold">
+                    Gratis
+                  </span>
+                </div>
+                <h2 class="text-xl font-bold leading-tight">{post.data.leadMagnet?.title}</h2>
+                <p class="text-sm opacity-80 leading-relaxed">
+                  {post.data.leadMagnet?.description}
+                </p>
+                <span class="inline-flex text-sm font-semibold group-hover:underline">
+                  {post.data.leadMagnet?.cta ?? "Ver recurso"}
+                </span>
+              </a>
+            ))}
+          </section>
+        )
+      }
+
+      {
+        sortedResources.length > 0 ? (
+          <div class="grid md:grid-cols-2 gap-6">
+            {sortedResources.map((post) => (
+              <article class="group">
+                <div class="flex flex-col h-full p-6 rounded-2xl gap-3 shadow-pastel border border-muted bg-accent hover:border-primary transition-colors">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs px-3 py-1 rounded-full bg-background text-foreground border border-muted font-semibold">
+                      {getResourceLabel(post.data.resourceType)}
+                    </span>
+                    <span class="text-xs px-3 py-1 rounded-full bg-muted text-foreground">
+                      {getBuyerStageLabel(post.data.buyerStage)}
+                    </span>
+                  </div>
+
+                  <time
+                    class="text-sm text-muted-foreground"
+                    datetime={post.data.publishDate.toISOString()}
+                  >
+                    {post.data.publishDate.toLocaleDateString("es-ES", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </time>
+
+                  <a href={`/recursos/${post.id}`} class="group/title">
+                    <h2 class="text-2xl font-bold text-foreground group-hover/title:text-primary transition-colors">
+                      {post.data.title}
+                    </h2>
+                  </a>
+
+                  <p class="text-muted-foreground line-clamp-3">
+                    {post.data.description}
+                  </p>
+
+                  {post.data.tags && post.data.tags.length > 0 && (
+                    <div class="flex flex-wrap gap-2 pt-1">
+                      {post.data.tags.map((tag: string) => (
+                        <a
+                          href={`/recursos/tags/${tag.toLowerCase()}`}
+                          class="text-xs px-3 py-1 rounded-full bg-muted text-foreground hover:bg-primary hover:text-background transition-colors"
+                        >
+                          {tag}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+
+                  <div class="mt-auto pt-4">
+                    <a
+                      href={`/recursos/${post.id}`}
+                      class="flex items-center gap-2 text-foreground font-medium"
+                    >
+                      Ver recurso
+                      <svg
+                        class="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-20">
+            <p class="text-xl text-neutral-500 dark:text-neutral-400">
+              Proximamente publicaremos recursos practicos.
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</MainLayout>

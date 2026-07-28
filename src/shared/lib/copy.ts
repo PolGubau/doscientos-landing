@@ -53,7 +53,7 @@ export const copy = {
 	nav: {
 		home: "Inicio",
 		projects: "Proyectos",
-		blog: "Blog",
+		blog: "Recursos",
 		contact: "Contacto",
 	},
 

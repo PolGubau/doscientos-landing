@@ -92,11 +92,11 @@ const { compact = false } = Astro.props;
           una automatizacion pequena puede pagarse sola.
         </p>
         <a
-          href="/diagnostico-procesos?ref=calculadora-coste"
+          href="/diagnostico-procesos?ref=calculadora-coste&resource=calculadora-coste-oculto"
           class="inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-background hover:opacity-90 transition-opacity"
           data-calculator-cta
         >
-          Revisar este proceso
+          Recibir resumen y revisar proceso
         </a>
       </div>
     </form>
@@ -138,7 +138,7 @@ const { compact = false } = Astro.props;
             : "El coste directo parece moderado. Revisariamos si el mayor problema esta en errores, retrasos u oportunidades perdidas.";
       }
       if (cta instanceof HTMLAnchorElement) {
-        cta.href = `/diagnostico-procesos?ref=calculadora-coste&coste=${yearlyCost}&horas=${yearlyHours}`;
+        cta.href = `/diagnostico-procesos?ref=calculadora-coste&resource=calculadora-coste-oculto&coste=${yearlyCost}&horas=${yearlyHours}`;
       }
 
       if ("gtag" in window) {

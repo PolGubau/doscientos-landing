@@ -45,8 +45,8 @@ export const ui = {
     'portfolio.title': 'Proyectos Destacados',
     'portfolio.subtitle': 'Casos de éxito que demuestran nuestro compromiso con la excelencia.',
     
-    'blog.title': 'Blog',
-    'blog.subtitle': 'Artículos, guías y recursos sobre automatización y desarrollo web.',
+    'blog.title': 'Recursos',
+    'blog.subtitle': 'Guias, checklists y recursos sobre automatizacion y desarrollo web.',
     
     'contact.title': 'Contacto',
     'contact.subtitle': '¿Listo para transformar tu negocio? Hablemos.',
@@ -117,7 +117,7 @@ export const ui = {
     'portfolio.title': 'Projectes Destacats',
     'portfolio.subtitle': 'Casos d\'èxit que demostren el nostre compromís amb l\'excel·lència.',
     
-    'blog.title': 'Blog',
+    'blog.title': 'Recursos',
     'blog.subtitle': 'Articles, guies i recursos sobre automatització i desenvolupament web.',
     
     'contact.title': 'Contacte',
@@ -189,7 +189,7 @@ export const ui = {
     'portfolio.title': 'Featured Projects',
     'portfolio.subtitle': 'Success stories that demonstrate our commitment to excellence.',
     "language": "Language",
-    'blog.title': 'Blog',
+    'blog.title': 'Resources',
     'blog.subtitle': 'Articles, guides and resources about automation and web development.',
     
     'contact.title': 'Contact',

@@ -78,6 +78,7 @@ export function useContactForm() {
 		utm_content: "",
 		ref: "",
 		subject: "",
+		resource: "",
 		coste: "",
 		horas: "",
 		page_path: "",
@@ -93,6 +94,7 @@ export function useContactForm() {
 			utm_content: params.get("utm_content") || "",
 			ref: params.get("ref") || "",
 			subject: params.get("subject") || "",
+			resource: params.get("resource") || "",
 			coste: params.get("coste") || "",
 			horas: params.get("horas") || "",
 			page_path: window.location.pathname,
@@ -232,6 +234,7 @@ export function useContactForm() {
 			landing_path: contextParams.current.page_path,
 			landing_ref: contextParams.current.ref,
 			landing_subject: contextParams.current.subject,
+			resource: contextParams.current.resource,
 			calculator_cost: contextParams.current.coste,
 			calculator_hours: contextParams.current.horas,
 		};

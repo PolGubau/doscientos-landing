@@ -13,9 +13,9 @@ export const GET: APIRoute = async ({ site }) => {
 	);
 
 	return rss({
-		title: "Blog de doscientos | Desarrollo Web y Automatización",
+		title: "Recursos de doscientos | Desarrollo Web y Automatización",
 		description:
-			"Artículos técnicos sobre desarrollo web, automatización de procesos, MVPs y transformación digital.",
+			"Guias, checklists y articulos tecnicos sobre desarrollo web, automatizacion de procesos, MVPs y transformacion digital.",
 		site: baseUrl,
 		xmlns: {
 			media: "http://search.yahoo.com/mrss/",
@@ -25,7 +25,7 @@ export const GET: APIRoute = async ({ site }) => {
 			title: post.data.title,
 			pubDate: post.data.updatedDate ?? post.data.publishDate,
 			description: post.data.description,
-			link: `/blog/${post.id}/`,
+			link: `/recursos/${post.id}/`,
 			categories: post.data.tags ?? [],
 			author: `hola@doscientos.es (${post.data.author})`,
 			customData: post.data.coverImage

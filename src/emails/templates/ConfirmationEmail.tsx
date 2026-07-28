@@ -71,7 +71,7 @@ export const ConfirmationEmail = ({ name }: ConfirmationEmailProps) => {
                     </p>
                     <ul style="margin: 0; padding-left: 20px; color: #666666; font-size: 15px; line-height: 1.8;">
                       <li style="margin-bottom: 8px;">Revisa nuestros <a href="https://doscientos.es/projects" style="color: #000000; text-decoration: none; font-weight: 600;">proyectos destacados</a></li>
-                      <li style="margin-bottom: 8px;">Lee nuestro <a href="https://doscientos.es/blog" style="color: #000000; text-decoration: none; font-weight: 600;">blog</a> con insights sobre desarrollo</li>
+                      <li style="margin-bottom: 8px;">Revisa nuestros <a href="https://doscientos.es/recursos" style="color: #000000; text-decoration: none; font-weight: 600;">recursos gratis</a> sobre automatizacion y software a medida</li>
                       <li>Síguenos en <a href="https://linkedin.com/company/doscientos" style="color: #000000; text-decoration: none; font-weight: 600;">LinkedIn</a></li>
                     </ul>
                   </td>
@@ -148,4 +148,3 @@ export const ConfirmationEmail = ({ name }: ConfirmationEmailProps) => {
 };
 
 export default ConfirmationEmail;
-
