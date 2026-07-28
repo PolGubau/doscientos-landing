@@ -1,9 +1,12 @@
 ---
 interface Props {
   compact?: boolean;
+  /** Base path for the CTA link. Defaults to "/diagnostico".
+   *  Pass "" to stay on the current page (diagnostico itself). */
+  ctaBase?: string;
 }
 
-const { compact = false } = Astro.props;
+const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
 ---
 
 <section
@@ -23,15 +26,17 @@ const { compact = false } = Astro.props;
       </h2>
       <p class="text-muted-foreground leading-relaxed">
         No todas las tareas merecen software. Pero si se repiten cada semana,
-        afectan a varias personas y tienen riesgo de error, conviene ponerles
-        un numero.
+        afectan a varias personas y tienen riesgo de error, conviene ponerles un
+        numero.
       </p>
     </div>
 
     <form class="space-y-4" data-cost-calculator>
       <div class="grid sm:grid-cols-2 gap-4">
         <label class="space-y-1.5">
-          <span class="text-sm font-medium text-foreground">Minutos por vez</span>
+          <span class="text-sm font-medium text-foreground"
+            >Minutos por vez</span
+          >
           <input
             name="minutes"
             type="number"
@@ -41,7 +46,9 @@ const { compact = false } = Astro.props;
           />
         </label>
         <label class="space-y-1.5">
-          <span class="text-sm font-medium text-foreground">Veces por semana</span>
+          <span class="text-sm font-medium text-foreground"
+            >Veces por semana</span
+          >
           <input
             name="weekly"
             type="number"
@@ -51,7 +58,9 @@ const { compact = false } = Astro.props;
           />
         </label>
         <label class="space-y-1.5">
-          <span class="text-sm font-medium text-foreground">Personas implicadas</span>
+          <span class="text-sm font-medium text-foreground"
+            >Personas implicadas</span
+          >
           <input
             name="people"
             type="number"
@@ -61,7 +70,9 @@ const { compact = false } = Astro.props;
           />
         </label>
         <label class="space-y-1.5">
-          <span class="text-sm font-medium text-foreground">Coste/hora estimado</span>
+          <span class="text-sm font-medium text-foreground"
+            >Coste/hora estimado</span
+          >
           <input
             name="hourly"
             type="number"
@@ -84,7 +95,9 @@ const { compact = false } = Astro.props;
           </div>
           <div>
             <p class="text-sm text-muted-foreground">Riesgo</p>
-            <p class="text-2xl font-bold text-foreground" data-cost-risk>Medio</p>
+            <p class="text-2xl font-bold text-foreground" data-cost-risk>
+              Medio
+            </p>
           </div>
         </div>
         <p class="text-sm text-muted-foreground leading-relaxed" data-cost-note>
@@ -92,9 +105,10 @@ const { compact = false } = Astro.props;
           una automatizacion pequena puede pagarse sola.
         </p>
         <a
-          href="/diagnostico-procesos?ref=calculadora-coste&resource=calculadora-coste-oculto"
+          href="/diagnostico-procesos?ref=calculadora-coste"
           class="inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-background hover:opacity-90 transition-opacity"
           data-calculator-cta
+          data-cta-base={ctaBase}
         >
           Recibir resumen y revisar proceso
         </a>
@@ -126,7 +140,8 @@ const { compact = false } = Astro.props;
       const hourly = Number(data.get("hourly") || 0);
       const yearlyHours = Math.round((minutes * weekly * people * 52) / 60);
       const yearlyCost = Math.round(yearlyHours * hourly);
-      const risk = yearlyCost >= 10000 ? "Alto" : yearlyCost >= 4000 ? "Medio" : "Bajo";
+      const risk =
+        yearlyCost >= 10000 ? "Alto" : yearlyCost >= 4000 ? "Medio" : "Bajo";
 
       if (hoursEl) hoursEl.textContent = `${yearlyHours} h`;
       if (yearEl) yearEl.textContent = formatEuro.format(yearlyCost);
@@ -138,7 +153,8 @@ const { compact = false } = Astro.props;
             : "El coste directo parece moderado. Revisariamos si el mayor problema esta en errores, retrasos u oportunidades perdidas.";
       }
       if (cta instanceof HTMLAnchorElement) {
-        cta.href = `/diagnostico-procesos?ref=calculadora-coste&resource=calculadora-coste-oculto&coste=${yearlyCost}&horas=${yearlyHours}`;
+        const base = cta.dataset.ctaBase ?? "/diagnostico";
+        cta.href = `${base}?ref=calculadora-coste&coste=${yearlyCost}&horas=${yearlyHours}#formulario`;
       }
 
       if ("gtag" in window) {

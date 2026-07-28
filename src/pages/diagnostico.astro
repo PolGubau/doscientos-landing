@@ -1,4 +1,11 @@
 ---
+import {
+  ArrowRight,
+  CheckCircle2,
+  CircleCheck,
+  ClipboardList,
+  Clock,
+} from "@lucide/astro";
 import CostCalculator from "~/components/conversion/CostCalculator.astro";
 import ContactForm from "~/components/forms/ContactForm";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
@@ -10,23 +17,22 @@ import MainLayout from "~/layouts/MainLayout.astro";
 
 const title = "Diagnostico de procesos para pymes | doscientos";
 const description =
-  "Diagnostico gratis de 20 minutos: revisamos tu proceso, calculamos el coste oculto y te decimos que automatizar primero o si no merece la pena construir.";
+  "Diagnostico gratis en 20 minutos: revisamos tu proceso, calculamos el coste oculto y te decimos que automatizar primero o si no merece la pena construir.";
 
 const steps = [
   {
     title: "Nos cuentas el proceso real",
     description:
-      "El que pasa un martes cualquiera: herramientas, personas, pasos manuales y donde se bloquea.",
+      "El que pasa un martes cualquiera: herramientas, personas, pasos y donde se bloquea.",
   },
   {
     title: "Calculamos coste y riesgo",
     description:
-      "Tiempo repetido, errores, retrasos, oportunidades perdidas y dependencia de personas clave.",
+      "Tiempo repetido, errores, retrasos y oportunidades perdidas. Con numeros.",
   },
   {
     title: "Salimos con una decision",
-    description:
-      "Construir un modulo pequeno, simplificar con lo que ya tienes o no tocarlo todavia.",
+    description: "Construir, simplificar o no tocarlo todavia. Sin ambiguedad.",
   },
 ];
 
@@ -61,7 +67,7 @@ const fitSignals = [
   "Hay una tarea que se repite cada semana y depende de copiar datos.",
   "Una hoja, chat o email decide el estado real del negocio.",
   "Hay errores caros, retrasos o oportunidades que aparecen tarde.",
-  "El proceso ya tiene responsables y reglas, aunque ahora vivan en la cabeza del equipo.",
+  "El proceso ya tiene responsables, aunque las reglas vivan en la cabeza del equipo.",
 ];
 
 const proofCases = [
@@ -116,34 +122,37 @@ const faqs = [
   }}
   faqs={faqs}
 >
-  <section class="px-6 max-w-7xl mx-auto pt-32 space-y-20">
+  <div class="px-6 max-w-7xl mx-auto pt-10 pb-24 space-y-24 md:space-y-32">
     <Breadcrumbs
       items={[
         { name: "Diagnostico de procesos", url: "/diagnostico-procesos" },
       ]}
     />
 
-    <header class="grid lg:grid-cols-[1fr_0.85fr] gap-12 items-center">
-      <div class="space-y-8">
-        <SectionTag>Diagnostico gratis de 20 min</SectionTag>
+    {/* ── HERO ─────────────────────────────────────────────────────── */}
+    <header class="grid lg:grid-cols-[1fr_0.9fr] gap-12 lg:gap-16 items-center">
+      <div class="space-y-8" data-reveal="bottom" data-speed="normal">
+        <span
+          class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary uppercase tracking-wider"
+        >
+          <Clock class="size-3.5" />
+          Gratis y en 2 minutos
+        </span>
         <div class="space-y-5">
           <h1
-            class="text-4xl md:text-6xl font-bold tracking-tight text-foreground text-balance"
+            class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground text-balance leading-[1.05]"
           >
             Te decimos que proceso automatizar primero
-            <span class="block text-primary mt-2"
-              >y cuanto te esta costando.</span
-            >
+            <span class="text-primary"> y cuanto te esta costando.</span>
           </h1>
           <p
-            class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed"
+            class="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed"
           >
-            Revisamos un proceso real de tu empresa, ponemos numeros al coste
-            oculto y salimos con una recomendacion concreta. Sin venderte una
-            app innecesaria.
+            Revisamos un proceso real, ponemos numeros al coste oculto y salimos
+            con una recomendacion concreta. Sin venderte una app innecesaria.
           </p>
         </div>
-        <div class="flex flex-col sm:flex-row gap-4">
+        <div class="flex flex-col sm:flex-row gap-3">
           <a href="#formulario">
             <Button size="lg" withArrow>Quiero el diagnostico</Button>
           </a>
@@ -151,36 +160,54 @@ const faqs = [
             <Button size="lg" variant="outline">Calcular coste primero</Button>
           </a>
         </div>
+        <p class="text-sm text-muted-foreground">
+          Si no merece la pena automatizarlo, te lo decimos. Sin presion.
+        </p>
       </div>
 
       <aside
-        class="rounded-3xl bg-foreground text-background p-6 md:p-8 space-y-6"
+        class="rounded-3xl bg-foreground text-background p-7 md:p-9 space-y-7"
+        data-reveal="right"
+        data-speed="normal"
       >
-        <p class="text-sm text-background/60">Lo que te llevas</p>
-        <ul class="space-y-4">
+        <p
+          class="text-xs font-semibold uppercase tracking-widest text-background/50"
+        >
+          Lo que te llevas
+        </p>
+        <ul class="space-y-6">
           {
             steps.map((step, index) => (
-              <li class="grid grid-cols-[2rem_1fr] gap-3">
-                <span class="size-8 rounded-full bg-background text-foreground flex items-center justify-center text-sm font-bold">
+              <li class="flex gap-4 items-start">
+                <span class="shrink-0 size-8 rounded-full border border-background/20 bg-background/10 flex items-center justify-center text-sm font-bold">
                   {index + 1}
                 </span>
-                <span>
-                  <strong class="block">{step.title}</strong>
-                  <span class="text-sm text-background/70 leading-relaxed">
+                <div class="space-y-0.5">
+                  <strong class="block text-background leading-snug">
+                    {step.title}
+                  </strong>
+                  <span class="text-sm text-background/60 leading-relaxed">
                     {step.description}
                   </span>
-                </span>
+                </div>
               </li>
             ))
           }
         </ul>
+        <div class="border-t border-background/10 pt-5">
+          <p class="text-xs text-background/40">
+            Sin compromiso de compra. La decision es tuya.
+          </p>
+        </div>
       </aside>
     </header>
 
-    <CostCalculator />
+    {/* ── CALCULADORA ──────────────────────────────────────────────── */}
+    <CostCalculator ctaBase="" />
 
-    <section class="grid lg:grid-cols-[0.95fr_1fr] gap-8 items-start">
-      <div class="space-y-5">
+    {/* ── QUE OBTIENES ─────────────────────────────────────────────── */}
+    <section class="space-y-12">
+      <div class="max-w-2xl space-y-4" data-reveal="bottom">
         <SectionTag>Decision, no demo generica</SectionTag>
         <h2
           class="text-3xl md:text-5xl font-bold tracking-tight text-foreground"
@@ -193,20 +220,62 @@ const faqs = [
           evitar para no construir de mas.
         </p>
       </div>
-      <div class="grid sm:grid-cols-3 gap-4">
-        {
-          deliverables.map((item) => (
-            <article class="rounded-2xl border border-muted bg-background p-5 space-y-2">
-              <h3 class="font-bold text-foreground">{item.title}</h3>
-              <p class="text-sm text-muted-foreground leading-relaxed">
-                {item.description}
-              </p>
-            </article>
-          ))
-        }
+      <div class="grid sm:grid-cols-3 gap-5" data-stagger="100">
+        <article
+          class="panel space-y-4 border-t-4 border-t-primary/30"
+          data-reveal="bottom"
+        >
+          <div class="flex items-start justify-between">
+            <ClipboardList class="size-6 text-primary" />
+            <span class="text-xs font-mono text-muted-foreground">01</span>
+          </div>
+          <div class="space-y-2">
+            <h3 class="text-lg font-bold text-foreground">
+              {deliverables[0].title}
+            </h3>
+            <p class="text-sm text-muted-foreground leading-relaxed">
+              {deliverables[0].description}
+            </p>
+          </div>
+        </article>
+        <article
+          class="panel space-y-4 border-t-4 border-t-primary/30"
+          data-reveal="bottom"
+        >
+          <div class="flex items-start justify-between">
+            <CheckCircle2 class="size-6 text-primary" />
+            <span class="text-xs font-mono text-muted-foreground">02</span>
+          </div>
+          <div class="space-y-2">
+            <h3 class="text-lg font-bold text-foreground">
+              {deliverables[1].title}
+            </h3>
+            <p class="text-sm text-muted-foreground leading-relaxed">
+              {deliverables[1].description}
+            </p>
+          </div>
+        </article>
+        <article
+          class="panel space-y-4 border-t-4 border-t-primary/30"
+          data-reveal="bottom"
+        >
+          <div class="flex items-start justify-between">
+            <ArrowRight class="size-6 text-primary" />
+            <span class="text-xs font-mono text-muted-foreground">03</span>
+          </div>
+          <div class="space-y-2">
+            <h3 class="text-lg font-bold text-foreground">
+              {deliverables[2].title}
+            </h3>
+            <p class="text-sm text-muted-foreground leading-relaxed">
+              {deliverables[2].description}
+            </p>
+          </div>
+        </article>
       </div>
     </section>
 
+    {/* ── EJEMPLOS DE PROCESOS ─────────────────────────────────────── */}
     <section class="space-y-10">
       <SectionHeader
         title="Procesos que solemos revisar"
@@ -214,50 +283,85 @@ const faqs = [
         description="No hace falta cambiarlo todo. La oportunidad suele estar en una tarea concreta que se repite demasiado."
         align="center"
       />
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="flex flex-wrap gap-3 justify-center" data-stagger="80">
         {
           examples.map((example) => (
-            <div class="rounded-2xl border border-muted bg-background p-5 font-medium text-foreground">
+            <span
+              class="inline-flex items-center gap-2 rounded-full border border-muted bg-background px-4 py-2.5 text-sm font-medium text-foreground shadow-pastel-sm"
+              data-reveal="scale"
+              data-speed="fast"
+            >
+              <CircleCheck class="size-4 text-primary shrink-0" />
               {example}
-            </div>
+            </span>
           ))
         }
       </div>
     </section>
 
-    <section class="grid lg:grid-cols-2 gap-8 items-start">
-      <article class="rounded-3xl bg-accent/50 p-6 md:p-8 space-y-5">
-        <SectionTag>Buen encaje</SectionTag>
-        <h2 class="text-3xl font-bold tracking-tight text-foreground">
-          Merece revisarlo si reconoces dos o mas senales.
-        </h2>
-        <ul class="space-y-3">
+    {/* ── ENCAJE + CASOS ───────────────────────────────────────────── */}
+    <section class="grid lg:grid-cols-2 gap-6">
+      <article class="panel space-y-6" data-reveal="left">
+        <div class="space-y-2">
+          <SectionTag>Buen encaje</SectionTag>
+          <h2
+            class="text-2xl md:text-3xl font-bold tracking-tight text-foreground"
+          >
+            Merece revisarlo si reconoces dos o mas senales.
+          </h2>
+        </div>
+        <ul class="space-y-4">
           {
             fitSignals.map((signal) => (
-              <li class="flex gap-3 text-muted-foreground leading-relaxed">
-                <span class="mt-2 size-2 rounded-full bg-primary shrink-0" />
+              <li class="flex gap-3 items-start text-sm text-muted-foreground leading-relaxed">
+                <CircleCheck
+                  class="size-4 text-primary shrink-0 mt-0.5"
+                  aria-hidden="true"
+                />
                 <span>{signal}</span>
               </li>
             ))
           }
         </ul>
+        <div class="border-t border-muted pt-4">
+          <p class="text-xs text-muted-foreground">
+            Si no encajamos, te decimos a quien acudir. Sin rodeos.
+          </p>
+        </div>
       </article>
-      <article class="rounded-3xl border border-muted p-6 md:p-8 space-y-5">
-        <SectionTag>Casos cercanos</SectionTag>
-        <h2 class="text-3xl font-bold tracking-tight text-foreground">
-          Ya hemos resuelto problemas parecidos.
-        </h2>
+
+      <article
+        class="flex flex-col gap-4 rounded-3xl p-7 space-y-6 bg-foreground text-background"
+        data-reveal="right"
+      >
+        <div class="space-y-2">
+          <span
+            class="text-xs font-semibold uppercase tracking-widest text-background/50"
+          >
+            Casos cercanos
+          </span>
+          <h2
+            class="text-2xl md:text-3xl font-bold tracking-tight text-background"
+          >
+            Ya hemos resuelto problemas parecidos.
+          </h2>
+        </div>
         <div class="space-y-3">
           {
             proofCases.map((project) => (
               <a
                 href={project.href}
-                class="block rounded-2xl border border-muted bg-background p-4 hover:border-primary transition-colors"
+                class="group flex items-start justify-between gap-3 rounded-2xl border border-background/10 bg-background/5 hover:bg-background/10 p-4 transition-colors"
               >
-                <h3 class="font-bold text-foreground">{project.title}</h3>
-                <p class="text-sm text-muted-foreground leading-relaxed mt-1">
-                  {project.description}
-                </p>
+                <div class="space-y-0.5">
+                  <h3 class="font-semibold text-background text-sm">
+                    {project.title}
+                  </h3>
+                  <p class="text-xs text-background/60 leading-relaxed">
+                    {project.description}
+                  </p>
+                </div>
+                <ArrowRight class="size-4 text-background/40 group-hover:text-background shrink-0 mt-0.5 transition-colors" />
               </a>
             ))
           }
@@ -265,36 +369,60 @@ const faqs = [
       </article>
     </section>
 
+    {/* ── FORMULARIO ───────────────────────────────────────────────── */}
     <section
       id="formulario"
-      class="scroll-mt-28 grid lg:grid-cols-[0.85fr_1fr] gap-10 items-start"
+      class="scroll-mt-28 grid lg:grid-cols-[1fr_1.2fr] gap-10 lg:gap-16 items-start"
     >
-      <div class="space-y-5">
-        <SectionTag>Siguiente paso</SectionTag>
-        <h2
-          class="text-3xl md:text-5xl font-bold tracking-tight text-foreground"
-        >
-          Agenda el diagnostico.
-        </h2>
-        <p class="text-muted-foreground leading-relaxed">
-          Responde el formulario corto y despues agenda una llamada. Si
-          prefieres ir directo, tambien puedes escribir por WhatsApp con el
-          proceso que quieres revisar.
-        </p>
-        <a
-          href={`https://wa.me/${branding.contact.whatsapp.number}?text=${encodeURIComponent(
-            "Hola, quiero hacer un diagnostico de procesos. El proceso que quiero revisar es: ",
-          )}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex rounded-full border-2 border-muted px-5 py-3 font-semibold text-foreground hover:border-primary transition-colors"
-        >
-          Escribir por WhatsApp
-        </a>
+      <div class="space-y-7" data-reveal="bottom">
+        <div class="space-y-3">
+          <SectionTag>Siguiente paso</SectionTag>
+          <h2
+            class="text-3xl md:text-5xl font-bold tracking-tight text-foreground"
+          >
+            Agenda el diagnostico.
+          </h2>
+          <p class="text-muted-foreground leading-relaxed">
+            Responde el formulario y en menos de 24h te confirmamos horario para
+            la llamada.
+          </p>
+        </div>
+        <ul class="space-y-3">
+          {
+            [
+              "Completamente gratis, sin compromiso",
+              "20 minutos, sin pitch de venta",
+              "Recomendacion concreta al final",
+            ].map((item) => (
+              <li class="flex items-center gap-2.5 text-sm text-muted-foreground">
+                <CircleCheck class="size-4 text-primary shrink-0" />
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+        <div class="border-t border-muted pt-6">
+          <p class="text-sm text-muted-foreground mb-3">
+            ¿Prefieres algo mas directo?
+          </p>
+          <a
+            href={`https://wa.me/${branding.contact.whatsapp.number}?text=${encodeURIComponent(
+              "Hola, quiero hacer un diagnostico de procesos. El proceso que quiero revisar es: ",
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-full border-2 border-muted px-5 py-3 text-sm font-semibold text-foreground hover:border-primary transition-colors"
+          >
+            Escribir por WhatsApp
+          </a>
+        </div>
       </div>
-      <article class="bg-muted/30 w-full rounded-3xl px-4 py-6 md:px-6 md:py-8">
+
+      <article
+        class="bg-accent rounded-3xl border border-muted/60 shadow-pastel px-6 py-8 md:px-8 md:py-10"
+      >
         <ContactForm client:load />
       </article>
     </section>
-  </section>
+  </div>
 </MainLayout>
