@@ -16,11 +16,8 @@ const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
     compact ? "" : "max-w-5xl mx-auto",
   ]}
 >
-  <div class="grid lg:grid-cols-[0.9fr_1.1fr] gap-8 items-start">
-    <div class="space-y-4">
-      <p class="text-sm text-primary font-semibold">
-        Calculadora de coste oculto
-      </p>
+  <article class="grid lg:grid-cols-[0.9fr_1.1fr] gap-8 items-start">
+    <header class="space-y-4">
       <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
         Calcula cuanto cuesta seguir haciendolo a mano.
       </h2>
@@ -29,7 +26,7 @@ const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
         afectan a varias personas y tienen riesgo de error, conviene ponerles un
         numero.
       </p>
-    </div>
+    </header>
 
     <form class="space-y-4" data-cost-calculator>
       <div class="grid sm:grid-cols-2 gap-4">
@@ -86,7 +83,7 @@ const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
       <div class="rounded-2xl bg-background border border-muted p-5 space-y-4">
         <div class="grid sm:grid-cols-3 gap-4">
           <div>
-            <p class="text-sm text-muted-foreground">Horas al ano</p>
+            <p class="text-sm text-muted-foreground">Horas al año</p>
             <p class="text-2xl font-bold text-foreground" data-cost-hours>0</p>
           </div>
           <div>
@@ -101,8 +98,8 @@ const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
           </div>
         </div>
         <p class="text-sm text-muted-foreground leading-relaxed" data-cost-note>
-          Si este coste supera varios miles de euros al ano, merece revisar si
-          una automatizacion pequena puede pagarse sola.
+          Si este coste supera varios miles de euros al año, merece revisar si
+          una automatización pequeña puede pagarse sola.
         </p>
         <a
           href="/diagnostico-procesos?ref=calculadora-coste"
@@ -114,7 +111,7 @@ const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
         </a>
       </div>
     </form>
-  </div>
+  </article>
 </section>
 
 <script>
@@ -149,7 +146,7 @@ const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
       if (noteEl) {
         noteEl.textContent =
           yearlyCost >= 4000
-            ? "Este proceso ya tiene tamano suficiente para revisarlo: puede haber ahorro, menos errores y mas control."
+            ? "Este proceso ya tiene tamaño suficiente para revisarlo: puede haber ahorro, menos errores y más control."
             : "El coste directo parece moderado. Revisariamos si el mayor problema esta en errores, retrasos u oportunidades perdidas.";
       }
       if (cta instanceof HTMLAnchorElement) {
