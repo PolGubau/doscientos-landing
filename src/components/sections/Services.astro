@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
 import { Award, Code, Lock, Rocket, Smartphone, Users } from "@lucide/astro";
+import { Image } from "astro:assets";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import CtaButton from "../ui/CtaButton.astro";
 
@@ -83,7 +83,7 @@ const benefits = [
       data-easing="smooth"
     >
       <header class="flex flex-col gap-4">
-        <h3>{services[0].title}</h3>
+        <h3 class="text-pretty">{services[0].title}</h3>
         <p>{services[0].description}</p>
       </header>
       <div class="relative w-full h-full overflow-hidden max-h-[360px]">
@@ -110,7 +110,7 @@ const benefits = [
       data-easing="smooth"
     >
       <header class="flex flex-col gap-4">
-        <h3>{services[1].title}</h3>
+        <h3 class="text-pretty">{services[1].title}</h3>
         <p>{services[1].description}</p>
       </header>
       {
@@ -138,7 +138,7 @@ const benefits = [
       <div class="grid lg:grid-cols-[2fr_1fr] gap-4 h-full">
         <div class="flex flex-col justify-between gap-6">
           <header class="flex flex-col gap-4">
-            <h3>{services[2].title}</h3>
+            <h3 class="text-pretty">{services[2].title}</h3>
             <p>{services[2].description}</p>
           </header>
           <CtaButton size="sm" />
@@ -167,7 +167,7 @@ const benefits = [
       data-speed="normal"
       data-easing="smooth"
     >
-      <h3>{services[3].title}</h3>
+      <h3 class="text-pretty">{services[3].title}</h3>
       <p>{services[3].description}</p>
       <div class="relative w-full h-full">
         <Image
@@ -193,7 +193,7 @@ const benefits = [
       data-easing="bounce"
     >
       <header class="h-full flex flex-col justify-end">
-        <h3>{services[4].title}</h3>
+        <h3 class="text-pretty">{services[4].title}</h3>
         <p>{services[4].description}</p>
       </header>
       <CtaButton />

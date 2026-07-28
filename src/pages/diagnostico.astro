@@ -1,6 +1,6 @@
 ---
-import ContactForm from "~/components/forms/ContactForm";
 import CostCalculator from "~/components/conversion/CostCalculator.astro";
+import ContactForm from "~/components/forms/ContactForm";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
@@ -118,18 +118,26 @@ const faqs = [
 >
   <section class="px-6 max-w-7xl mx-auto pt-32 space-y-20">
     <Breadcrumbs
-      items={[{ name: "Diagnostico de procesos", url: "/diagnostico-procesos" }]}
+      items={[
+        { name: "Diagnostico de procesos", url: "/diagnostico-procesos" },
+      ]}
     />
 
     <header class="grid lg:grid-cols-[1fr_0.85fr] gap-12 items-center">
       <div class="space-y-8">
         <SectionTag>Diagnostico gratis de 20 min</SectionTag>
         <div class="space-y-5">
-          <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-foreground text-balance">
+          <h1
+            class="text-4xl md:text-6xl font-bold tracking-tight text-foreground text-balance"
+          >
             Te decimos que proceso automatizar primero
-            <span class="block text-primary mt-2">y cuanto te esta costando.</span>
+            <span class="block text-primary mt-2"
+              >y cuanto te esta costando.</span
+            >
           </h1>
-          <p class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+          <p
+            class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed"
+          >
             Revisamos un proceso real de tu empresa, ponemos numeros al coste
             oculto y salimos con una recomendacion concreta. Sin venderte una
             app innecesaria.
@@ -145,7 +153,9 @@ const faqs = [
         </div>
       </div>
 
-      <aside class="rounded-3xl bg-foreground text-background p-6 md:p-8 space-y-6">
+      <aside
+        class="rounded-3xl bg-foreground text-background p-6 md:p-8 space-y-6"
+      >
         <p class="text-sm text-background/60">Lo que te llevas</p>
         <ul class="space-y-4">
           {
@@ -172,7 +182,9 @@ const faqs = [
     <section class="grid lg:grid-cols-[0.95fr_1fr] gap-8 items-start">
       <div class="space-y-5">
         <SectionTag>Decision, no demo generica</SectionTag>
-        <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+        <h2
+          class="text-3xl md:text-5xl font-bold tracking-tight text-foreground"
+        >
           Sales con una recomendacion accionable.
         </h2>
         <p class="text-muted-foreground leading-relaxed">
@@ -253,16 +265,21 @@ const faqs = [
       </article>
     </section>
 
-    <section id="formulario" class="scroll-mt-28 grid lg:grid-cols-[0.85fr_1fr] gap-10 items-start">
+    <section
+      id="formulario"
+      class="scroll-mt-28 grid lg:grid-cols-[0.85fr_1fr] gap-10 items-start"
+    >
       <div class="space-y-5">
         <SectionTag>Siguiente paso</SectionTag>
-        <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+        <h2
+          class="text-3xl md:text-5xl font-bold tracking-tight text-foreground"
+        >
           Agenda el diagnostico.
         </h2>
         <p class="text-muted-foreground leading-relaxed">
-          Responde el formulario corto y despues agenda una llamada. Si prefieres
-          ir directo, tambien puedes escribir por WhatsApp con el proceso que
-          quieres revisar.
+          Responde el formulario corto y despues agenda una llamada. Si
+          prefieres ir directo, tambien puedes escribir por WhatsApp con el
+          proceso que quieres revisar.
         </p>
         <a
           href={`https://wa.me/${branding.contact.whatsapp.number}?text=${encodeURIComponent(
