@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import OrbitalThumb from "~/components/ui/OrbitalThumb.astro";
 import { getProjects } from "~/shared/lib/collections";
 
 const projects = await getProjects();
@@ -35,16 +35,11 @@ const thumbnails = Array.from(
           data-title={project.data.title}
           data-client={project.data.client}
         >
-          <Image
-            src={project.data.cover}
-            alt={project.data.title}
-            widths={[240, 720]}
-            sizes="(max-width: 767px) 240px, 720px"
-            format="webp"
-            quality={70}
-            class="orbital-img object-cover block"
-            loading={i < 4 ? "eager" : "lazy"}
-            decoding="async"
+          <OrbitalThumb
+            cover={project.data.cover}
+            logo={project.data.logo}
+            title={project.data.title}
+            eager={i < 4}
           />
         </a>
       ))
@@ -115,21 +110,11 @@ const thumbnails = Array.from(
     color: var(--muted-foreground, #6b7280);
   }
 
-  /* Dimensions driven by orbital.ts via CSS vars */
-  .orbital-img {
-    width: var(--thumb-w, 64px);
-    height: var(--thumb-h, 96px);
-    display: block;
-    transition: box-shadow 0.25s ease;
-    /* The back face shows the same photo, mirrored, on the rotateY flip */
-    backface-visibility: visible;
-  }
-
   /*
     Mobile (< 768px): the orbital choreography is disabled (orbital.ts returns
     early), so lay the thumbnails out as a static, horizontally-scrollable strip
-    instead of an absolutely-positioned ring. Higher specificity (#id .class)
-    overrides the absolute/inset-0 utility classes on the thumbs.
+    instead of an absolutely-positioned ring. OrbitalThumb handles its own
+    mobile dimensions (.ot-root media query).
   */
   @keyframes orbital-slide-in {
     from {
@@ -200,10 +185,6 @@ const thumbnails = Array.from(
     /* Tactile press feedback (replaces the cursor-only proximity effect) */
     #orbital-ring .orbital-thumb:active {
       transform: scale(0.96);
-    }
-    #orbital-ring .orbital-img {
-      width: 8rem;
-      height: 10.5rem;
     }
   }
 </style>
