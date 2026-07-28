@@ -1,4 +1,4 @@
-import { specificLandings } from "./specificLandings";
+﻿import { specificLandings } from "./specificLandings";
 
 export type BlogCtaVariant =
   | "contact"
@@ -21,17 +21,17 @@ export interface CommercialRoute {
 }
 
 export const diagnosticRoute = {
-	href: "/diagnostico-procesos",
-	label: "Diagnóstico de procesos",
-	description:
-		"Te decimos qué automatizar primero, qué evitar y si merece la pena construir.",
+  href: "/diagnostico",
+  label: "Diagnóstico de procesos",
+  description:
+    "Te decimos qué automatizar primero, qué evitar y si merece la pena construir.",
 } satisfies Omit<CommercialRoute, "priority">;
 
 export const pillarRoute = {
-	href: "/automatizacion-procesos",
-	label: "Automatización de procesos",
-	description:
-		"Guía para priorizar automatizaciones rentables en pymes antes de construir.",
+  href: "/automatizacion-procesos",
+  label: "Automatización de procesos",
+  description:
+    "Guía para priorizar automatizaciones rentables en pymes antes de construir.",
 } satisfies Omit<CommercialRoute, "priority">;
 
 export const commercialRoutes: CommercialRoute[] = [
@@ -46,45 +46,44 @@ export const commercialRoutes: CommercialRoute[] = [
 ];
 
 export const headerNavItems = [
-	{ href: diagnosticRoute.href, label: "Diagnóstico" },
-	{ href: pillarRoute.href, label: "Automatizar" },
-	{ href: "/projects", label: "Proyectos" },
-	{ href: "/sobre-nosotros", label: "Nosotros" },
-	{ href: "/recursos", label: "Recursos" },
+  { href: pillarRoute.href, label: "Automatizar" },
+  { href: "/projects", label: "Proyectos" },
+  { href: "/sobre-nosotros", label: "Nosotros" },
+  { href: "/recursos", label: "Recursos" },
 ];
 
 export const footerLinkColumns = [
-	{
-		title: "Automatización",
-		links: [
-			diagnosticRoute,
-			pillarRoute,
-			...commercialRoutes
-				.filter((route) => route.priority === "secondary")
-				.map(({ href, label }) => ({ href, label })),
-		],
-	},
-	{
-		title: "Prueba y casos",
-		links: [
-			{ label: "Proyectos", href: "/projects" },
-			{ label: "Caso Optinergia", href: "/projects/optinergia" },
-			{ label: "Caso Bitacora ERP", href: "/projects/bitacora-erp" },
-			{ label: "Packs de webs", href: "/packs" },
-			{ label: "Recursos", href: "/recursos" },
-			{ label: "Sobre nosotros", href: "/sobre-nosotros" },
-			{ label: "Trabaja con nosotros", href: "/trabaja-con-nosotros" },
-			{ label: "Contacto", href: "/contact" },
-		],
-	},
-	{
-		title: "Zonas",
-		links: [
-			{ label: "Barcelona", href: "/desarrollo-web-barcelona" },
-			{ label: "Castellon", href: "/desarrollo-web-castellon" },
-			{ label: "Maresme", href: "/agencia-digital-maresme" },
-		],
-	},
+  {
+    title: "Automatización",
+    links: [
+      diagnosticRoute,
+      pillarRoute,
+      ...commercialRoutes
+        .filter((route) => route.priority === "secondary")
+        .map(({ href, label }) => ({ href, label })),
+    ],
+  },
+  {
+    title: "Prueba y casos",
+    links: [
+      { label: "Proyectos", href: "/projects" },
+      { label: "Caso Optinergia", href: "/projects/optinergia" },
+      { label: "Caso Bitacora ERP", href: "/projects/bitacora-erp" },
+      { label: "Packs de webs", href: "/packs" },
+      { label: "Recursos", href: "/recursos" },
+      { label: "Sobre nosotros", href: "/sobre-nosotros" },
+      { label: "Trabaja con nosotros", href: "/trabaja-con-nosotros" },
+      { label: "Contacto", href: "/contact" },
+    ],
+  },
+  {
+    title: "Zonas",
+    links: [
+      { label: "Barcelona", href: "/desarrollo-web-barcelona" },
+      { label: "Castellon", href: "/desarrollo-web-castellon" },
+      { label: "Maresme", href: "/agencia-digital-maresme" },
+    ],
+  },
 ];
 
 export const commercialBlogCtaBySlug: Record<string, BlogCtaVariant> = {
@@ -109,7 +108,7 @@ export const commercialBlogCtaBySlug: Record<string, BlogCtaVariant> = {
 export const commercialBlogLinks = commercialRoutes
   .filter((route) =>
     [
-      "/diagnostico-procesos",
+      "/diagnostico",
       "/automatizacion-procesos",
       "/automatizar-excel",
       "/crm-renovaciones",

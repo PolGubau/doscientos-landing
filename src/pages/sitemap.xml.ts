@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+﻿import { execFileSync } from "node:child_process";
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import { commercialRoutes } from "~/data/commercialRoutes";
@@ -85,7 +85,7 @@ export const GET: APIRoute = async ({ site }) => {
 		FALLBACK_DATE,
 	);
 	const commercialRouteUrls = commercialRoutes
-		.filter((route) => route.href !== "/diagnostico-procesos")
+		.filter((route) => route.href !== "/diagnostico")
 		.map((route) => ({
 			url: route.href.replace(/^\//, ""),
 			priority: route.priority === "primary" ? "0.95" : "0.9",
@@ -129,8 +129,8 @@ export const GET: APIRoute = async ({ site }) => {
 			changefreq: "monthly",
 		},
 		{
-			url: "diagnostico-procesos",
-			source: "src/pages/diagnostico-procesos.astro",
+			url: "diagnostico",
+			source: "src/pages/diagnostico.astro",
 			priority: "0.95",
 			changefreq: "monthly",
 		},
