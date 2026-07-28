@@ -6,8 +6,7 @@ import SectionTag from "~/components/ui/SectionTag.astro";
 import { commercialRoutes, diagnosticRoute } from "~/data/commercialRoutes";
 import MainLayout from "~/layouts/MainLayout.astro";
 
-const title =
-  "Automatizacion de procesos para pymes | Que automatizar primero";
+const title = "Automatizacion de procesos para pymes | Que automatizar primero";
 const description =
   "Guia practica para automatizar procesos en pymes: que tareas priorizar, cuando no construir software y como calcular si una automatizacion compensa.";
 
@@ -107,15 +106,20 @@ const faqs = [
       ]}
     />
 
-    <header class="grid lg:grid-cols-[1fr_0.85fr] gap-12 items-center">
+    <header class="space-y-10">
       <div class="space-y-8">
-        <SectionTag>Automatizacion rentable para pymes</SectionTag>
         <div class="space-y-5">
-          <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-foreground text-balance">
+          <h1
+            class="text-4xl md:text-6xl font-bold tracking-tight text-foreground text-balance"
+          >
             Automatiza el proceso que mas dinero pierde
-            <span class="block text-primary mt-2">antes de construir de mas.</span>
+            <span class="block text-primary mt-2"
+              >antes de construir de mas.</span
+            >
           </h1>
-          <p class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+          <p
+            class="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed"
+          >
             Te ayudamos a priorizar automatizaciones con impacto real: menos
             trabajo manual, menos errores y una fuente de verdad para operar.
           </p>
@@ -130,7 +134,9 @@ const faqs = [
         </div>
       </div>
 
-      <aside class="rounded-3xl bg-foreground text-background p-6 md:p-8 space-y-5">
+      <aside
+        class="rounded-3xl bg-foreground text-background p-6 md:p-8 space-y-5"
+      >
         <p class="text-sm text-background/60">Prioridad recomendada</p>
         <ol class="space-y-4">
           {
@@ -173,7 +179,9 @@ const faqs = [
     <section class="grid lg:grid-cols-[0.9fr_1fr] gap-10 items-start">
       <div class="space-y-5">
         <SectionTag>Evitar mal gasto</SectionTag>
-        <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+        <h2
+          class="text-3xl md:text-5xl font-bold tracking-tight text-foreground"
+        >
           Cuando no conviene automatizar todavia.
         </h2>
         <p class="text-muted-foreground leading-relaxed">
@@ -222,7 +230,9 @@ const faqs = [
       </div>
     </section>
 
-    <section class="rounded-3xl bg-foreground text-background p-8 md:p-10 flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
+    <section
+      class="rounded-3xl bg-foreground text-background p-8 md:p-10 flex flex-col md:flex-row gap-6 md:items-center md:justify-between"
+    >
       <div class="space-y-2 max-w-2xl">
         <h2 class="text-2xl md:text-4xl font-bold">
           Decide que automatizar esta semana.
