@@ -135,6 +135,12 @@ export const GET: APIRoute = async ({ site }) => {
 			changefreq: "monthly",
 		},
 		{
+			url: "software-propio",
+			source: "src/pages/software-propio.astro",
+			priority: "0.95",
+			changefreq: "monthly",
+		},
+		{
 			url: "sobre-nosotros",
 			source: "src/pages/sobre-nosotros.astro",
 			priority: "0.8",

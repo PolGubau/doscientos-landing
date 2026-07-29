@@ -1,0 +1,302 @@
+---
+import {
+  ArrowRight,
+  Check,
+  CircleCheck,
+  Clock3,
+  Mail,
+} from "@lucide/astro";
+import ProcessLossCalculator from "~/components/conversion/ProcessLossCalculator";
+import Impact from "~/components/sections/Impact.astro";
+import Testimonials from "~/components/sections/Testimonials.astro";
+import Button from "~/components/ui/Button.astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+import SectionTag from "~/components/ui/SectionTag.astro";
+import MainLayout from "~/layouts/MainLayout.astro";
+
+const title =
+  "Calculadora de coste oculto: Excel y procesos manuales | doscientos";
+const description =
+  "Calcula en menos de 3 minutos cuántas horas y cuánto dinero pierde tu empresa entre Excel, tareas manuales y herramientas desconectadas.";
+
+const painSignals = [
+  "La misma información se copia en varias herramientas.",
+  "Los informes dependen de unir Excel, emails y datos del ERP.",
+  "El equipo revisa manualmente que todo coincida.",
+  "Las decisiones llegan tarde porque los datos están dispersos.",
+];
+
+const calculatorOutputs = [
+  "Horas perdidas al año.",
+  "Coste anual estimado.",
+  "Desglose por equipo.",
+];
+
+const roadmapItems = [
+  {
+    title: "Qué automatizar primero",
+    description:
+      "Priorizamos el proceso con mayor retorno y menor riesgo para empezar.",
+  },
+  {
+    title: "Qué mantener y qué eliminar",
+    description:
+      "Revisamos qué herramientas siguen aportando valor y cuáles generan fricción.",
+  },
+  {
+    title: "Cómo construirlo por fases",
+    description:
+      "Definimos un primer alcance cerrado que pueda generar valor en semanas.",
+  },
+];
+
+const faqs = [
+  {
+    question: "¿Por qué pedís el correo para ver el resultado?",
+    answer:
+      "La calculadora se puede completar sin registrarse. En esta versión, el correo solo desbloquea el resultado en el navegador: no se envía ni se guarda.",
+  },
+  {
+    question: "¿Cómo se calcula el coste?",
+    answer:
+      "Combinamos las personas afectadas, las horas semanales, el coste/hora y la fricción adicional provocada por herramientas que comparten información. Es una estimación orientativa, no una auditoría contable.",
+  },
+  {
+    question: "¿La sesión y la hoja de ruta son gratuitas?",
+    answer:
+      "Sí. Revisamos el resultado contigo y preparamos una recomendación inicial sin coste ni compromiso.",
+  },
+  {
+    question: "¿La llamada es una reunión comercial?",
+    answer:
+      "Es una sesión de diagnóstico con un ingeniero. El objetivo es entender el proceso y decidir qué merece la pena automatizar. Después tú decides si quieres avanzar.",
+  },
+  {
+    question: "¿Estoy obligado a contratar el desarrollo?",
+    answer:
+      "No. La recomendación es tuya y puedes implementarla con nosotros, con tu equipo o con cualquier otro proveedor.",
+  },
+];
+---
+
+<MainLayout
+  title={title}
+  description={description}
+  type="service"
+  showFooterCta={false}
+  showNavbar={false}
+  showFloatingCta={false}
+  service={{
+    name: "Calculadora de coste oculto y diagnóstico de procesos",
+    description,
+    serviceType: "Business Process Automation",
+    url: "/software-propio",
+  }}
+  faqs={faqs}
+>
+  <header class="fixed left-1/2 top-6 z-50 flex w-[calc(100vw-2rem)] max-w-4xl -translate-x-1/2 items-center justify-between rounded-full bg-accent/90 p-1 pl-3 shadow-pastel-sm backdrop-blur-md">
+    <a href="/" class="flex items-center gap-2 transition-opacity hover:opacity-80">
+      <img src="/iso.svg" alt="" aria-hidden="true" class="size-7" />
+      <span class="text-xl font-bold text-primary">doscientos</span>
+    </a>
+    <a
+      href="#calculadora"
+      class="inline-flex min-h-11 items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background transition-opacity hover:opacity-90"
+    >
+      Calcular ahora
+      <ArrowRight class="size-4" aria-hidden="true" />
+    </a>
+  </header>
+
+  <section class="landing-section pt-28 lg:pt-36">
+    <div class="grid w-full gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <header class="flex max-w-2xl flex-col items-start gap-7" data-stagger="80">
+        <SectionTag>Calculadora gratuita · Resultado en 3 minutos</SectionTag>
+        <h1
+          class="text-balance text-4xl font-bold tracking-tight text-foreground md:text-6xl"
+          data-reveal="left"
+        >
+          Descubre cuánto te cuesta trabajar entre
+          <span class="block text-primary">
+            Excel y herramientas que no se entienden.
+          </span>
+        </h1>
+        <p
+          class="max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl"
+          data-reveal="bottom"
+        >
+          Calcula las horas que pierde cada equipo y el coste anual de copiar
+          datos, buscar información y mantener sistemas desconectados.
+        </p>
+        <ul class="grid gap-3" data-stagger="60">
+          {
+            calculatorOutputs.map((item) => (
+              <li class="flex items-center gap-3 font-medium text-foreground">
+                <span class="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Check class="size-4" aria-hidden="true" />
+                </span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+        <a href="#calculadora" class="lg:hidden" data-reveal="bottom">
+          <Button size="lg" withArrow>Empezar el cálculo</Button>
+        </a>
+        <p class="flex items-center gap-2 text-sm text-muted-foreground">
+          <Clock3 class="size-4" aria-hidden="true" />
+          Sin coste · Sin compromiso · Resultado inmediato
+        </p>
+      </header>
+
+      <article
+        id="calculadora"
+        class="scroll-mt-28 rounded-3xl border border-muted bg-background p-5 shadow-pastel md:p-8"
+        data-reveal="right"
+      >
+        <ProcessLossCalculator client:visible />
+      </article>
+    </div>
+  </section>
+
+  <section class="landing-section">
+    <SectionHeader
+      title="El problema no es tener varias herramientas."
+      subtitle="Es que el equipo trabaje para conectarlas."
+      description="Cuando la información no fluye, el coste aparece en forma de horas administrativas, errores y decisiones tomadas con datos incompletos."
+      align="center"
+    />
+    <div class="grid w-full max-w-5xl gap-4 sm:grid-cols-2" data-stagger="70">
+      {
+        painSignals.map((signal, index) => (
+          <article
+            class="panel flex min-h-32 flex-row items-start gap-4"
+            data-reveal="bottom"
+          >
+            <span class="text-sm font-bold text-primary/60">
+              0{index + 1}
+            </span>
+            <p class="font-medium leading-relaxed text-foreground">{signal}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="landing-section">
+    <SectionHeader
+      title="Del coste oculto"
+      subtitle="a una decisión concreta."
+      description="No necesitas saber qué software construir. Solo responder cómo trabaja hoy tu empresa."
+      align="center"
+    />
+    <div class="grid w-full max-w-4xl gap-4 md:grid-cols-2" data-stagger="90">
+      <article class="panel gap-6" data-reveal="bottom">
+        <Mail class="size-7 text-primary" aria-hidden="true" />
+        <div>
+          <p class="text-sm font-semibold text-primary">Paso 1</p>
+          <h3 class="mt-2 text-xl font-bold">Haz el cálculo</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Responde cinco preguntas sobre herramientas, equipos y tiempo
+            manual. No pedimos datos para empezar.
+          </p>
+        </div>
+      </article>
+      <article class="panel gap-6" data-reveal="bottom">
+        <CircleCheck class="size-7 text-primary" aria-hidden="true" />
+        <div>
+          <p class="text-sm font-semibold text-primary">Paso 2</p>
+          <h3 class="mt-2 text-xl font-bold">Recibe el resultado</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Al terminar, deja tu correo para desbloquear las horas y el coste
+            anual desglosados por equipo.
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <Impact />
+
+  <section class="landing-section">
+    <div class="grid w-full gap-10 rounded-4xl bg-foreground p-7 text-background md:p-12 lg:grid-cols-[0.8fr_1.2fr]">
+      <div class="space-y-5">
+        <SectionTag>Después del cálculo</SectionTag>
+        <h2 class="text-3xl font-bold tracking-tight md:text-5xl">
+          Una hoja de ruta.
+          <span class="block text-background/70">No otro PDF genérico.</span>
+        </h2>
+        <p class="max-w-md leading-relaxed text-background/85">
+          Somos ingenieros, no comerciales. Revisamos cómo funciona realmente
+          tu empresa y te decimos qué tiene sentido construir.
+        </p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-3">
+        {
+          roadmapItems.map((item, index) => (
+            <article class="rounded-2xl bg-background p-5 text-foreground">
+              <span class="text-sm font-bold text-primary">0{index + 1}</span>
+              <h3 class="mt-8 text-lg font-bold leading-snug">{item.title}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                {item.description}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Testimonials />
+
+  <section class="landing-section">
+    <SectionHeader
+      title="Preguntas frecuentes"
+      subtitle="Antes de empezar."
+      align="center"
+    />
+    <div class="mx-auto w-full max-w-2xl" data-stagger="60">
+      {
+        faqs.map((faq) => (
+          <details
+            class="group border-b border-muted py-4"
+            data-reveal="bottom"
+          >
+            <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-5 py-2 text-lg font-semibold">
+              <span>{faq.question}</span>
+              <ArrowRight class="size-5 shrink-0 transition-transform group-open:rotate-90" />
+            </summary>
+            <p class="pb-3 pt-3 leading-relaxed text-muted-foreground">
+              {faq.answer}
+            </p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="landing-section pb-0">
+    <div
+      class="mx-auto flex max-w-3xl flex-col items-center gap-7 text-center"
+      data-stagger="80"
+    >
+      <SectionTag>Antes de comprar otra herramienta</SectionTag>
+      <h2
+        class="text-balance text-4xl font-bold tracking-tight md:text-5xl"
+        data-reveal="scale"
+      >
+        Ponle un número al problema.
+      </h2>
+      <p
+        class="max-w-xl leading-relaxed text-muted-foreground"
+        data-reveal="bottom"
+      >
+        Descubre dónde se pierde el tiempo y qué proceso merece la pena
+        automatizar primero.
+      </p>
+      <a href="#calculadora" data-reveal="bottom">
+        <Button size="lg" withArrow>Calcular mi coste oculto</Button>
+      </a>
+    </div>
+  </section>
+</MainLayout>

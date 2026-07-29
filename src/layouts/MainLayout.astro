@@ -21,6 +21,8 @@ interface Props {
   image?: string;
   robots?: string;
   showFooterCta?: boolean;
+  showNavbar?: boolean;
+  showFloatingCta?: boolean;
   type?: "organization" | "website" | "article" | "service" | "project";
   article?: {
     publishedTime?: string;
@@ -76,6 +78,8 @@ const {
   image = "/og-image.png",
   robots,
   showFooterCta = true,
+  showNavbar = true,
+  showFloatingCta = true,
   type = "website",
   article,
   service,
@@ -148,12 +152,12 @@ const {
       Saltar al contenido principal
     </a>
     <ReadingProgress />
-    <Navbar />
+    {showNavbar && <Navbar />}
     <main id="main-content" class="flex flex-col w-full gap-20 pb-20">
       <slot />
     </main>
     <Footer showCta={showFooterCta} />
-    {Astro.url.pathname !== "/contact" && <FloatingCTA />}
+    {showFloatingCta && Astro.url.pathname !== "/contact" && <FloatingCTA />}
     <CookieBanner />
     <!-- GoHighLevel CRM tracking: única fuente de carga (con guard anti-doble-carga).
          CookieBanner reutiliza window.__loadGHL() al aceptar consent de marketing. -->
