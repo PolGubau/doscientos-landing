@@ -8,6 +8,9 @@ const isDev = import.meta.env.DEV;
 {!isDev && (
   <script is:inline define:vars={{ PIXEL_IDS }}>
     window.META_PIXEL_IDS_PENDING = PIXEL_IDS;
+    // Generamos o recuperamos el ID de evento para deduplicación con CAPI
+    const eventId = window.sessionStorage.getItem("doscientos:event-id") || crypto.randomUUID();
+
     if (window.__DOS_CONSENT?.marketing) {
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -15,7 +18,7 @@ const isDev = import.meta.env.DEV;
       t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
       (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
       PIXEL_IDS.forEach(function (id) { fbq('init', id); });
-      fbq('track', 'PageView');
+      fbq('track', 'PageView', {}, { eventID: eventId });
     }
   </script>
 )}

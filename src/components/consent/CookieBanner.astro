@@ -212,7 +212,10 @@
         window.META_PIXEL_IDS_PENDING.forEach(function (id) {
           fbq("init", id);
         });
-        fbq("track", "PageView");
+        const eventId =
+          window.sessionStorage.getItem("doscientos:event-id") ||
+          crypto.randomUUID();
+        fbq("track", "PageView", {}, { eventID: eventId });
       }
       // Marketing: GoHighLevel (única fuente de carga definida en MainLayout)
       if (consent.marketing) {
