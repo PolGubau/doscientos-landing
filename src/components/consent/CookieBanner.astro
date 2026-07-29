@@ -185,7 +185,7 @@
         })(window, document, "clarity", "script", window.CLARITY_ID_PENDING);
       }
       // Marketing: Meta Pixel (no soporta Consent Mode → hard-block)
-      if (consent.marketing && window.META_PIXEL_ID_PENDING) {
+      if (consent.marketing && window.META_PIXEL_IDS_PENDING?.length) {
         !(function (f, b, e, v, n, t, s) {
           if (f.fbq) return;
           n = f.fbq = function () {
@@ -209,7 +209,9 @@
           "script",
           "https://connect.facebook.net/en_US/fbevents.js",
         );
-        fbq("init", window.META_PIXEL_ID_PENDING);
+        window.META_PIXEL_IDS_PENDING.forEach(function (id) {
+          fbq("init", id);
+        });
         fbq("track", "PageView");
       }
       // Marketing: GoHighLevel (única fuente de carga definida en MainLayout)
