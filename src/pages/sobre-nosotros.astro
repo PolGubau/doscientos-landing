@@ -5,6 +5,7 @@ import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import { branding } from "~/config/branding";
 import MainLayout from "~/layouts/MainLayout.astro";
+import { serializeJsonLd } from "~/shared/lib/schema/jsonLd";
 
 import gerardImg from "~/assets/media/branding/team/gerard.webp";
 import polImg from "~/assets/media/branding/team/pol.webp";
@@ -64,7 +65,7 @@ const personSchemas = branding.team.map((member) => ({
 >
   {
     personSchemas.map((schema) => (
-      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />
     ))
   }
   <div

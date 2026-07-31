@@ -1,5 +1,6 @@
 ---
 import { cn } from "~/shared/lib/utils";
+import { serializeJsonLd } from "~/shared/lib/schema/jsonLd";
 
 /**
  * Breadcrumbs Schema.org para mejorar SEO y navegación
@@ -37,7 +38,8 @@ const breadcrumbSchema = {
 <!-- Breadcrumb Schema -->
 <script
   type="application/ld+json"
-  set:html={JSON.stringify(breadcrumbSchema)}
+  is:inline
+  set:html={serializeJsonLd(breadcrumbSchema)}
 />
 
 <!-- Visual Breadcrumbs (opcional) -->

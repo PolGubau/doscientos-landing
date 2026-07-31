@@ -3,7 +3,7 @@ import { BudgetPicker } from "./contact/BudgetPicker";
 import { CalEmbed } from "./contact/CalEmbed";
 import { Field } from "./contact/Field";
 import { ProgressBar } from "./contact/ProgressBar";
-import { COMPANY_SIZE_OPTIONS, URGENCY_OPTIONS } from "./contact/types";
+import { COMPANY_SIZE_OPTIONS, SOLUTION_TYPE_OPTIONS, URGENCY_OPTIONS } from "./contact/types";
 import { useContactForm } from "./contact/useContactForm";
 
 const TOTAL_STEPS = 2;
@@ -24,6 +24,7 @@ export default function ContactForm() {
     handleStep1KeyDown,
     selectBudget,
     selectCompanySize,
+    selectSolutionType,
     selectUrgency,
     nextStep,
     prevStep,
@@ -143,6 +144,28 @@ export default function ContactForm() {
               enterKeyHint="send"
               optional
             />
+
+            <div className="space-y-1.5">
+              <label
+                htmlFor="solutionType"
+                className="flex items-center justify-between text-sm font-medium text-foreground"
+              >
+                <span>¿Qué necesitas resolver?</span>
+                <span className="text-xs font-normal">Opcional</span>
+              </label>
+              <select
+                id="solutionType"
+                name="solutionType"
+                value={formData.solutionType}
+                onChange={(e) => selectSolutionType(e.target.value)}
+                className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm text-foreground transition-all focus:border-primary focus:ring-1 focus:ring-primary"
+              >
+                <option value="">Selecciona una opción</option>
+                {SOLUTION_TYPE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+            </div>
 
             <div className="space-y-1.5">
               <label

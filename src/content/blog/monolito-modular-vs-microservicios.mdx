@@ -1,0 +1,216 @@
+---
+title: "Monolito modular vs microservicios: cómo elegir arquitectura sin sobreingeniería"
+description: "Guía para decidir entre monolito modular y microservicios según equipo, despliegue, escala, datos y coste operativo. Con señales concretas para separar servicios."
+publishDate: "2026-07-30"
+draft: false
+tags: ["arquitectura de software", "monolito modular", "microservicios", "escalabilidad", "backend", "decisión tecnológica"]
+resourceType: "guia"
+buyerStage: "consideration"
+author: "Gerard Martínez"
+faqs:
+  - question: "¿Un monolito modular puede escalar?"
+    answer: "Sí. Puede ejecutarse en varias instancias y atender volúmenes altos. Su límite aparece cuando distintas partes necesitan escalar, desplegarse o evolucionar de forma independiente."
+  - question: "¿Cuándo merece la pena usar microservicios?"
+    answer: "Cuando existen límites de dominio estables, varios equipos autónomos, necesidades de despliegue independiente o perfiles de escala muy diferentes entre módulos, y la organización puede asumir observabilidad y operación distribuida."
+  - question: "¿Es difícil pasar de un monolito modular a microservicios?"
+    answer: "Es trabajo relevante, pero unos módulos bien separados y contratos claros facilitan extraer servicios. Es mucho más difícil separar un monolito sin límites internos."
+  - question: "¿Microservicios significa usar Kubernetes?"
+    answer: "No. Los microservicios pueden desplegarse en diferentes plataformas. Kubernetes resuelve parte de la orquestación, pero también añade una capa operativa que no todos los equipos necesitan."
+---
+
+import BlogCTA from "../../components/blog/BlogCTA.astro";
+
+Muchas decisiones de arquitectura nacen de una pregunta equivocada: “¿Qué usan las empresas grandes?”. La pregunta útil es otra: **¿qué complejidad necesita nuestro producto y qué complejidad puede operar nuestro equipo?**
+
+Los microservicios resuelven problemas reales de autonomía, despliegue y escala. También convierten llamadas internas en comunicaciones de red, transacciones locales en consistencia distribuida y un despliegue en muchos. Adoptarlos antes de tener esos problemas no prepara una aplicación para crecer: adelanta el coste de una escala que quizá nunca llegue.
+
+---
+
+## Qué es un monolito modular
+
+Un monolito modular se despliega como una sola unidad, pero el código está dividido en módulos con responsabilidades y límites explícitos.
+
+Por ejemplo, un ERP puede tener módulos de:
+
+- Clientes.
+- Presupuestos.
+- Operaciones.
+- Facturación.
+- Notificaciones.
+- Informes.
+
+Cada módulo posee su lógica y expone contratos al resto. Compartir proceso o base de datos no obliga a mezclar responsabilidades.
+
+La palabra importante no es “monolito”. Es **modular**. Un archivo de 40.000 líneas y una aplicación organizada por dominios pueden desplegarse igual, pero su capacidad de evolucionar no tiene nada que ver.
+
+---
+
+## Qué cambia con microservicios
+
+En una arquitectura de microservicios, varias capacidades del negocio viven en servicios desplegables de forma independiente. Cada servicio debería poder evolucionar sin obligar a desplegar los demás y controlar su propio modelo de dominio.
+
+Eso permite:
+
+- Escalar solo el módulo que recibe más carga.
+- Desplegar equipos y servicios a ritmos distintos.
+- Aislar ciertos fallos.
+- Elegir tecnologías específicas cuando existe una razón fuerte.
+
+También obliga a resolver:
+
+- Comunicación síncrona y asíncrona.
+- Versionado de contratos.
+- Reintentos e idempotencia.
+- Observabilidad distribuida.
+- Consistencia entre datos.
+- Gestión de secretos, redes y despliegues múltiples.
+
+La documentación de Microsoft señala precisamente estos costes: al pasar a microservicios aparecen event buses, resiliencia de mensajes, reintentos y consistencia eventual, entre otras piezas.
+
+---
+
+## Comparativa práctica
+
+| Criterio | Monolito modular | Microservicios |
+|---|---|---|
+| Despliegue | Uno | Varios e independientes |
+| Llamadas entre módulos | En proceso | Red o mensajería |
+| Transacciones | Sencillas dentro de una base de datos | Requieren coordinación o consistencia eventual |
+| Observabilidad | Logs y métricas centralizados | Trazas y correlación entre servicios |
+| Escalado | Se replica la aplicación completa | Cada servicio puede escalar por separado |
+| Velocidad inicial | Alta | Menor por infraestructura y contratos |
+| Autonomía de equipos | Limitada por el despliegue común | Alta si los límites están bien diseñados |
+| Coste operativo | Bajo o medio | Medio o alto |
+
+---
+
+## Cinco preguntas que deciden de verdad
+
+### 1. ¿Cuántos equipos despliegan el producto?
+
+Con un equipo pequeño, coordinar cambios dentro de un repositorio suele ser más fácil que operar varios servicios. Con muchos equipos que se bloquean por un despliegue compartido, la independencia empieza a tener valor.
+
+Microservicios son tanto una decisión organizativa como técnica.
+
+### 2. ¿Las partes escalan de forma diferente?
+
+Si facturación procesa un lote mensual pesado y el resto del sistema recibe tráfico estable, separar ese trabajo puede evitar escalar toda la aplicación. Si todos los módulos tienen un perfil parecido, replicar el monolito suele ser suficiente.
+
+### 3. ¿Los límites del dominio son estables?
+
+Separar servicios antes de entender el negocio crea fronteras equivocadas. Mover código entre módulos de un proceso es barato; mover responsabilidades entre servicios con bases de datos y APIs propias no lo es.
+
+En un producto nuevo, los límites suelen descubrirse mientras se aprende. Por eso un monolito modular es una buena arquitectura de aprendizaje.
+
+### 4. ¿Necesitas despliegues independientes?
+
+La capacidad de desplegar un servicio sin tocar el resto es una ventaja solo si el equipo realmente necesita ritmos diferentes. Si todo se prueba y publica junto, varios pipelines pueden ser ceremonia sin beneficio.
+
+### 5. ¿Puedes operar un sistema distribuido?
+
+No basta con construir servicios. Hay que responder:
+
+- ¿Cómo seguimos una operación a través de tres servicios?
+- ¿Qué pasa si el segundo servicio falla después de que el primero confirme?
+- ¿Cómo se despliega un cambio de contrato sin romper consumidores?
+- ¿Quién recibe una alerta a las tres de la mañana?
+
+Si estas preguntas no tienen dueño, la arquitectura no está lista.
+
+---
+
+## Nuestra opción por defecto
+
+Para un MVP, backoffice o ERP con un equipo pequeño, empezamos normalmente por un **monolito modular**:
+
+1. Módulos organizados por capacidad de negocio.
+2. Dependencias en una dirección conocida.
+3. Contratos explícitos entre módulos.
+4. Trabajos asíncronos para procesos pesados.
+5. Métricas que indiquen dónde está el límite real.
+
+No es una renuncia a escalar. Es aplazar una separación costosa hasta tener evidencia.
+
+En [BitácoraERP](/projects/bitacora-erp), por ejemplo, facturación debía estar claramente separada de clientes y operaciones por sus reglas fiscales. Esa separación lógica era imprescindible; convertir cada módulo en un servicio independiente no era el objetivo del proyecto.
+
+---
+
+## Señales para extraer un servicio
+
+Una parte del monolito se convierte en buena candidata cuando confluyen varias señales:
+
+- Consume recursos muy distintos al resto.
+- Cambia con una frecuencia propia.
+- Tiene un límite de dominio claro.
+- Puede poseer sus datos sin consultas cruzadas constantes.
+- Necesita un nivel de disponibilidad diferente.
+- Un equipo puede operarla de principio a fin.
+- Los fallos del módulo deben aislarse.
+
+Una sola señal rara vez justifica la extracción. “Este módulo tiene mucho código” no es suficiente.
+
+---
+
+## Cómo preparar un monolito para dividirlo
+
+### Organiza por dominio, no por tipo técnico
+
+Evita carpetas globales de controladores, servicios y repositorios donde todas las capacidades se mezclan. Agrupa clientes con su lógica y facturación con la suya.
+
+### Prohíbe accesos laterales a datos
+
+Si cualquier módulo consulta cualquier tabla, no existen límites reales. Haz que el acceso pase por el contrato del módulo propietario.
+
+### Define eventos de negocio
+
+“Factura emitida” es más estable que “llamar a esta función interna”. Los eventos permiten desacoplar procesos y más adelante pueden viajar por una cola.
+
+### Mide antes de separar
+
+Registra latencia, errores, carga y tiempos de ejecución. Sin datos, no sabrás si el problema requiere un servicio o solo un índice de base de datos.
+
+### Documenta la decisión
+
+Un [ADR](/blog/como-documentar-decisiones-arquitectura-adr) debe explicar por qué el sistema empieza como monolito y qué señales activarían una separación. Así la decisión no se convierte en dogma.
+
+---
+
+## El patrón de evolución
+
+La ruta de menor riesgo suele ser:
+
+1. Construir un monolito modular.
+2. Observar límites y cargas reales.
+3. Extraer primero una capacidad periférica y poco acoplada.
+4. Crear un contrato estable.
+5. Mover la propiedad de sus datos.
+6. Operar el servicio y aprender antes de extraer el siguiente.
+
+Es una aplicación del patrón Strangler Fig: el sistema nuevo crece alrededor de una parte existente sin exigir un cambio total. En la migración de [IFCO Systems](/projects/ifco) aplicamos el mismo principio de transición progresiva: sistemas en paralelo, reconciliación continua y relevo por fases.
+
+---
+
+## Decisión final
+
+El monolito modular optimiza la velocidad de aprendizaje y la simplicidad operativa. Los microservicios optimizan la autonomía cuando el dominio, la organización y la escala ya exigen independencia.
+
+Empieza por el primero salvo que puedas nombrar un problema concreto que el segundo resuelva hoy. Y deja por escrito qué evidencia haría cambiar la decisión mañana.
+
+---
+
+## Fuentes y documentación oficial
+
+- [Arquitecturas comunes de aplicaciones web — Microsoft](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures)
+- [Diseñar una arquitectura de microservicios — Microsoft Azure](https://learn.microsoft.com/en-us/azure/architecture/microservices/design/)
+- [Identificar límites de microservicios — Microsoft Azure](https://learn.microsoft.com/en-us/azure/architecture/microservices/model/microservice-boundaries)
+- [Evaluación de preparación para microservicios — Microsoft Azure](https://learn.microsoft.com/en-us/azure/architecture/guide/technology-choices/microservices-assessment)
+
+---
+
+## Lecturas relacionadas
+
+- [Modernizar sistemas legacy sin parar el negocio](/blog/modernizacion-sistemas-legacy)
+- [Integración de sistemas y APIs](/blog/integracion-de-sistemas-apis)
+- [Caso IFCO Systems](/projects/ifco)
+
+<BlogCTA variant="legacy" />

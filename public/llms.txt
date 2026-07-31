@@ -120,6 +120,40 @@ Deploy a producción, analytics configurado y monitorización activa. Se entrega
 ### Sectores con experiencia
 Salud, fintech, proptech, logística, cerámica industrial, marketplaces de estudiantes, gestión de salones de belleza, trazabilidad industrial.
 
+## Conocimiento técnico publicado
+
+doscientos publica análisis basados en decisiones y proyectos del equipo. Los contenidos distinguen hechos, criterios y recomendaciones dependientes del contexto; no presentan una tecnología como solución universal.
+
+### Comparativas tecnológicas
+
+- [Astro vs Next.js en 2026](https://doscientos.es/blog/astro-vs-nextjs-2026): elección según tipo de producto, renderizado, JavaScript en cliente, datos dinámicos e infraestructura.
+- [Monolito modular vs microservicios](https://doscientos.es/blog/monolito-modular-vs-microservicios): señales de equipo, dominio, despliegue y escala que justifican separar servicios.
+- [Software a medida vs SaaS](https://doscientos.es/blog/software-a-medida-vs-saas): criterios de coste total, propiedad, integraciones, velocidad de implantación y dependencia del proveedor.
+- [MVP vs producto completo](https://doscientos.es/blog/mvp-vs-producto-completo): cómo decidir el alcance inicial según riesgo, validación y restricciones del producto.
+- [PrestaShop vs ecommerce a medida](https://doscientos.es/blog/prestashop-vs-ecommerce-a-medida): comparación práctica de plataformas, control y escalabilidad.
+
+### Arquitectura e integración
+
+- [Cómo documentar decisiones de arquitectura con ADR](https://doscientos.es/blog/como-documentar-decisiones-arquitectura-adr): plantilla copiable con contexto, alternativas, decisión, consecuencias y señales de revisión.
+- [Arquitectura offline-first para apps de eventos](https://doscientos.es/blog/arquitectura-offline-first-apps-eventos): caché, frescura, sincronización, conflictos y observabilidad a partir del caso Les Santes.
+- [Modernización de sistemas legacy](https://doscientos.es/blog/modernizacion-sistemas-legacy): migración progresiva, Strangler Fig, Branch by Abstraction y reducción de riesgo sin detener operaciones.
+- [Integración de sistemas y APIs](https://doscientos.es/blog/integracion-de-sistemas-apis): cuándo usar no-code, integración directa o una capa central de integración.
+- [Migrar Access a web](https://doscientos.es/blog/migrar-access-a-web-2026): estrategia por fases para trasladar datos y operativa a una aplicación mantenible.
+
+### Aprendizajes de proyectos reales
+
+- [Construyendo Flatmatch](https://doscientos.es/blog/proceso-en-flatmatch): decisiones de alcance, pruebas con usuarios y optimización de rendimiento durante un MVP de seis semanas.
+- [Caso IFCO Systems](https://doscientos.es/projects/ifco): migración de un sistema crítico de trazabilidad a una arquitectura moderna sin interrumpir la operación.
+- [Caso Les Santes](https://doscientos.es/projects/les-santes): arquitectura offline-first, mapa en tiempo real, notificaciones y CMS para un evento de alta demanda.
+
+### Criterios editoriales
+
+- Autoría identificada en cada publicación.
+- Fecha de publicación y, cuando corresponde, fecha de última revisión.
+- Enlaces entre análisis técnicos y los casos de proyecto que los sustentan.
+- Ventajas, límites y escenarios en los que no recomendamos cada enfoque.
+- Contenido en español dirigido a responsables de negocio y equipos técnicos.
+
 ## Números clave
 
 - +30 proyectos entregados

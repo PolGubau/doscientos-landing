@@ -1,0 +1,109 @@
+---
+import { getCollection } from "astro:content";
+import { ArrowUpRight, BookOpenText, GitBranch, Scale, Wrench } from "@lucide/astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+
+const editorial = [
+  {
+    slug: "astro-vs-nextjs-2026",
+    eyebrow: "Comparativa tecnológica",
+    icon: Scale,
+  },
+  {
+    slug: "monolito-modular-vs-microservicios",
+    eyebrow: "Decisión de arquitectura",
+    icon: GitBranch,
+  },
+  {
+    slug: "como-documentar-decisiones-arquitectura-adr",
+    eyebrow: "Plantilla práctica",
+    icon: Wrench,
+  },
+  {
+    slug: "arquitectura-offline-first-apps-eventos",
+    eyebrow: "Aprendizajes de proyecto",
+    icon: BookOpenText,
+  },
+] as const;
+
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+const postsById = new Map(posts.map((post) => [post.id, post]));
+const featuredPosts = editorial.flatMap((item) => {
+  const post = postsById.get(item.slug);
+  return post ? [{ ...item, post }] : [];
+});
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("es-ES", {
+    month: "short",
+    year: "numeric",
+  });
+---
+
+<section id="criterio-tecnico" class="landing-section">
+  <SectionHeader
+    title="Publicamos cómo decidimos, no solo qué entregamos"
+    description="Análisis técnicos, comparativas de tecnología, decisiones de arquitectura y aprendizajes de proyectos reales. Contenido con criterios, límites y contexto para que puedas tomar mejores decisiones de software."
+    linkText="Ver todos los artículos"
+    linkHref="/blog"
+  />
+
+  <div class="grid gap-4 md:grid-cols-2">
+    {
+      featuredPosts.map(({ post, eyebrow, icon: Icon }, index) => {
+        const lastReviewed = post.data.updatedDate ?? post.data.publishDate;
+
+        return (
+          <article
+            class="group relative flex min-h-72 flex-col overflow-hidden rounded-[1.75rem] border border-muted bg-accent p-6 shadow-pastel transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl md:p-8"
+            data-reveal="bottom"
+            data-speed="normal"
+            data-easing="smooth"
+            data-delay={(index % 2) * 100}
+          >
+            <div class="mb-8 flex items-center justify-between gap-4">
+              <span class="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary">
+                <Icon class="size-4" aria-hidden="true" />
+                {eyebrow}
+              </span>
+              <time
+                datetime={lastReviewed.toISOString()}
+                class="text-xs text-muted-foreground"
+              >
+                Revisado {formatDate(lastReviewed)}
+              </time>
+            </div>
+
+            <h3 class="max-w-xl text-2xl font-semibold leading-tight text-pretty md:text-3xl">
+              <a
+                href={`/blog/${post.id}`}
+                class="after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
+              >
+                {post.data.title}
+              </a>
+            </h3>
+
+            <p class="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground text-pretty md:text-base">
+              {post.data.description}
+            </p>
+
+            <div class="mt-auto flex items-end justify-between gap-4 pt-8">
+              <span class="text-sm font-medium text-foreground">
+                Leer el análisis
+              </span>
+              <span class="flex size-10 items-center justify-center rounded-full bg-foreground text-background transition-transform duration-300 group-hover:rotate-45">
+                <ArrowUpRight class="size-5" aria-hidden="true" />
+              </span>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+
+  <p class="mx-auto max-w-3xl text-center text-sm leading-relaxed text-muted-foreground text-pretty">
+    Cada publicación parte de trabajo realizado por el equipo de doscientos.
+    Cuando una recomendación depende del contexto, explicamos también cuándo no
+    la aplicaríamos.
+  </p>
+</section>

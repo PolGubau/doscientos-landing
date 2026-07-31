@@ -1,0 +1,287 @@
+---
+title: "Cómo documentar decisiones de arquitectura: plantilla ADR con ejemplos"
+description: "Plantilla práctica para escribir Architecture Decision Records: contexto, opciones, decisión, consecuencias y señales de revisión. Incluye ejemplos reales."
+publishDate: "2026-07-29"
+draft: false
+tags: ["ADR", "arquitectura de software", "documentación técnica", "decisiones técnicas", "plantilla", "equipos de desarrollo"]
+resourceType: "plantilla"
+buyerStage: "awareness"
+author: "doscientos"
+leadMagnet:
+  title: "Plantilla ADR para decisiones de arquitectura"
+  description: "Copia una estructura breve para documentar contexto, alternativas, consecuencias y señales de revisión."
+  cta: "Ver plantilla"
+  href: "/blog/como-documentar-decisiones-arquitectura-adr#plantilla"
+faqs:
+  - question: "¿Qué significa ADR en arquitectura de software?"
+    answer: "Architecture Decision Record: un documento corto que registra una decisión arquitectónica importante, su contexto y sus consecuencias."
+  - question: "¿Cuándo hay que escribir un ADR?"
+    answer: "Cuando una decisión afecta estructura, requisitos no funcionales, dependencias, interfaces, datos o una tecnología difícil de cambiar."
+  - question: "¿Se debe editar un ADR aceptado?"
+    answer: "Es preferible mantenerlo como registro histórico. Si la decisión cambia, se crea un ADR nuevo que sustituye al anterior y explica el nuevo contexto."
+  - question: "¿Cuánto debe ocupar un ADR?"
+    answer: "Lo suficiente para entender el porqué sin reconstruir meses de conversaciones. En muchos equipos cabe en una o dos páginas."
+---
+
+import BlogCTA from "../../components/blog/BlogCTA.astro";
+
+Seis meses después de lanzar un proyecto, alguien pregunta: “¿Por qué usamos esta base de datos?”, “¿por qué no hay cuentas de usuario?” o “¿por qué este proceso funciona en segundo plano?”.
+
+Si la respuesta vive en la memoria de una persona o en un hilo perdido de Slack, el equipo vuelve a discutir desde cero. Un **Architecture Decision Record (ADR)** evita ese problema con un documento breve: qué contexto existía, qué se decidió y qué consecuencias se aceptaron.
+
+---
+
+## Qué es un ADR
+
+Un ADR registra una decisión significativa de arquitectura. No documenta cada detalle de implementación ni pretende predecir el futuro.
+
+Según la guía de AWS, como mínimo debe incluir:
+
+- El contexto.
+- La decisión.
+- Las consecuencias.
+
+Una colección de ADR forma un registro de decisiones. Leyendo sus títulos, una persona nueva puede entender rápidamente la dirección técnica del producto; entrando en cada documento, puede reconstruir el razonamiento.
+
+---
+
+## Qué decisiones merecen un ADR
+
+Escribe uno cuando la decisión sea difícil o costosa de revertir, afecte a varios módulos o cambie atributos importantes del sistema.
+
+Ejemplos:
+
+- Monolito modular o microservicios.
+- Base de datos relacional o documental.
+- Consistencia inmediata o eventual.
+- Aplicación offline-first o dependiente de red.
+- Proveedor de autenticación.
+- Contrato de una API pública.
+- Framework principal.
+- Política de retención de datos.
+- Objetivos de disponibilidad y recuperación.
+
+No hace falta un ADR para renombrar una variable ni para instalar una utilidad que puede sustituirse en una tarde.
+
+---
+
+## El error más común
+
+Un ADR no es una defensa escrita después de tomar una decisión. Tampoco una especificación de 30 páginas.
+
+Su valor está en hacer explícito el intercambio:
+
+> Elegimos A sobre B en este contexto, obtenemos estas ventajas y aceptamos estos costes.
+
+Si el documento solo enumera ventajas de la opción elegida, es material comercial, no una decisión de arquitectura.
+
+---
+
+<div id="plantilla"></div>
+
+## Plantilla ADR lista para copiar
+
+```md
+# ADR-000: [Decisión en una frase]
+
+- Estado: Propuesto | Aceptado | Rechazado | Sustituido
+- Fecha: AAAA-MM-DD
+- Responsables:
+- Sustituye a:
+- Sustituido por:
+
+## Contexto
+
+¿Qué problema debemos resolver?
+¿Qué restricciones existen?
+¿Qué atributos importan: coste, plazo, seguridad, disponibilidad,
+privacidad, rendimiento, capacidad del equipo?
+
+## Opciones consideradas
+
+### Opción A
+- Ventajas:
+- Inconvenientes:
+- Riesgos:
+
+### Opción B
+- Ventajas:
+- Inconvenientes:
+- Riesgos:
+
+## Decisión
+
+Elegimos [opción] porque [razón vinculada al contexto].
+
+## Consecuencias
+
+### Positivas
+- ...
+
+### Negativas o costes aceptados
+- ...
+
+## Validación
+
+¿Cómo sabremos si la decisión funciona?
+¿Qué métricas o pruebas usaremos?
+
+## Señales para revisarla
+
+Revisaremos la decisión si ocurre alguno de estos cambios:
+- ...
+```
+
+La última sección es especialmente importante. Convierte una decisión en una hipótesis revisable, no en una ley eterna.
+
+---
+
+## Ejemplo: arquitectura offline-first para un festival
+
+Este es un resumen de una decisión aplicada en [Les Santes](/projects/les-santes).
+
+### Contexto
+
+La aplicación se usa durante eventos en calles con decenas de miles de personas. La cobertura puede degradarse justo cuando más se necesita consultar agenda, ubicaciones y cambios.
+
+### Opciones consideradas
+
+1. Consultar siempre la API: datos frescos, pero pantalla vacía si falla la red.
+2. Cachear solo recursos visuales: mejora la carga, pero no garantiza acceso a la agenda.
+3. Descargar los datos esenciales y usar red para actualizar: contenido disponible con una posible ventana de antigüedad.
+
+### Decisión
+
+Adoptar un modelo offline-first para agenda y recursos esenciales. Mostrar la antigüedad del contenido guardado y sincronizar al recuperar conexión.
+
+### Consecuencias positivas
+
+- La función principal sigue disponible sin cobertura.
+- Menos dependencia de picos de infraestructura.
+- La experiencia se degrada de forma explícita, no con un spinner infinito.
+
+### Costes aceptados
+
+- Hay que definir caducidad y estrategia de actualización.
+- Un dato puede no ser el último durante una interrupción.
+- El almacenamiento local y las migraciones de esquema necesitan pruebas.
+
+### Señales para revisar
+
+- Si la agenda pasa a depender de datos sensibles por usuario.
+- Si el volumen supera el almacenamiento razonable del dispositivo.
+- Si la precisión en tiempo real se vuelve más importante que la disponibilidad.
+
+Ese último bloque permite entender que offline-first fue correcto para ese contexto, no una recomendación universal.
+
+---
+
+## Ejemplo: no crear cuentas de usuario
+
+Otra decisión real del mismo proyecto fue evitar autenticación.
+
+### Contexto
+
+La app ofrece agenda, mapa, favoritos locales y avisos. Ninguna función exige identificar a la persona. Crear cuentas añadiría fricción, tratamiento de datos personales, recuperación de contraseña y superficie de seguridad.
+
+### Decisión
+
+No implementar cuentas. Guardar preferencias y favoritos en el dispositivo.
+
+### Consecuencias
+
+- Entrada inmediata y política de privacidad sencilla.
+- Menos backend y menos riesgo.
+- Los favoritos no se sincronizan entre dispositivos.
+- Si se desinstala la app, se pierden preferencias.
+
+Documentar esta ausencia es útil porque evita que una futura persona añada login “porque todas las apps lo tienen” sin revisar el intercambio.
+
+---
+
+## Ciclo de vida de una decisión
+
+Una convención sencilla:
+
+1. **Propuesto**: abierto a comentarios.
+2. **Aceptado**: el equipo se compromete con la decisión.
+3. **Rechazado**: se conserva para recordar por qué no se eligió.
+4. **Sustituido**: un ADR nuevo responde a un contexto nuevo.
+
+AWS recomienda tratar los ADR aceptados como inmutables. Si la decisión cambia, se crea un registro nuevo que sustituye al anterior. Así se conserva la historia sin reescribir el pasado.
+
+---
+
+## Dónde guardar los ADR
+
+La opción más práctica suele ser el mismo repositorio del código:
+
+```text
+docs/
+  adr/
+    0001-monolito-modular.md
+    0002-autenticacion-externa.md
+    0003-cola-de-trabajos.md
+```
+
+Ventajas:
+
+- Cambian mediante revisión de código.
+- Se versionan junto al producto.
+- Son accesibles sin otra herramienta.
+- Pueden enlazarse desde issues y pull requests.
+
+Un wiki también funciona si el equipo lo consulta de verdad. La herramienta importa menos que la visibilidad y el hábito.
+
+---
+
+## Cómo revisar un ADR sin crear una reunión eterna
+
+1. Comparte el documento antes de implementar.
+2. Da 10-15 minutos de lectura individual.
+3. Discute primero restricciones y consecuencias, no preferencias.
+4. Registra objeciones relevantes dentro del ADR.
+5. Decide un responsable.
+6. Acepta, rechaza o pide cambios.
+
+La guía de AWS propone precisamente una lectura dedicada antes de discutir. Reduce el sesgo de quien habla primero y obliga a que la decisión exista por escrito.
+
+---
+
+## Señales de un ADR débil
+
+- “Elegimos X porque es escalable.”
+- No incluye alternativas.
+- No menciona ningún inconveniente.
+- Confunde arquitectura con una lista de librerías.
+- No define qué se medirá.
+- No indica cuándo revisar la decisión.
+- Nadie sabe quién la aprobó.
+
+Sustituye adjetivos por restricciones. En vez de “necesitamos una base de datos rápida”, escribe “el percentil 95 de lectura debe mantenerse por debajo de 200 ms con 2.000 operaciones por minuto”. Entonces las opciones pueden compararse.
+
+---
+
+## El resultado
+
+Un buen ADR no garantiza una decisión correcta. Garantiza algo más realista: que el equipo sabe **por qué** la tomó, qué coste aceptó y cuándo debe reconsiderarla.
+
+Eso reduce discusiones repetidas, mejora el traspaso a otros equipos y convierte la arquitectura en un proceso observable.
+
+---
+
+## Fuentes y documentación oficial
+
+- [Proceso de Architecture Decision Records — AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html)
+- [Introducción a los ADR — AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/introduction.html)
+- [Ejemplo de ADR — AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/appendix.html)
+
+---
+
+## Lecturas relacionadas
+
+- [Monolito modular vs microservicios](/blog/monolito-modular-vs-microservicios)
+- [Modernización progresiva de sistemas legacy](/blog/modernizacion-sistemas-legacy)
+- [Caso Les Santes](/projects/les-santes)
+
+<BlogCTA variant="contact" />
