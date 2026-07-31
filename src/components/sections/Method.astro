@@ -58,8 +58,8 @@ const { method } = copy;
       <!-- Progress line (animated) -->
       <div
         id="progress-line"
-        class="block absolute left-4 lg:left-5 top-0 w-0.5 bg-primary transition-all duration-300"
-        style="height: 0%"
+        class="block absolute left-4 lg:left-5 top-0 w-0.5 bg-primary"
+        style="height: 0px"
       >
       </div>
       {
@@ -81,7 +81,7 @@ const { method } = copy;
               </div>
 
               {/* Content */}
-              <div class="flex-1 space-y-4 lg:pt-1">
+              <div class="step-content flex-1 space-y-4 lg:pt-1">
                 <div class="space-y-2">
                   <h3 class="text-xl lg:text-2xl font-semibold">
                     {step.title}
@@ -100,95 +100,63 @@ const { method } = copy;
 </section>
 
 <script>
-  let cachedPositions: {
-    containerTop: number;
-    maxHeight: number;
-    badgeCenters: number[];
-  } | null = null;
+  // Lightweight baseline for mobile / reduced-motion / no-desktop-GSAP.
+  // Uses IntersectionObserver (no scroll listener, no rAF loop) to grow the
+  // progress line and mark badges as "active" once passed. On desktop with
+  // motion allowed, gsap-animations.ts takes over with a smoother
+  // scroll-scrubbed version, so this baseline intentionally skips itself.
+  const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+  const prefersReduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
 
-  function refreshPositions() {
+  if (!isDesktop || prefersReduced) {
     const stepsContainer =
       document.querySelector(".method-step")?.parentElement;
-    const stepBadges = document.querySelectorAll(".step-badge");
-
-    if (!stepsContainer || stepBadges.length === 0) return;
-
-    const containerRect = stepsContainer.getBoundingClientRect();
-    const containerTop = containerRect.top + window.scrollY;
-
-    const badgeCenters = Array.from(stepBadges).map((badge) => {
-      const badgeRect = badge.getBoundingClientRect();
-      return badgeRect.top + window.scrollY + badgeRect.height / 2;
-    });
-
-    const lastBadgeCenter = badgeCenters[badgeCenters.length - 1];
-    const maxHeight = lastBadgeCenter - containerTop;
-
-    cachedPositions = {
-      containerTop,
-      maxHeight,
-      badgeCenters,
-    };
-  }
-
-  // Animate progress bar on scroll
-  function updateProgressBar() {
+    const badges = Array.from(
+      document.querySelectorAll<HTMLElement>(".step-badge"),
+    );
     const progressLine = document.getElementById("progress-line");
-    if (!progressLine || !cachedPositions) return;
 
-    const { containerTop, maxHeight, badgeCenters } = cachedPositions;
-    const scrollPosition = window.scrollY + window.innerHeight / 2;
+    if (stepsContainer && progressLine && badges.length > 0) {
+      let badgeCenters: number[] = [];
 
-    // Calculate current progress
-    const relativeScroll = scrollPosition - containerTop;
-    const currentHeight = Math.max(0, Math.min(maxHeight, relativeScroll));
+      const measure = () => {
+        const containerTop =
+          stepsContainer.getBoundingClientRect().top + window.scrollY;
+        badgeCenters = badges.map((badge) => {
+          const rect = badge.getBoundingClientRect();
+          return rect.top + window.scrollY + rect.height / 2 - containerTop;
+        });
+      };
+      measure();
 
-    // Set the height in pixels instead of percentage
-    progressLine.style.height = `${currentHeight}px`;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            const badge = entry.target as HTMLElement;
+            const index = badges.indexOf(badge);
+            if (index === -1) continue;
 
-    // Activate badges when progress line reaches them
-    const progressLineBottom = containerTop + currentHeight;
-    const stepBadges = document.querySelectorAll(".step-badge");
+            if (entry.isIntersecting) {
+              badge.classList.add("active");
+              progressLine.style.height = `${badgeCenters[index]}px`;
+            } else if (entry.boundingClientRect.top > 0) {
+              // Scrolled back above the viewport — retract to the previous step.
+              badge.classList.remove("active");
+              const prevCenter = badgeCenters[index - 1] ?? 0;
+              progressLine.style.height = `${prevCenter}px`;
+            }
+          }
+        },
+        { rootMargin: "-45% 0px -50% 0px", threshold: 0 },
+      );
 
-    stepBadges.forEach((badge, i) => {
-      const badgeCenter = badgeCenters[i];
+      for (const badge of badges) observer.observe(badge);
 
-      if (progressLineBottom >= badgeCenter) {
-        badge.classList.add("active");
-      } else {
-        badge.classList.remove("active");
-      }
-    });
+      window.addEventListener("resize", measure);
+    }
   }
-
-  // Update on scroll — throttled with requestAnimationFrame to avoid layout
-  // thrash on every scroll event.
-  let ticking = false;
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(() => {
-      updateProgressBar();
-      ticking = false;
-    });
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", () => {
-    refreshPositions();
-    updateProgressBar();
-  });
-
-  // Initial update
-  window.addEventListener("load", () => {
-    refreshPositions();
-    updateProgressBar();
-  });
-
-  // Also refresh after a short delay to account for layout shifts
-  setTimeout(() => {
-    refreshPositions();
-    updateProgressBar();
-  }, 1000);
 </script>
 
 <style>
@@ -201,5 +169,44 @@ const { method } = copy;
     background-color: var(--color-primary);
     color: var(--color-background);
     transform: scale(1.1);
+  }
+
+  #progress-line {
+    transition: height 0.4s ease;
+    box-shadow: 0 10px 18px -6px var(--color-primary);
+  }
+
+  /* Desktop-only "reading focus": gsap-animations.ts adds .gsap-ready once
+     ScrollTrigger takes over, so mobile/no-JS always shows full-brightness
+     text. #progress-line's own transition above is also disabled there
+     (GSAP drives it every frame instead). */
+  #method.gsap-ready #progress-line {
+    transition: none;
+  }
+
+  #method.gsap-ready .step-content {
+    opacity: 0.45;
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+
+  #method.gsap-ready .step-content.is-past {
+    opacity: 0.75;
+  }
+
+  #method.gsap-ready .step-content.active {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  #method.gsap-ready .step-content.active h3 {
+    color: var(--color-primary);
+    transition: color 0.5s ease;
+  }
+
+  #method.gsap-ready .step-badge.current {
+    box-shadow: 0 0 0 6px
+      color-mix(in srgb, var(--color-primary) 18%, transparent);
   }
 </style>

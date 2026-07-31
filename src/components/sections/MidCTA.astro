@@ -5,9 +5,12 @@ import Button from "../ui/Button.astro";
 <section class="px-6 max-w-4xl mx-auto w-full" data-reveal="bottom">
   <div
     class="bg-foreground text-background rounded-2xl px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6"
+    data-spotlight
   >
     <div class="space-y-1 text-center sm:text-left">
-      <p class="text-xl font-bold">¿Qué proceso deberías automatizar primero?</p>
+      <p class="text-xl font-bold">
+        ¿Qué proceso deberías automatizar primero?
+      </p>
       <p class="text-background/60 text-sm">
         Revisamos tu caso y te damos una prioridad clara, sin compromiso.
       </p>
@@ -16,6 +19,7 @@ import Button from "../ui/Button.astro";
       href="/diagnostico?ref=home-mid"
       class="shrink-0"
       aria-label="Pedir diagnóstico de procesos"
+      data-magnetic="0.35"
     >
       <Button
         size="lg"

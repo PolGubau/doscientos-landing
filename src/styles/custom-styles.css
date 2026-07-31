@@ -1,50 +1,86 @@
 .landing-section {
-	@apply max-w-7xl px-6 mx-auto w-full flex flex-col gap-10 justify-center items-center;
+  @apply max-w-7xl px-6 mx-auto w-full flex flex-col gap-10 justify-center items-center;
 }
 
 /* Panels standalone (ForWho, etc.) */
 .panel {
-	@apply flex flex-col gap-4 bg-accent rounded-3xl border border-muted/60 p-7;
+  @apply flex flex-col gap-4 bg-accent rounded-3xl border border-muted/60 p-7;
 }
 
 ul.bento {
-	li.panel {
-		@apply flex flex-col gap-4 bg-accent rounded-3xl border border-muted/60 shadow-pastel p-7;
-		h3 {
-			@apply text-2xl font-bold text-pretty;
-		}
-		p {
-			@apply text-sm text-muted-foreground max-w-sm text-pretty;
-		}
-	}
+  li.panel {
+    @apply flex flex-col gap-4 bg-accent rounded-3xl border border-muted/60 shadow-pastel p-7;
+
+    h3 {
+      @apply text-2xl font-bold text-pretty;
+    }
+
+    p {
+      @apply text-sm text-muted-foreground max-w-sm text-pretty;
+    }
+  }
+}
+
+/* ── Cursor spotlight ───────────────────────────────────────────────────
+   Cards opted in with [data-spotlight] get a soft highlight that follows the
+   pointer. gsap-animations.ts only feeds --mx/--my (desktop, motion allowed);
+   without JS the gradient simply stays centered and the hover fade still
+   works, so nothing depends on the script. */
+[data-spotlight] {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-spotlight]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in srgb, var(--color-primary) 22%, transparent),
+      transparent 68%);
+}
+
+[data-spotlight]:hover::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-spotlight]::after {
+    display: none;
+  }
 }
 
 /* ── Project prose: centralized image style ─────────────────────────── */
 .prose img {
-	@apply rounded-2xl border border-muted/60 block w-full;
-	box-shadow: var(--shadow-pastel-sm);
+  @apply rounded-2xl border border-muted/60 block w-full;
+  box-shadow: var(--shadow-pastel-sm);
 }
 
 /* Scroll-reveal: sólo activa cuando JS añade el atributo */
 .prose img[data-scroll-reveal] {
-	opacity: 0;
-	transform: translateY(20px);
-	transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s
-		cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .prose img[data-scroll-reveal].img-visible {
-	opacity: 1;
-	transform: none;
+  opacity: 1;
+  transform: none;
 }
 
 /* medium-zoom overlay: por encima de la navbar (z-50) */
 .medium-zoom-overlay {
-	z-index: 100 !important;
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
+  z-index: 100 !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
+
 .medium-zoom-image--opened {
-	z-index: 101 !important;
-	border-radius: 12px;
+  z-index: 101 !important;
+  border-radius: 12px;
 }
