@@ -28,6 +28,16 @@ export const URGENCY_OPTIONS = [
 	"Explorando",
 ] as const;
 
+// La landing lo pregunta para que el backoffice pueda separar software a medida
+// de webs paquetizadas sin depender de interpretar las notas a mano.
+export const SOLUTION_TYPE_OPTIONS = [
+	"Software a medida / backoffice",
+	"Web para mi negocio",
+	"E-commerce o tienda online",
+	"Automatización de un proceso",
+	"Todavía no lo sé",
+] as const;
+
 // Mensajes de error según el código de respuesta de la acción
 export const ERROR_MESSAGES: Record<number, string> = {
 	400: "Revisa los datos del formulario e inténtalo de nuevo.",
@@ -43,6 +53,7 @@ export const EMPTY_FORM = {
 	email: "",
 	phone: "",
 	company: "",
+	solutionType: "",
 	companySize: "",
 	urgency: "",
 	budget: "",

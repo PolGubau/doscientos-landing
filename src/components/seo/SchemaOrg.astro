@@ -1,309 +1,134 @@
 ---
+import type { BlogPosting, CreativeWork, FAQPage, Organization, ProfessionalService, Service, WebSite, WithContext } from "schema-dts";
 import { branding } from "~/config/branding";
+import { company } from "~/config/company";
+import { absoluteUrl, serializeJsonLd, type JsonLdSchema } from "~/shared/lib/schema/jsonLd";
 
 interface Props {
   type?: "organization" | "website" | "article" | "service" | "project";
-  article?: {
-    title?: string;
-    description?: string;
-    image?: string;
-    datePublished?: string;
-    dateModified?: string;
-    author?: string;
-  };
-  service?: {
-    name: string;
-    description: string;
-    image?: string;
-    url?: string;
-    serviceType?: string;
-    price?: number;
-    priceCurrency?: string;
-  };
-  project?: {
-    name: string;
-    description: string;
-    image?: string;
-    client?: string;
-    datePublished?: string;
-    url?: string;
-    services?: string[];
-  };
-  faqs?: {
-    question: string;
-    answer: string;
-  }[];
-  localBusiness?: {
-    name?: string;
-    description?: string;
-    image?: string;
-    telephone?: string;
-    address?: {
-      streetAddress?: string;
-      postalCode?: string;
-      addressLocality?: string;
-      addressRegion?: string;
-    };
-    geo?: {
-      latitude: string;
-      longitude: string;
-    };
-  };
+  article?: { title?: string; description?: string; image?: string; datePublished?: string; dateModified?: string; author?: string };
+  service?: { name: string; description: string; image?: string; url?: string; serviceType?: string; price?: number; priceCurrency?: string };
+  project?: { name: string; description: string; image?: string; client?: string; datePublished?: string; url?: string; services?: string[] };
+  faqs?: { question: string; answer: string }[];
 }
 
-const {
-  type = "organization",
-  article,
-  service,
-  project,
-  faqs,
-  localBusiness,
-} = Astro.props;
+const { type = "organization", article, service, project, faqs } = Astro.props;
+const base = new URL(Astro.site?.toString() ?? branding.url);
+const baseUrl = base.toString().replace(/\/$/, "");
+const organizationId = `${baseUrl}/#organization`;
+const addressId = `${baseUrl}/#address`;
+const websiteId = `${baseUrl}/#website`;
+const currentUrl = new URL(Astro.url.pathname, base).toString();
 
-// Strip trailing slash — Astro.site returns "https://doscientos.es/" which causes double slashes in paths
-const baseUrl = (Astro.site?.toString() ?? "https://doscientos.es").replace(
-  /\/$/,
-  "",
-);
-
-// Organization + LocalBusiness Schema (siempre presente)
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
-  "@id": `${baseUrl}/#organization`,
-  name: localBusiness?.name || branding.name,
-  legalName: branding.legalName,
-  taxID: branding.legal.nif,
-  vatID: branding.legal.nif,
-  url: baseUrl,
-  logo: `${baseUrl}/og-image.png`,
-  image: localBusiness?.image || `${baseUrl}/og-image.png`,
-  description: localBusiness?.description || branding.slogan,
-  email: branding.contact.email,
-  telephone:
-    localBusiness?.telephone || branding.contact.whatsapp.displayNumber,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress:
-      localBusiness?.address?.streetAddress || branding.legal.address.street,
-    postalCode:
-      localBusiness?.address?.postalCode || branding.legal.address.postalCode,
-    addressLocality:
-      localBusiness?.address?.addressLocality || branding.legal.address.city,
-    addressRegion:
-      localBusiness?.address?.addressRegion || branding.legal.address.province,
-    addressCountry: "ES",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: localBusiness?.geo?.latitude || "41.3851",
-    longitude: localBusiness?.geo?.longitude || "2.1734",
-  },
-  areaServed: [
-    { "@type": "City", name: "Barcelona" },
-    { "@type": "City", name: "Madrid" },
-    { "@type": "City", name: "Castellón de la Plana" },
-    { "@type": "Country", name: "España" },
-  ],
-  priceRange: "€€€",
-  openingHours: "Mo-Fr 09:00-18:00",
-  testimonial: [
-    {
-      "@type": "Quotation",
-      author: { "@type": "Person", name: "Sofia Martínez" },
-      text:
-        "No solo programan - entienden de producto. Nos ayudaron a priorizar lo que importaba y en 6 semanas teníamos 500+ usuarios y €50K en funding.",
-    },
-    {
-      "@type": "Quotation",
-      author: { "@type": "Person", name: "Michael Schmidt" },
-      text:
-        "Nadie se atrevía a tocar nuestro sistema de 15 años. doscientos lo migró sin parar el negocio ni un minuto. Cero downtime, +40% de rendimiento.",
-    },
-    {
-      "@type": "Quotation",
-      author: { "@type": "Person", name: "Carlos Ruiz" },
-      text:
-        "De 3 horas a 15 minutos. El sistema se pagó solo en 2 meses. Y cuando tenemos dudas, responden en el día.",
-    },
-  ],
-  sameAs: [
-    branding.social.linkedin,
-    branding.social.twitter,
-    branding.social.github,
-  ],
+const address = {
+  "@type": "PostalAddress",
+  "@id": addressId,
+  ...company.address,
 };
 
-// Website Schema
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": organizationId,
+  name: branding.name,
+  legalName: branding.legalName,
+  taxID: branding.legal.nif,
+  url: baseUrl,
+  logo: absoluteUrl(branding.assets.logo, base),
+  image: absoluteUrl(branding.assets.thumbnail, base),
+  description: branding.slogan,
+  email: branding.contact.email,
+  telephone: branding.contact.whatsapp.displayNumber,
+  address: { "@id": addressId },
+  sameAs: Object.values(branding.social),
+} satisfies WithContext<Organization>;
+
+const professionalServiceSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": `${baseUrl}/#professional-service`,
+  name: branding.name,
+  url: baseUrl,
+  provider: { "@id": organizationId },
+  address,
+  geo: { "@type": "GeoCoordinates", latitude: company.geo.latitude, longitude: company.geo.longitude },
+  hasMap: "https://www.google.com/maps/search/?api=1&query=Premi%C3%A0+de+Mar",
+  areaServed: company.serviceAreas.map((name) => ({ "@type": name === "España" ? "Country" : "Place", name })),
+  contactPoint: company.contactPoints,
+  openingHoursSpecification: company.openingHours,
+} as WithContext<ProfessionalService>;
+
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": websiteId,
   name: branding.name,
   url: baseUrl,
   description: branding.slogan,
-  publisher: {
-    "@type": "Organization",
-    name: branding.name,
-    logo: {
-      "@type": "ImageObject",
-      url: `${baseUrl}/og-image.png`,
-    },
-  },
-  potentialAction: {
-    "@type": "SearchAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: `${baseUrl}/recursos?q={search_term_string}`,
-    },
-    "query-input": "required name=search_term_string",
-  },
-};
+  publisher: { "@id": organizationId },
+} satisfies WithContext<WebSite>;
 
-// Article Schema (para blog posts) — BlogPosting es más específico que Article
-const articleSchema = article
-  ? {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      headline: article.title,
-      description: article.description,
-      image: article.image || `${baseUrl}/og-image.png`,
-      datePublished: article.datePublished,
-      dateModified: article.dateModified || article.datePublished,
-      inLanguage: "es-ES",
-      author: {
-        "@type": "Person",
-        name: article.author || branding.name,
-        url: baseUrl,
-      },
-      publisher: {
-        "@type": "Organization",
-        name: branding.name,
-        url: baseUrl,
-        logo: {
-          "@type": "ImageObject",
-          url: `${baseUrl}/og-image.png`,
-        },
-      },
-      mainEntityOfPage: {
-        "@type": "WebPage",
-        "@id": `${baseUrl}${Astro.url.pathname}`,
-      },
-    }
-  : null;
-
-// Service Schema
-const serviceUrl = service
-  ? service.url?.startsWith("http")
-    ? service.url
-    : `${baseUrl}${service.url?.startsWith("/") ? service.url : `/${service.url ?? ""}`}`
-  : null;
-
-const serviceSchema = service
-  ? {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": `${serviceUrl || `${baseUrl}${Astro.url.pathname}`}#service`,
-      name: service.name,
-      description: service.description,
-      image: service.image,
-      ...(service.serviceType && { serviceType: service.serviceType }),
-      url: serviceUrl || `${baseUrl}${Astro.url.pathname}`,
-      inLanguage: "es-ES",
-      mainEntityOfPage: {
-        "@type": "WebPage",
-        "@id": `${baseUrl}${Astro.url.pathname}`,
-      },
-      provider: {
-        "@type": "Organization",
-        "@id": `${baseUrl}/#organization`,
-        name: branding.name,
-        url: baseUrl,
-      },
-      areaServed: {
-        "@type": "Country",
-        name: "España",
-      },
-      ...(service.price !== undefined && {
-        offers: {
-          "@type": "Offer",
-          price: service.price,
-          priceCurrency: service.priceCurrency || "EUR",
-          url: serviceUrl || baseUrl,
-          availability: "https://schema.org/InStock",
-        },
-      }),
-    }
-  : null;
-
-// FAQPage Schema
-const faqSchema =
-  faqs && faqs.length > 0
-    ? {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: faqs.map((faq) => ({
-          "@type": "Question",
-          name: faq.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: faq.answer,
-          },
-        })),
-      }
-    : null;
-
-// CreativeWork Schema (para proyectos)
-const projectSchema = project
-  ? {
-      "@context": "https://schema.org",
-      "@type": "CreativeWork",
-      name: project.name,
-      description: project.description,
-      image: project.image || `${baseUrl}/og-image.png`,
-      datePublished: project.datePublished,
-      url: project.url || baseUrl,
-      inLanguage: "es-ES",
-      ...(project.url && {
-        mainEntityOfPage: {
-          "@type": "WebPage",
-          "@id": project.url,
-        },
-      }),
-      ...(project.services &&
-        project.services.length > 0 && {
-          keywords: project.services.join(", "),
-        }),
-      creator: {
-        "@type": "Organization",
-        name: branding.name,
-        url: baseUrl,
-      },
-      ...(project.client && {
-        client: {
-          "@type": "Organization",
-          name: project.client,
-        },
-      }),
-    }
-  : null;
-
-// Seleccionar schemas según el tipo
-// biome-ignore lint/suspicious/noExplicitAny: ok
-const schemas: any[] = [organizationSchema];
-
+const schemas: JsonLdSchema[] = [organizationSchema, professionalServiceSchema as WithContext<ProfessionalService>];
 if (type === "website") schemas.push(websiteSchema);
-if (type === "article" && articleSchema) schemas.push(articleSchema);
-if (type === "service" && serviceSchema) schemas.push(serviceSchema);
-if (type === "project" && projectSchema) schemas.push(projectSchema);
-if (faqSchema) schemas.push(faqSchema);
+
+if (article) {
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${currentUrl}#article`,
+    headline: article.title,
+    description: article.description,
+    image: absoluteUrl(article.image, base),
+    datePublished: article.datePublished,
+    dateModified: article.dateModified || article.datePublished,
+    inLanguage: "es-ES",
+    author: article.author ? { "@type": "Person", name: article.author } : { "@id": organizationId },
+    publisher: { "@id": organizationId },
+    mainEntityOfPage: { "@id": currentUrl },
+  } satisfies WithContext<BlogPosting>);
+}
+
+if (service) {
+  const serviceUrl = absoluteUrl(service.url || Astro.url.pathname, base) as string;
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${serviceUrl}#service`,
+    name: service.name,
+    description: service.description,
+    image: absoluteUrl(service.image, base),
+    serviceType: service.serviceType,
+    url: serviceUrl,
+    provider: { "@id": organizationId },
+    areaServed: { "@type": "Country", name: "España" },
+    ...(service.price !== undefined ? { offers: { "@type": "Offer", price: service.price, priceCurrency: service.priceCurrency || "EUR", url: serviceUrl } } : {}),
+  } satisfies WithContext<Service>);
+}
+
+if (project) {
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "@id": `${absoluteUrl(project.url || Astro.url.pathname, base)}#project`,
+    name: project.name,
+    description: project.description,
+    image: absoluteUrl(project.image, base),
+    datePublished: project.datePublished,
+    url: absoluteUrl(project.url || Astro.url.pathname, base),
+    inLanguage: "es-ES",
+    creator: { "@id": organizationId },
+    ...(project.client ? { funder: { "@type": "Organization", name: project.client } } : {}),
+    ...(project.services?.length ? { keywords: project.services.join(", ") } : {}),
+  } satisfies WithContext<CreativeWork>);
+}
+
+if (faqs?.length) {
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+  } satisfies WithContext<FAQPage>);
+}
 ---
 
-{
-  schemas.map((schema) => (
-    <script
-      is:inline
-      type="application/ld+json"
-      set:html={JSON.stringify(schema)}
-    />
-  ))
-}
+{schemas.map((schema) => <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />)}

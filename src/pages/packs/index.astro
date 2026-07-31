@@ -15,6 +15,7 @@ import SectionHeader from "~/components/ui/SectionHeader.astro";
 import { branding } from "~/config/branding";
 import { basePlan, getPackPricing, packs } from "~/data/packs";
 import MainLayout from "~/layouts/MainLayout.astro";
+import { serializeJsonLd } from "~/shared/lib/schema/jsonLd";
 
 const title =
   "Webs para negocios locales desde 200€ | Packs por sector | doscientos";
@@ -46,7 +47,8 @@ const itemListSchema = {
   <script
     is:inline
     type="application/ld+json"
-    set:html={JSON.stringify(itemListSchema)}
+    is:inline
+    set:html={serializeJsonLd(itemListSchema)}
   />
 
   <section class="landing-section pt-10 lg:pt-20">

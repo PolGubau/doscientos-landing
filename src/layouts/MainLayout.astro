@@ -50,22 +50,6 @@ interface Props {
     question: string;
     answer: string;
   }[];
-  localBusiness?: {
-    name?: string;
-    description?: string;
-    image?: string;
-    telephone?: string;
-    address?: {
-      streetAddress?: string;
-      postalCode?: string;
-      addressLocality?: string;
-      addressRegion?: string;
-    };
-    geo?: {
-      latitude: string;
-      longitude: string;
-    };
-  };
 }
 
 const metadata = getMetadata();
@@ -81,7 +65,6 @@ const {
   service,
   project,
   faqs,
-  localBusiness,
 } = Astro.props;
 ---
 
@@ -112,7 +95,6 @@ const {
       service={service}
       project={project}
       faqs={faqs}
-      localBusiness={localBusiness}
     />
     <GoogleAnalytics />
     <AttributionScript />

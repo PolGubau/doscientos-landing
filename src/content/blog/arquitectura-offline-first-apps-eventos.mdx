@@ -1,0 +1,310 @@
+---
+title: "Arquitectura offline-first para apps de eventos: decisiones y errores reales"
+description: "Cómo diseñar una app que siga funcionando con mala cobertura: caché, frescura, sincronización, conflictos y observabilidad, con aprendizajes de Les Santes."
+publishDate: "2026-07-28"
+draft: false
+tags: ["offline-first", "arquitectura móvil", "React Native", "sincronización", "apps de eventos", "caso real"]
+resourceType: "caso"
+buyerStage: "consideration"
+author: "Pol Gubau"
+faqs:
+  - question: "¿Qué significa offline-first?"
+    answer: "Significa que la aplicación diseña su función principal para operar con datos locales y usa la red para sincronizar, en lugar de tratar la ausencia de conexión como un error excepcional."
+  - question: "¿Offline-first significa que todo funciona sin internet?"
+    answer: "No necesariamente. Cada función debe clasificarse. Consultar agenda puede funcionar offline; recibir una cancelación instantánea o enviar un pago requiere conexión."
+  - question: "¿Cómo se evita mostrar información antigua?"
+    answer: "Guardando la fecha de última sincronización, definiendo caducidades por tipo de dato y mostrando el estado de frescura cuando sea relevante para la decisión del usuario."
+  - question: "¿Hace falta una base de datos local?"
+    answer: "Depende del volumen y de las consultas. Para pocos documentos puede bastar almacenamiento clave-valor; para relaciones, búsquedas y colas de cambios suele ser mejor una base de datos local."
+---
+
+import BlogCTA from "../../components/blog/BlogCTA.astro";
+
+El peor momento para descubrir que una app depende demasiado de la red es cuando miles de personas abren el mapa a la vez en una calle saturada.
+
+En una app de eventos, transporte, trabajo de campo o logística, “sin conexión” no es un caso límite. Es parte del entorno. Diseñar offline-first significa aceptar esa realidad desde el modelo de datos y la experiencia, no añadir un mensaje de error al final.
+
+Estas son las decisiones que aplicamos al construir la app de [Les Santes](/projects/les-santes), un festival con agenda, mapa, desfiles en movimiento, favoritos y avisos.
+
+---
+
+## Offline-tolerante no es offline-first
+
+Una aplicación **offline-tolerante** intenta acceder al servidor y, si falla, muestra una copia o un error.
+
+Una aplicación **offline-first** lee primero del dispositivo y sincroniza con el servidor cuando puede.
+
+```text
+Offline-tolerante:
+Pantalla → API → si falla → caché
+
+Offline-first:
+Pantalla → almacenamiento local
+                ↑
+          sincronización
+                ↑
+               API
+```
+
+La diferencia afecta a toda la arquitectura. En el segundo modelo, la interfaz no espera a la red para existir.
+
+---
+
+## Primera decisión: qué debe funcionar sin conexión
+
+“Hacer la app offline” es demasiado amplio. Clasifica funciones:
+
+| Función | Sin conexión | Al recuperar red |
+|---|---|---|
+| Consultar agenda descargada | Completa | Actualiza cambios |
+| Ver ubicaciones y rutas | Completa si el mapa está disponible | Renueva datos |
+| Guardar favoritos | Local | Opcionalmente sincroniza |
+| Recibir una cancelación | Muestra último estado conocido | Recibe actualización |
+| Enviar un pago | No debe fingir éxito | Reintenta con confirmación |
+| Chat en tiempo real | Historial local | Envía pendientes |
+
+En Les Santes priorizamos agenda, recursos y favoritos. No todas las funciones necesitaban el mismo nivel de disponibilidad.
+
+---
+
+## El modelo mínimo de datos
+
+Cada conjunto sincronizado necesita más que su contenido:
+
+```ts
+type LocalSnapshot<T> = {
+  data: T;
+  schemaVersion: number;
+  fetchedAt: string;
+  sourceVersion?: string;
+};
+```
+
+- `fetchedAt` permite comunicar antigüedad.
+- `schemaVersion` permite migrar el formato local tras una actualización.
+- `sourceVersion` evita descargar lo mismo y facilita detectar cambios.
+
+Guardar JSON sin versión funciona hasta el primer cambio de estructura. Después, una versión antigua de la app intenta leer datos nuevos y el supuesto “fallback seguro” se convierte en un crash.
+
+---
+
+## Frescura: no todos los datos caducan igual
+
+Un cartel histórico puede permanecer meses en caché. Una cancelación de esta tarde no.
+
+Define políticas por tipo:
+
+- **Estático**: imágenes, textos históricos, categorías.
+- **Lento**: programación publicada con días de antelación.
+- **Urgente**: cancelaciones, cambios de ubicación, incidencias.
+- **Personal**: favoritos o borradores locales.
+
+La interfaz debe mostrar la antigüedad cuando cambie la decisión del usuario. “Datos actualizados hace 3 minutos” es útil en una agenda viva; repetirlo junto a una biografía de 1892 no lo es.
+
+En el proyecto mostramos una nota de caché cuando la app no puede actualizar. El objetivo es evitar tanto la pantalla vacía como una falsa sensación de actualidad.
+
+---
+
+## Sincronización: descarga completa o incremental
+
+### Snapshot completo
+
+La app descarga el estado vigente y reemplaza la copia local.
+
+**Úsalo cuando:**
+
+- El volumen es pequeño.
+- Los datos son principalmente de lectura.
+- Una descarga completa es barata.
+- Quieres reducir lógica de reconciliación.
+
+### Sincronización incremental
+
+La API devuelve cambios desde una versión o marca temporal.
+
+**Úsalo cuando:**
+
+- Hay muchos registros.
+- Los cambios son frecuentes.
+- Existen ediciones locales.
+- Descargar todo consume demasiado tiempo o datos.
+
+Para una agenda acotada, un snapshot versionado suele ser más robusto que una sincronización sofisticada. La arquitectura correcta no es la que tiene más mecanismos, sino la que tiene menos estados imposibles.
+
+---
+
+## Escrituras offline y conflictos
+
+Leer offline es relativamente sencillo. Escribir abre preguntas:
+
+- ¿Puede la misma entidad cambiar en dos dispositivos?
+- ¿Importa el orden?
+- ¿Una operación puede repetirse?
+- ¿Qué ocurre si el servidor rechaza el cambio?
+
+Una cola local necesita al menos:
+
+```ts
+type PendingOperation = {
+  id: string;
+  type: "favorite.add" | "favorite.remove";
+  entityId: string;
+  createdAt: string;
+  attempts: number;
+};
+```
+
+El identificador hace la operación idempotente: si la red se corta después de enviarla pero antes de recibir respuesta, repetirla no debe aplicar el cambio dos veces.
+
+Para favoritos, “última escritura gana” puede ser suficiente. Para inventario, facturación o pagos, no. Ahí necesitas reglas de dominio, control de versión y una respuesta visible ante conflictos.
+
+---
+
+## Mapas: el agujero habitual
+
+Puedes guardar la agenda y seguir mostrando un rectángulo vacío porque los mosaicos del mapa dependen de red.
+
+Las opciones son:
+
+1. Cachear una zona limitada respetando las condiciones del proveedor.
+2. Incluir un mapa simplificado o plano del recinto.
+3. Mostrar lista, dirección y ruta textual como alternativa.
+4. Descargar paquetes de mapas si el SDK y la licencia lo permiten.
+
+En Les Santes usamos MapLibre con control del estilo y una estrategia centrada en las rutas del festival. La posición estimada de los desfiles se calcula en el cliente a partir de GeoJSON, hora de inicio y tiempo transcurrido. No necesita consultar un GPS remoto cada segundo.
+
+Es un buen ejemplo de una decisión offline-first: **mover al dispositivo un cálculo determinista en lugar de depender de una petición continua.**
+
+---
+
+## Tiempo real sin convertirlo en dependencia
+
+Las actualizaciones en tiempo real mejoran la experiencia cuando hay conexión. No deberían destruirla cuando no la hay.
+
+El patrón:
+
+1. Renderiza el último snapshot local.
+2. Abre el canal de tiempo real.
+3. Aplica cambios recibidos al almacenamiento local.
+4. Al reconectar, solicita una reconciliación completa o incremental.
+
+El canal rápido no sustituye la sincronización. Una app puede perder eventos mientras está cerrada o sin cobertura; al volver necesita comprobar el estado vigente.
+
+Para cancelaciones usamos actualizaciones en tiempo real y notificaciones, pero la agenda base ya existe en el dispositivo.
+
+---
+
+## Experiencia de usuario: degradar con honestidad
+
+Evita dos extremos:
+
+- Bloquear toda la pantalla porque no hay red.
+- Ocultar que la información puede estar desactualizada.
+
+Una buena degradación:
+
+- Muestra el contenido disponible.
+- Informa de la última actualización.
+- Distingue acciones pendientes.
+- Ofrece reintento manual.
+- Confirma cuándo se completa una sincronización importante.
+- Nunca presenta una operación crítica como terminada antes de confirmarla.
+
+El copy también forma parte de la arquitectura. “Guardado en este dispositivo; se sincronizará al recuperar conexión” describe mejor el estado que un toast verde de “Éxito”.
+
+---
+
+## Observabilidad que necesitas
+
+El servidor no ve lo que nunca le llegó. Por eso una app offline necesita métricas propias:
+
+- Edad media del snapshot al abrir.
+- Porcentaje de sesiones que empiezan sin conexión.
+- Duración de la sincronización.
+- Número de operaciones pendientes.
+- Reintentos y fallos definitivos.
+- Errores de migración del almacenamiento local.
+- Versión de esquema instalada.
+
+No registres contenido sensible para obtener estas métricas. Mide estados técnicos, no datos personales.
+
+---
+
+## Cómo probarla de verdad
+
+El simulador con Wi-Fi perfecto no cuenta.
+
+Prueba al menos:
+
+1. Primera apertura sin conexión.
+2. Apertura con datos antiguos.
+3. Pérdida de red durante una descarga.
+4. Reconexión después de varios cambios del servidor.
+5. Actualización de la app con un esquema local anterior.
+6. Almacenamiento lleno o corrupto.
+7. Cambio de hora y zona horaria.
+8. Operación repetida tras un timeout.
+9. Red lenta que técnicamente figura como conectada.
+
+Una app offline-first no se valida apagando el Wi-Fi una vez. Se valida recorriendo transiciones entre estados.
+
+---
+
+## Errores que evitaríamos
+
+### Cachear sin fecha
+
+Si no sabes cuándo se obtuvo un dato, no puedes decidir si sigue siendo útil.
+
+### Usar “hay red” como sinónimo de “la API responde”
+
+Un dispositivo puede estar conectado a una red saturada o a un portal cautivo. La conectividad real se confirma intentando la operación con timeout.
+
+### Sincronizar todo al arrancar
+
+La interfaz vuelve a depender de red y batería. Prioriza lo visible y difiere lo secundario.
+
+### No versionar el almacenamiento
+
+Una nueva versión de la app puede dejar inutilizable el caché que debía protegerla.
+
+### Permitir escrituras críticas sin política de conflicto
+
+“Ya lo resolveremos al sincronizar” no es una política.
+
+---
+
+## Arquitectura de referencia
+
+```text
+[Interfaz]
+     |
+[Repositorio local] ← [Base de datos / almacenamiento]
+     |
+[Motor de sincronización]
+     |        \
+[API HTTP]   [Canal tiempo real]
+     |
+[Backend y fuente de verdad]
+```
+
+La interfaz solo conoce el repositorio local. El motor decide cuándo hablar con red. Así una caída del servidor cambia la frescura de los datos, pero no obliga a reescribir cada pantalla.
+
+---
+
+## Decisión final
+
+Offline-first tiene sentido cuando la función principal debe sobrevivir a redes malas y los datos pueden tener una copia local segura. No tiene sentido aplicarlo por igual a pagos, permisos sensibles o información cuya antigüedad cree un riesgo inaceptable.
+
+Empieza por clasificar funciones, define la frescura tolerable y diseña las transiciones. La tecnología viene después.
+
+---
+
+## Caso y documentación relacionada
+
+- [Caso completo de Les Santes](/projects/les-santes)
+- [Documentación de MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/)
+- [Persistencia en Expo](https://docs.expo.dev/versions/latest/sdk/sqlite/)
+- [Integración de sistemas y APIs](/blog/integracion-de-sistemas-apis)
+
+<BlogCTA variant="app" />

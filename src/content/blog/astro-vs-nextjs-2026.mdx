@@ -1,0 +1,197 @@
+---
+title: "Astro vs Next.js en 2026: cuál elegir para una web o aplicación"
+description: "Comparativa práctica entre Astro y Next.js: renderizado, JavaScript, contenido dinámico, infraestructura y criterios para elegir sin seguir la moda."
+publishDate: "2026-07-31"
+draft: false
+tags: ["Astro", "Next.js", "arquitectura frontend", "rendimiento web", "React", "decisión tecnológica"]
+resourceType: "guia"
+buyerStage: "consideration"
+author: "doscientos"
+faqs:
+  - question: "¿Astro es mejor que Next.js para SEO?"
+    answer: "Los dos pueden generar HTML rastreable y obtener resultados excelentes. Astro parte con una ventaja de simplicidad para webs principalmente estáticas; Next.js aporta más herramientas cuando la misma aplicación combina contenido público, datos dinámicos y sesiones de usuario."
+  - question: "¿Puedo usar React dentro de Astro?"
+    answer: "Sí. Astro permite renderizar componentes React y enviar JavaScript al navegador solo para los componentes que necesitan interactividad."
+  - question: "¿Cuándo elegir Next.js en lugar de Astro?"
+    answer: "Cuando el producto necesita autenticación, datos personalizados, mutaciones frecuentes, lógica de servidor integrada o una experiencia de aplicación React con muchas zonas interactivas."
+  - question: "¿Se puede migrar de Next.js a Astro?"
+    answer: "Sí, pero no suele ser una conversión automática. Los componentes visuales pueden reutilizarse; el enrutado, la obtención de datos y la lógica de servidor deben replantearse según el modelo de Astro."
+---
+
+import BlogCTA from "../../components/blog/BlogCTA.astro";
+
+Elegir entre Astro y Next.js no es decidir qué framework es “mejor”. Es decidir **cuánta aplicación necesita realmente una página**.
+
+Una web corporativa, un medio con cientos de artículos y un backoffice autenticado pueden compartir diseño y componentes, pero no tienen las mismas necesidades de renderizado, datos ni infraestructura. Aplicar la misma arquitectura a los tres casos suele terminar en complejidad innecesaria o en una plataforma que se queda corta.
+
+Esta comparativa refleja el estado de ambos frameworks y de su documentación oficial revisado en julio de 2026.
+
+---
+
+## La diferencia en una frase
+
+**Astro prioriza el HTML y añade interactividad por partes.**  
+**Next.js es un framework de aplicaciones React que permite combinar servidor y cliente dentro del mismo árbol de componentes.**
+
+Astro utiliza una arquitectura de “islas”: la mayor parte de la página puede ser HTML sin JavaScript y cada componente interactivo se hidrata de forma independiente. Next.js App Router usa React Server Components por defecto y permite incorporar Client Components donde hacen falta estado, eventos o APIs del navegador.
+
+La diferencia no es solo técnica. Cambia la cantidad de código que llega al navegador, el modelo mental del equipo y la infraestructura necesaria para desplegar todas las funciones.
+
+---
+
+## Comparativa rápida
+
+| Criterio | Astro | Next.js |
+|---|---|---|
+| Punto de partida | Sitio de contenido | Aplicación React |
+| JavaScript en cliente | Se añade por componente | Se controla con límites servidor/cliente |
+| Contenido Markdown/MDX | Integración directa mediante colecciones | Requiere definir la capa de contenido |
+| Datos por usuario | Posible, pero no es su caso más natural | Caso de uso central |
+| Formularios y mutaciones | API externa o endpoints del servidor | Server Functions y rutas del servidor |
+| Exportación estática | Natural | Disponible con limitaciones |
+| ISR | Depende del adaptador y la estrategia | Integrado en despliegues compatibles, no en exportación estática |
+| Complejidad operativa | Baja en sitios estáticos | Variable: de estática a servidor completo |
+
+---
+
+## Cuándo elegir Astro
+
+Astro encaja especialmente bien cuando el contenido es público y la mayor parte de las visitas reciben el mismo HTML:
+
+- Web corporativa o landing de captación.
+- Blog, documentación o centro de recursos.
+- Portfolio y casos de estudio.
+- Ecommerce cuya compra ocurre en una plataforma externa.
+- Página que necesita algunos componentes React, pero no ser una aplicación React completa.
+
+En estos casos, enviar poco JavaScript no es una optimización posterior: es la arquitectura inicial. También simplifica el hosting, porque una salida estática puede servirse desde un CDN sin mantener un proceso de servidor.
+
+Esta web de doscientos usa Astro por ese motivo. Tiene cientos de rutas, contenido estructurado en MDX, páginas comerciales y algunos elementos interactivos. Convertir todo el sitio en una aplicación cliente no aportaría valor al visitante.
+
+### Astro no es automáticamente la opción correcta si…
+
+- Cada usuario ve información diferente.
+- El producto necesita sesiones, permisos y mutaciones en casi todas las pantallas.
+- El equipo ya mantiene una aplicación React compleja y separar la web crearía duplicación.
+- La vista depende de datos que deben resolverse en cada petición.
+
+Astro puede renderizar en servidor, pero que algo sea posible no significa que sea la opción más sencilla.
+
+---
+
+## Cuándo elegir Next.js
+
+Next.js tiene sentido cuando la web es, en realidad, parte de una aplicación:
+
+- Área privada con autenticación y roles.
+- Dashboard con datos personalizados.
+- Ecommerce con catálogo, cuenta, carrito y operaciones propias.
+- SaaS donde marketing, onboarding y producto comparten componentes.
+- Plataforma que combina páginas estáticas, contenido revalidado y rutas dinámicas.
+
+App Router permite obtener datos en Server Components y reservar los Client Components para interacciones que necesitan estado o navegador. Según la documentación oficial, las páginas y layouts son Server Components por defecto; esto evita enviar al cliente el código de esos componentes.
+
+En [Les Santes](/projects/les-santes) usamos Next.js para unir landing, datos del festival y panel de administración. La decisión no fue “Next posiciona mejor”, sino que el proyecto necesitaba una frontera clara entre contenido público, datos operativos y herramientas de gestión dentro del mismo sistema.
+
+### Next.js no es gratis operacionalmente
+
+Una exportación estática de Next.js puede alojarse sin servidor, pero funciones como ISR no están disponibles en ese modo. Si usas streaming, revalidación, acciones de servidor o renderizado dinámico, el despliegue debe soportarlas.
+
+El error habitual es escoger Next.js por una función futura y desplegar desde el primer día la arquitectura más compleja, aunque la web actual solo tenga seis páginas estáticas.
+
+---
+
+## Rendimiento: evita la respuesta simplista
+
+Decir “Astro es más rápido” o “Next.js está más optimizado” sin contexto no sirve.
+
+Astro suele ofrecer un mejor punto de partida cuando hay poca interactividad, porque no hidrata una aplicación completa. Next.js puede ser muy rápido si el límite entre Server y Client Components está bien diseñado. También puede enviar demasiado JavaScript si componentes de cliente envuelven zonas grandes de la interfaz.
+
+Para decidir, mide:
+
+1. Cuántos componentes necesitan interacción real.
+2. Cuánto JavaScript llega al navegador en la primera carga.
+3. Si el HTML puede generarse al publicar o debe cambiar por petición.
+4. Qué ocurre en una conexión móvil lenta.
+5. Qué infraestructura necesita el modelo de renderizado elegido.
+
+El framework influye; las decisiones dentro del framework influyen más.
+
+---
+
+## SEO: ambos pueden posicionar
+
+Astro y Next.js pueden entregar HTML completo, metadatos, datos estructurados, sitemap y buenas métricas web. Ninguno sustituye:
+
+- Una arquitectura de información clara.
+- Contenido que responda preguntas reales.
+- Enlaces internos útiles.
+- Autoría y fechas de actualización.
+- Rendimiento medido en producción.
+
+Para un blog o una web de servicios, Astro hace difícil enviar JavaScript por accidente y ofrece colecciones de contenido tipadas. Para un marketplace o SaaS, Next.js permite que las páginas públicas convivan con datos y flujos dinámicos.
+
+SEO no debería ser el criterio que decide entre ambos. **La naturaleza del producto sí.**
+
+---
+
+## Nuestra matriz de decisión
+
+Suma un punto a la columna que describa mejor el proyecto:
+
+| Pregunta | Astro | Next.js |
+|---|---:|---:|
+| ¿Más del 80% es contenido público? | +1 | |
+| ¿La mayoría de componentes no necesita JavaScript? | +1 | |
+| ¿El equipo editorial trabaja con Markdown o MDX? | +1 | |
+| ¿Cada usuario ve datos personalizados? | | +1 |
+| ¿Hay autenticación y permisos en muchas rutas? | | +1 |
+| ¿Las mutaciones son parte central del producto? | | +1 |
+| ¿Marketing y aplicación deben compartir un único runtime? | | +1 |
+
+No es una fórmula matemática. Sirve para hacer visible qué necesidad está empujando la decisión.
+
+---
+
+## Una tercera opción: usar ambos
+
+Separar la web pública de la aplicación puede ser la arquitectura más limpia:
+
+- Astro para marketing, documentación y recursos.
+- Next.js para la aplicación autenticada.
+- Un sistema de diseño compartido.
+- Un dominio o subdominio por superficie.
+
+La desventaja es mantener dos despliegues y coordinar componentes. La ventaja es que cada parte usa el modelo adecuado y un cambio en el dashboard no obliga a reconstruir el blog.
+
+Lo recomendamos cuando los ciclos de publicación y los equipos responsables son distintos. No cuando hay tres páginas de marketing dentro de un producto pequeño.
+
+---
+
+## Decisión final
+
+Elige **Astro** si estás construyendo una web que contiene algunas interacciones.
+
+Elige **Next.js** si estás construyendo una aplicación que también contiene páginas web.
+
+Si todavía dudas, empieza por dibujar las rutas y marcar tres cosas: públicas o privadas, iguales o personalizadas, estáticas o mutables. La respuesta suele aparecer antes de instalar ningún framework.
+
+---
+
+## Fuentes y documentación oficial
+
+- [Astro Content Collections](https://docs.astro.build/en/guides/content-collections/)
+- [Astro Islands](https://docs.astro.build/en/concepts/islands/)
+- [Next.js App Router](https://nextjs.org/docs/app)
+- [Server y Client Components en Next.js](https://nextjs.org/docs/app/getting-started/server-and-client-components)
+- [ISR en Next.js](https://nextjs.org/docs/app/guides/incremental-static-regeneration)
+
+---
+
+## Lecturas relacionadas
+
+- [Software a medida vs SaaS](/blog/software-a-medida-vs-saas)
+- [Cómo construir una landing B2B que convierte](/blog/landing-page-b2b-que-convierte)
+- [Caso Les Santes: app, landing y CMS](/projects/les-santes)
+
+<BlogCTA variant="contact" />

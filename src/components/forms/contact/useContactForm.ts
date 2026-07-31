@@ -138,6 +138,9 @@ export function useContactForm() {
 	const selectCompanySize = (value: string) =>
 		setFormData((prev) => ({ ...prev, companySize: value }));
 
+	const selectSolutionType = (value: string) =>
+		setFormData((prev) => ({ ...prev, solutionType: value }));
+
 	const selectUrgency = (value: string) =>
 		setFormData((prev) => ({ ...prev, urgency: value }));
 
@@ -216,6 +219,7 @@ export function useContactForm() {
 			email: formData.email,
 			phone: formData.phone,
 			company: formData.company,
+			solutionType: formData.solutionType,
 			companySize: formData.companySize,
 			urgency: formData.urgency,
 			message: contextLines.length
@@ -310,6 +314,7 @@ export function useContactForm() {
 		handleStep1KeyDown,
 		selectBudget,
 		selectCompanySize,
+		selectSolutionType,
 		selectUrgency,
 		nextStep,
 		prevStep,

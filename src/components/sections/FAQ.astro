@@ -1,5 +1,6 @@
 ---
 import SectionHeader from "../ui/SectionHeader.astro";
+import { serializeJsonLd } from "~/shared/lib/schema/jsonLd";
 
 const faqs = [
   {
@@ -96,7 +97,8 @@ const faqs = [
 
   <script
     type="application/ld+json"
-    set:html={JSON.stringify({
+    is:inline
+    set:html={serializeJsonLd({
       "@context": "https://schema.org",
       "@type": "FAQPage",
       mainEntity: faqs.map((faq) => ({

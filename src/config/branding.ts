@@ -53,7 +53,8 @@ export const branding = {
 
 	// Ubicación
 	location: {
-		city: "Barcelona",
+		city: "Premià de Mar",
+		serviceArea: "Barcelona y el Maresme",
 		country: "España",
 	},
 
