@@ -8,63 +8,91 @@
   data-easing="soft"
   data-delay="700"
 >
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 w-full">
-    <div class="trust-proof-card">
+  <div class="trust-proof-row" aria-label="Pruebas de confianza">
+    <div class="trust-proof-item">
       <strong>+30</strong>
       <span>proyectos entregados</span>
     </div>
-    <div class="trust-proof-card">
+    <span class="trust-proof-divider" aria-hidden="true"></span>
+    <div class="trust-proof-item">
       <strong>5/5</strong>
-      <span>valoración de nuestros clientes</span>
+      <span>valoración media</span>
     </div>
-    <div class="trust-proof-card trust-proof-card--stars">
+    <span class="trust-proof-divider" aria-hidden="true"></span>
+    <div class="trust-proof-item trust-proof-item--stars">
       <strong aria-label="Cinco estrellas">★★★★★</strong>
-      <span>Todas nuestras reseñas publicadas son de 5 estrellas</span>
+      <span>reseñas de 5 estrellas</span>
     </div>
   </div>
 </div>
 
 <style>
-  .trust-proof-card {
+  .trust-proof-row {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: center;
-    gap: 0.55rem;
-    min-height: 4.25rem;
-    padding: 0.9rem 1rem;
-    border: 1px solid color-mix(in srgb, var(--primary) 14%, var(--muted));
-    border-radius: 1rem;
-    background: color-mix(in srgb, var(--background) 86%, var(--primary));
+    gap: 1.25rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0.8rem 0;
+    border-top: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
     color: var(--muted-foreground);
-    text-align: center;
   }
 
-  .trust-proof-card strong {
-    color: var(--foreground);
-    font-size: 1.35rem;
-    line-height: 1;
+  .trust-proof-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
     white-space: nowrap;
   }
 
-  .trust-proof-card span {
-    font-size: 0.78rem;
+  .trust-proof-item strong {
+    color: var(--foreground);
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  .trust-proof-item span {
+    font-size: 0.72rem;
     line-height: 1.25;
   }
 
-  .trust-proof-card--stars {
+  .trust-proof-divider {
+    width: 1px;
+    height: 1.1rem;
+    background: color-mix(in srgb, var(--foreground) 14%, transparent);
+  }
+
+  .trust-proof-item--stars {
     align-items: center;
   }
 
-  .trust-proof-card--stars strong {
+  .trust-proof-item--stars strong {
     color: #d59a16;
     letter-spacing: 0.04em;
-    font-size: 1.05rem;
+    font-size: 0.85rem;
   }
 
   @media (max-width: 639px) {
-    .trust-proof-card {
-      justify-content: flex-start;
-      text-align: left;
+    .trust-proof-row {
+      gap: 0.7rem;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .trust-proof-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      white-space: normal;
+      text-align: center;
+    }
+
+    .trust-proof-item span {
+      max-width: 6.5rem;
     }
   }
 </style>

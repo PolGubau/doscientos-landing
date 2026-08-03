@@ -726,6 +726,22 @@ const chaos = hero.stage.chaos.map((item, i) => ({
    * immediately rather than a static software mockup.
    */
   @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+    /* On touch screens the Hero is a normal document section: no pinned
+       storyboard and no empty stage reserved for desktop artwork. This lets
+       the next proof block arrive as soon as the user continues scrolling. */
+    #hero {
+      min-height: auto;
+      padding-top: 5.5rem;
+      padding-bottom: 3.5rem;
+      gap: 1.5rem;
+    }
+
+    #hero-stage {
+      min-height: 0;
+      height: 0;
+      margin-top: -0.5rem;
+    }
+
     #hero-chaos,
     #hero-lines,
     #hero-window,
