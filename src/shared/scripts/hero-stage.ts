@@ -65,6 +65,7 @@ export const setupHeroStage = () => {
   // GSAP drives its reveal instead, in lockstep with the payoff headline.
   // GSAP's inline style wins over that stylesheet rule once it's applied.
   const content = document.getElementById("hero-scroll-reveal");
+  const loader = document.getElementById("hero-loader");
   const linesLayer = document.getElementById("hero-lines");
   const chaosWraps = Array.from(
     document.querySelectorAll<HTMLElement>(".hero-chaos-item"),
@@ -99,6 +100,17 @@ export const setupHeroStage = () => {
     document.querySelectorAll<HTMLElement>(".hero-chaos-watermark"),
   );
   if (!hero || !stage || !win || chaosWraps.length === 0) return;
+
+  // The CSS-only loading placeholder (#hero-loader, see Hero.astro) is only
+  // needed while this dynamically-imported chunk is still loading/parsing —
+  // now that it's running, kill its CSS animation outright (a plain
+  // opacity:0 wouldn't win: a running CSS animation still owns the property
+  // every frame) so it disappears immediately instead of finishing its own
+  // multi-second fade-in/out lifecycle underneath the real chaos chips.
+  if (loader) {
+    loader.style.animation = "none";
+    loader.style.opacity = "0";
+  }
 
   // Pre-compute how far each chip must travel to reach the stage's centre,
   // so the "absorption" tween reads as chips flying into the window rather
@@ -233,26 +245,14 @@ export const setupHeroStage = () => {
       overwrite: false,
     });
 
-    // The first caption is visible at rest via plain CSS (no `data-state`/JS
-    // needed as a mobile & reduced-motion fallback — see .hero-caption:first-
-    // child), so unlike captions 2/3 (which only ever appear via the
-    // scrubbed crossfade tween below) it never got an entrance of its own,
-    // reading as a static line popping in dead while everything else around
-    // it (chips, lines) animates in. Give it the same pop-in the later
-    // captions use on their scrubbed crossfade (back.out overshoot) so the
-    // very first thing visitors read arrives with the same motion language,
-    // timed to land alongside the chaos chips above.
-    if (captions[0]) {
-      gsap.from(captions[0], {
-        autoAlpha: 0,
-        y: 16,
-        scale: 0.94,
-        ease: "back.out(1.7)",
-        duration: 0.5,
-        delay: 0.15,
-        overwrite: false,
-      });
-    }
+    // The first caption's entrance is handled by a pure-CSS keyframe
+    // animation (see .hero-caption:first-child in Hero.astro), not GSAP —
+    // it needs to appear immediately on paint regardless of when this
+    // dynamically-imported chunk finishes loading. Animating it here too
+    // (via gsap.from + immediateRender) would snap it back to hidden the
+    // instant this code runs, undoing the CSS entrance that may already be
+    // mid-flight or finished, and reading as a jarring "pop, vanish,
+    // replay" whenever the import lagged behind first paint.
   });
 
   tl = gsap.timeline({

@@ -139,6 +139,24 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   >
     <div id="hero-lines" class="absolute inset-0"></div>
 
+    <!--
+      Lightweight loading placeholder: the chaos chips below start hidden
+      (opacity 0 by default in CSS, see .hero-chaos-inner) until the
+      dynamically-imported GSAP chunk finishes loading and plays their
+      entrance, so on a slow connection the stage would otherwise read as an
+      empty hole in the page. This is purely CSS-driven (delayed fade-in,
+      then auto fade-out via @keyframes hero-loader-lifecycle below) so it
+      can never get stuck even if the script fails to load, and is also
+      hidden immediately by hero-stage.ts the instant the real entrance
+      runs. Not shown on mobile/reduced-motion — see the media query at the
+      bottom of this file — since those paths never show the chaos stage.
+    -->
+    <div id="hero-loader" aria-hidden="true">
+      <span class="hero-loader-dot"></span>
+      <span class="hero-loader-dot"></span>
+      <span class="hero-loader-dot"></span>
+    </div>
+
     <div id="hero-chaos" class="absolute inset-0">
       {
         chaos.map(({ Icon, label, pos, color, kind }) => (
@@ -199,9 +217,7 @@ const chaos = hero.stage.chaos.map((item, i) => ({
                     <span class="hero-chaos-bar" style="width:72%" />
                   </div>
                 )}
-              </div>
-              <div class="hero-chaos-caption">
-                <Icon class="hero-chaos-caption-icon size-4 shrink-0" />
+                <div class="hero-chaos-fade" />
                 <span class="hero-chaos-label">{label}</span>
               </div>
             </div>
@@ -350,13 +366,47 @@ const chaos = hero.stage.chaos.map((item, i) => ({
     width: 100% !important;
     height: 100% !important;
   }
+  /*
+   * The first caption is the very first thing a visitor reads, before any
+   * JS has had a chance to run (dynamic-imported on desktop, entirely
+   * skipped on reduced-motion) — so unlike the other two captions (which
+   * only ever appear via hero-stage.ts's scrubbed crossfade) it must reveal
+   * itself with a pure-CSS entrance rather than depending on GSAP.
+   * Previously this was a static `opacity: 1`, which meant hero-stage.ts's
+   * own entrance tween (gsap.from with immediateRender) had to snap it back
+   * to hidden the instant its dynamically-imported chunk finished loading —
+   * reading as "pops in fully formed, then vanishes, then replays" whenever
+   * that import lagged even slightly behind first paint. Animating it here
+   * instead makes the entrance identical (and immediate) regardless of JS
+   * timing, so there's never a blank/flash gap — see the removed
+   * gsap.from(captions[0]) in hero-stage.ts.
+   */
+  @keyframes hero-caption-intro {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
   .hero-caption:first-child {
-    opacity: 1;
+    opacity: 0;
+    animation: hero-caption-intro 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s
+      forwards;
   }
 
   @media (min-width: 768px) {
     .hero-caption {
       font-size: 1.5rem !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-caption:first-child {
+      animation: none;
+      opacity: 1;
     }
   }
 </style>
@@ -375,14 +425,79 @@ const chaos = hero.stage.chaos.map((item, i) => ({
     width: 132px;
   }
 
+  #hero-loader {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    pointer-events: none;
+    opacity: 0;
+    animation: hero-loader-lifecycle 2.2s ease forwards;
+  }
+
+  .hero-loader-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--muted-foreground);
+    animation: hero-loader-bounce 0.9s ease-in-out infinite;
+  }
+
+  .hero-loader-dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .hero-loader-dot:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
   /*
-   * Thumbnail: the "attachment preview" that sits above the filename
-   * caption, styled like a chat app's media preview instead of a bare icon.
+   * Delayed fade-in (0-14%) means a fast load never shows the loader at
+   * all — hero-stage.ts usually hides it within a frame or two of the
+   * script executing. The fade-out at the end (72-100%) is the fallback
+   * for when JS never runs at all (e.g. it fails to load): the loader
+   * disappears on its own instead of spinning forever.
+   */
+  @keyframes hero-loader-lifecycle {
+    0%,
+    14% {
+      opacity: 0;
+    }
+    28%,
+    72% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes hero-loader-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translateY(-5px);
+      opacity: 1;
+    }
+  }
+
+  /*
+   * Single card: the "attachment preview" doubles as its own caption — the
+   * filename/label sits directly over the animated content, faded in via
+   * .hero-chaos-fade, instead of living in a separate pill underneath.
+   * Taller than the old 4:3 thumbnail (which only had to fit the preview)
+   * so the label has room to breathe over the gradient.
    */
   .hero-chaos-preview {
     position: relative;
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1;
     border-radius: var(--radius-lg, 0.85rem);
     overflow: hidden;
     background: color-mix(in srgb, var(--chip-color) 14%, var(--background));
@@ -530,28 +645,35 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   }
 
   /*
-   * Filename caption strip below the preview, like a chat attachment's
-   * filename label.
+   * Bottom fade: dissolves the animated preview into a solid tint so the
+   * label reads clearly on top of it, like a media attachment's filename
+   * overlaid on its own thumbnail instead of living in a separate pill.
+   * z-index above .hero-chaos-lines (which sets z-index:1 on itself) so it
+   * covers every preview variant, including the "lines" watermark icon.
    */
-  .hero-chaos-caption {
-    display: flex;
-    align-items: center;
-    gap: 0.32rem;
-    padding: 0.32rem 0.6rem;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--chip-color) 8%, var(--background));
-    border: 1px solid color-mix(in srgb, var(--chip-color) 30%, var(--muted));
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: var(--foreground);
-    box-shadow: var(--shadow-pastel-sm);
-  }
-
-  .hero-chaos-caption-icon {
-    color: var(--chip-color);
+  .hero-chaos-fade {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 62%;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--background) 88%, var(--chip-color) 12%) 30%,
+      transparent 100%
+    );
   }
 
   .hero-chaos-label {
+    position: absolute;
+    z-index: 3;
+    left: 0.55rem;
+    right: 0.55rem;
+    bottom: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--foreground);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -711,7 +833,8 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   @media (max-width: 767px), (prefers-reduced-motion: reduce) {
     #hero-chaos,
     #hero-lines,
-    #hero-window {
+    #hero-window,
+    #hero-loader {
       display: none;
     }
 
