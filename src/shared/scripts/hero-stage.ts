@@ -274,8 +274,9 @@ export const setupHeroStage = () => {
   });
 
   // Caption crossfade: 3 beats, one per storyboard phase (chaos, fusion,
-  // integrated result). First caption is already visible at rest (CSS
-  // default), so only the transitions are animated. Each transition is
+  // integrated result). Caption 0's entrance is a pure CSS keyframe (see
+  // .hero-caption:first-child in Hero.astro), not GSAP, so only the
+  // transitions between captions are animated here. Each transition is
   // pinned to the exact phase boundary it narrates (P1_END/P2_END above)
   // instead of being evenly spread across the timeline. The payoff line
   // itself is not part of this stack — see the #hero-payoff tween in phase
@@ -293,11 +294,22 @@ export const setupHeroStage = () => {
   // there, otherwise both are partially visible at once mid-scroll (looks
   // like the new line "arrives" on top of the old one instead of after it).
   const captionDuration = 0.14;
-  // One boundary per transition (i.e. captions.length - 1 entries).
+  // The very first transition (caption 0 -> 1) lands on P1_END, the shortest
+  // phase boundary (0.15). Reusing the standard 0.14 duration there would
+  // start the fade-out at 0.15 - 0.14 = 0.01 — i.e. right at the very top of
+  // the scroll, giving caption 0 no real hold before it starts disappearing.
+  // In practice a single scroll tick jumps straight past that in a couple of
+  // frames, reading as "the first caption never shows". A shorter duration
+  // just for this transition keeps it pinned to the same P1_END boundary
+  // while giving caption 0 a proper hold beforehand.
+  const firstCaptionDuration = 0.05;
+  // One boundary/duration per transition (i.e. captions.length - 1 entries).
   const captionBoundaries = [P1_END, P2_END];
+  const captionDurations = [firstCaptionDuration, captionDuration];
   captions.forEach((caption, i) => {
     if (i === 0) return;
     const boundary = captionBoundaries[i - 1];
+    const duration = captionDurations[i - 1] ?? captionDuration;
     if (boundary === undefined) return;
     tl?.to(
       captions[i - 1],
@@ -305,10 +317,10 @@ export const setupHeroStage = () => {
         autoAlpha: 0,
         y: -16,
         scale: 0.94,
-        duration: captionDuration,
+        duration,
         ease: "power2.in",
       },
-      boundary - captionDuration,
+      boundary - duration,
     ).fromTo(
       caption,
       { autoAlpha: 0, y: 16, scale: 0.94 },
@@ -316,7 +328,7 @@ export const setupHeroStage = () => {
         autoAlpha: 1,
         y: 0,
         scale: 1,
-        duration: captionDuration,
+        duration,
         ease: "back.out(1.7)",
       },
       boundary,
