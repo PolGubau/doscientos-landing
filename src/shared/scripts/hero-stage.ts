@@ -112,6 +112,45 @@ export const setupHeroStage = () => {
     loader.style.opacity = "0";
   }
 
+  // Same story for the first caption's CSS keyframe entrance (see
+  // .hero-caption:first-child in Hero.astro, `animation-fill-mode:
+  // forwards`): a forwards-filling CSS animation keeps "owning"
+  // opacity/transform even once it has finished playing, overriding any
+  // inline style GSAP sets on top of it afterwards. Left alone, that
+  // silently blocks the outgoing autoAlpha tween near the end of this
+  // function that fades caption 0 out at P1_END — depending on exactly
+  // when this dynamically-imported chunk finishes loading relative to the
+  // CSS animation's 0.65s run (0.15s delay + 0.5s duration), the fade can
+  // appear to never happen, or the caption can appear to never show at
+  // all. Hand control back to plain inline styles the moment the CSS
+  // entrance is actually done — immediately if it already finished by the
+  // time this code runs, otherwise once its `animationend` fires — so the
+  // CSS pop-in still plays uninterrupted, but GSAP can drive the element
+  // cleanly afterwards. Same "kill the CSS animation" pattern as the
+  // loader above.
+  const firstCaption = captions[0];
+  if (firstCaption) {
+    const killFirstCaptionAnimation = () => {
+      firstCaption.style.animation = "none";
+    };
+    const introAnim = firstCaption
+      .getAnimations()
+      .find(
+        (anim) =>
+          "animationName" in anim &&
+          (anim as CSSAnimation).animationName === "hero-caption-intro",
+      );
+    if (introAnim?.playState === "finished") {
+      killFirstCaptionAnimation();
+    } else {
+      firstCaption.addEventListener(
+        "animationend",
+        killFirstCaptionAnimation,
+        { once: true },
+      );
+    }
+  }
+
   // Pre-compute how far each chip must travel to reach the stage's centre,
   // so the "absorption" tween reads as chips flying into the window rather
   // than a generic fade. Reading the transform GSAP finds on first tween

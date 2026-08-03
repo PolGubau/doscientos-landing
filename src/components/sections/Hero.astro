@@ -19,12 +19,6 @@ import SectionTag from "../ui/SectionTag.astro";
 
 const { hero } = copy;
 
-// Split at build time (not in hero-stage.ts) so the payoff headline never
-// flashes as one unsplit block before JS runs — the masked word spans are
-// present in the server-rendered markup from the start, hero-stage.ts only
-// animates them.
-const payoffWords = hero.title.split(" ");
-
 const ICONS = {
   "file-spreadsheet": FileSpreadsheet,
   folder: Folder,
@@ -91,23 +85,18 @@ const chaos = hero.stage.chaos.map((item, i) => ({
 
 <section
   id="hero"
-  class="relative flex flex-col px-6 items-center justify-center min-h-[100svh] pt-32 pb-6 md:pt-48 gap-4 md:gap-6 overflow-hidden"
+    class="relative flex flex-col px-6 items-center justify-center min-h-[100svh] pt-28 pb-8 md:pt-36 gap-4 md:gap-5 overflow-hidden"
 >
-  <!--
-    Real, static <h1> for SEO/screen readers — kept off-screen since the
-    visible headline is the big payoff text that lands in the stage below
-    (see #hero-payoff) once the software window fades out.
-    data-hero-ready="true" pre-empts setupHero()'s `#hero h1` word-split
-    entrance in gsap-animations.ts, which is meant for a visible title, not
-    this sr-only one.
-  -->
-  <h1 class="sr-only" data-hero-ready="true">{hero.title}</h1>
+  <div class="relative z-20 max-w-4xl text-center">
+    <h1 class="hero-title text-balance">{hero.title}</h1>
+    <p class="mt-4 max-w-2xl mx-auto text-base md:text-lg text-muted-foreground text-pretty">
+      {hero.subtitle}
+    </p>
+  </div>
 
   <!--
     Caption stack: three short beats crossfade in sync with the storyboard
-    below as the visitor scrolls. The payoff line (hero.title) is NOT part
-    of this stack — it lands as its own big headline inside the stage (see
-    #hero-payoff) once the software window fades out in phase 4.
+    below as the visitor scrolls.
     Absolutely-stacked so the swap never shifts layout. Only the first is
     visible at rest (CSS default) — that is also the mobile/reduced-motion
     fallback, no JS required. aria-live announces each change to screen
@@ -115,7 +104,7 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   -->
   <div
     aria-live="polite"
-    class="relative z-20 h-10 md:h-14 w-full flex items-center justify-center shrink-0 px-4"
+    class="relative z-20 h-10 md:h-12 w-full flex items-center justify-center shrink-0 px-4"
   >
     {
       hero.stage.captions.map((caption) => (
@@ -134,7 +123,7 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   -->
   <div
     id="hero-stage"
-    class="relative z-10 w-full max-w-5xl mx-auto flex items-center justify-center min-h-[320px] md:min-h-[440px]"
+    class="relative z-10 w-full max-w-5xl mx-auto flex items-center justify-center min-h-[290px] md:min-h-[380px]"
     aria-hidden="true"
   >
     <div id="hero-lines" class="absolute inset-0"></div>
@@ -255,38 +244,11 @@ const chaos = hero.stage.chaos.map((item, i) => ({
       </div>
     </div>
 
-    <!--
-      Payoff headline: the single most important line on the page. Sits
-      over the same stage the software window sits in (absolute overlay,
-      anchored to the stage's bottom edge — see #hero-payoff CSS) but starts
-      hidden — hero-stage.ts fades the window out and this headline in
-      together at the very end of the scroll story, so it visually
-      *replaces* the window instead of competing with it or the small
-      crossfading captions above, while landing right above the subtitle/
-      CTAs below for a tight, normal title-subtitle rhythm.
-    -->
-    <div id="hero-payoff">
-      <p class="hero-payoff-text">
-        {
-          payoffWords.map((word, i) => (
-            <>
-              <span class="payoff-word-outer">
-                <span class="payoff-word-inner">{word}</span>
-              </span>
-              {i < payoffWords.length - 1 && " "}
-            </>
-          ))
-        }
-      </p>
-    </div>
   </div>
 
   <!--
-    Subtitle + CTA land after the storyboard resolves. The headline itself
-    is not repeated here — it's #hero-payoff inside the stage above,
-    appearing once the software window (step 3) fades out, so the
-    "chaos -> one system -> do it yourself" story isn't spoiled or
-    duplicated.
+    CTA stays visible from the first frame. The animation earns the click by
+    showing what changes, rather than hiding the action until the end.
   -->
   <div
     id="hero-content"
@@ -294,26 +256,20 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   >
     <div
       id="hero-scroll-reveal"
-      data-reveal
-      data-init
       class="flex flex-col gap-4 md:gap-6 items-center w-full"
     >
-      <div class="text-muted-foreground max-w-xl text-center text-pretty">
-        {hero.subtitle}
-      </div>
-
-      <div class="pt-2 flex flex-col items-center gap-4 w-full">
+      <div class="flex flex-col items-center gap-4 w-full">
         <div
           class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full max-w-xs sm:max-w-none"
         >
           <a href={`/contact`} id="hero-cta-primary" class="w-full sm:w-auto">
             <Button withArrow class="w-full sm:w-fit">
-              {hero.cta}
+              Revisar mi proceso
             </Button>
           </a>
           <a href="/projects" id="hero-cta-secondary" class="w-full sm:w-auto">
             <Button variant="outline" class="w-full sm:w-fit"
-              >Ver proyectos</Button
+              >Ver un caso parecido</Button
             >
           </a>
         </div>
@@ -668,15 +624,16 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   .hero-chaos-label {
     position: absolute;
     z-index: 3;
-    left: 0.55rem;
-    right: 0.55rem;
-    bottom: 0.5rem;
-    font-size: 0.72rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.45rem;
+    font-size: 0.68rem;
     font-weight: 600;
     color: var(--foreground);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: center;
   }
 
   #hero-lines {

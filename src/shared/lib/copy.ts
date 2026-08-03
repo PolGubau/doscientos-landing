@@ -2,14 +2,13 @@
 // "No al revés" es el differentiator - apunta directamente al SAP, Salesforce, HubSpot que los obliga a adaptarse.
 // Shared between `hero.title` and the stage's closing payoff headline (see
 // below) so the line only has to be written once.
-const heroTitle = "Deja de hacer a mano lo que tu negocio puede hacer solo";
+const heroTitle = "Deja de trabajar entre Excel, WhatsApp y recordatorios";
 
 export const copy = {
   hero: {
     title: heroTitle,
-    // 1 frase. Nombra exactamente qué reemplazamos (Excel, SaaS genérico, procesos manuales) y a quién va dirigido.
     subtitle:
-      "Sistemas internos para empresas que ya no caben en Excel, progmas genéricos ni procesos manuales",
+      "Convertimos tus procesos manuales en sistemas internos que trabajan solos, sin obligarte a cambiar cómo trabaja tu equipo.",
     brand: "doscientos.",
     cta: "Cuéntanos tu proyecto",
     // Scroll-driven storyboard rendered above the stage (desktop-only GSAP
@@ -21,48 +20,48 @@ export const copy = {
     // rather than one more small caption.
     stage: {
       captions: [
-        "Tu operativa vive repartida en mil sitios distintos",
-        "Lo conectamos todo en un solo sistema",
-        "Hecho a medida de cómo ya trabajáis",
+        "Renovaciones, facturas y pedidos se pierden entre mil sitios",
+        "Conectamos tus datos y quitamos el trabajo repetido",
+        "Tu equipo recupera el control sin cambiar su forma de trabajar",
       ],
       chaos: [
         {
           icon: "file-spreadsheet",
-          label: "facturas_V3_final.xlsx",
+          label: "Renovación olvidada",
           color: "#16a34a",
         },
-        { icon: "folder", label: "Carpeta compartida", color: "#2563eb" },
+        { icon: "folder", label: "Datos duplicados", color: "#2563eb" },
         {
           icon: "notebook-pen",
-          label: "Notas de la reunión",
+          label: "Pedido copiado a mano",
           color: "#7c3aed",
         },
         { icon: "pen-line", label: "Apuntado en papel", color: "#d97706" },
-        { icon: "mail", label: "Pendiente de responder", color: "#dc2626" },
+        { icon: "mail", label: "Factura pendiente", color: "#dc2626" },
         {
           icon: "message-circle",
-          label: "Foto por WhatsApp",
+          label: "Cliente esperando respuesta",
           color: "#059669",
         },
         { icon: "calendar", label: "Recordatorio manual", color: "#0891b2" },
-        { icon: "receipt", label: "Ticket en un cajón", color: "#ca8a04" },
-        { icon: "file-text", label: "Contrato_v2.pdf", color: "#4f46e5" },
+        { icon: "receipt", label: "Ticket sin registrar", color: "#ca8a04" },
+        { icon: "file-text", label: "Contrato sin seguimiento", color: "#4f46e5" },
         {
           icon: "sticky-note",
-          label: "Post-it en el monitor",
+          label: "Tarea que depende de una persona",
           color: "#db2777",
         },
       ],
       window: {
         label: "Tu software",
         rows: [
-          "Pedido #1042 confirmado",
+          "Pedido confirmado sin copiar datos",
           "Factura enviada automáticamente",
-          "Cliente notificado por email",
+          "Cliente notificado al instante",
         ],
         metricValue: 20,
         metricSuffix: "h",
-        metricLabel: "ahorradas cada semana",
+        metricLabel: "menos de trabajo manual cada semana",
       },
     },
   },
