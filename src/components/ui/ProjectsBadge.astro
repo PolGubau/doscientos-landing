@@ -2,13 +2,69 @@
 ---
 
 <div
-  class="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground pt-6"
+  class="relative z-20 max-w-5xl mx-auto px-6 pt-8 pb-10 md:pt-10 md:pb-12"
   data-reveal="bottom"
   data-speed="normal"
   data-easing="soft"
   data-delay="700"
 >
-  <span
-    ><strong class="text-foreground">+30 proyectos</strong> entregados</span
-  >
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 w-full">
+    <div class="trust-proof-card">
+      <strong>+30</strong>
+      <span>proyectos entregados</span>
+    </div>
+    <div class="trust-proof-card">
+      <strong>5/5</strong>
+      <span>valoración de nuestros clientes</span>
+    </div>
+    <div class="trust-proof-card trust-proof-card--stars">
+      <strong aria-label="Cinco estrellas">★★★★★</strong>
+      <span>Todas nuestras reseñas publicadas son de 5 estrellas</span>
+    </div>
+  </div>
 </div>
+
+<style>
+  .trust-proof-card {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 4.25rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--primary) 14%, var(--muted));
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--background) 86%, var(--primary));
+    color: var(--muted-foreground);
+    text-align: center;
+  }
+
+  .trust-proof-card strong {
+    color: var(--foreground);
+    font-size: 1.35rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .trust-proof-card span {
+    font-size: 0.78rem;
+    line-height: 1.25;
+  }
+
+  .trust-proof-card--stars {
+    align-items: center;
+  }
+
+  .trust-proof-card--stars strong {
+    color: #d59a16;
+    letter-spacing: 0.04em;
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 639px) {
+    .trust-proof-card {
+      justify-content: flex-start;
+      text-align: left;
+    }
+  }
+</style>

@@ -269,7 +269,7 @@ export const setupHeroStage = () => {
       // total duration (~1.4 units, up from ~1.07 before phase 4 was added)
       // so the added window-removal + payoff beat gets proportionally the
       // same scroll-per-unit pacing as the rest of the story.
-      end: "+=155%",
+      end: "+=105%",
       // Lower smoothing than the default scrub:1 so the very first wheel
       // tick visibly moves the timeline right away instead of spending its
       // first fraction of a second catching up (which read as a dead
