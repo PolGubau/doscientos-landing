@@ -1,15 +1,15 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { killOrbital, setupOrbital } from "./orbital";
+import { killHeroStage, setupHeroStage } from "./hero-stage";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Desktop-only GSAP animation bundle.
  * Dynamically imported by animations.ts only on viewports ≥ 768px.
- * Handles: hero word-mask, orbital ring, scroll-driven counters, the Method
- * pipeline, heading word scrub, media parallax, magnetic CTAs and the cursor
- * spotlight.
+ * Handles: hero word-mask, the hero storyboard stage, scroll-driven counters,
+ * the Method pipeline, the Case Studies horizontal-scroll carousel, heading
+ * word scrub, media parallax, magnetic CTAs and the cursor spotlight.
  *
  * Section/title scroll reveals are handled by @polgubau/astro-reveal
  * (pure CSS + IntersectionObserver). GSAP must NOT animate [data-reveal]
@@ -172,6 +172,11 @@ const setupScrubText = () => {
     if (el.dataset.scrubReady) continue;
     el.dataset.scrubReady = "true";
 
+    // CSS starts the heading at opacity 0.18 (see global.css) so it never
+    // flashes at full color before this script loads. Hand control over to
+    // the per-word tween below in the same tick, before anything paints.
+    gsap.set(el, { opacity: 1 });
+
     const textNodes: Text[] = [];
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
     while (walker.nextNode()) textNodes.push(walker.currentNode as Text);
@@ -219,7 +224,7 @@ const setupScrubText = () => {
  * Depth parallax for [data-parallax] media wrappers: the wrapper drifts
  * vertically inside its overflow-hidden frame while the page scrolls. It is
  * pre-scaled by twice the drift so the frame never shows an empty edge.
- * Elements inside #hero are skipped — the pinned orbital already owns them.
+ * Elements inside #hero are skipped — the pinned hero stage already owns them.
  */
 const setupParallax = () => {
   const targets = document.querySelectorAll<HTMLElement>("[data-parallax]");
@@ -343,24 +348,18 @@ const setupCounters = () => {
 let ctx: ReturnType<typeof gsap.context> | undefined;
 
 export const initDesktopAnimations = () => {
-  killOrbital();
+  killHeroStage();
   ctx?.revert();
 
-  const hasOrbital = !!document.getElementById("orbital-ring");
-
-  // Orbital/Hero must be set up FIRST: it creates a pinned ScrollTrigger
-  // ("+=200%") that inserts a pin-spacer above every later section. GSAP's
+  // Hero must be set up FIRST: it creates a pinned ScrollTrigger ("+=180%")
+  // that inserts a pin-spacer above every later section. GSAP's
   // ScrollTrigger.refresh() recalculates trigger positions in creation
   // order, so any trigger created before the pin (e.g. Method's) would be
   // measured against the pre-spacer layout and end up with stale start/end
   // values once the spacer is inserted.
   ctx = gsap.context(() => {
-    if (hasOrbital) {
-      setupOrbital(() => ctx?.add(() => setupHero(0)));
-    } else {
-      setupHero(0);
-      setupOrbital();
-    }
+    setupHero(0);
+    setupHeroStage();
     setupCounters();
     setupMethod();
     setupScrubText();

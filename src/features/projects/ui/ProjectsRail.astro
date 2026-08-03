@@ -3,12 +3,17 @@ import ProjectCard from "~/components/ui/ProjectCard.astro";
 import type { ProjectMetadata } from "~/content.config";
 type Props = {
   projects: ProjectMetadata[];
+  id?: string;
 };
 
-const { projects } = Astro.props;
+const { projects, id } = Astro.props;
 ---
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full" data-stagger="150">
+<div
+  id={id}
+  class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full"
+  data-stagger="150"
+>
   {
     projects.map((project) => (
       <div

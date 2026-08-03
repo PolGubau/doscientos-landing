@@ -163,6 +163,7 @@ describe("useContactForm — submit", () => {
 				"phone",
 				"referrer",
 				"resource",
+				"solutionType",
 				"urgency",
 				"utm_campaign",
 				"utm_content",

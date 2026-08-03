@@ -1,82 +1,751 @@
 ---
+import {
+  Calendar,
+  CheckCheck,
+  FileSpreadsheet,
+  FileText,
+  Folder,
+  Image,
+  Mail,
+  MessageCircle,
+  NotebookPen,
+  PenLine,
+  Receipt,
+  StickyNote,
+} from "@lucide/astro";
+import { diagnosticRoute } from "~/data/commercialRoutes";
 import { copy } from "~/shared/lib/copy";
 import Button from "../ui/Button.astro";
-import HeroOrbital from "./HeroOrbital.astro";
+import SectionTag from "../ui/SectionTag.astro";
 
 const { hero } = copy;
+
+// Split at build time (not in hero-stage.ts) so the payoff headline never
+// flashes as one unsplit block before JS runs — the masked word spans are
+// present in the server-rendered markup from the start, hero-stage.ts only
+// animates them.
+const payoffWords = hero.title.split(" ");
+
+const ICONS = {
+  "file-spreadsheet": FileSpreadsheet,
+  folder: Folder,
+  "notebook-pen": NotebookPen,
+  "pen-line": PenLine,
+  mail: Mail,
+  "message-circle": MessageCircle,
+  calendar: Calendar,
+  receipt: Receipt,
+  "file-text": FileText,
+  "sticky-note": StickyNote,
+} as const;
+
+// Each chip's thumbnail (above the filename caption) is rendered differently
+// depending on what it represents, so the cloud reads as a mix of real
+// attachments instead of identical icon pills — like a chat's media preview:
+// - "mail": a draft being written (to/subject rows + body + blinking cursor)
+// - "chat": a WhatsApp-style photo attachment (image + timestamp/read ticks)
+// - "grid": a spreadsheet/calendar cell grid
+// - "lines": a generic document preview (text bars + large watermark icon)
+const KINDS = {
+  "file-spreadsheet": "grid",
+  folder: "lines",
+  "notebook-pen": "lines",
+  "pen-line": "lines",
+  mail: "mail",
+  "message-circle": "chat",
+  calendar: "grid",
+  receipt: "lines",
+  "file-text": "lines",
+  "sticky-note": "lines",
+} as const;
+
+// Which cells light up in the "grid" preview — purely decorative.
+const GRID_ACTIVE = new Set([1, 4, 7]);
+
+// Art-directed scatter positions (% within #hero-stage) for the chaos chips.
+// Kept clear-ish of the centre and inset from the stage edges — these cards
+// are bigger than the old icon pills — so nothing clips against the
+// overflow-hidden hero, and so the software window reads cleanly once it
+// forms there. Vertically compressed towards the middle (20%-78%) so the
+// cloud sits centred in the stage instead of stretching close to its top/
+// bottom edges. Cycles if more/fewer chaos items are ever added in copy.ts.
+const POSITIONS = [
+  { left: "10%", top: "25%" },
+  { left: "23%", top: "67%" },
+  { left: "46%", top: "20%" },
+  { left: "74%", top: "25%" },
+  { left: "89%", top: "55%" },
+  { left: "14%", top: "45%" },
+  { left: "58%", top: "75%" },
+  { left: "82%", top: "77%" },
+  { left: "36%", top: "78%" },
+  { left: "90%", top: "34%" },
+];
+
+const chaos = hero.stage.chaos.map((item, i) => ({
+  ...item,
+  Icon: ICONS[item.icon as keyof typeof ICONS],
+  kind: KINDS[item.icon as keyof typeof KINDS],
+  pos: POSITIONS[i % POSITIONS.length],
+}));
 ---
 
 <section
   id="hero"
-  class="relative flex flex-col justify-center px-6 items-center min-h-[100svh]"
+  class="relative flex flex-col px-6 items-center justify-center min-h-[100svh] pt-20 pb-6 md:pt-24 gap-4 md:gap-6 overflow-hidden"
 >
-  <!-- Title sits in the middle of the orbital ring; fades out on scroll -->
+  <!--
+    Real, static <h1> for SEO/screen readers — kept off-screen since the
+    visible headline is the big payoff text that lands in the stage below
+    (see #hero-payoff) once the software window fades out.
+    data-hero-ready="true" pre-empts setupHero()'s `#hero h1` word-split
+    entrance in gsap-animations.ts, which is meant for a visible title, not
+    this sr-only one.
+  -->
+  <h1 class="sr-only" data-hero-ready="true">{hero.title}</h1>
+
+  <!--
+    Caption stack: three short beats crossfade in sync with the storyboard
+    below as the visitor scrolls. The payoff line (hero.title) is NOT part
+    of this stack — it lands as its own big headline inside the stage (see
+    #hero-payoff) once the software window fades out in phase 4.
+    Absolutely-stacked so the swap never shifts layout. Only the first is
+    visible at rest (CSS default) — that is also the mobile/reduced-motion
+    fallback, no JS required. aria-live announces each change to screen
+    readers.
+  -->
   <div
-    id="hero-content"
-    class="relative z-20 flex flex-col items-center w-full"
+    aria-live="polite"
+    class="relative z-20 h-10 md:h-14 w-full flex items-center justify-center shrink-0 px-4"
   >
-    <!-- Main title con bounce impactante -->
-    <h1
-      data-reveal="scale"
-      data-init
-      data-speed="fast"
-      data-easing="bounce"
-      data-delay="100"
-      class="text-3xl sm:text-3xl max-md:max-w-xl text-balance md:max-w-xl text-center md:text-3xl font-medium tracking-tight text-foreground"
-    >
-      {hero.title}
-    </h1>
+    {
+      hero.stage.captions.map((caption) => (
+        <SectionTag class="hero-caption absolute inset-0 flex items-center justify-center text-center">
+          {caption}
+        </SectionTag>
+      ))
+    }
   </div>
 
   <!--
-    Subtitle + CTAs assemble in at the top as the ring grows on scroll
-    (revealed by orbital.ts). data-reveal hides it from first paint; on desktop
-    it is top-anchored, on mobile (no scroll choreography) it flows under the
-    title and orbital.ts reveals it statically.
+    Storyboard stage: scattered tool chips converge into a single software
+    window as the visitor scrolls (see hero-stage.ts). Desktop: pinned +
+    scrubbed choreography. Mobile: chaos chips are hidden via CSS and the
+    window renders as a static, finished illustration — no JS, no pin.
   -->
   <div
-    id="hero-scroll-reveal"
-    data-reveal
-    data-init
-    class="relative md:absolute md:inset-x-0 md:top-0 z-20 flex flex-col gap-6 md:gap-10 items-center w-full px-6 mt-8 md:mt-0 md:pt-24 lg:pt-32"
+    id="hero-stage"
+    class="relative z-10 flex-1 w-full max-w-5xl mx-auto flex items-center justify-center min-h-[320px] md:min-h-[440px]"
+    aria-hidden="true"
   >
-    <!-- Subtitle -->
-    <div class="text-muted-foreground max-w-xl text-center lg:text-lg">
-      {hero.subtitle}
+    <div id="hero-lines" class="absolute inset-0"></div>
+
+    <div id="hero-chaos" class="absolute inset-0">
+      {
+        chaos.map(({ Icon, label, pos, color, kind }) => (
+          <div
+            class="hero-chaos-item"
+            style={`left:${pos.left};top:${pos.top};--chip-color:${color}`}
+          >
+            <div class="hero-chaos-inner">
+              <div class="hero-chaos-preview">
+                {kind === "mail" && (
+                  <div class="hero-chaos-mail">
+                    <span class="hero-chaos-mail-row">
+                      <span class="hero-chaos-mail-label">Para</span>
+                      <span class="hero-chaos-bar" style="width:64%" />
+                    </span>
+                    <span class="hero-chaos-mail-row">
+                      <span class="hero-chaos-mail-label">Asunto</span>
+                      <span class="hero-chaos-bar" style="width:48%" />
+                    </span>
+                    <span
+                      class="hero-chaos-bar hero-chaos-bar--body"
+                      style="width:88%"
+                    />
+                    <span class="hero-chaos-mail-row">
+                      <span
+                        class="hero-chaos-bar hero-chaos-bar--body"
+                        style="width:36%"
+                      />
+                      <span class="hero-chaos-cursor" />
+                    </span>
+                  </div>
+                )}
+                {kind === "chat" && (
+                  <div class="hero-chaos-chat">
+                    <div class="hero-chaos-chat-photo">
+                      <Image class="size-6" />
+                    </div>
+                    <div class="hero-chaos-chat-meta">
+                      <span>12:04</span>
+                      <CheckCheck class="size-3" />
+                    </div>
+                  </div>
+                )}
+                {kind === "grid" && (
+                  <div class="hero-chaos-grid">
+                    {Array.from({ length: 9 }).map((_, gi) => (
+                      <span
+                        class={`hero-chaos-cell${GRID_ACTIVE.has(gi) ? " is-active" : ""}`}
+                      />
+                    ))}
+                  </div>
+                )}
+                {kind === "lines" && (
+                  <div class="hero-chaos-lines">
+                    <Icon class="hero-chaos-watermark" />
+                    <span class="hero-chaos-bar" style="width:85%" />
+                    <span class="hero-chaos-bar" style="width:60%" />
+                    <span class="hero-chaos-bar" style="width:72%" />
+                  </div>
+                )}
+              </div>
+              <div class="hero-chaos-caption">
+                <Icon class="hero-chaos-caption-icon size-4 shrink-0" />
+                <span class="hero-chaos-label">{label}</span>
+              </div>
+            </div>
+          </div>
+        ))
+      }
     </div>
 
-    <!-- CTA -->
-    <div class="pt-2 md:pt-4 flex flex-col items-center gap-4 w-full">
-      <div
-        class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full max-w-xs sm:max-w-none"
-      >
-        <a href={`/contact`} id="hero-cta-primary" class="w-full sm:w-auto">
-          <Button withArrow class="w-full sm:w-fit">
-            {hero.cta}
-          </Button>
-        </a>
-        <a href="/projects" id="hero-cta-secondary" class="w-full sm:w-auto">
-          <Button variant="outline" class="w-full sm:w-fit"
-            >Ver proyectos</Button
-          >
-        </a>
+    <div id="hero-window" class="hero-window">
+      <div class="hero-window-bar">
+        <span class="hero-window-dot"></span>
+        <span class="hero-window-dot"></span>
+        <span class="hero-window-dot"></span>
+        <span class="hero-window-title">{hero.stage.window.label}</span>
       </div>
+      <div class="hero-window-body">
+        {
+          hero.stage.window.rows.map((row) => (
+            <div class="hero-window-row">{row}</div>
+          ))
+        }
+        <div class="hero-window-metric">
+          <span
+            class="hero-window-metric-value"
+            data-count={hero.stage.window.metricValue}
+            data-count-suffix={hero.stage.window.metricSuffix}
+            >{hero.stage.window.metricValue}{
+              hero.stage.window.metricSuffix
+            }</span
+          >
+          <span class="hero-window-metric-label"
+            >{hero.stage.window.metricLabel}</span
+          >
+        </div>
+      </div>
+    </div>
 
-      <script is:inline>
-        ["hero-cta-primary", "hero-cta-secondary"].forEach((id) => {
-          document.getElementById(id)?.addEventListener("click", () => {
-            if ("gtag" in window) {
-              window.gtag("event", "cta_click", {
-                event_category: "engagement",
-                event_label: id,
-              });
-            }
-          });
-        });
-      </script>
+    <!--
+      Payoff headline: the single most important line on the page. Sits
+      exactly where the software window sits (absolute overlay, same stage
+      centre) but starts hidden — hero-stage.ts fades the window out and
+      this headline in together at the very end of the scroll story, so it
+      visually *replaces* the window instead of competing with it or the
+      small crossfading captions above.
+    -->
+    <div id="hero-payoff">
+      <p class="hero-payoff-text">
+        {
+          payoffWords.map((word, i) => (
+            <>
+              <span class="payoff-word-outer">
+                <span class="payoff-word-inner">{word}</span>
+              </span>
+              {i < payoffWords.length - 1 && " "}
+            </>
+          ))
+        }
+      </p>
     </div>
   </div>
 
-  <!-- Orbital ring — absolutely positioned, sits behind the hero content (z-10) -->
-  <HeroOrbital />
+  <!--
+    Diagnostic CTA: lands together with #hero-payoff (see hero-stage.ts
+    phase 4). Kept as a sibling of #hero-stage rather than nested inside it
+    because #hero-stage is aria-hidden (purely decorative storyboard) — an
+    interactive link in there would be unreachable/confusing for keyboard
+    and screen-reader users. Reserves its height up front (like the caption
+    row above) so fading it in never shifts the layout.
+  -->
+  <div
+    id="hero-payoff-cta"
+    class="relative z-20 flex items-center justify-center shrink-0 min-h-14"
+  >
+    <a href={`${diagnosticRoute.href}?ref=hero-payoff`} id="hero-cta-payoff">
+      <Button withArrow>Diagnóstico gratis</Button>
+    </a>
+  </div>
+
+  <!--
+    Subtitle + CTA land after the storyboard resolves. The headline itself
+    is not repeated here — it's #hero-payoff inside the stage above,
+    appearing once the software window (step 3) fades out, so the
+    "chaos -> one system -> do it yourself" story isn't spoiled or
+    duplicated.
+  -->
+  <div
+    id="hero-content"
+    class="relative z-20 flex flex-col items-center text-center gap-4 md:gap-5 max-w-2xl mx-auto shrink-0"
+  >
+    <div
+      id="hero-scroll-reveal"
+      data-reveal
+      data-init
+      class="flex flex-col gap-4 md:gap-6 items-center w-full"
+    >
+      <div class="text-muted-foreground max-w-xl text-center text-pretty">
+        {hero.subtitle}
+      </div>
+
+      <div class="pt-2 flex flex-col items-center gap-4 w-full">
+        <div
+          class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full max-w-xs sm:max-w-none"
+        >
+          <a href={`/contact`} id="hero-cta-primary" class="w-full sm:w-auto">
+            <Button withArrow class="w-full sm:w-fit">
+              {hero.cta}
+            </Button>
+          </a>
+          <a href="/projects" id="hero-cta-secondary" class="w-full sm:w-auto">
+            <Button variant="outline" class="w-full sm:w-fit"
+              >Ver proyectos</Button
+            >
+          </a>
+        </div>
+
+        <script is:inline>
+          ["hero-cta-primary", "hero-cta-secondary"].forEach((id) => {
+            document.getElementById(id)?.addEventListener("click", () => {
+              if ("gtag" in window) {
+                window.gtag("event", "cta_click", {
+                  event_category: "engagement",
+                  event_label: id,
+                });
+              }
+            });
+          });
+        </script>
+      </div>
+    </div>
+  </div>
 </section>
+
+<style is:global>
+  /*
+   * .hero-caption is applied as a class prop to <SectionTag>, which renders
+   * its own <span> inside SectionTag.astro — a different file. Astro's
+   * style scoping only instruments elements written directly in the file
+   * that owns the <style> block, so a *scoped* rule here would never match
+   * that <span> and Tailwind's `text-xs` (from SectionTag's own markup)
+   * would silently win. Must be global to actually override it.
+   */
+  .hero-caption {
+    opacity: 0;
+    transition: none;
+    font-size: 1.05rem !important;
+    line-height: 1.3;
+    font-weight: 600 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    color: var(--foreground) !important;
+    /*
+     * SectionTag's own markup hardcodes `w-fit` on this span. Combined with
+     * the `absolute inset-0` we add here, top/left/right/bottom AND width
+     * are all specified at once — CSS resolves that over-constrained box by
+     * dropping `right` (ltr), so the span shrinks to fit its text and
+     * anchors at left:0 instead of stretching to fill the caption row.
+     * `justify-center`/`text-center` then have nothing to centre within,
+     * since the box is already exactly as wide as the text. Forcing the
+     * width back to 100% here restores the stretch so centring works.
+     */
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .hero-caption:first-child {
+    opacity: 1;
+  }
+
+  @media (min-width: 768px) {
+    .hero-caption {
+      font-size: 1.5rem !important;
+    }
+  }
+</style>
+
+<style>
+  .hero-chaos-item {
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-chaos-inner {
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 132px;
+  }
+
+  /*
+   * Thumbnail: the "attachment preview" that sits above the filename
+   * caption, styled like a chat app's media preview instead of a bare icon.
+   */
+  .hero-chaos-preview {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg, 0.85rem);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--chip-color) 14%, var(--background));
+    border: 1.5px solid color-mix(in srgb, var(--chip-color) 40%, var(--muted));
+    box-shadow: var(--shadow-pastel-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+  }
+
+  /* "lines" preview: generic document — a few text bars plus a large, faint
+     icon watermark in the corner. */
+  .hero-chaos-lines {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+    width: 100%;
+  }
+
+  .hero-chaos-watermark {
+    position: absolute;
+    right: -0.35rem;
+    bottom: -0.35rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    color: var(--chip-color);
+    opacity: 0.22;
+  }
+
+  .hero-chaos-bar {
+    display: block;
+    height: 6px;
+    border-radius: 9999px;
+    background: color-mix(
+      in srgb,
+      var(--chip-color) 55%,
+      var(--muted-foreground)
+    );
+    opacity: 0.55;
+  }
+
+  .hero-chaos-bar--body {
+    opacity: 0.35;
+  }
+
+  /* "mail" preview: a draft being written. */
+  .hero-chaos-mail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.32rem;
+    width: 100%;
+  }
+
+  .hero-chaos-mail-row {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .hero-chaos-mail-row .hero-chaos-bar {
+    flex: 1;
+  }
+
+  .hero-chaos-mail-label {
+    flex-shrink: 0;
+    font-size: 0.52rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--muted-foreground);
+  }
+
+  .hero-chaos-cursor {
+    flex-shrink: 0;
+    width: 2px;
+    height: 10px;
+    background: var(--chip-color);
+    animation: hero-chaos-caret 1s step-end infinite;
+  }
+
+  @keyframes hero-chaos-caret {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* "chat" preview: a WhatsApp-style photo attachment. */
+  .hero-chaos-chat {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-chaos-chat-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--chip-color) 65%, white),
+      color-mix(in srgb, var(--chip-color) 35%, var(--background))
+    );
+  }
+
+  .hero-chaos-chat-meta {
+    position: absolute;
+    right: 0.3rem;
+    bottom: 0.28rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.08rem 0.32rem;
+    border-radius: 9999px;
+    background: rgb(0 0 0 / 0.35);
+    color: white;
+    font-size: 0.52rem;
+    line-height: 1;
+  }
+
+  /* "grid" preview: spreadsheet / calendar cells. */
+  .hero-chaos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.2rem;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-chaos-cell {
+    border-radius: 0.2rem;
+    background: color-mix(in srgb, var(--chip-color) 16%, var(--background));
+    border: 1px solid color-mix(in srgb, var(--chip-color) 30%, var(--muted));
+  }
+
+  .hero-chaos-cell.is-active {
+    background: color-mix(in srgb, var(--chip-color) 55%, var(--background));
+    border-color: var(--chip-color);
+  }
+
+  /*
+   * Filename caption strip below the preview, like a chat attachment's
+   * filename label.
+   */
+  .hero-chaos-caption {
+    display: flex;
+    align-items: center;
+    gap: 0.32rem;
+    padding: 0.32rem 0.6rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--chip-color) 8%, var(--background));
+    border: 1px solid color-mix(in srgb, var(--chip-color) 30%, var(--muted));
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--foreground);
+    box-shadow: var(--shadow-pastel-sm);
+  }
+
+  .hero-chaos-caption-icon {
+    color: var(--chip-color);
+  }
+
+  .hero-chaos-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #hero-lines {
+    pointer-events: none;
+  }
+
+  .hero-chaos-line {
+    position: absolute;
+    height: 2px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      var(--chip-color, var(--primary)),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  #hero-window {
+    opacity: 0;
+    transform: translateY(16px) scale(0.85);
+    width: min(380px, 90%);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--muted);
+    background: var(--background);
+    box-shadow: var(--shadow-pastel);
+    overflow: hidden;
+  }
+
+  .hero-window-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.65rem 0.85rem;
+    border-bottom: 1px solid var(--muted);
+  }
+
+  .hero-window-dot {
+    size: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--muted);
+  }
+
+  .hero-window-title {
+    margin-left: 0.4rem;
+    font-size: 0.7rem;
+    color: var(--muted-foreground);
+  }
+
+  .hero-window-body {
+    padding: 1rem 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .hero-window-row {
+    opacity: 0;
+    transform: translateY(8px);
+    font-size: 0.8rem;
+    color: var(--foreground);
+    background: var(--muted);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.65rem;
+  }
+
+  .hero-window-metric {
+    margin-top: 0.4rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  .hero-window-metric-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .hero-window-metric-label {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+  }
+
+  /*
+   * Payoff headline: absolute overlay centred on the same spot as
+   * #hero-window (its sibling), so it can fade in exactly where the window
+   * fades out in phase 4 without either ever affecting the other's layout.
+   * Hidden by default (opacity 0) — hero-stage.ts is what reveals it.
+   */
+  #hero-payoff {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .hero-payoff-text {
+    max-width: 46rem;
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-align: center;
+    text-wrap: balance;
+    color: var(--foreground);
+  }
+
+  @media (min-width: 768px) {
+    .hero-payoff-text {
+      font-size: 2.75rem;
+    }
+  }
+
+  /*
+   * Word-by-word entrance for the payoff headline (hero-stage.ts, phase 4):
+   * each word is masked by an overflow-hidden outer span while its inner
+   * span is the one hero-stage.ts actually transforms (yPercent/rotateX),
+   * so every word rises and rotates in from below its own mask instead of
+   * the whole line just fading/popping in as one block.
+   */
+  .payoff-word-outer {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    perspective: 600px;
+  }
+
+  .payoff-word-inner {
+    display: inline-block;
+    transform-origin: bottom center;
+    will-change: transform;
+  }
+
+  /*
+   * Diagnostic CTA (#hero-payoff-cta): hidden by default so it never flashes
+   * before hero-stage.ts reveals it alongside the payoff headline in phase
+   * 4. visibility:hidden (mirroring GSAP's autoAlpha) keeps it out of the
+   * tab order/unclickable until then; the reveal tween lifts both
+   * properties back automatically.
+   */
+  #hero-payoff-cta {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /*
+   * Mobile never pins/scrubs the stage, and prefers-reduced-motion skips
+   * hero-stage.ts entirely (see animations.ts) — in both cases the GSAP
+   * timeline that would normally converge the chaos into the window and
+   * then swap it for the payoff headline never runs. Force the finished
+   * state here: chaos hidden, window hidden, payoff headline shown — it's
+   * the single most important line, so it's what mobile visitors see
+   * immediately rather than a static software mockup.
+   */
+  @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+    #hero-chaos,
+    #hero-lines,
+    #hero-window {
+      display: none;
+    }
+
+    #hero-payoff {
+      opacity: 1;
+    }
+
+    #hero-payoff-cta {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+</style>

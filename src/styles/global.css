@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "./custom-styles.css";
 @plugin "@tailwindcss/typography";
+
 /*
  * Section/title scroll reveals are handled by @polgubau/astro-reveal
  * (pure CSS + IntersectionObserver). It owns the resting hidden state via
@@ -9,41 +10,57 @@
  * overrides the library's [data-state="visible"] and sections never appear.
  *
  * The #hero is GSAP-controlled, so neutralize astro-reveal's resting
- * transform there: GSAP/orbital own the choreography and only flip opacity.
+ * transform there: the hero stage timeline owns the choreography and only
+ * flips opacity.
  */
 #hero [data-reveal]:not([data-state="visible"]) {
-	transform: none !important;
+  transform: none !important;
 }
+
+/*
+ * [data-scrub-text] headings light up word-by-word via GSAP as they're
+ * scrolled through (see setupScrubText in gsap-animations.ts). That JS is
+ * dynamically imported on desktop, so without this rule the heading would
+ * flash in at full color the instant astro-reveal reveals it, then get
+ * dimmed once GSAP finally loads and splits it into words. Starting dim in
+ * plain CSS means it's already in the right state the moment it appears —
+ * GSAP just takes over from there. Reset to 1 by JS on mobile/reduced-motion,
+ * where the word-scrub never runs.
+ */
+[data-scrub-text] {
+  opacity: 0.18;
+}
+
 @plugin "tailwindcss-intersect";
 @plugin "tailwindcss-motion";
 
 /* @custom-variant dark (&:where(.dark, .dark *)); */
 
 @font-face {
-	font-family: "Onest";
-	src: url("../assets/fonts/onest.ttf") format("truetype");
-	font-weight: 100 900;
-	font-style: normal;
-	font-optical-sizing: auto;
-	font-display: swap;
+  font-family: "Onest";
+  src: url("../assets/fonts/onest.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-optical-sizing: auto;
+  font-display: swap;
 }
 
 :root {
-	/* El sitio es light-only (las variables .dark están desactivadas).
+  /* El sitio es light-only (las variables .dark están desactivadas).
 	   Forzamos el esquema de color para que los controles de formulario
 	   nativos no se rendericen en oscuro cuando el SO está en modo oscuro,
 	   lo que dejaba el texto del formulario invisible. */
-	color-scheme: light;
-	--radius: 0.625rem;
-	--background: #f6f7f9;
-	--foreground: #0c110b;
-	--primary: #2a4227;
-	--primary-foreground: oklch(0.984 0.003 247.858);
-	--secondary: oklch(0.968 0.007 247.896);
-	--muted: #e3e5e7;
-	--muted-foreground: #52525b;
-	--accent: oklch(1 0 0);
-	--destructive: #e7000b;
+  color-scheme: light;
+  --radius: 0.625rem;
+  --background: #f6f7f9;
+  --foreground: #0c110b;
+  --primary: #2a4227;
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --secondary: oklch(0.968 0.007 247.896);
+  --muted: #e3e5e7;
+  --muted-foreground: #52525b;
+  --accent: oklch(1 0 0);
+  --destructive: #e7000b;
 }
 
 /* .dark {
@@ -58,82 +75,67 @@
   --destructive: oklch(0.704 0.191 22.216);
 } */
 @theme inline {
-	--font-heading: "Onest", sans-serif;
-	--font-body: "Onest", sans-serif;
-	--color-primary: var(--primary);
-	--color-secondary: var(--secondary);
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
-	--color-destructive: var(--destructive);
-	--color-accent: var(--accent);
-	--color-muted-foreground: var(--muted-foreground);
-	--color-muted: var(--muted);
-	--color-secondary-foreground: var(--secondary-foreground);
+  --font-heading: "Onest", sans-serif;
+  --font-body: "Onest", sans-serif;
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-destructive: var(--destructive);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
 
-	--radius-sm: calc(var(--radius) - 4px);
-	--radius-md: calc(var(--radius) - 2px);
-	--radius-lg: var(--radius);
-	--radius-xl: calc(var(--radius) + 4px);
-	--radius-2xl: calc(var(--radius) + 8px);
-	--radius-3xl: calc(var(--radius) + 12px);
-	--radius-4xl: calc(var(--radius) + 30px);
-	--radius-5xl: calc(var(--radius) + 48px);
-	--radius-6xl: calc(var(--radius) + 60px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 30px);
+  --radius-5xl: calc(var(--radius) + 48px);
+  --radius-6xl: calc(var(--radius) + 60px);
 
-	--text-xs: 0.75rem;
-	--text-sm: 0.875rem;
-	--text-base: 1rem;
-	--text-lg: 1.125rem;
-	--text-xl: 1.25rem;
-	--text-2xl: 1.5rem;
-	--text-3xl: 1.875rem;
-	--text-4xl: 2.25rem;
-	--text-5xl: 3rem;
-	--text-6xl: 4rem;
-	--text-7xl: 5rem;
-	--text-8xl: 6rem;
-	--text-9xl: 8rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 4rem;
+  --text-7xl: 5rem;
+  --text-8xl: 6rem;
+  --text-9xl: 8rem;
 
-	--shadow-pastel:
-		0px 2px 6px -4px rgba(15, 25, 61, 0.16), 0px 3.359209106361959px 1.6796045531809796px -0.625px rgba(
-			39,
-			40,
-			42,
-			0.01
-		), 0px 7.961918735236395px 3.9809593676181976px -1.25px rgba(
-			39,
-			40,
-			42,
-			0.01
-		), 0px 14.523362758627625px 7.261681379313813px -1.875px rgba(
-			39,
-			40,
-			42,
-			0.01
-		), 0px 24.14506143104518px 12.07253071552259px -2.5px rgba(39, 40, 42, 0.01), 0px 38.99230544391321px 19.496152721956605px -3.125px rgba(
-			39,
-			40,
-			42,
-			0.01
-		), 0px 63.82653521484462px 31.91326760742231px -3.75px rgba(
-			39,
-			40,
-			42,
-			0.01
-		), 0px 109.90498352673603px 54.952491763368016px -4.375px rgba(
-			39,
-			40,
-			42,
-			0
-		), 0px 200px 100px -5px rgba(39, 40, 42, 0), 0px -0.5px 0px 0.5px rgba(
-			240,
-			244,
-			247,
-			0
-		);
+  --shadow-pastel:
+    0px 2px 6px -4px rgba(15, 25, 61, 0.16), 0px 3.359209106361959px 1.6796045531809796px -0.625px rgba(39,
+      40,
+      42,
+      0.01), 0px 7.961918735236395px 3.9809593676181976px -1.25px rgba(39,
+      40,
+      42,
+      0.01), 0px 14.523362758627625px 7.261681379313813px -1.875px rgba(39,
+      40,
+      42,
+      0.01), 0px 24.14506143104518px 12.07253071552259px -2.5px rgba(39, 40, 42, 0.01), 0px 38.99230544391321px 19.496152721956605px -3.125px rgba(39,
+      40,
+      42,
+      0.01), 0px 63.82653521484462px 31.91326760742231px -3.75px rgba(39,
+      40,
+      42,
+      0.01), 0px 109.90498352673603px 54.952491763368016px -4.375px rgba(39,
+      40,
+      42,
+      0), 0px 200px 100px -5px rgba(39, 40, 42, 0), 0px -0.5px 0px 0.5px rgba(240,
+      244,
+      247,
+      0);
 
-	--shadow-pastel-sm: rgba(0, 0, 0, 0.11) 0px 0.5px 2px 0px, rgba(0, 0, 0, 0.04)
-		0px 2px 12px 0px;
+  --shadow-pastel-sm: rgba(0, 0, 0, 0.11) 0px 0.5px 2px 0px, rgba(0, 0, 0, 0.04) 0px 2px 12px 0px;
 }
 
 h1,
@@ -142,76 +144,78 @@ h3,
 h4,
 h5,
 h6 {
-	@apply font-heading tracking-tighter;
+  @apply font-heading tracking-tighter;
 }
+
 button {
-	@apply cursor-pointer;
+  @apply cursor-pointer;
 }
 
 html {
-	scrollbar-gutter: stable;
+  scrollbar-gutter: stable;
 }
+
 body {
-	@apply bg-background text-foreground antialiased font-heading overflow-x-clip;
-	timeline-scope: --scroll;
-	font-size: 16px;
+  @apply bg-background text-foreground antialiased font-heading overflow-x-clip;
+  timeline-scope: --scroll;
+  font-size: 16px;
 }
 
 *::selection {
-	@apply bg-primary text-background;
+  @apply bg-primary text-background;
 }
 
 main {
-	view-timeline: --scroll;
+  view-timeline: --scroll;
 }
 
 strong {
-	font-weight: 900;
+  font-weight: 900;
 }
 
 @keyframes slide-up {
-	to {
-		transform: translateX(-50%) translateY(0%);
-		opacity: 1;
-	}
+  to {
+    transform: translateX(-50%) translateY(0%);
+    opacity: 1;
+  }
 }
 
 pre::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 pre {
-	-ms-overflow-style: none;
-	/* IE and Edge */
-	scrollbar-width: none;
-	/* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 table {
-	display: block;
-	max-width: fit-content;
-	overflow-x: auto;
-	white-space: nowrap;
+  display: block;
+  max-width: fit-content;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 strong {
-	@apply font-semibold;
+  @apply font-semibold;
 }
 
 @keyframes show {
-	from {
-		opacity: 0;
-		scale: 70%;
-	}
+  from {
+    opacity: 0;
+    scale: 70%;
+  }
 
-	to {
-		opacity: 1;
-		scale: 100%;
-	}
+  to {
+    opacity: 1;
+    scale: 100%;
+  }
 }
 
 @layer base {
-	body {
-		@apply bg-background text-foreground;
-	}
+  body {
+    @apply bg-background text-foreground;
+  }
 }
