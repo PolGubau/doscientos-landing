@@ -232,6 +232,27 @@ export const setupHeroStage = () => {
       // entrance safe from that.
       overwrite: false,
     });
+
+    // The first caption is visible at rest via plain CSS (no `data-state`/JS
+    // needed as a mobile & reduced-motion fallback — see .hero-caption:first-
+    // child), so unlike captions 2/3 (which only ever appear via the
+    // scrubbed crossfade tween below) it never got an entrance of its own,
+    // reading as a static line popping in dead while everything else around
+    // it (chips, lines) animates in. Give it the same pop-in the later
+    // captions use on their scrubbed crossfade (back.out overshoot) so the
+    // very first thing visitors read arrives with the same motion language,
+    // timed to land alongside the chaos chips above.
+    if (captions[0]) {
+      gsap.from(captions[0], {
+        autoAlpha: 0,
+        y: 16,
+        scale: 0.94,
+        ease: "back.out(1.7)",
+        duration: 0.5,
+        delay: 0.15,
+        overwrite: false,
+      });
+    }
   });
 
   tl = gsap.timeline({

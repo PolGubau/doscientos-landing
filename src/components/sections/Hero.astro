@@ -134,7 +134,7 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   -->
   <div
     id="hero-stage"
-    class="relative z-10 flex-1 w-full max-w-5xl mx-auto flex items-center justify-center min-h-[320px] md:min-h-[440px]"
+    class="relative z-10 w-full max-w-5xl mx-auto flex items-center justify-center min-h-[320px] md:min-h-[440px]"
     aria-hidden="true"
   >
     <div id="hero-lines" class="absolute inset-0"></div>
@@ -241,11 +241,13 @@ const chaos = hero.stage.chaos.map((item, i) => ({
 
     <!--
       Payoff headline: the single most important line on the page. Sits
-      exactly where the software window sits (absolute overlay, same stage
-      centre) but starts hidden — hero-stage.ts fades the window out and
-      this headline in together at the very end of the scroll story, so it
-      visually *replaces* the window instead of competing with it or the
-      small crossfading captions above.
+      over the same stage the software window sits in (absolute overlay,
+      anchored to the stage's bottom edge — see #hero-payoff CSS) but starts
+      hidden — hero-stage.ts fades the window out and this headline in
+      together at the very end of the scroll story, so it visually
+      *replaces* the window instead of competing with it or the small
+      crossfading captions above, while landing right above the subtitle/
+      CTAs below for a tight, normal title-subtitle rhythm.
     -->
     <div id="hero-payoff">
       <p class="hero-payoff-text">
@@ -640,18 +642,22 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   }
 
   /*
-   * Payoff headline: absolute overlay centred on the same spot as
-   * #hero-window (its sibling), so it can fade in exactly where the window
-   * fades out in phase 4 without either ever affecting the other's layout.
+   * Payoff headline: absolute overlay over the same stage as #hero-window
+   * (its sibling), so it can fade in as the window fades out in phase 4
+   * without either ever affecting the other's layout. Anchored to the
+   * *bottom* of the stage (not vertically centred) so it lands right above
+   * the subtitle/CTA block in #hero-content below — a tall, vertically
+   * centred stage would otherwise leave a large empty gap between the
+   * headline and the subtitle in the hero's resting state.
    * Hidden by default (opacity 0) — hero-stage.ts is what reveals it.
    */
   #hero-payoff {
     position: absolute;
     inset: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    padding: 0 1rem;
+    padding: 0 1rem 0.5rem;
     opacity: 0;
     pointer-events: none;
   }
