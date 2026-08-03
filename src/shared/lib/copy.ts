@@ -2,7 +2,7 @@
 // "No al revés" es el differentiator - apunta directamente al SAP, Salesforce, HubSpot que los obliga a adaptarse.
 // Shared between `hero.title` and the stage's closing payoff headline (see
 // below) so the line only has to be written once.
-const heroTitle = "Deja de trabajar entre Excel, WhatsApp y recordatorios";
+const heroTitle = "Deja de trabajar entre Excel y WhatsApp";
 
 export const copy = {
   hero: {

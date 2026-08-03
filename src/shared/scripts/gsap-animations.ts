@@ -50,6 +50,13 @@ const getReveal = (
 const setupHero = (extraDelay = 0) => {
   const h1 = document.querySelector<HTMLElement>("#hero h1");
   if (!h1) return;
+  // The homepage Hero owns its message layout. Keeping this H1 static avoids
+  // wrapping each word in an overflow mask, which can clip large headlines
+  // and makes the promise appear to animate twice before settling.
+  if (h1.dataset.heroStatic === "true") {
+    gsap.set(h1, { clearProps: "all", opacity: 1 });
+    return;
+  }
   if (h1.dataset.heroReady) return;
   h1.dataset.heroReady = "true";
 

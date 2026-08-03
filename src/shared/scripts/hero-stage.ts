@@ -5,10 +5,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Hero storyboard: a single pinned, scroll-scrubbed timeline that turns a
- * scattered cloud of "chaos" tool chips (Excel, Drive, Notion, pen…) into one
- * finished software window, then removes that window again and reveals the
- * payoff headline (#hero-payoff, same text as the page's sr-only <h1>) in
- * its place as the small caption above crossfades through three beats.
+ * scattered cloud of "chaos" tool chips into one finished software window.
+ * The promise and CTA remain visible; the scroll earns the click by showing
+ * the operational change instead of hiding the message until the end.
  * Replaces the old orbital-ring hero — the subtitle/CTA stay static below
  * the stage for the whole scroll, only the stage and caption above are
  * choreographed.
@@ -29,7 +28,7 @@ export const killHeroStage = () => {
 // Resting scale of a chip's card once it has popped in, and how far it has
 // shrunk by the time it's fully absorbed into the window in phase 2.
 const REST_SCALE = 0.9;
-const CONVERGE_SCALE = 0.25;
+const CONVERGE_SCALE = 0.18;
 
 // Phase boundaries, expressed as timeline position (not evenly spaced — each
 // phase gets however long its beat needs). They intentionally match the
@@ -38,13 +37,12 @@ const CONVERGE_SCALE = 0.25;
 // medida" -> integrated result, then the software window is removed and the
 // payoff headline ("deja de hacer a mano...") fades in in its place as the
 // closing beat.
-const P1_END = 0.15;
-const P2_END = 0.6;
+const P1_END = 0.2;
+const P2_END = 0.62;
 // Window has fully formed and its rows/metric have finished revealing by
 // ~1.07 (see the phase 3 reveal loop below); P3_END gives it a short beat to
 // be seen before phase 4 removes it.
-const P3_END = 1.15;
-const P4_END = 1.4;
+const P3_END = 1;
 
 export const setupHeroStage = () => {
   killHeroStage();
@@ -52,19 +50,6 @@ export const setupHeroStage = () => {
   const hero = document.getElementById("hero");
   const stage = document.getElementById("hero-stage");
   const win = document.getElementById("hero-window");
-  const payoff = document.getElementById("hero-payoff");
-  const payoffWords = payoff
-    ? Array.from(payoff.querySelectorAll<HTMLElement>(".payoff-word-inner"))
-    : [];
-  // Subtitle + primary/secondary CTAs (see #hero-content in Hero.astro).
-  // Targets #hero-scroll-reveal (not the outer #hero-content wrapper)
-  // because that's the element carrying astro-reveal's `[data-reveal]`
-  // attribute — it has `data-init` set statically in the markup so the
-  // library's own auto-init skips it (leaving `data-state` unset forever,
-  // which pins it at the library's default hidden CSS: `opacity:0`) and
-  // GSAP drives its reveal instead, in lockstep with the payoff headline.
-  // GSAP's inline style wins over that stylesheet rule once it's applied.
-  const content = document.getElementById("hero-scroll-reveal");
   const loader = document.getElementById("hero-loader");
   const linesLayer = document.getElementById("hero-lines");
   const chaosWraps = Array.from(
@@ -206,25 +191,6 @@ export const setupHeroStage = () => {
   gsap.set(chaosChatPhotos, { autoAlpha: 0, scale: 0.7 });
   gsap.set(chaosChatMeta, { autoAlpha: 0, y: 4 });
   gsap.set(chaosWatermarks, { autoAlpha: 0 });
-  // Hidden until phase 4: without this, the payoff headline's only
-  // autoAlpha reference is the fromTo tween created near the end of this
-  // function, and since that tween sits well past timeline position 0, it
-  // never runs its immediateRender at setup time — leaving the headline at
-  // its CSS default (visible) from the very first frame instead of hidden
-  // until the software window fades out.
-  if (payoff) gsap.set(payoff, { autoAlpha: 0 });
-  // Each word starts masked below/tilted back inside its overflow-hidden
-  // outer span (see .payoff-word-outer/.payoff-word-inner in Hero.astro);
-  // the phase 4 tween below lifts+untilts them back into place. Kept
-  // separate from the container's own autoAlpha above for the same
-  // immediateRender reason.
-  if (payoffWords.length > 0) {
-    gsap.set(payoffWords, { yPercent: 120, rotateX: 55, opacity: 0 });
-  }
-  // Same immediateRender concern: the subtitle/CTAs block only reveals once
-  // the playhead reaches the end of phase 4 (see the fromTo near the end of
-  // this function).
-  if (content) gsap.set(content, { autoAlpha: 0, y: 12 });
 
   // Document-relative (scroll-invariant) resting offset of #hero from the
   // top of the viewport — i.e. the space the fixed navbar's spacer reserves
@@ -303,7 +269,7 @@ export const setupHeroStage = () => {
       // total duration (~1.4 units, up from ~1.07 before phase 4 was added)
       // so the added window-removal + payoff beat gets proportionally the
       // same scroll-per-unit pacing as the rest of the story.
-      end: "+=225%",
+      end: "+=155%",
       // Lower smoothing than the default scrub:1 so the very first wheel
       // tick visibly moves the timeline right away instead of spending its
       // first fraction of a second catching up (which read as a dead
@@ -374,28 +340,11 @@ export const setupHeroStage = () => {
     );
   });
 
-  // The last caption stays on screen through phase 3 (it's the one
-  // narrating the finished window), but once phase 4 kicks off and the
-  // window starts dissolving into the payoff headline, it must clear out —
-  // otherwise the closing state would show the small caption lingering
-  // above the big title instead of the clean title/subtitle/buttons layout
-  // requested. Fades out the same way the earlier caption transitions do.
-  const lastCaption = captions[captions.length - 1];
-  if (lastCaption) {
-    tl.to(
-      lastCaption,
-      {
-        autoAlpha: 0,
-        y: -16,
-        scale: 0.94,
-        duration: captionDuration,
-        ease: "power2.in",
-      },
-      P3_END,
-    );
-  }
+  // The last caption remains visible while the finished system gets its
+  // proof moment. It is the line that should leave the lead thinking:
+  // "this is what my team needs".
 
-  // Phase 1 (0 → P1_END): "tu operativa vive repartida en mil sitios" — each
+  // Phase 1 (0 → P1_END): "el problema se reconoce" — each
   // chip's card is already visible (poco a poco entrance above) but starts
   // as an empty shell; as the visitor scrolls, its content fills in — draft
   // text/spreadsheet cells/chat photo — so the chaos reads as "stuff is
@@ -505,7 +454,7 @@ export const setupHeroStage = () => {
     );
   }
 
-  // Phase 2 (P1_END → P2_END): "lo conectamos todo en un solo sistema" —
+  // Phase 2 (P1_END → P2_END): "lo conectamos todo" —
   // connecting lines radiate from every chip towards the centre while the
   // chips themselves get violently sucked inward (with a little chaotic
   // wind-up rotation per chip) and dissolve as the software window
@@ -607,7 +556,7 @@ export const setupHeroStage = () => {
     fusionStart + fusionSpan * 0.6,
   );
 
-  // Phase 3 (P2_END → P3_END): "hecho a medida de cómo ya trabajáis" — the
+  // Phase 3 (P2_END → P3_END): "el resultado funciona" — the
   // chips are gone, fully integrated; reveal the window's rows and metric
   // one by one as the finished, running result, then hold so it's actually
   // seen before phase 4 removes it.
@@ -628,75 +577,18 @@ export const setupHeroStage = () => {
     );
   }
 
-  // Phase 4 (P3_END → P4_END): "deja de hacer a mano lo que tu negocio
-  // puede hacer solo" — the payoff headline. The finished software window
-  // (step 3) is removed rather than left lingering, so the headline lands
-  // in the stage with nothing competing for attention instead of
-  // overlapping a static illustration. Fading the window's own opacity
-  // also hides its rows/metric with it, since they're children of
-  // #hero-window.
-  const phase4Span = P4_END - P3_END;
-  tl.fromTo(
-    win,
-    { autoAlpha: 1, y: 0, scale: 1 },
-    {
-      autoAlpha: 0,
-      y: -16,
-      scale: 0.92,
-      ease: "power1.in",
-      duration: phase4Span * 0.6,
-    },
-    P3_END,
+  // Final proof beat: the result gets a short, high-contrast pulse. It gives
+  // the story a memorable payoff without removing the system or the CTA.
+  const metricValue = document.querySelector<HTMLElement>(
+    ".hero-window-metric-value",
   );
-  // Payoff headline starts slightly after the window begins dissolving, so
-  // the two overlap briefly (window fading out while the headline fades/
-  // builds in) rather than leaving a bare gap on the stage between them.
-  const payoffStart = P3_END + phase4Span * 0.25;
-  if (payoff) {
-    // Container itself only fades — no y/scale "pop" here, since that job
-    // now belongs to the individual words below (a whole-block pop plus a
-    // per-word entrance would double up and read as jittery).
-    tl.fromTo(
-      payoff,
-      { autoAlpha: 0 },
-      { autoAlpha: 1, ease: "power1.out", duration: phase4Span * 0.25 },
-      payoffStart,
-    );
-  }
-  // Word-by-word build: each word rises out of its mask and untilts back to
-  // flat, one after another, so the closing line lands as a stronger,
-  // deliberate reveal instead of the whole sentence just appearing at once.
-  const wordStagger = phase4Span * 0.045;
-  const wordDuration = phase4Span * 0.55;
-  if (payoffWords.length > 0) {
-    tl.fromTo(
-      payoffWords,
-      { yPercent: 120, rotateX: 55, opacity: 0 },
-      {
-        yPercent: 0,
-        rotateX: 0,
-        opacity: 1,
-        stagger: wordStagger,
-        ease: "power3.out",
-        duration: wordDuration,
-      },
-      payoffStart,
-    );
-  }
-  // Subtitle + CTAs: the final beat, landing just after the payoff headline
-  // has finished building so the hero settles into its resting layout —
-  // title, subtitle, buttons — with nothing left competing for attention.
-  if (content) {
-    tl.fromTo(
-      content,
-      { autoAlpha: 0, y: 12 },
-      {
-        autoAlpha: 1,
-        y: 0,
-        ease: "power2.out",
-        duration: phase4Span * 0.5,
-      },
-      payoffStart + wordDuration * 0.6,
-    );
-  }
+  tl.to(win, { scale: 1.035, y: -6, duration: 0.16, ease: "power2.out" }, P3_END)
+    .to(win, { scale: 1, y: 0, duration: 0.16, ease: "power2.inOut" }, ">")
+    .to(
+      metricValue,
+      { scale: 1.12, color: "#1f5b35", duration: 0.16, ease: "back.out(1.7)" },
+      P3_END,
+    )
+    .to(metricValue, { scale: 1, duration: 0.2, ease: "power2.out" }, ">")
+    .to({}, { duration: 0.08 }, ">" );
 };

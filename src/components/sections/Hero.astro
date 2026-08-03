@@ -85,13 +85,42 @@ const chaos = hero.stage.chaos.map((item, i) => ({
 
 <section
   id="hero"
-    class="relative flex flex-col px-6 items-center justify-center min-h-[100svh] pt-28 pb-8 md:pt-36 gap-4 md:gap-5 overflow-hidden"
+    class="relative flex flex-col px-6 items-center justify-start min-h-[100svh] pt-20 pb-8 md:pt-24 gap-5 md:gap-7 overflow-hidden"
 >
   <div class="relative z-20 max-w-4xl text-center">
-    <h1 class="hero-title text-balance">{hero.title}</h1>
+    <h1 class="hero-title text-balance" data-hero-static="true">{hero.title}</h1>
     <p class="mt-4 max-w-2xl mx-auto text-base md:text-lg text-muted-foreground text-pretty">
       {hero.subtitle}
     </p>
+  </div>
+
+  <div
+    id="hero-content"
+    class="relative z-20 flex flex-col items-center text-center max-w-2xl mx-auto shrink-0"
+  >
+    <div id="hero-scroll-reveal" class="flex flex-col items-center w-full">
+      <div class="flex flex-col sm:flex-row gap-3 justify-center items-center w-full max-w-xs sm:max-w-none">
+        <a href={`/contact`} id="hero-cta-primary" class="w-full sm:w-auto">
+          <Button withArrow class="w-full sm:w-fit">Revisar mi proceso</Button>
+        </a>
+        <a href="/projects" id="hero-cta-secondary" class="w-full sm:w-auto">
+          <Button variant="outline" class="w-full sm:w-fit">Ver un caso parecido</Button>
+        </a>
+      </div>
+
+      <script is:inline>
+        ["hero-cta-primary", "hero-cta-secondary"].forEach((id) => {
+          document.getElementById(id)?.addEventListener("click", () => {
+            if ("gtag" in window) {
+              window.gtag("event", "cta_click", {
+                event_category: "engagement",
+                event_label: id,
+              });
+            }
+          });
+        });
+      </script>
+    </div>
   </div>
 
   <!--
@@ -123,7 +152,7 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   -->
   <div
     id="hero-stage"
-    class="relative z-10 w-full max-w-5xl mx-auto flex items-center justify-center min-h-[290px] md:min-h-[380px]"
+    class="relative z-10 w-full max-w-5xl mx-auto flex items-center justify-center min-h-[230px] md:min-h-[300px]"
     aria-hidden="true"
   >
     <div id="hero-lines" class="absolute inset-0"></div>
@@ -246,49 +275,6 @@ const chaos = hero.stage.chaos.map((item, i) => ({
 
   </div>
 
-  <!--
-    CTA stays visible from the first frame. The animation earns the click by
-    showing what changes, rather than hiding the action until the end.
-  -->
-  <div
-    id="hero-content"
-    class="relative z-20 flex flex-col items-center text-center gap-4 md:gap-5 max-w-2xl mx-auto shrink-0"
-  >
-    <div
-      id="hero-scroll-reveal"
-      class="flex flex-col gap-4 md:gap-6 items-center w-full"
-    >
-      <div class="flex flex-col items-center gap-4 w-full">
-        <div
-          class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full max-w-xs sm:max-w-none"
-        >
-          <a href={`/contact`} id="hero-cta-primary" class="w-full sm:w-auto">
-            <Button withArrow class="w-full sm:w-fit">
-              Revisar mi proceso
-            </Button>
-          </a>
-          <a href="/projects" id="hero-cta-secondary" class="w-full sm:w-auto">
-            <Button variant="outline" class="w-full sm:w-fit"
-              >Ver un caso parecido</Button
-            >
-          </a>
-        </div>
-
-        <script is:inline>
-          ["hero-cta-primary", "hero-cta-secondary"].forEach((id) => {
-            document.getElementById(id)?.addEventListener("click", () => {
-              if ("gtag" in window) {
-                window.gtag("event", "cta_click", {
-                  event_category: "engagement",
-                  event_label: id,
-                });
-              }
-            });
-          });
-        </script>
-      </div>
-    </div>
-  </div>
 </section>
 
 <style is:global>
@@ -351,6 +337,16 @@ const chaos = hero.stage.chaos.map((item, i) => ({
     opacity: 1;
     animation: hero-caption-intro 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s
       both;
+  }
+
+  .hero-title {
+    max-width: 54rem;
+    margin: 0 auto;
+    font-size: clamp(2.25rem, 4.2vw, 3.9rem);
+    font-weight: 850;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    color: var(--foreground);
   }
 
   @media (min-width: 768px) {
@@ -642,12 +638,12 @@ const chaos = hero.stage.chaos.map((item, i) => ({
 
   .hero-chaos-line {
     position: absolute;
-    height: 2px;
+    height: 3px;
     border-radius: 9999px;
     background: linear-gradient(
       to right,
       var(--chip-color, var(--primary)),
-      transparent
+      color-mix(in srgb, var(--chip-color, var(--primary)) 25%, transparent)
     );
     pointer-events: none;
   }
@@ -657,9 +653,9 @@ const chaos = hero.stage.chaos.map((item, i) => ({
     transform: translateY(16px) scale(0.85);
     width: min(380px, 90%);
     border-radius: var(--radius-xl);
-    border: 1px solid var(--muted);
+    border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--muted));
     background: var(--background);
-    box-shadow: var(--shadow-pastel);
+    box-shadow: 0 22px 60px color-mix(in srgb, var(--primary) 16%, transparent), var(--shadow-pastel);
     overflow: hidden;
   }
 
@@ -721,64 +717,6 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   }
 
   /*
-   * Payoff headline: absolute overlay over the same stage as #hero-window
-   * (its sibling), so it can fade in as the window fades out in phase 4
-   * without either ever affecting the other's layout. Anchored to the
-   * *bottom* of the stage (not vertically centred) so it lands right above
-   * the subtitle/CTA block in #hero-content below — a tall, vertically
-   * centred stage would otherwise leave a large empty gap between the
-   * headline and the subtitle in the hero's resting state.
-   * Hidden by default (opacity 0) — hero-stage.ts is what reveals it.
-   */
-  #hero-payoff {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 0 1rem 0.5rem;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .hero-payoff-text {
-    max-width: 46rem;
-    font-size: 1.75rem;
-    font-weight: 800;
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-    text-align: center;
-    text-wrap: balance;
-    color: var(--foreground);
-  }
-
-  @media (min-width: 768px) {
-    .hero-payoff-text {
-      font-size: 2.75rem;
-    }
-  }
-
-  /*
-   * Word-by-word entrance for the payoff headline (hero-stage.ts, phase 4):
-   * each word is masked by an overflow-hidden outer span while its inner
-   * span is the one hero-stage.ts actually transforms (yPercent/rotateX),
-   * so every word rises and rotates in from below its own mask instead of
-   * the whole line just fading/popping in as one block.
-   */
-  .payoff-word-outer {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: bottom;
-    perspective: 600px;
-  }
-
-  .payoff-word-inner {
-    display: inline-block;
-    transform-origin: bottom center;
-    will-change: transform;
-  }
-
-  /*
    * Mobile never pins/scrubs the stage, and prefers-reduced-motion skips
    * hero-stage.ts entirely (see animations.ts) — in both cases the GSAP
    * timeline that would normally converge the chaos into the window and
@@ -795,17 +733,8 @@ const chaos = hero.stage.chaos.map((item, i) => ({
       display: none;
     }
 
-    #hero-payoff {
-      opacity: 1;
-    }
-
     /*
-     * #hero-scroll-reveal statically carries `data-init` (see markup above)
-     * so astro-reveal's own auto-init skips it and hero-stage.ts drives its
-     * reveal instead — but hero-stage.ts never runs here, so `data-state`
-     * never gets set and it would otherwise sit stuck at the library's
-     * default hidden CSS (`[data-reveal]:not([data-state])` -> opacity:0)
-     * forever. Force it visible, same as the payoff headline/CTA above.
+     * The CTA remains visible on mobile and reduced-motion paths too.
      */
     #hero-scroll-reveal {
       opacity: 1;
