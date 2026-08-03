@@ -1,6 +1,12 @@
 ---
+import {
+  ArrowUpRight,
+  BookOpenText,
+  GitBranch,
+  Scale,
+  Wrench,
+} from "@lucide/astro";
 import { getCollection } from "astro:content";
-import { ArrowUpRight, BookOpenText, GitBranch, Scale, Wrench } from "@lucide/astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 
 const editorial = [
@@ -43,7 +49,7 @@ const formatDate = (date: Date) =>
 <section id="criterio-tecnico" class="landing-section">
   <SectionHeader
     title="Publicamos cómo decidimos, no solo qué entregamos"
-    description="Análisis técnicos, comparativas de tecnología, decisiones de arquitectura y aprendizajes de proyectos reales. Contenido con criterios, límites y contexto para que puedas tomar mejores decisiones de software."
+    description="Análisis técnicos, comparativas de tecnología y decisiones de arquitectura de proyectos reales."
     linkText="Ver todos los artículos"
     linkHref="/blog"
   />
@@ -83,7 +89,7 @@ const formatDate = (date: Date) =>
               </a>
             </h3>
 
-            <p class="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground text-pretty md:text-base">
+            <p class="mt-4 line-clamp-2 max-w-xl text-sm leading-relaxed text-muted-foreground text-pretty md:text-base">
               {post.data.description}
             </p>
 
@@ -100,10 +106,4 @@ const formatDate = (date: Date) =>
       })
     }
   </div>
-
-  <p class="mx-auto max-w-3xl text-center text-sm leading-relaxed text-muted-foreground text-pretty">
-    Cada publicación parte de trabajo realizado por el equipo de doscientos.
-    Cuando una recomendación depende del contexto, explicamos también cuándo no
-    la aplicaríamos.
-  </p>
 </section>

@@ -1,7 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import flatmatchThumbnail from "~/assets/media/landing/flatmatch-thumbnail.webp";
+import { diagnosticRoute } from "~/data/commercialRoutes";
 import { copy } from "~/shared/lib/copy";
+import Button from "../ui/Button.astro";
 import Link from "../ui/Link.astro";
 import SectionHeader from "../ui/SectionHeader.astro";
 
@@ -90,6 +92,16 @@ const { method } = copy;
                 <p class="text-muted-foreground leading-relaxed max-w-2xl">
                   {step.description}
                 </p>
+                {index === method.steps.length - 1 && (
+                  <a
+                    href={`${diagnosticRoute.href}?ref=home-method`}
+                    class="inline-flex"
+                  >
+                    <Button size="lg" withArrow>
+                      Pedir diagnóstico
+                    </Button>
+                  </a>
+                )}
               </div>
             </div>
           </div>

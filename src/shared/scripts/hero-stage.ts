@@ -24,7 +24,6 @@ export const killHeroStage = () => {
   tl?.scrollTrigger?.kill();
   tl?.kill();
   tl = undefined;
-  document.body.classList.remove("hero-cta-active");
 };
 
 // Resting scale of a chip's card once it has popped in, and how far it has
@@ -39,7 +38,7 @@ const CONVERGE_SCALE = 0.25;
 // medida" -> integrated result, then the software window is removed and the
 // payoff headline ("deja de hacer a mano...") fades in in its place as the
 // closing beat.
-const P1_END = 0.267;
+const P1_END = 0.15;
 const P2_END = 0.6;
 // Window has fully formed and its rows/metric have finished revealing by
 // ~1.07 (see the phase 3 reveal loop below); P3_END gives it a short beat to
@@ -167,7 +166,18 @@ export const setupHeroStage = () => {
   // becomes visible once the timeline's playhead actually reaches phase 4.
   if (cta) gsap.set(cta, { autoAlpha: 0, y: 12 });
 
-  const heroOffset = Math.round(hero.getBoundingClientRect().top);
+  // Document-relative (scroll-invariant) resting offset of #hero from the
+  // top of the viewport — i.e. the space the fixed navbar's spacer reserves
+  // above it. getBoundingClientRect().top alone is viewport-relative, so if
+  // window.scrollY isn't exactly 0 at the instant this runs (scroll-position
+  // restoration, HMR, timing quirks) it silently bakes in whatever scroll
+  // already happened, pushing the pin's start point further down the page
+  // and creating a "dead" scroll range before the storyboard visibly reacts.
+  // Adding scrollY back recovers the true resting offset regardless of when
+  // this is measured.
+  const heroOffset = Math.round(
+    hero.getBoundingClientRect().top + window.scrollY,
+  );
   const startOffset = heroOffset > 0 ? `${heroOffset}px` : "top";
 
   // The chaos cloud must already be on screen the instant the page loads —
@@ -225,13 +235,11 @@ export const setupHeroStage = () => {
       // so the added window-removal + payoff beat gets proportionally the
       // same scroll-per-unit pacing as the rest of the story.
       end: "+=225%",
-      scrub: 1,
-      onUpdate: (self) => {
-        document.body.classList.toggle(
-          "hero-cta-active",
-          self.progress > 0.1 && self.progress < 0.9,
-        );
-      },
+      // Lower smoothing than the default scrub:1 so the very first wheel
+      // tick visibly moves the timeline right away instead of spending its
+      // first fraction of a second catching up (which read as a dead
+      // scroll).
+      scrub: 0.35,
     },
   });
 
@@ -284,6 +292,48 @@ export const setupHeroStage = () => {
       boundary,
     );
   });
+
+  // The last caption stays on screen through phase 3 (it's the one
+  // narrating the finished window), but once phase 4 kicks off and the
+  // window starts dissolving into the payoff headline, it must clear out —
+  // otherwise the closing state would show the small caption lingering
+  // above the big title instead of the clean title/subtitle/buttons layout
+  // requested. Fades out the same way the earlier caption transitions do.
+  const lastCaption = captions[captions.length - 1];
+  if (lastCaption) {
+    tl.to(
+      lastCaption,
+      {
+        autoAlpha: 0,
+        y: -16,
+        scale: 0.94,
+        duration: captionDuration,
+        ease: "power2.in",
+      },
+      P3_END,
+    );
+  }
+
+  // Diagnostic CTA: lands together with the last caption ("Hecho a medida
+  // de cómo ya trabajáis") rather than waiting for the payoff headline at
+  // the very end of the storyboard, so it's visible for the whole back
+  // half of the scroll instead of only in the last instant.
+  if (cta) {
+    const lastCaptionBoundary = captionBoundaries[captionBoundaries.length - 1];
+    if (lastCaptionBoundary !== undefined) {
+      tl.fromTo(
+        cta,
+        { autoAlpha: 0, y: 12 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: captionDuration,
+          ease: "back.out(1.7)",
+        },
+        lastCaptionBoundary,
+      );
+    }
+  }
 
   // Phase 1 (0 → P1_END): "tu operativa vive repartida en mil sitios" — each
   // chip's card is already visible (poco a poco entrance above) but starts
@@ -571,20 +621,6 @@ export const setupHeroStage = () => {
         duration: wordDuration,
       },
       payoffStart,
-    );
-  }
-  // CTA lands once the words have mostly settled, right after the headline
-  // rather than alongside it, so the eye reads the line first.
-  if (cta) {
-    const wordsSpan =
-      payoffWords.length > 0
-        ? wordDuration + wordStagger * (payoffWords.length - 1)
-        : 0;
-    tl.fromTo(
-      cta,
-      { autoAlpha: 0, y: 12 },
-      { autoAlpha: 1, y: 0, ease: "power2.out", duration: phase4Span * 0.35 },
-      payoffStart + wordsSpan * 0.55,
     );
   }
 };

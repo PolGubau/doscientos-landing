@@ -55,19 +55,6 @@ ul.bento {
   }
 }
 
-/* ── Hero stage CTA takeover ────────────────────────────────────────────
-   While the hero's own CTA block is on screen (mid hero-stage scroll,
-   toggled by hero-stage.ts), dim the navbar CTA so the two primary buttons
-   don't compete for attention. */
-#nav-cta {
-  transition: opacity 0.3s ease;
-}
-
-body.hero-cta-active #nav-cta {
-  opacity: 0.35;
-  pointer-events: none;
-}
-
 /* ── Project prose: centralized image style ─────────────────────────── */
 .prose img {
   @apply rounded-2xl border border-muted/60 block w-full;
