@@ -56,7 +56,15 @@ export const setupHeroStage = () => {
   const payoffWords = payoff
     ? Array.from(payoff.querySelectorAll<HTMLElement>(".payoff-word-inner"))
     : [];
-  const cta = document.getElementById("hero-payoff-cta");
+  // Subtitle + primary/secondary CTAs (see #hero-content in Hero.astro).
+  // Targets #hero-scroll-reveal (not the outer #hero-content wrapper)
+  // because that's the element carrying astro-reveal's `[data-reveal]`
+  // attribute — it has `data-init` set statically in the markup so the
+  // library's own auto-init skips it (leaving `data-state` unset forever,
+  // which pins it at the library's default hidden CSS: `opacity:0`) and
+  // GSAP drives its reveal instead, in lockstep with the payoff headline.
+  // GSAP's inline style wins over that stylesheet rule once it's applied.
+  const content = document.getElementById("hero-scroll-reveal");
   const linesLayer = document.getElementById("hero-lines");
   const chaosWraps = Array.from(
     document.querySelectorAll<HTMLElement>(".hero-chaos-item"),
@@ -162,9 +170,10 @@ export const setupHeroStage = () => {
   if (payoffWords.length > 0) {
     gsap.set(payoffWords, { yPercent: 120, rotateX: 55, opacity: 0 });
   }
-  // Same immediateRender concern as the payoff headline: the CTA also only
-  // becomes visible once the timeline's playhead actually reaches phase 4.
-  if (cta) gsap.set(cta, { autoAlpha: 0, y: 12 });
+  // Same immediateRender concern: the subtitle/CTAs block only reveals once
+  // the playhead reaches the end of phase 4 (see the fromTo near the end of
+  // this function).
+  if (content) gsap.set(content, { autoAlpha: 0, y: 12 });
 
   // Document-relative (scroll-invariant) resting offset of #hero from the
   // top of the viewport — i.e. the space the fixed navbar's spacer reserves
@@ -312,27 +321,6 @@ export const setupHeroStage = () => {
       },
       P3_END,
     );
-  }
-
-  // Diagnostic CTA: lands together with the last caption ("Hecho a medida
-  // de cómo ya trabajáis") rather than waiting for the payoff headline at
-  // the very end of the storyboard, so it's visible for the whole back
-  // half of the scroll instead of only in the last instant.
-  if (cta) {
-    const lastCaptionBoundary = captionBoundaries[captionBoundaries.length - 1];
-    if (lastCaptionBoundary !== undefined) {
-      tl.fromTo(
-        cta,
-        { autoAlpha: 0, y: 12 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: captionDuration,
-          ease: "back.out(1.7)",
-        },
-        lastCaptionBoundary,
-      );
-    }
   }
 
   // Phase 1 (0 → P1_END): "tu operativa vive repartida en mil sitios" — each
@@ -621,6 +609,22 @@ export const setupHeroStage = () => {
         duration: wordDuration,
       },
       payoffStart,
+    );
+  }
+  // Subtitle + CTAs: the final beat, landing just after the payoff headline
+  // has finished building so the hero settles into its resting layout —
+  // title, subtitle, buttons — with nothing left competing for attention.
+  if (content) {
+    tl.fromTo(
+      content,
+      { autoAlpha: 0, y: 12 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        ease: "power2.out",
+        duration: phase4Span * 0.5,
+      },
+      payoffStart + wordDuration * 0.6,
     );
   }
 };

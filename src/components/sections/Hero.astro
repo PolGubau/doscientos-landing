@@ -13,7 +13,6 @@ import {
   Receipt,
   StickyNote,
 } from "@lucide/astro";
-import { diagnosticRoute } from "~/data/commercialRoutes";
 import { copy } from "~/shared/lib/copy";
 import Button from "../ui/Button.astro";
 import SectionTag from "../ui/SectionTag.astro";
@@ -262,23 +261,6 @@ const chaos = hero.stage.chaos.map((item, i) => ({
         }
       </p>
     </div>
-  </div>
-
-  <!--
-    Diagnostic CTA: lands together with #hero-payoff (see hero-stage.ts
-    phase 4). Kept as a sibling of #hero-stage rather than nested inside it
-    because #hero-stage is aria-hidden (purely decorative storyboard) — an
-    interactive link in there would be unreachable/confusing for keyboard
-    and screen-reader users. Reserves its height up front (like the caption
-    row above) so fading it in never shifts the layout.
-  -->
-  <div
-    id="hero-payoff-cta"
-    class="relative z-20 flex items-center justify-center shrink-0 min-h-14"
-  >
-    <a href={`${diagnosticRoute.href}?ref=hero-payoff`} id="hero-cta-payoff">
-      <Button withArrow>Diagnóstico gratis</Button>
-    </a>
   </div>
 
   <!--
@@ -712,18 +694,6 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   }
 
   /*
-   * Diagnostic CTA (#hero-payoff-cta): hidden by default so it never flashes
-   * before hero-stage.ts reveals it alongside the payoff headline in phase
-   * 4. visibility:hidden (mirroring GSAP's autoAlpha) keeps it out of the
-   * tab order/unclickable until then; the reveal tween lifts both
-   * properties back automatically.
-   */
-  #hero-payoff-cta {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  /*
    * Mobile never pins/scrubs the stage, and prefers-reduced-motion skips
    * hero-stage.ts entirely (see animations.ts) — in both cases the GSAP
    * timeline that would normally converge the chaos into the window and
@@ -743,9 +713,16 @@ const chaos = hero.stage.chaos.map((item, i) => ({
       opacity: 1;
     }
 
-    #hero-payoff-cta {
+    /*
+     * #hero-scroll-reveal statically carries `data-init` (see markup above)
+     * so astro-reveal's own auto-init skips it and hero-stage.ts drives its
+     * reveal instead — but hero-stage.ts never runs here, so `data-state`
+     * never gets set and it would otherwise sit stuck at the library's
+     * default hidden CSS (`[data-reveal]:not([data-state])` -> opacity:0)
+     * forever. Force it visible, same as the payoff headline/CTA above.
+     */
+    #hero-scroll-reveal {
       opacity: 1;
-      visibility: visible;
     }
   }
 </style>
