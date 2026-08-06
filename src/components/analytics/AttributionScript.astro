@@ -1,7 +1,7 @@
 <script>
   // Minimal attribution bootstrap — see ~/shared/lib/attribution.ts for what
-  // this actually does and why (no page_view beacon, no global click
-  // tracking: just first-touch capture + WhatsApp link hydration).
+  // this actually does and why (first-touch capture, hidratación de los
+  // enlaces de WhatsApp y un page_view enviado por sendBeacon en idle).
   import { initAttribution } from "~/shared/lib/attribution";
 
   if (document.readyState === "loading") {

@@ -1,5 +1,6 @@
 import confetti from "canvas-confetti";
 import { useEffect, useRef, useState } from "react";
+import { buildAttributionPayload, trackEvent } from "~/shared/lib/attribution";
 import {
 	type ContactValues,
 	EMPTY_FORM,
@@ -8,7 +9,6 @@ import {
 	type FormStatus,
 	STORAGE_KEY,
 } from "./types";
-import { buildAttributionPayload } from "~/shared/lib/attribution";
 
 const LEADS_ENDPOINT =
 	import.meta.env.PUBLIC_LEADS_ENDPOINT ||
@@ -151,6 +151,7 @@ export function useContactForm() {
 		if (nameOk && emailOk) {
 			setStepDirection(1);
 			setStep(2);
+			trackEvent("form_started", { conversionStep: "contact_form" });
 		} else {
 			const firstInvalid = !nameOk ? "name" : "email";
 			requestAnimationFrame(() => {
@@ -187,13 +188,15 @@ export function useContactForm() {
 		const website = honeypot instanceof HTMLInputElement ? honeypot.value : "";
 		const hasLeadContext = Boolean(
 			contextParams.current.subject ||
-				contextParams.current.ref ||
-				contextParams.current.coste ||
-				contextParams.current.horas ||
-				(contextParams.current.page_path && contextParams.current.page_path !== "/"),
+			contextParams.current.ref ||
+			contextParams.current.coste ||
+			contextParams.current.horas ||
+			(contextParams.current.page_path &&
+				contextParams.current.page_path !== "/"),
 		);
 		const contextLines = [
-			contextParams.current.subject && `Asunto: ${contextParams.current.subject}`,
+			contextParams.current.subject &&
+				`Asunto: ${contextParams.current.subject}`,
 			contextParams.current.ref && `Ref: ${contextParams.current.ref}`,
 			hasLeadContext &&
 				contextParams.current.page_path &&
@@ -258,7 +261,9 @@ export function useContactForm() {
 
 			const payload =
 				typeof response.json === "function"
-					? ((await response.json().catch(() => null)) as { leadId?: string } | null)
+					? ((await response.json().catch(() => null)) as {
+							leadId?: string;
+						} | null)
 					: null;
 
 			setStatus("success");

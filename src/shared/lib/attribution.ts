@@ -37,7 +37,9 @@ export type AttributionPayload = {
 };
 
 function params(): URLSearchParams {
-	return typeof window === "undefined" ? new URLSearchParams() : new URLSearchParams(window.location.search);
+	return typeof window === "undefined"
+		? new URLSearchParams()
+		: new URLSearchParams(window.location.search);
 }
 
 function currentTouch(): Touch {
@@ -110,7 +112,9 @@ export function inferConversionStep(): string {
 	return "landing_form";
 }
 
-export function buildAttributionPayload(conversionStep = inferConversionStep()): AttributionPayload {
+export function buildAttributionPayload(
+	conversionStep = inferConversionStep(),
+): AttributionPayload {
 	const last = currentTouch();
 	const first = readFirstTouch(last);
 	return {
@@ -154,9 +158,9 @@ export function buildTrackedWhatsappUrl({
 }
 
 /**
- * Client-only attribution bootstrap. Deliberately minimal: no network calls,
- * no global click hijacking, no page_view beacon (that's what GA/Clarity are
- * for). It only does the two things sales actually rely on:
+ * Client-only attribution bootstrap. Deliberately minimal: no global click
+ * hijacking, y el único tráfico de red que genera sale por `sendBeacon`
+ * (ver trackEvent). Hace las dos cosas de las que depende ventas:
  *
  * 1. Capture first-touch (referrer/UTMs) once per visitor, so the eventual
  *    lead submission can report both first- and last-touch attribution.
@@ -197,6 +201,143 @@ export function hydrateWhatsappLinks(): void {
 	}
 }
 
+/**
+ * URL de reproducción de la sesión en Microsoft Clarity, si Clarity está
+ * cargado (solo con consentimiento analítico). Se resuelve de forma asíncrona
+ * y se cachea en memoria: los eventos que se envíen después la adjuntan para
+ * que el backoffice pueda enlazar directamente a la grabación del visitante.
+ */
+let clarityPlaybackUrl: string | null = null;
+
+type ClarityMetadata = {
+	projectId?: string;
+	userId?: string;
+	sessionId?: string;
+};
+type ClarityFn = (
+	command: string,
+	callback: (metadata: ClarityMetadata) => void,
+	sync: boolean,
+) => void;
+
+export function captureClarityPlayback(): void {
+	if (typeof window === "undefined" || clarityPlaybackUrl) return;
+	const clarity = (window as unknown as { clarity?: ClarityFn }).clarity;
+	if (typeof clarity !== "function") return;
+	try {
+		// El tercer argumento pide a Clarity que espere a tener la sesión lista en
+		// lugar de descartar la llamada si todavía se está inicializando.
+		clarity(
+			"metadata",
+			(metadata) => {
+				if (!metadata?.projectId || !metadata.userId || !metadata.sessionId)
+					return;
+				clarityPlaybackUrl = `https://clarity.microsoft.com/player/${metadata.projectId}/${metadata.userId}/${metadata.sessionId}`;
+			},
+			true,
+		);
+	} catch {
+		// Clarity bloqueado o versión sin la API "metadata": seguimos sin enlace.
+	}
+}
+
+const TRACK_DEDUPE_MS = 200;
+const lastSentAt = new Map<string, number>();
+
+/**
+ * Envía un evento intermedio (page_view, calculator_used, …) al backoffice sin
+ * bloquear nada: `sendBeacon` deja la petición en manos del navegador (fuera
+ * del hilo principal y sobreviviendo a la navegación) y solo si no está
+ * disponible cae a `fetch` con `keepalive`. Nunca lanza ni espera respuesta.
+ *
+ * Los eventos idénticos disparados con menos de 200 ms de diferencia se
+ * descartan: evita duplicados cuando un mismo handler se registra dos veces
+ * (DOMContentLoaded + astro:page-load) o cuando el usuario teclea rápido.
+ */
+export function trackEvent(
+	eventName: string,
+	options: { conversionStep?: string; payload?: Record<string, unknown> } = {},
+): void {
+	if (typeof window === "undefined") return;
+
+	const dedupeKey = `${eventName}:${options.conversionStep ?? ""}`;
+	const now = Date.now();
+	if (now - (lastSentAt.get(dedupeKey) ?? 0) < TRACK_DEDUPE_MS) return;
+	lastSentAt.set(dedupeKey, now);
+
+	const touch = currentTouch();
+	const body = JSON.stringify({
+		event_id: getOrCreateEventId(),
+		visitor_id: getOrCreateVisitorId(),
+		event_name: eventName,
+		conversion_step: options.conversionStep ?? inferConversionStep(),
+		landing_path: touch.landing_path,
+		landing_ref: params().get("ref") || null,
+		referrer: touch.referrer || null,
+		utm_source: touch.utm_source || null,
+		utm_medium: touch.utm_medium || null,
+		utm_campaign: touch.utm_campaign || null,
+		utm_term: touch.utm_term || null,
+		utm_content: touch.utm_content || null,
+		payload: {
+			...options.payload,
+			...(clarityPlaybackUrl ? { clarity_url: clarityPlaybackUrl } : {}),
+		},
+	});
+
+	const endpoint = new URL(
+		"/api/public/track-event",
+		TRACKING_ENDPOINT,
+	).toString();
+	// text/plain a propósito: es un content-type de la lista segura de CORS, así
+	// que el navegador manda la petición directa, sin preflight OPTIONS. El
+	// endpoint parsea el cuerpo como JSON igualmente.
+	const contentType = "text/plain;charset=UTF-8";
+	try {
+		if (
+			navigator.sendBeacon?.(endpoint, new Blob([body], { type: contentType }))
+		) {
+			return;
+		}
+	} catch {
+		// sendBeacon puede fallar por tamaño o política: probamos con fetch.
+	}
+	void fetch(endpoint, {
+		method: "POST",
+		headers: { "Content-Type": contentType },
+		body,
+		keepalive: true,
+	}).catch(() => {
+		// El tracking nunca debe romper la navegación.
+	});
+}
+
+/**
+ * Registra la visita a la página en cuanto el navegador está ocioso, nunca
+ * durante la carga: el evento no aporta nada al usuario y no debe competir
+ * con el render. Reintenta antes la captura de Clarity porque su script es
+ * async y raramente está listo en el DOMContentLoaded.
+ */
+export function trackPageView(): void {
+	if (typeof window === "undefined") return;
+	const send = () => {
+		captureClarityPlayback();
+		trackEvent("page_view");
+	};
+	const idle = (
+		window as unknown as {
+			requestIdleCallback?: (
+				cb: () => void,
+				opts?: { timeout: number },
+			) => void;
+		}
+	).requestIdleCallback;
+	if (typeof idle === "function") idle(send, { timeout: 3000 });
+	else window.setTimeout(send, 1200);
+}
+
 export function initAttribution(): void {
 	hydrateWhatsappLinks();
+	captureClarityPlayback();
+	trackPageView();
 }

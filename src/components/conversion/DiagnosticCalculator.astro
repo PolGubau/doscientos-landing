@@ -1,55 +1,366 @@
 ---
+
 ---
 
-<section id="calculadora-coste" class="scroll-mt-28 max-w-5xl mx-auto rounded-3xl border border-muted bg-accent/60 p-6 md:p-10 space-y-8">
+<section
+  id="calculadora-coste"
+  class="scroll-mt-28 max-w-5xl mx-auto rounded-3xl border border-muted bg-accent/60 p-6 md:p-10 space-y-8"
+>
   <header class="max-w-2xl space-y-3">
-    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Diagnóstico personalizado</p>
-    <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">Ponemos números al tiempo que se va.</h2>
-    <p class="text-muted-foreground leading-relaxed">Responde estas preguntas y verás una estimación en tiempo real. Al final te enviaremos un informe hecho con tus datos.</p>
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+      Diagnóstico personalizado
+    </p>
+    <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+      Ponemos números al tiempo que se va.
+    </h2>
+    <p class="text-muted-foreground leading-relaxed">
+      Responde estas preguntas y verás una estimación en tiempo real. Al final
+      te enviaremos un informe hecho con tus datos.
+    </p>
   </header>
 
   <form data-diagnostic-calculator class="space-y-7">
     <div class="grid md:grid-cols-2 gap-5">
-      <label class="space-y-2"><span class="text-sm font-medium text-foreground">¿Qué proceso quieres revisar?</span><input name="process" required placeholder="Ej. Pasar pedidos de email a Excel" class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground" /></label>
-      <label class="space-y-2"><span class="text-sm font-medium text-foreground">¿Cuántas personas participan?</span><input name="people" type="number" min="1" value="2" required class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground" /></label>
-      <label class="space-y-2"><span class="text-sm font-medium text-foreground">Minutos por vez</span><input name="minutes" type="number" min="1" value="20" required class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground" /></label>
-      <label class="space-y-2"><span class="text-sm font-medium text-foreground">Veces por semana</span><input name="weekly" type="number" min="1" value="5" required class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground" /></label>
-      <label class="space-y-2"><span class="text-sm font-medium text-foreground">Coste/hora estimado</span><input name="hourly" type="number" min="1" value="25" required class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground" /></label>
-      <label class="space-y-2"><span class="text-sm font-medium text-foreground">¿Qué ocurre si falla?</span><select name="impact" class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"><option>Retrasos y seguimiento manual</option><option>Errores o datos duplicados</option><option>Se pierden oportunidades</option><option>Un poco de todo</option></select></label>
+      <label class="space-y-2"
+        ><span class="text-sm font-medium text-foreground"
+          >¿Qué proceso quieres revisar?</span
+        ><input
+          name="process"
+          required
+          placeholder="Ej. Pasar pedidos de email a Excel"
+          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
+        /></label
+      >
+      <label class="space-y-2"
+        ><span class="text-sm font-medium text-foreground"
+          >¿Cuántas personas participan?</span
+        ><input
+          name="people"
+          type="number"
+          min="1"
+          value="2"
+          required
+          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
+        /></label
+      >
+      <label class="space-y-2"
+        ><span class="text-sm font-medium text-foreground">Minutos por vez</span
+        ><input
+          name="minutes"
+          type="number"
+          min="1"
+          value="20"
+          required
+          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
+        /></label
+      >
+      <label class="space-y-2"
+        ><span class="text-sm font-medium text-foreground"
+          >Veces por semana</span
+        ><input
+          name="weekly"
+          type="number"
+          min="1"
+          value="5"
+          required
+          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
+        /></label
+      >
+      <label class="space-y-2"
+        ><span class="text-sm font-medium text-foreground"
+          >Coste/hora estimado</span
+        ><input
+          name="hourly"
+          type="number"
+          min="1"
+          value="25"
+          required
+          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
+        /></label
+      >
+      <label class="space-y-2"
+        ><span class="text-sm font-medium text-foreground"
+          >¿Qué ocurre si falla?</span
+        ><select
+          name="impact"
+          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
+          ><option>Retrasos y seguimiento manual</option><option
+            >Errores o datos duplicados</option
+          ><option>Se pierden oportunidades</option><option
+            >Un poco de todo</option
+          ></select
+        ></label
+      >
     </div>
 
-    <div class="rounded-2xl bg-background border border-muted p-5 md:p-7 space-y-5">
-      <div class="flex items-end justify-between gap-4"><div><p class="text-sm text-muted-foreground">Tu estimación ahora mismo</p><p class="text-3xl md:text-4xl font-bold text-foreground" data-diagnostic-hours>0 h/mes</p></div><p class="text-right text-sm text-muted-foreground">Coste anual<br /><strong class="text-xl text-primary" data-diagnostic-cost>0 €</strong></p></div>
-      <div class="h-3 rounded-full bg-muted overflow-hidden"><div data-diagnostic-meter class="h-full rounded-full bg-primary transition-all duration-500" style="width: 12%"></div></div>
-      <p class="text-sm text-muted-foreground leading-relaxed" data-diagnostic-note>Completa los datos para ver dónde puede estar la oportunidad.</p>
+    <div
+      class="rounded-2xl bg-background border border-muted p-5 md:p-7 space-y-5"
+    >
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <p class="text-sm text-muted-foreground">
+            Tu estimación ahora mismo
+          </p><p
+            class="text-3xl md:text-4xl font-bold text-foreground"
+            data-diagnostic-hours
+          >
+            0 h/mes
+          </p>
+        </div><p class="text-right text-sm text-muted-foreground">
+          Coste anual<br /><strong
+            class="text-xl text-primary"
+            data-diagnostic-cost>0 €</strong
+          >
+        </p>
+      </div>
+      <div class="h-3 rounded-full bg-muted overflow-hidden">
+        <div
+          data-diagnostic-meter
+          class="h-full rounded-full bg-primary transition-all duration-500"
+          style="width: 12%"
+        >
+        </div>
+      </div>
+      <p
+        class="text-sm text-muted-foreground leading-relaxed"
+        data-diagnostic-note
+      >
+        Completa los datos para ver dónde puede estar la oportunidad.
+      </p>
     </div>
 
     <div class="border-t border-muted pt-7 space-y-4">
-      <div><h3 class="text-xl font-bold text-foreground">Recibe el diagnóstico completo</h3><p class="text-sm text-muted-foreground mt-1">Incluye tus cifras, una lectura de la oportunidad, beneficios del software a medida y casos reales.</p></div>
-      <div class="grid md:grid-cols-2 gap-4"><input name="name" placeholder="Tu nombre" autocomplete="name" class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground" /><input name="company" placeholder="Empresa" autocomplete="organization" class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground" /><input name="email" type="email" required placeholder="Tu email profesional" autocomplete="email" class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground md:col-span-2" /></div>
-      <label class="flex items-start gap-3 text-xs text-muted-foreground"><input type="checkbox" name="consent" required class="mt-0.5 accent-primary" /> <span>Acepto recibir este diagnóstico y comunicaciones relacionadas con mi solicitud. Puedo darme de baja cuando quiera.</span></label>
-      <button type="submit" class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3.5 font-semibold text-background hover:opacity-90 transition-opacity" data-diagnostic-submit>Quiero recibir mi diagnóstico personalizado</button>
+      <div>
+        <h3 class="text-xl font-bold text-foreground">
+          Recibe el diagnóstico completo
+        </h3><p class="text-sm text-muted-foreground mt-1">
+          Incluye tus cifras, una lectura de la oportunidad, beneficios del
+          software a medida y casos reales.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <input
+          name="name"
+          placeholder="Tu nombre"
+          autocomplete="name"
+          class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
+        /><input
+          name="company"
+          placeholder="Empresa"
+          autocomplete="organization"
+          class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
+        /><input
+          name="email"
+          type="email"
+          required
+          placeholder="Tu email profesional"
+          autocomplete="email"
+          class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground md:col-span-2"
+        />
+      </div>
+      <label class="flex items-start gap-3 text-xs text-muted-foreground"
+        ><input
+          type="checkbox"
+          name="consent"
+          required
+          class="mt-0.5 accent-primary"
+        />
+        <span
+          >Acepto recibir este diagnóstico y comunicaciones relacionadas con mi
+          solicitud. Puedo darme de baja cuando quiera.</span
+        ></label
+      >
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3.5 font-semibold text-background hover:opacity-90 transition-opacity"
+        data-diagnostic-submit
+        >Quiero recibir mi diagnóstico personalizado</button
+      >
       <p class="hidden text-sm text-red-600" data-diagnostic-error></p>
     </div>
   </form>
-  <div class="hidden rounded-2xl border border-primary/20 bg-background p-6 space-y-3" data-diagnostic-success><p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Listo</p><h3 class="text-2xl font-bold text-foreground">Tu diagnóstico va de camino.</h3><p class="text-muted-foreground">Revisa tu bandeja de entrada. También puedes descargarlo desde el enlace que te hemos enviado.</p><a data-diagnostic-report href="#" class="inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-background">Descargar diagnóstico</a></div>
+  <div
+    class="hidden rounded-2xl border border-primary/20 bg-background p-6 space-y-3"
+    data-diagnostic-success
+  >
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+      Listo
+    </p><h3 class="text-2xl font-bold text-foreground">
+      Tu diagnóstico va de camino.
+    </h3><p class="text-muted-foreground">
+      Revisa tu bandeja de entrada. También puedes descargarlo desde el enlace
+      que te hemos enviado.
+    </p><a
+      data-diagnostic-report
+      href="#"
+      class="inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-background"
+      >Descargar diagnóstico</a
+    >
+  </div>
 </section>
 
 <script>
-  import { buildAttributionPayload } from "~/shared/lib/attribution";
-const endpoint = import.meta.env.PUBLIC_DIAGNOSTIC_ENDPOINT || "https://app.doscientos.es/api/public/diagnostics";
-  const euro = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
-  document.querySelectorAll<HTMLFormElement>("[data-diagnostic-calculator]").forEach((form) => {
-    const hoursEl = form.querySelector<HTMLElement>("[data-diagnostic-hours]");
-    const costEl = form.querySelector<HTMLElement>("[data-diagnostic-cost]");
-    const noteEl = form.querySelector<HTMLElement>("[data-diagnostic-note]");
-    const meterEl = form.querySelector<HTMLElement>("[data-diagnostic-meter]");
-    const errorEl = form.querySelector<HTMLElement>("[data-diagnostic-error]");
-    const successEl = form.parentElement?.querySelector<HTMLElement>("[data-diagnostic-success]");
-    const reportEl = successEl?.querySelector<HTMLAnchorElement>("[data-diagnostic-report]");
-const values = () => { const d = new FormData(form); const minutes = Number(d.get("minutes") || 0); const weekly = Number(d.get("weekly") || 0); const people = Number(d.get("people") || 0); const hourly = Number(d.get("hourly") || 0); const monthlyHours = Math.round((minutes * weekly * people * 52) / 12 / 60); const yearlyHours = Math.round((minutes * weekly * people * 52) / 60); const yearlyCost = Math.round(yearlyHours * hourly); return { d, minutes, weekly, people, hourly, monthlyHours, yearlyHours, yearlyCost, risk: yearlyCost >= 10000 ? "Alta" : yearlyCost >= 4000 ? "Media" : "Inicial" }; };
-    const calculate = () => { const m = values(); if (hoursEl) hoursEl.textContent = `${m.monthlyHours} h/mes`; if (costEl) costEl.textContent = euro.format(m.yearlyCost); if (meterEl) meterEl.style.width = `${Math.min(100, Math.max(12, m.yearlyCost / 150))}%`; if (noteEl) noteEl.textContent = m.yearlyCost >= 4000 ? "Ya hay una oportunidad suficiente para revisar este proceso con números y decidir qué automatizar primero." : "La cifra directa es moderada; también conviene valorar errores, retrasos y oportunidades perdidas."; return m; };
-    form.querySelectorAll("input, select").forEach((input) => input.addEventListener("input", calculate)); calculate();
-    form.addEventListener("submit", async (event) => { event.preventDefault(); const m = calculate(); const button = form.querySelector<HTMLButtonElement>("[data-diagnostic-submit]"); if (button) { button.disabled = true; button.textContent = "Preparando tu diagnóstico…"; } if (errorEl) errorEl.classList.add("hidden"); const d = m.d; const process = String(d.get("process") || ""); const impact = String(d.get("impact") || ""); const payload = { name: String(d.get("name") || ""), company: String(d.get("company") || "") || null, email: String(d.get("email") || ""), answers: { proceso: process, personas: m.people, minutos_por_vez: m.minutes, veces_por_semana: m.weekly, coste_hora: m.hourly, impacto: impact }, metrics: { monthlyHours: m.monthlyHours, yearlyHours: m.yearlyHours, yearlyCost: m.yearlyCost, risk: m.risk, primaryOpportunity: process ? `Revisar y automatizar el proceso de «${process}» para reducir trabajo repetitivo y errores.` : "Revisar el proceso repetitivo con mayor volumen y riesgo." }, attribution: buildAttributionPayload("diagnostic_completed") }; try { const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }); const result = await response.json().catch(() => ({})); if (!response.ok) throw new Error(result.error || "No se pudo preparar el diagnóstico"); form.classList.add("hidden"); successEl?.classList.remove("hidden"); if (reportEl && result.reportUrl) reportEl.href = result.reportUrl; const browserWindow = window as Window & { fbq?: (...args: unknown[]) => void }; browserWindow.fbq?.("track", "CompleteRegistration", { content_name: "diagnostic_completed" }); } catch (error) { if (errorEl) { errorEl.textContent = error instanceof Error ? error.message : "No se pudo enviar. Inténtalo de nuevo."; errorEl.classList.remove("hidden"); } if (button) { button.disabled = false; button.textContent = "Quiero recibir mi diagnóstico personalizado"; } } });
+  import {
+    buildAttributionPayload,
+    trackEvent,
+  } from "~/shared/lib/attribution";
+  const endpoint =
+    import.meta.env.PUBLIC_DIAGNOSTIC_ENDPOINT ||
+    "https://app.doscientos.es/api/public/diagnostics";
+  const euro = new Intl.NumberFormat("es-ES", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
   });
+  document
+    .querySelectorAll<HTMLFormElement>("[data-diagnostic-calculator]")
+    .forEach((form) => {
+      const hoursEl = form.querySelector<HTMLElement>(
+        "[data-diagnostic-hours]",
+      );
+      const costEl = form.querySelector<HTMLElement>("[data-diagnostic-cost]");
+      const noteEl = form.querySelector<HTMLElement>("[data-diagnostic-note]");
+      const meterEl = form.querySelector<HTMLElement>(
+        "[data-diagnostic-meter]",
+      );
+      const errorEl = form.querySelector<HTMLElement>(
+        "[data-diagnostic-error]",
+      );
+      const successEl = form.parentElement?.querySelector<HTMLElement>(
+        "[data-diagnostic-success]",
+      );
+      const reportEl = successEl?.querySelector<HTMLAnchorElement>(
+        "[data-diagnostic-report]",
+      );
+      const values = () => {
+        const d = new FormData(form);
+        const minutes = Number(d.get("minutes") || 0);
+        const weekly = Number(d.get("weekly") || 0);
+        const people = Number(d.get("people") || 0);
+        const hourly = Number(d.get("hourly") || 0);
+        const monthlyHours = Math.round(
+          (minutes * weekly * people * 52) / 12 / 60,
+        );
+        const yearlyHours = Math.round((minutes * weekly * people * 52) / 60);
+        const yearlyCost = Math.round(yearlyHours * hourly);
+        return {
+          d,
+          minutes,
+          weekly,
+          people,
+          hourly,
+          monthlyHours,
+          yearlyHours,
+          yearlyCost,
+          risk:
+            yearlyCost >= 10000
+              ? "Alta"
+              : yearlyCost >= 4000
+                ? "Media"
+                : "Inicial",
+        };
+      };
+      const calculate = () => {
+        const m = values();
+        if (hoursEl) hoursEl.textContent = `${m.monthlyHours} h/mes`;
+        if (costEl) costEl.textContent = euro.format(m.yearlyCost);
+        if (meterEl)
+          meterEl.style.width = `${Math.min(100, Math.max(12, m.yearlyCost / 150))}%`;
+        if (noteEl)
+          noteEl.textContent =
+            m.yearlyCost >= 4000
+              ? "Ya hay una oportunidad suficiente para revisar este proceso con números y decidir qué automatizar primero."
+              : "La cifra directa es moderada; también conviene valorar errores, retrasos y oportunidades perdidas.";
+        return m;
+      };
+      // Solo la primera interacción real cuenta como diagnóstico iniciado;
+      // el resto de pulsaciones se limitan a recalcular.
+      let startTracked = false;
+      form.querySelectorAll("input, select").forEach((input) =>
+        input.addEventListener("input", () => {
+          const m = calculate();
+          if (startTracked) return;
+          startTracked = true;
+          trackEvent("diagnostic_started", {
+            conversionStep: "diagnostic_form",
+            payload: {
+              monthly_hours: m.monthlyHours,
+              yearly_cost: m.yearlyCost,
+            },
+          });
+        }),
+      );
+      calculate();
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const m = calculate();
+        const button = form.querySelector<HTMLButtonElement>(
+          "[data-diagnostic-submit]",
+        );
+        if (button) {
+          button.disabled = true;
+          button.textContent = "Preparando tu diagnóstico…";
+        }
+        if (errorEl) errorEl.classList.add("hidden");
+        const d = m.d;
+        const process = String(d.get("process") || "");
+        const impact = String(d.get("impact") || "");
+        const payload = {
+          name: String(d.get("name") || ""),
+          company: String(d.get("company") || "") || null,
+          email: String(d.get("email") || ""),
+          answers: {
+            proceso: process,
+            personas: m.people,
+            minutos_por_vez: m.minutes,
+            veces_por_semana: m.weekly,
+            coste_hora: m.hourly,
+            impacto: impact,
+          },
+          metrics: {
+            monthlyHours: m.monthlyHours,
+            yearlyHours: m.yearlyHours,
+            yearlyCost: m.yearlyCost,
+            risk: m.risk,
+            primaryOpportunity: process
+              ? `Revisar y automatizar el proceso de «${process}» para reducir trabajo repetitivo y errores.`
+              : "Revisar el proceso repetitivo con mayor volumen y riesgo.",
+          },
+          attribution: buildAttributionPayload("diagnostic_completed"),
+        };
+        try {
+          const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok)
+            throw new Error(
+              result.error || "No se pudo preparar el diagnóstico",
+            );
+          form.classList.add("hidden");
+          successEl?.classList.remove("hidden");
+          if (reportEl && result.reportUrl) reportEl.href = result.reportUrl;
+          const browserWindow = window as Window & {
+            fbq?: (...args: unknown[]) => void;
+          };
+          browserWindow.fbq?.("track", "CompleteRegistration", {
+            content_name: "diagnostic_completed",
+          });
+        } catch (error) {
+          if (errorEl) {
+            errorEl.textContent =
+              error instanceof Error
+                ? error.message
+                : "No se pudo enviar. Inténtalo de nuevo.";
+            errorEl.classList.remove("hidden");
+          }
+          if (button) {
+            button.disabled = false;
+            button.textContent = "Quiero recibir mi diagnóstico personalizado";
+          }
+        }
+      });
+    });
 </script>

@@ -115,6 +115,8 @@ const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
 </section>
 
 <script>
+  import { trackEvent } from "~/shared/lib/attribution";
+
   const formatEuro = new Intl.NumberFormat("es-ES", {
     style: "currency",
     currency: "EUR",
@@ -163,9 +165,28 @@ const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
           yearly_hours: yearlyHours,
         });
       }
+
+      return { yearlyCost, yearlyHours };
     };
 
-    inputs.forEach((input) => input.addEventListener("input", calculate));
+    // El evento de negocio se registra una sola vez por visita: cada tecla
+    // recalcula, pero solo la primera interacción real cuenta como uso.
+    let usageTracked = false;
+    inputs.forEach((input) =>
+      input.addEventListener("input", () => {
+        const result = calculate();
+        if (usageTracked) return;
+        usageTracked = true;
+        trackEvent("calculator_used", {
+          conversionStep: "calculator",
+          payload: {
+            calculator: "cost",
+            yearly_cost: result.yearlyCost,
+            yearly_hours: result.yearlyHours,
+          },
+        });
+      }),
+    );
     cta?.addEventListener("click", () => {
       if ("gtag" in window) {
         // @ts-ignore
@@ -174,6 +195,10 @@ const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
           event_label: "calculator_review_process",
         });
       }
+      trackEvent("cta_click", {
+        conversionStep: "calculator",
+        payload: { cta: "calculator_review_process" },
+      });
     });
     calculate();
   });
