@@ -59,7 +59,9 @@
   --secondary: oklch(0.968 0.007 247.896);
   --muted: #e3e5e7;
   --muted-foreground: #52525b;
-  --accent: oklch(0.93, 0.18, 131.11);
+  /* Accent is a surface tint. Keep the vivid lime for intentional highlights. */
+  --accent: oklch(0.965 0.035 131.11);
+  --brand-lime: oklch(0.93 0.18 131.11);
   --destructive: #e7000b;
 }
 
@@ -218,12 +220,15 @@ strong {
   body {
     @apply bg-background text-foreground;
     background:
-      radial-gradient(ellipse 56rem 34rem at 50% -10rem,
-        color-mix(in srgb, var(--accent) 32%, transparent),
-        transparent 72%),
-      radial-gradient(ellipse 34rem 25rem at 8% 18rem,
-        color-mix(in srgb, var(--primary) 9%, transparent),
+      radial-gradient(ellipse 72rem 42rem at 50% -14rem,
+        color-mix(in oklab, var(--brand-lime) 22%, transparent),
+        transparent 70%),
+      radial-gradient(ellipse 44rem 32rem at 4% 19rem,
+        color-mix(in oklab, var(--primary) 8%, transparent),
         transparent 74%),
+      radial-gradient(ellipse 38rem 28rem at 96% 34rem,
+        color-mix(in oklab, var(--brand-lime) 6%, transparent),
+        transparent 76%),
       var(--background);
   }
 }

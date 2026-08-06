@@ -50,7 +50,6 @@ export const setupHeroStage = () => {
   const hero = document.getElementById("hero");
   const stage = document.getElementById("hero-stage");
   const win = document.getElementById("hero-window");
-  const loader = document.getElementById("hero-loader");
   const linesLayer = document.getElementById("hero-lines");
   const chaosWraps = Array.from(
     document.querySelectorAll<HTMLElement>(".hero-chaos-item"),
@@ -82,17 +81,6 @@ export const setupHeroStage = () => {
     document.querySelectorAll<HTMLElement>(".hero-chaos-watermark"),
   );
   if (!hero || !stage || !win || chaosWraps.length === 0) return;
-
-  // The CSS-only loading placeholder (#hero-loader, see Hero.astro) is only
-  // needed while this dynamically-imported chunk is still loading/parsing —
-  // now that it's running, kill its CSS animation outright (a plain
-  // opacity:0 wouldn't win: a running CSS animation still owns the property
-  // every frame) so it disappears immediately instead of finishing its own
-  // multi-second fade-in/out lifecycle underneath the real chaos chips.
-  if (loader) {
-    loader.style.animation = "none";
-    loader.style.opacity = "0";
-  }
 
   // Pre-compute how far each chip must travel to reach the stage's centre,
   // so the "absorption" tween reads as chips flying into the window rather
