@@ -3,7 +3,15 @@ title: "Monolito modular vs microservicios: cómo elegir arquitectura sin sobrei
 description: "Guía para decidir entre monolito modular y microservicios según equipo, despliegue, escala, datos y coste operativo. Con señales concretas para separar servicios."
 publishDate: "2026-07-30"
 draft: false
-tags: ["arquitectura de software", "monolito modular", "microservicios", "escalabilidad", "backend", "decisión tecnológica"]
+tags:
+  [
+    "arquitectura de software",
+    "monolito modular",
+    "microservicios",
+    "escalabilidad",
+    "backend",
+    "decisión tecnológica",
+  ]
 resourceType: "guia"
 buyerStage: "consideration"
 author: "Gerard Martínez"
@@ -71,16 +79,16 @@ La documentación de Microsoft señala precisamente estos costes: al pasar a mic
 
 ## Comparativa práctica
 
-| Criterio | Monolito modular | Microservicios |
-|---|---|---|
-| Despliegue | Uno | Varios e independientes |
-| Llamadas entre módulos | En proceso | Red o mensajería |
-| Transacciones | Sencillas dentro de una base de datos | Requieren coordinación o consistencia eventual |
-| Observabilidad | Logs y métricas centralizados | Trazas y correlación entre servicios |
-| Escalado | Se replica la aplicación completa | Cada servicio puede escalar por separado |
-| Velocidad inicial | Alta | Menor por infraestructura y contratos |
-| Autonomía de equipos | Limitada por el despliegue común | Alta si los límites están bien diseñados |
-| Coste operativo | Bajo o medio | Medio o alto |
+| Criterio               | Monolito modular                      | Microservicios                                 |
+| ---------------------- | ------------------------------------- | ---------------------------------------------- |
+| Despliegue             | Uno                                   | Varios e independientes                        |
+| Llamadas entre módulos | En proceso                            | Red o mensajería                               |
+| Transacciones          | Sencillas dentro de una base de datos | Requieren coordinación o consistencia eventual |
+| Observabilidad         | Logs y métricas centralizados         | Trazas y correlación entre servicios           |
+| Escalado               | Se replica la aplicación completa     | Cada servicio puede escalar por separado       |
+| Velocidad inicial      | Alta                                  | Menor por infraestructura y contratos          |
+| Autonomía de equipos   | Limitada por el despliegue común      | Alta si los límites están bien diseñados       |
+| Coste operativo        | Bajo o medio                          | Medio o alto                                   |
 
 ---
 

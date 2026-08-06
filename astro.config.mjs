@@ -9,9 +9,8 @@ import metaTags from "astro-meta-tags";
 
 import react from "@astrojs/react";
 
-import { rehypeHeadingIds } from '@astrojs/markdown-remark';
-import rehypeExternalLinks from 'rehype-external-links';
-
+import { rehypeHeadingIds } from "@astrojs/markdown-remark";
+import rehypeExternalLinks from "rehype-external-links";
 
 // https://astro.build/config
 export default defineConfig({
@@ -28,8 +27,7 @@ export default defineConfig({
 
   experimental: {
     headingIdCompat: true,
-    contentIntellisense: true
-
+    contentIntellisense: true,
   },
 
   integrations: [
@@ -45,9 +43,9 @@ export default defineConfig({
         rehypeExternalLinks,
         {
           rel: ["noopener", "noreferrer"],
-        }
+        },
       ],
-    ]
+    ],
   },
   vite: {
     plugins: [tailwindcss()],

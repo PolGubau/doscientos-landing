@@ -3,7 +3,8 @@ title: "Desarrollar una app móvil en 2026: costes, tecnología y errores"
 description: "Cuánto cuesta desarrollar una app móvil en España, qué tecnología elegir y cuándo conviene empezar con una PWA, portal o MVP antes de invertir."
 publishDate: "2026-03-26"
 draft: false
-tags: ["app móvil", "desarrollo móvil", "iOS", "Android", "React Native", "Flutter"]
+tags:
+  ["app móvil", "desarrollo móvil", "iOS", "Android", "React Native", "Flutter"]
 author: "doscientos"
 ---
 
@@ -84,6 +85,7 @@ Los precios varían enormemente según complejidad, equipo y mercado. Estos son 
 App sencilla con autenticación, 3-5 pantallas principales, backend básico.
 
 **Incluye:**
+
 - Login con email/contraseña o redes sociales
 - 3-5 pantallas funcionales
 - API REST básica
@@ -98,6 +100,7 @@ App sencilla con autenticación, 3-5 pantallas principales, backend básico.
 Producto completo con todas las funcionalidades core del negocio.
 
 **Incluye:**
+
 - Autenticación y perfiles de usuario
 - Funcionalidades específicas del negocio
 - Pasarela de pago (Stripe, Redsys)
@@ -113,6 +116,7 @@ Producto completo con todas las funcionalidades core del negocio.
 Marketplace, plataforma con múltiples roles de usuario, integraciones complejas.
 
 **Incluye todo lo anterior más:**
+
 - Múltiples roles (usuario, proveedor, admin)
 - Sistema de pagos bidireccional
 - Chat o comunicación en tiempo real
@@ -123,38 +127,45 @@ Marketplace, plataforma con múltiples roles de usuario, integraciones complejas
 ## Los 7 errores que hacen fracasar el 70% de las apps
 
 ### 1. No validar antes de desarrollar
+
 El error más costoso. Meses de desarrollo y miles de euros invertidos en una solución que nadie quiere. La validación previa (entrevistas con usuarios, prototipo en Figma, landing page de pre-registro) cuesta una fracción del desarrollo y puede ahorrarte todo lo demás.
 
 ### 2. Intentar hacer demasiado en la v1
+
 "Necesitamos login, perfiles, chat, geolocalización, pagos, notificaciones y panel de admin para el lanzamiento." Resultado: la v1 tarda el doble, sale tarde, y la mitad de funcionalidades no las usa nadie. Lanza con lo mínimo que resuelve el problema. El resto viene después, con feedback real.
 
 ### 3. Elegir la tecnología por moda, no por requisitos
+
 React Native puede ser perfecto para el 80% de las apps. Pero si tu app necesita procesamiento de vídeo en tiempo real, quizás la respuesta es nativo. La tecnología debe seguir a los requisitos, no al revés.
 
 ### 4. No pensar en el backend desde el inicio
+
 Muchas apps se desarrollan sin pensar en la escalabilidad del backend. Cuando llegan 10.000 usuarios, el sistema se cae. Diseñar la arquitectura del servidor desde el principio es más barato que rediseñarla después.
 
 ### 5. Ignorar las guías de diseño de cada plataforma
+
 iOS y Android tienen patrones de UX diferentes. Una app que se comporta como iOS en Android (o viceversa) genera fricción en el usuario y peores reseñas en los stores.
 
 ### 6. No planificar el proceso de publicación en stores
+
 Apple revisa las apps manualmente. El proceso puede tardar entre 24 horas y 2 semanas. Las apps se rechazan por motivos que no se habían anticipado: falta de política de privacidad, funcionalidades que requieren explicación, contenido que no cumple las normas. Planifica esto desde el principio.
 
 ### 7. No definir métricas de éxito antes de lanzar
+
 ¿Cómo sabrás si la app funciona? ¿Número de descargas? ¿Usuarios activos diarios? ¿Retención a 30 días? Sin métricas definidas antes del lanzamiento, no sabrás si va bien o mal, ni qué mejorar.
 
 ---
 
 ## Timeline realista de un proyecto de app
 
-| Fase | Duración | Descripción |
-|---|---|---|
-| Discovery | 1-2 semanas | Definición de funcionalidades, arquitectura técnica, diseño de base de datos |
-| Diseño UI/UX | 2-4 semanas | Wireframes, diseño visual, prototipo interactivo |
-| Desarrollo backend | 4-8 semanas | API, base de datos, integraciones, autenticación |
-| Desarrollo app | 6-12 semanas | Pantallas, lógica de negocio, integración con backend |
-| Testing | 2-3 semanas | QA, corrección de bugs, tests con usuarios reales |
-| Publicación stores | 1-2 semanas | Proceso de revisión de Apple y Google |
+| Fase               | Duración     | Descripción                                                                  |
+| ------------------ | ------------ | ---------------------------------------------------------------------------- |
+| Discovery          | 1-2 semanas  | Definición de funcionalidades, arquitectura técnica, diseño de base de datos |
+| Diseño UI/UX       | 2-4 semanas  | Wireframes, diseño visual, prototipo interactivo                             |
+| Desarrollo backend | 4-8 semanas  | API, base de datos, integraciones, autenticación                             |
+| Desarrollo app     | 6-12 semanas | Pantallas, lógica de negocio, integración con backend                        |
+| Testing            | 2-3 semanas  | QA, corrección de bugs, tests con usuarios reales                            |
+| Publicación stores | 1-2 semanas  | Proceso de revisión de Apple y Google                                        |
 
 **Total MVP:** 3-5 meses. App completa: 5-9 meses.
 
@@ -181,6 +192,7 @@ Opciones disponibles:
 Desarrollar una app móvil en 2026 es más accesible que nunca, pero los errores siguen siendo los mismos de siempre: empezar sin validar, querer hacer todo a la vez y no planificar lo que viene después del lanzamiento.
 
 **La secuencia correcta:**
+
 1. Valida el problema con usuarios reales antes de programar nada
 2. Define las funcionalidades mínimas que resuelven ese problema
 3. Elige la tecnología según los requisitos (no al revés)
@@ -203,14 +215,14 @@ Desarrollar una app móvil en 2026 es más accesible que nunca, pero los errores
 
 Desarrollar la app es solo el principio. Los costes continuos:
 
-| Concepto | Coste estimado |
-|---|---|
-| Apple Developer Program | 99$/año |
-| Google Play Console | 25$ (pago único) |
-| Hosting backend | 50€ - 500€/mes |
-| Base de datos | 20€ - 300€/mes |
-| Servicios push (Firebase) | 0€ - según uso |
-| Mantenimiento y updates | 500€ - 3.000€/mes |
-| Actualizaciones de SO | 1.000€ - 5.000€/año |
+| Concepto                  | Coste estimado      |
+| ------------------------- | ------------------- |
+| Apple Developer Program   | 99$/año             |
+| Google Play Console       | 25$ (pago único)    |
+| Hosting backend           | 50€ - 500€/mes      |
+| Base de datos             | 20€ - 300€/mes      |
+| Servicios push (Firebase) | 0€ - según uso      |
+| Mantenimiento y updates   | 500€ - 3.000€/mes   |
+| Actualizaciones de SO     | 1.000€ - 5.000€/año |
 
 Las actualizaciones de iOS y Android son inevitables. Cada versión mayor del sistema operativo puede requerir cambios en tu app. Si no actualizas, la app deja de funcionar correctamente.

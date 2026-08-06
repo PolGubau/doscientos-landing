@@ -28,7 +28,10 @@
 ul.bento {
   li.panel {
     @apply flex flex-col gap-4 bg-muted rounded-3xl border border-muted/60 shadow-pastel p-7;
-    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    transition:
+      transform 220ms ease,
+      box-shadow 220ms ease,
+      border-color 220ms ease;
 
     &:hover {
       transform: translateY(-3px);
@@ -76,9 +79,11 @@ ul.bento {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s ease;
-  background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 0%),
-      color-mix(in srgb, var(--color-primary) 22%, transparent),
-      transparent 68%);
+  background: radial-gradient(
+    22rem circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in srgb, var(--color-primary) 22%, transparent),
+    transparent 68%
+  );
 }
 
 [data-spotlight]:hover::after {
@@ -101,7 +106,9 @@ ul.bento {
 .prose img[data-scroll-reveal] {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .prose img[data-scroll-reveal].img-visible {

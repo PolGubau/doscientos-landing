@@ -3,7 +3,11 @@ import { BudgetPicker } from "./contact/BudgetPicker";
 import { CalEmbed } from "./contact/CalEmbed";
 import { Field } from "./contact/Field";
 import { ProgressBar } from "./contact/ProgressBar";
-import { COMPANY_SIZE_OPTIONS, SOLUTION_TYPE_OPTIONS, URGENCY_OPTIONS } from "./contact/types";
+import {
+  COMPANY_SIZE_OPTIONS,
+  SOLUTION_TYPE_OPTIONS,
+  URGENCY_OPTIONS,
+} from "./contact/types";
 import { useContactForm } from "./contact/useContactForm";
 
 const TOTAL_STEPS = 2;
@@ -60,13 +64,13 @@ export default function ContactForm() {
         {step === 1 && (
           <div
             key="step-1"
-            className={`w-full motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
-              ? "motion-safe:slide-in-from-right-4"
-              : "motion-safe:slide-in-from-left-4"
-              }`}
+            className={`w-full motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${
+              stepDirection === 1
+                ? "motion-safe:slide-in-from-right-4"
+                : "motion-safe:slide-in-from-left-4"
+            }`}
           >
             <div className="grid lg:grid-cols-2 lg:gap-6">
-
               <Field
                 id="name"
                 label="Nombre completo"
@@ -112,10 +116,11 @@ export default function ContactForm() {
         {step === 2 && (
           <div
             key="step-2"
-            className={`space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
-              ? "motion-safe:slide-in-from-right-4"
-              : "motion-safe:slide-in-from-left-4"
-              }`}
+            className={`space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${
+              stepDirection === 1
+                ? "motion-safe:slide-in-from-right-4"
+                : "motion-safe:slide-in-from-left-4"
+            }`}
           >
             <Field
               id="phone"
@@ -162,7 +167,9 @@ export default function ContactForm() {
               >
                 <option value="">Selecciona una opción</option>
                 {SOLUTION_TYPE_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt}>{opt}</option>
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
                 ))}
               </select>
             </div>
@@ -184,7 +191,9 @@ export default function ContactForm() {
               >
                 <option value="">Selecciona un rango</option>
                 {COMPANY_SIZE_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt}>{opt}</option>
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
                 ))}
               </select>
             </div>
@@ -206,7 +215,9 @@ export default function ContactForm() {
               >
                 <option value="">Selecciona una opción</option>
                 {URGENCY_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt}>{opt}</option>
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
                 ))}
               </select>
             </div>
@@ -230,7 +241,10 @@ export default function ContactForm() {
                 className="flex h-12 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 font-semibold text-background transition-all hover:opacity-90 disabled:opacity-50"
               >
                 {status === "loading" ? (
-                  <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                  <Loader2
+                    className="w-4 h-4 animate-spin"
+                    aria-hidden="true"
+                  />
                 ) : (
                   <Check className="w-4 h-4" aria-hidden="true" />
                 )}

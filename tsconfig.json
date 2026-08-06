@@ -1,17 +1,17 @@
 {
-	"extends": "astro/tsconfigs/strict",
-	"include": [".astro/types.d.ts", "**/*"],
-	"exclude": ["dist", "node_modules", "public"],
-	"compilerOptions": {
-		"strictNullChecks": true,
-		"baseUrl": ".",
-		"paths": {
-			"~/*": ["./src/*"]
-		},
-		"moduleResolution": "bundler",
-		"jsx": "preserve",
-		"jsxImportSource": "react",
-		"skipLibCheck": true,
-		"incremental": true
-	}
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "node_modules", "public"],
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "jsxImportSource": "react",
+    "skipLibCheck": true,
+    "incremental": true
+  }
 }

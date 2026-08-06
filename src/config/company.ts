@@ -12,7 +12,11 @@ export const company = {
   geo: { latitude: 41.4956, longitude: 2.3598 },
   serviceAreas: ["Barcelona", "Maresme", "Mataró", "España"],
   openingHours: [
-    { dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "18:00" },
+    {
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "09:00",
+      closes: "18:00",
+    },
   ],
   contactPoints: [
     {

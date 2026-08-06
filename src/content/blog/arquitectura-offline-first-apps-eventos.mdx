@@ -3,7 +3,15 @@ title: "Arquitectura offline-first para apps de eventos: decisiones y errores re
 description: "Cómo diseñar una app que siga funcionando con mala cobertura: caché, frescura, sincronización, conflictos y observabilidad, con aprendizajes de Les Santes."
 publishDate: "2026-07-28"
 draft: false
-tags: ["offline-first", "arquitectura móvil", "React Native", "sincronización", "apps de eventos", "caso real"]
+tags:
+  [
+    "offline-first",
+    "arquitectura móvil",
+    "React Native",
+    "sincronización",
+    "apps de eventos",
+    "caso real",
+  ]
 resourceType: "caso"
 buyerStage: "consideration"
 author: "Pol Gubau"
@@ -54,14 +62,14 @@ La diferencia afecta a toda la arquitectura. En el segundo modelo, la interfaz n
 
 “Hacer la app offline” es demasiado amplio. Clasifica funciones:
 
-| Función | Sin conexión | Al recuperar red |
-|---|---|---|
-| Consultar agenda descargada | Completa | Actualiza cambios |
-| Ver ubicaciones y rutas | Completa si el mapa está disponible | Renueva datos |
-| Guardar favoritos | Local | Opcionalmente sincroniza |
-| Recibir una cancelación | Muestra último estado conocido | Recibe actualización |
-| Enviar un pago | No debe fingir éxito | Reintenta con confirmación |
-| Chat en tiempo real | Historial local | Envía pendientes |
+| Función                     | Sin conexión                        | Al recuperar red           |
+| --------------------------- | ----------------------------------- | -------------------------- |
+| Consultar agenda descargada | Completa                            | Actualiza cambios          |
+| Ver ubicaciones y rutas     | Completa si el mapa está disponible | Renueva datos              |
+| Guardar favoritos           | Local                               | Opcionalmente sincroniza   |
+| Recibir una cancelación     | Muestra último estado conocido      | Recibe actualización       |
+| Enviar un pago              | No debe fingir éxito                | Reintenta con confirmación |
+| Chat en tiempo real         | Historial local                     | Envía pendientes           |
 
 En Les Santes priorizamos agenda, recursos y favoritos. No todas las funciones necesitaban el mismo nivel de disponibilidad.
 

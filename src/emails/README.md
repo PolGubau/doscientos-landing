@@ -5,18 +5,22 @@ Sistema de emails profesionales para la landing de doscientos.
 ## 📧 Templates Disponibles
 
 ### 1. ContactEmail
+
 Email que recibe el equipo cuando alguien contacta.
 
 **Características:**
+
 - ✅ Diseño profesional y limpio
 - ✅ Información del contacto destacada
 - ✅ CTA para responder directamente
 - ✅ Responsive (mobile-friendly)
 
 ### 2. ConfirmationEmail
+
 Email de confirmación que recibe el cliente.
 
 **Características:**
+
 - ✅ Mensaje de agradecimiento
 - ✅ Tiempo de respuesta (24h)
 - ✅ Links a proyectos y blog
@@ -35,7 +39,7 @@ npm install resend
 
 ```typescript
 // src/lib/email.ts
-import { Resend } from 'resend';
+import { Resend } from "resend";
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
@@ -48,17 +52,17 @@ export async function sendContactEmail(data: {
 }) {
   // Email al equipo
   await resend.emails.send({
-    from: 'Contacto <contacto@doscientos.es>',
-    to: 'hola@doscientos.es',
+    from: "Contacto <contacto@doscientos.es>",
+    to: "hola@doscientos.es",
     subject: `Nuevo contacto de ${data.name}`,
     html: ContactEmail(data),
   });
 
   // Email de confirmación al cliente
   await resend.emails.send({
-    from: 'doscientos <hola@doscientos.es>',
+    from: "doscientos <hola@doscientos.es>",
     to: data.email,
-    subject: 'Gracias por contactarnos - doscientos',
+    subject: "Gracias por contactarnos - doscientos",
     html: ConfirmationEmail({ name: data.name }),
   });
 }
@@ -68,19 +72,19 @@ export async function sendContactEmail(data: {
 
 ```typescript
 // src/pages/api/contact.ts
-import type { APIRoute } from 'astro';
-import { sendContactEmail } from '~/lib/email';
+import type { APIRoute } from "astro";
+import { sendContactEmail } from "~/lib/email";
 
 export const POST: APIRoute = async ({ request }) => {
   const data = await request.json();
-  
+
   try {
     await sendContactEmail(data);
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Error sending email' }), {
+    return new Response(JSON.stringify({ error: "Error sending email" }), {
       status: 500,
     });
   }
@@ -92,6 +96,7 @@ export const POST: APIRoute = async ({ request }) => {
 ### Colores
 
 Los emails usan la paleta de doscientos:
+
 - **Primary:** `#000000` (Negro)
 - **Background:** `#ffffff` (Blanco)
 - **Muted:** `#666666` (Gris)
@@ -100,6 +105,7 @@ Los emails usan la paleta de doscientos:
 ### Modificar Templates
 
 Edita los archivos en `src/emails/templates/`:
+
 - `ContactEmail.tsx` - Email al equipo
 - `ConfirmationEmail.tsx` - Email al cliente
 
@@ -133,9 +139,9 @@ const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 // En desarrollo, los emails se envían a tu email de testing
 await resend.emails.send({
-  from: 'test@resend.dev',
-  to: 'tu-email@example.com',
-  subject: 'Test',
+  from: "test@resend.dev",
+  to: "tu-email@example.com",
+  subject: "Test",
   html: ContactEmail(data),
 });
 ```
@@ -151,6 +157,7 @@ RESEND_API_KEY=re_xxxxxxxxxxxxx
 ## 📊 Métricas
 
 Con Resend puedes trackear:
+
 - ✅ Emails enviados
 - ✅ Emails abiertos
 - ✅ Clicks en links
@@ -188,4 +195,3 @@ Con Resend puedes trackear:
 - Compatible con todos los clientes de email
 - Responsive y mobile-friendly
 - Probado en Gmail, Outlook, Apple Mail
-

@@ -1,40 +1,40 @@
 {
-	"name": "doscientos - Desarrollo de Producto Digital",
-	"short_name": "doscientos",
-	"description": "Modernizamos sistemas críticos sin detener tu negocio. Creamos webs, plataformas y productos digitales de calidad.",
-	"start_url": "/",
-	"scope": "/",
-	"display": "standalone",
-	"orientation": "portrait-primary",
-	"theme_color": "#000000",
-	"background_color": "#ffffff",
-	"lang": "es",
-	"dir": "ltr",
-	"categories": ["business", "productivity", "development"],
-	"icons": [
-		{
-			"src": "/web-app-manifest-192x192.png",
-			"sizes": "192x192",
-			"type": "image/png",
-			"purpose": "maskable"
-		},
-		{
-			"src": "/web-app-manifest-512x512.png",
-			"sizes": "512x512",
-			"type": "image/png",
-			"purpose": "maskable"
-		},
-		{
-			"src": "/web-app-manifest-192x192.png",
-			"sizes": "192x192",
-			"type": "image/png",
-			"purpose": "any"
-		},
-		{
-			"src": "/web-app-manifest-512x512.png",
-			"sizes": "512x512",
-			"type": "image/png",
-			"purpose": "any"
-		}
-	]
+  "name": "doscientos - Desarrollo de Producto Digital",
+  "short_name": "doscientos",
+  "description": "Modernizamos sistemas críticos sin detener tu negocio. Creamos webs, plataformas y productos digitales de calidad.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "development"],
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }

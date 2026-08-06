@@ -1,4 +1,13 @@
-import type { BlogPosting, CreativeWork, FAQPage, Organization, ProfessionalService, Service, WebSite, WithContext } from "schema-dts";
+import type {
+  BlogPosting,
+  CreativeWork,
+  FAQPage,
+  Organization,
+  ProfessionalService,
+  Service,
+  WebSite,
+  WithContext,
+} from "schema-dts";
 
 export type JsonLdSchema =
   | WithContext<Organization>
@@ -9,7 +18,10 @@ export type JsonLdSchema =
   | WithContext<CreativeWork>
   | WithContext<FAQPage>;
 
-export function absoluteUrl(value: string | undefined, base: URL): string | undefined {
+export function absoluteUrl(
+  value: string | undefined,
+  base: URL,
+): string | undefined {
   if (!value) return undefined;
   return new URL(value, base).toString();
 }

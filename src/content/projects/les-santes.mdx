@@ -42,15 +42,32 @@ La única herramienta oficial: un **PDF impreso** y una web estática sin datos 
 
 **Construimos el stack completo desde cero: app móvil, landing y CMS, como proyecto de código abierto.**
 
-<Image src={landingThumbnail} alt="Landing page de Les Santes" class="rounded-2xl my-6" />
+<Image
+  src={landingThumbnail}
+  alt="Landing page de Les Santes"
+  class="rounded-2xl my-6"
+/>
 
 <div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
-  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">3</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">plataformas entregadas</span></div>
-   <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">134</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">años de carteles archivados</span></div>
-  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">97%</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">reducción de peso de imágenes</span></div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">3</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">
+      plataformas entregadas
+    </span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">134</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">
+      años de carteles archivados
+    </span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">97%</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">
+      reducción de peso de imágenes
+    </span>
+  </div>
 </div>
-
-
 
 ## El problema
 
@@ -58,40 +75,75 @@ La única herramienta oficial: un **PDF impreso** y una web estática sin datos 
 
 Les Santes es una de las fiestas mayores más importantes de Cataluña y no tenía ninguna herramienta digital que estuviera a la altura. Lo construimos como proyecto de bien público: sin presupuesto de cliente, con código abierto y pensado para durar.
 
-
-
 ## Decisiones técnicas clave
 
 <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">Posición de desfiles en tiempo real, sin GPS</span>
-    <span class="text-sm leading-relaxed text-muted-foreground">Cada desfile tiene una ruta GeoJSON planificada y una hora de inicio. La app interpola su posición a lo largo de esa ruta cada segundo, en el cliente. Sin hardware, sin peticiones al servidor - solo geometría y tiempo transcurrido.</span>
+    <span class="text-sm font-semibold">
+      Posición de desfiles en tiempo real, sin GPS
+    </span>
+    <span class="text-sm leading-relaxed text-muted-foreground">
+      Cada desfile tiene una ruta GeoJSON planificada y una hora de inicio. La
+      app interpola su posición a lo largo de esa ruta cada segundo, en el
+      cliente. Sin hardware, sin peticiones al servidor - solo geometría y
+      tiempo transcurrido.
+    </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">Offline-first, no offline-tolerante</span>
-    <span class="text-sm leading-relaxed text-muted-foreground">Todos los datos se cachean en la primera carga con un timestamp. Si abres la app sin conexión, tienes el programa completo - con una nota que indica la antigüedad del caché. Sin spinners ni pantallas vacías.</span>
+    <span class="text-sm font-semibold">
+      Offline-first, no offline-tolerante
+    </span>
+    <span class="text-sm leading-relaxed text-muted-foreground">
+      Todos los datos se cachean en la primera carga con un timestamp. Si abres
+      la app sin conexión, tienes el programa completo - con una nota que indica
+      la antigüedad del caché. Sin spinners ni pantallas vacías.
+    </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">Cero cuentas, cero datos recogidos</span>
-    <span class="text-sm leading-relaxed text-muted-foreground">Sin login, sin sesiones, sin tokens. Simplificó todo el backend y facilitó la revisión del App Store: no había nada que revisar en materia de privacidad.</span>
+    <span class="text-sm font-semibold">
+      Cero cuentas, cero datos recogidos
+    </span>
+    <span class="text-sm leading-relaxed text-muted-foreground">
+      Sin login, sin sesiones, sin tokens. Simplificó todo el backend y facilitó
+      la revisión del App Store: no había nada que revisar en materia de
+      privacidad.
+    </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">Cancelaciones instantáneas vía Supabase Realtime</span>
-    <span class="text-sm leading-relaxed text-muted-foreground">Cuando el organizador cancela un acto, todas las instancias de la app lo reciben al momento vía Realtime broadcast. Los usuarios con notificaciones activas reciben una push con el motivo. Sin polling.</span>
+    <span class="text-sm font-semibold">
+      Cancelaciones instantáneas vía Supabase Realtime
+    </span>
+    <span class="text-sm leading-relaxed text-muted-foreground">
+      Cuando el organizador cancela un acto, todas las instancias de la app lo
+      reciben al momento vía Realtime broadcast. Los usuarios con notificaciones
+      activas reciben una push con el motivo. Sin polling.
+    </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
     <span class="text-sm font-semibold">134 años de carteles en 146 KB</span>
-    <span class="text-sm leading-relaxed text-muted-foreground">El archivo completo de carteles (1892–presente) recodificado a AVIF. Lo que habrían sido 5,2 MB de PNGs ocupa 146 KB - un 97% menos, con la misma calidad visual.</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">
+      El archivo completo de carteles (1892–presente) recodificado a AVIF. Lo
+      que habrían sido 5,2 MB de PNGs ocupa 146 KB - un 97% menos, con la misma
+      calidad visual.
+    </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">MapLibre en lugar de Google Maps o Apple Maps</span>
-    <span class="text-sm leading-relaxed text-muted-foreground">MapLibre GL JS en un WebView aislado con tiles de MapTiler. Sin tracking de terceros, sin overhead de SDK nativo, control total sobre el estilo. Política de privacidad de un solo párrafo.</span>
+    <span class="text-sm font-semibold">
+      MapLibre en lugar de Google Maps o Apple Maps
+    </span>
+    <span class="text-sm leading-relaxed text-muted-foreground">
+      MapLibre GL JS en un WebView aislado con tiles de MapTiler. Sin tracking
+      de terceros, sin overhead de SDK nativo, control total sobre el estilo.
+      Política de privacidad de un solo párrafo.
+    </span>
   </div>
 </div>
 
-<Image src={appMapa} alt="Mapa con posición en tiempo real de los desfiles" class="max-h-[60vh] w-auto rounded-2xl my-2" />
-
-
+<Image
+  src={appMapa}
+  alt="Mapa con posición en tiempo real de los desfiles"
+  class="max-h-[60vh] w-auto rounded-2xl my-2"
+/>
 
 ## La app
 
@@ -112,66 +164,140 @@ La app móvil (React Native + Expo) está organizada en torno a una sola pregunt
 
 Abre la app y ves al instante qué está en marcha: una tarjeta con el acto en curso y una tira horizontal con los siguientes. Sin pantalla de login, sin onboarding, sin configuración - solo el festival.
 
-<Image src={appAra} alt="Vista Ara de la app" class="max-h-[60vh] w-auto rounded-2xl my-6" />
+<Image
+  src={appAra}
+  alt="Vista Ara de la app"
+  class="max-h-[60vh] w-auto rounded-2xl my-6"
+/>
 
 ### Mapa
 
 Los eventos fijos aparecen como marcadores. Los desfiles muestran su **posición estimada en tiempo real** como una polilínea animada, recalculada cada segundo interpolando el tiempo transcurrido sobre la ruta GeoJSON planificada.
 
-<Image src={appMapa} alt="Mapa con rutas de actos en vivo" data-reveal="bottom" data-easing="soft" class="max-h-[60vh] w-auto rounded-2xl my-6" />
+<Image
+  src={appMapa}
+  alt="Mapa con rutas de actos en vivo"
+  data-reveal="bottom"
+  data-easing="soft"
+  class="max-h-[60vh] w-auto rounded-2xl my-6"
+/>
 
 ### Agenda
 
 El programa completo, filtrable por día, categoría, tipo de acto o distancia desde la ubicación del usuario. Un sistema de favoritos permite fijar actos y recibir una notificación antes de que empiecen.
 
-<div class="not-prose flex flex-wrap justify-center gap-4 my-6" data-stagger="100">
-  <Image src={appAgenda} alt="Vista de agenda completa" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
-  <Image src={appAgendaFavs} alt="Filtro de favoritos" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
+<div
+  class="not-prose flex flex-wrap justify-center gap-4 my-6"
+  data-stagger="100"
+>
+  <Image
+    src={appAgenda}
+    alt="Vista de agenda completa"
+    height={600}
+    data-reveal="bottom"
+    data-easing="soft"
+    class="rounded-2xl"
+  />
+  <Image
+    src={appAgendaFavs}
+    alt="Filtro de favoritos"
+    height={600}
+    data-reveal="bottom"
+    data-easing="soft"
+    class="rounded-2xl"
+  />
 </div>
 
 ### Recursos
 
 Un archivo desplazable con todos los carteles oficiales del festival desde 1892, más un lightbox deslizable con las postales de los Gegants - todo codificado en AVIF para carga casi instantánea.
 
-<div class="not-prose flex flex-wrap gap-4 justify-center my-6" data-stagger="100">
-  <Image src={appCartells} alt="Archivo de carteles" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
-  <Image src={appPostals} alt="Lightbox de postales de Gegants" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
-  <Image src={appRecursos} alt="Pestaña de recursos" height={600} data-reveal="bottom" data-easing="soft" class="rounded-2xl" />
+<div
+  class="not-prose flex flex-wrap gap-4 justify-center my-6"
+  data-stagger="100"
+>
+  <Image
+    src={appCartells}
+    alt="Archivo de carteles"
+    height={600}
+    data-reveal="bottom"
+    data-easing="soft"
+    class="rounded-2xl"
+  />
+  <Image
+    src={appPostals}
+    alt="Lightbox de postales de Gegants"
+    height={600}
+    data-reveal="bottom"
+    data-easing="soft"
+    class="rounded-2xl"
+  />
+  <Image
+    src={appRecursos}
+    alt="Pestaña de recursos"
+    height={600}
+    data-reveal="bottom"
+    data-easing="soft"
+    class="rounded-2xl"
+  />
 </div>
-
-
 
 ## La landing
 
 Un sitio Next.js 15 que convierte visitas en descargas de la app y actúa como CMS para el organizador del festival. Optimizado para Core Web Vitals y estructurado semánticamente para posicionarse en búsquedas de alta intención junto al dominio oficial.
 
-<Image src={landingScreens} alt="Sección de pantallas de la app en la landing" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
+<Image
+  src={landingScreens}
+  alt="Sección de pantallas de la app en la landing"
+  data-reveal="bottom"
+  data-easing="soft"
+  class="rounded-2xl my-6"
+/>
 
-<Image src={landingPosters} alt="Marquee de carteles en la landing" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
+<Image
+  src={landingPosters}
+  alt="Marquee de carteles en la landing"
+  data-reveal="bottom"
+  data-easing="soft"
+  class="rounded-2xl my-6"
+/>
 
-<Image src={landing404} alt="Página 404 personalizada" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
-
-
+<Image
+  src={landing404}
+  alt="Página 404 personalizada"
+  data-reveal="bottom"
+  data-easing="soft"
+  class="rounded-2xl my-6"
+/>
 
 ## El panel de administración
 
 Un back-office protegido por contraseña integrado en el mismo sitio de la landing. El organizador puede crear, editar y cancelar actos sin tocar código. Las cancelaciones requieren un motivo, que se emite al instante a todas las instancias conectadas de la app vía Supabase Realtime y se entrega como notificación push.
 
-<Image src={adminHome} alt="Panel de administración - listado de actos" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
+<Image
+  src={adminHome}
+  alt="Panel de administración - listado de actos"
+  data-reveal="bottom"
+  data-easing="soft"
+  class="rounded-2xl my-6"
+/>
 
 La creación de actos gestiona tanto eventos de ubicación fija como desfiles en movimiento. Las rutas de los desfiles se dibujan en geojson.io y se suben como GeoJSON - la app las usa después para la interpolación de posición en tiempo real durante el festival.
 
-<Image src={adminEditEvent} alt="Panel de administración - formulario de edición" data-reveal="bottom" data-easing="soft" class="rounded-2xl my-6" />
-
-
+<Image
+  src={adminEditEvent}
+  alt="Panel de administración - formulario de edición"
+  data-reveal="bottom"
+  data-easing="soft"
+  class="rounded-2xl my-6"
+/>
 
 **Resultados**
+
 - **3 plataformas** entregadas y en producción (app, landing, admin)
 - **134 años** de archivo de carteles, de 5,2 MB a 146 KB total
 - **0 datos personales** recogidos ni transmitidos
 - **Código abierto** publicado en GitHub
-
-
 
 ## Estado del proyecto
 

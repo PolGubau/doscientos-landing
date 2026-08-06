@@ -37,7 +37,7 @@ Nosotros teníamos 6 semanas para convertir esa visión en realidad.
 
 En nuestra primera sesión de trabajo, pasamos 3 horas diseñando el sistema de chat en tiempo real. Discutimos WebSockets, notificaciones push, estados de lectura...
 
-Hasta que Lorenzo preguntó: *"¿Cuántos usuarios necesitamos para que el chat sea útil?"*
+Hasta que Lorenzo preguntó: _"¿Cuántos usuarios necesitamos para que el chat sea útil?"_
 
 Silencio incómodo.
 
@@ -46,6 +46,7 @@ Teníamos cero usuarios y estábamos diseñando funcionalidades para miles. **Er
 **Vuelta a la realidad**
 
 Paramos en seco y redefinimos qué era realmente necesario:
+
 - ✅ Swipe para explorar alojamientos
 - ✅ Guardar favoritos
 - ✅ Ver detalles de propiedades
@@ -84,6 +85,7 @@ Esa noche rediseñamos toda la interfaz. En lugar de mostrar listados con filtro
 />
 
 **Lo que cambiamos:**
+
 - Foto de portada ocupa el 70% de la pantalla
 - Precio y ubicación siempre visibles
 - Scroll vertical en la tarjeta para ver más detalles
@@ -127,6 +129,7 @@ Dividimos el proceso en 9 pasos con una barra de progreso (porque a la gente le 
 En lugar de pedir calle, número, código postal, ciudad, país por separado... pusimos un buscador que autocompleta con todas las calles del mundo.
 
 Escribes "Carrer de Balmes, Barcelona" y automáticamente se rellenan:
+
 - Coordenadas GPS
 - Código postal
 - Ciudad
@@ -141,6 +144,7 @@ Escribes "Carrer de Balmes, Barcelona" y automáticamente se rellenan:
 **Día 29 - Momento de pánico**
 
 Subimos 200 propiedades de prueba para testear. La app se volvió **dolorosamente lenta**:
+
 - Swipe con lag de 2 segundos
 - Imágenes que tardaban en cargar
 - Scroll entrecortado
@@ -152,16 +156,19 @@ Teníamos una semana para el lanzamiento y la app era inutilizable.
 Encontramos 3 problemas gordos:
 
 **1. Imágenes sin optimizar**
+
 - Problema: Subíamos fotos de 5MB directamente
 - Solución: Compresión automática + formatos modernos (WebP)
 - Resultado: Carga 10x más rápida
 
 **2. Carga de datos ineficiente**
+
 - Problema: Cargábamos todas las propiedades de golpe
 - Solución: Paginación + lazy loading
 - Resultado: Primera carga en 0.8s vs 8s
 
 **3. Animaciones pesadas**
+
 - Problema: Animaciones con JavaScript
 - Solución: Transiciones CSS + GPU acceleration
 - Resultado: Swipe fluido a 60fps
@@ -177,6 +184,7 @@ Encontramos 3 problemas gordos:
 Decidimos hacer un lanzamiento "suave" con 50 estudiantes Erasmus de Barcelona. Lorenzo compartió el link en grupos de WhatsApp.
 
 **Primeras 24 horas:**
+
 - 73 usuarios registrados (más de lo esperado)
 - 12 propiedades publicadas
 - 847 swipes realizados
@@ -202,23 +210,27 @@ Esto abrió una línea de producto completamente nueva. A veces los usuarios sab
 ## 3 meses después
 
 **Los números (sin maquillaje):**
+
 - 500+ usuarios registrados (sin marketing pagado)
 - 45% de retención (muy alta para el sector)
 - 25 swipes promedio por sesión
 - 120+ propiedades publicadas
 
 **Métricas de producto:**
+
 - Tiempo de búsqueda: de 2-3 horas a 15-20 minutos (-70%)
 - 8 de cada 10 usuarios encuentran opciones viables en la primera sesión
 - Engagement 2.4x superior a plataformas tradicionales
 
 **Lo que funcionó:**
+
 - ✅ Lanzar rápido y iterar
 - ✅ Diseño centrado en emociones, no solo funcionalidad
 - ✅ Simplificar procesos complejos
 - ✅ Escuchar feedback real de usuarios
 
 **Lo que no funcionó:**
+
 - ❌ Intentar construir todo desde el inicio
 - ❌ Asumir que sabíamos lo que los usuarios querían
 - ❌ Subestimar la importancia del rendimiento
@@ -262,11 +274,13 @@ No sobre-ingenierices, pero tampoco te pintes en una esquina.
 ## ¿Qué sigue para Flatmatch?
 
 **Fase 2 (en desarrollo):**
+
 - Chat en tiempo real (ahora sí tiene sentido)
 - Sistema de pagos integrado
 - Verificación de identidad
 
 **Fase 3 (planificado):**
+
 - Matching de compañeros de piso (el feature más pedido)
 - App móvil nativa
 - Expansión a más ciudades europeas
@@ -288,9 +302,9 @@ Flatmatch no es solo una app de alojamiento. Es la prueba de que puedes lanzar u
 
 ---
 
-*¿Quieres ver Flatmatch en acción? [Prueba la demo](https://flatmatchweb.vercel.app/)*
+_¿Quieres ver Flatmatch en acción? [Prueba la demo](https://flatmatchweb.vercel.app/)_
 
-*¿Tienes un proyecto similar? [Hablemos](/contact)*
+_¿Tienes un proyecto similar? [Hablemos](/contact)_
 
 ---
 

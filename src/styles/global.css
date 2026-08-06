@@ -114,30 +114,19 @@
   --text-9xl: 8rem;
 
   --shadow-pastel:
-    0px 2px 6px -4px rgba(15, 25, 61, 0.16), 0px 3.359209106361959px 1.6796045531809796px -0.625px rgba(39,
-      40,
-      42,
-      0.01), 0px 7.961918735236395px 3.9809593676181976px -1.25px rgba(39,
-      40,
-      42,
-      0.01), 0px 14.523362758627625px 7.261681379313813px -1.875px rgba(39,
-      40,
-      42,
-      0.01), 0px 24.14506143104518px 12.07253071552259px -2.5px rgba(39, 40, 42, 0.01), 0px 38.99230544391321px 19.496152721956605px -3.125px rgba(39,
-      40,
-      42,
-      0.01), 0px 63.82653521484462px 31.91326760742231px -3.75px rgba(39,
-      40,
-      42,
-      0.01), 0px 109.90498352673603px 54.952491763368016px -4.375px rgba(39,
-      40,
-      42,
-      0), 0px 200px 100px -5px rgba(39, 40, 42, 0), 0px -0.5px 0px 0.5px rgba(240,
-      244,
-      247,
-      0);
+    0px 2px 6px -4px rgba(15, 25, 61, 0.16),
+    0px 3.359209106361959px 1.6796045531809796px -0.625px rgba(39, 40, 42, 0.01),
+    0px 7.961918735236395px 3.9809593676181976px -1.25px rgba(39, 40, 42, 0.01),
+    0px 14.523362758627625px 7.261681379313813px -1.875px rgba(39, 40, 42, 0.01),
+    0px 24.14506143104518px 12.07253071552259px -2.5px rgba(39, 40, 42, 0.01),
+    0px 38.99230544391321px 19.496152721956605px -3.125px rgba(39, 40, 42, 0.01),
+    0px 63.82653521484462px 31.91326760742231px -3.75px rgba(39, 40, 42, 0.01),
+    0px 109.90498352673603px 54.952491763368016px -4.375px rgba(39, 40, 42, 0),
+    0px 200px 100px -5px rgba(39, 40, 42, 0),
+    0px -0.5px 0px 0.5px rgba(240, 244, 247, 0);
 
-  --shadow-pastel-sm: rgba(0, 0, 0, 0.11) 0px 0.5px 2px 0px, rgba(0, 0, 0, 0.04) 0px 2px 12px 0px;
+  --shadow-pastel-sm:
+    rgba(0, 0, 0, 0.11) 0px 0.5px 2px 0px, rgba(0, 0, 0, 0.04) 0px 2px 12px 0px;
 }
 
 h1,
@@ -220,15 +209,21 @@ strong {
   body {
     @apply bg-background text-foreground;
     background:
-      radial-gradient(ellipse 72rem 42rem at 50% -14rem,
+      radial-gradient(
+        ellipse 72rem 42rem at 50% -14rem,
         color-mix(in oklab, var(--brand-lime) 22%, transparent),
-        transparent 70%),
-      radial-gradient(ellipse 44rem 32rem at 4% 19rem,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 44rem 32rem at 4% 19rem,
         color-mix(in oklab, var(--primary) 8%, transparent),
-        transparent 74%),
-      radial-gradient(ellipse 38rem 28rem at 96% 34rem,
+        transparent 74%
+      ),
+      radial-gradient(
+        ellipse 38rem 28rem at 96% 34rem,
         color-mix(in oklab, var(--brand-lime) 6%, transparent),
-        transparent 76%),
+        transparent 76%
+      ),
       var(--background);
   }
 }

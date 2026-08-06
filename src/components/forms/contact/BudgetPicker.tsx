@@ -38,10 +38,11 @@ export function BudgetPicker({ value, onSelect }: BudgetPickerProps) {
               type="button"
               aria-pressed={selected}
               onClick={() => onSelect(selected ? "" : option)}
-              className={`px-3.5 py-2 rounded-full text-sm border transition-all ${selected
-                ? "bg-primary text-background border-primary font-medium"
-                : "border-muted-foreground/30 text-muted-foreground hover:border-primary/60 hover:text-foreground hover:bg-muted/20"
-                }`}
+              className={`px-3.5 py-2 rounded-full text-sm border transition-all ${
+                selected
+                  ? "bg-primary text-background border-primary font-medium"
+                  : "border-muted-foreground/30 text-muted-foreground hover:border-primary/60 hover:text-foreground hover:bg-muted/20"
+              }`}
             >
               {option}
             </button>

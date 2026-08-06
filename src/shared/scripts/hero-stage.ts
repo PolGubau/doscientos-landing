@@ -534,34 +534,36 @@ export const setupHeroStage = () => {
     };
 
     if (firstTarget) {
-      tl!.fromTo(
-        cursor,
-        {
-          autoAlpha: 0,
-          x: firstTarget.x + 84,
-          y: firstTarget.y + 28,
-          scale: 0.85,
-        },
-        {
-          autoAlpha: 1,
-          x: firstTarget.x,
-          y: firstTarget.y,
-          scale: 1,
-          duration: 0.1,
-          ease: "power2.out",
-        },
-        automationStart,
-      ).fromTo(
-        rowChecks[0],
-        { autoAlpha: 0, scale: 0.45 },
-        {
-          autoAlpha: 1,
-          scale: 1,
-          duration: 0.08,
-          ease: "back.out(2)",
-        },
-        automationStart + 0.11,
-      );
+      tl!
+        .fromTo(
+          cursor,
+          {
+            autoAlpha: 0,
+            x: firstTarget.x + 84,
+            y: firstTarget.y + 28,
+            scale: 0.85,
+          },
+          {
+            autoAlpha: 1,
+            x: firstTarget.x,
+            y: firstTarget.y,
+            scale: 1,
+            duration: 0.1,
+            ease: "power2.out",
+          },
+          automationStart,
+        )
+        .fromTo(
+          rowChecks[0],
+          { autoAlpha: 0, scale: 0.45 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 0.08,
+            ease: "back.out(2)",
+          },
+          automationStart + 0.11,
+        );
       doneRow(0, automationStart + 0.11);
       tl.to(
         cursor,
@@ -582,54 +584,58 @@ export const setupHeroStage = () => {
       const flowStart = automationStart + 0.27 + index * 0.25;
       const segment = flowSegments[index];
       if (hasFlow && segment?.line && segment.packet) {
-        tl!.fromTo(
-          segment.line,
-          {
-            autoAlpha: 0,
-            scaleX: 0,
-          },
-          {
-            autoAlpha: 0.72,
-            scaleX: 1,
-            duration: 0.1,
-            ease: "power2.out",
-          },
-          flowStart,
-        ).fromTo(
-          segment.packet,
-          {
-            autoAlpha: 0,
-            x: segment.start.x,
-            y: segment.start.y,
-            scale: 0.7,
-          },
+        tl!
+          .fromTo(
+            segment.line,
+            {
+              autoAlpha: 0,
+              scaleX: 0,
+            },
+            {
+              autoAlpha: 0.72,
+              scaleX: 1,
+              duration: 0.1,
+              ease: "power2.out",
+            },
+            flowStart,
+          )
+          .fromTo(
+            segment.packet,
+            {
+              autoAlpha: 0,
+              x: segment.start.x,
+              y: segment.start.y,
+              scale: 0.7,
+            },
+            {
+              autoAlpha: 1,
+              x: segment.end.x,
+              y: segment.end.y,
+              scale: 1,
+              duration: 0.13,
+              ease: "power1.inOut",
+            },
+            flowStart,
+          )
+          .to(
+            segment.packet,
+            { autoAlpha: 0, scale: 0.7, duration: 0.04, ease: "power1.in" },
+            flowStart + 0.13,
+          );
+      }
+      tl!
+        .fromTo(
+          rowLoaders[rowIndex],
+          { autoAlpha: 0, scale: 0.45, rotation: 0 },
           {
             autoAlpha: 1,
-            x: segment.end.x,
-            y: segment.end.y,
             scale: 1,
-            duration: 0.13,
-            ease: "power1.inOut",
+            rotation: 180,
+            duration: 0.08,
+            ease: "power1.out",
           },
-          flowStart,
-        ).to(
-          segment.packet,
-          { autoAlpha: 0, scale: 0.7, duration: 0.04, ease: "power1.in" },
-          flowStart + 0.13,
-        );
-      }
-      tl!.fromTo(
-        rowLoaders[rowIndex],
-        { autoAlpha: 0, scale: 0.45, rotation: 0 },
-        {
-          autoAlpha: 1,
-          scale: 1,
-          rotation: 180,
-          duration: 0.08,
-          ease: "power1.out",
-        },
-        flowStart + 0.08,
-      )
+          flowStart + 0.08,
+        )
         .to(
           rowLoaders[rowIndex],
           {
@@ -663,7 +669,11 @@ export const setupHeroStage = () => {
   const metricValue = document.querySelector<HTMLElement>(
     ".hero-window-metric-value",
   );
-  tl.to(win, { scale: 1.035, y: -6, duration: 0.16, ease: "power2.out" }, proofStart)
+  tl.to(
+    win,
+    { scale: 1.035, y: -6, duration: 0.16, ease: "power2.out" },
+    proofStart,
+  )
     .to(win, { scale: 1, y: 0, duration: 0.16, ease: "power2.inOut" }, ">")
     .to(
       metricValue,

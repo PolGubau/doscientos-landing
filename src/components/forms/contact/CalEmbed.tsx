@@ -16,7 +16,9 @@ type CalEmbedProps = {
 export function CalEmbed({ name, email, leadId, dedupeKey }: CalEmbedProps) {
   useEffect(() => {
     (async () => {
-      const cal = await getCalApi({ embedJsUrl: `${CAL_ORIGIN}/embed/embed.js` });
+      const cal = await getCalApi({
+        embedJsUrl: `${CAL_ORIGIN}/embed/embed.js`,
+      });
       cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
     })();
   }, []);

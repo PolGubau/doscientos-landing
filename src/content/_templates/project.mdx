@@ -17,15 +17,15 @@ cover: "../../assets/media/projects/SLUG/thumbnail.webp"
 logo: "../../assets/media/projects/SLUG/icon.svg"
 ---
 
-{/*
-  =====================================================================
-  PLANTILLA DE PROYECTO — doscientos
-  =====================================================================
-  Reglas vivas en .augment/rules/project.md.
-  La cabecera (H1, summary, cover, pills) la pinta [...slug].astro.
-  Empezar el body con el HOOK NARRATIVO. NO repetir el título.
-  =====================================================================
-*/}
+# {/\_
+
+# PLANTILLA DE PROYECTO — doscientos
+
+Reglas vivas en .augment/rules/project.md.
+La cabecera (H1, summary, cover, pills) la pinta [...slug].astro.
+Empezar el body con el HOOK NARRATIVO. NO repetir el título.
+=====================================================================
+\_/}
 
 import { Image } from "astro:assets";
 
@@ -38,14 +38,33 @@ import hero from "../../assets/media/projects/SLUG/hero.webp";
 
 **[Qué construimos resumido en una línea con peso].**
 
-<Image src={hero} alt="Nombre del proyecto - qué muestra la imagen" class="my-6" />
+<Image
+  src={hero}
+  alt="Nombre del proyecto - qué muestra la imagen"
+  class="my-6"
+/>
 
 {/* 2. MÉTRICAS HEADLINE — exactamente 3, not-prose. */}
 
 <div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
-  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">N</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">label corto</span></div>
-  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">N</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">label corto</span></div>
-  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">N</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">label corto</span></div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">N</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">
+      label corto
+    </span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">N</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">
+      label corto
+    </span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">N</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">
+      label corto
+    </span>
+  </div>
 </div>
 
 ---
@@ -60,11 +79,16 @@ import hero from "../../assets/media/projects/SLUG/hero.webp";
 
 Narrativa de qué construimos y cómo encaja con el problema. 2-4 párrafos. Una imagen cada 2 párrafos para mantener ritmo.
 
-<Image src={hero} alt="Nombre del proyecto - vista principal de la solución" class="rounded-2xl my-6" />
+<Image
+  src={hero}
+  alt="Nombre del proyecto - vista principal de la solución"
+  class="rounded-2xl my-6"
+/>
 
 {/* Sub-secciones SOLO si hay módulos claros (App + Landing + Admin, etc.) */}
 
-{/*
+{/\*
+
 ### La app
 
 Narrativa del módulo móvil.
@@ -72,7 +96,7 @@ Narrativa del módulo móvil.
 ### El panel de administración
 
 Narrativa del CMS.
-*/}
+\*/}
 
 ---
 
@@ -83,11 +107,15 @@ Narrativa del CMS.
 <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
     <span class="text-sm font-semibold">Decisión 1 en frase corta</span>
-    <span class="text-sm leading-relaxed text-muted-foreground">Explicación de 1-2 frases: qué decidimos, por qué, qué impacto tuvo.</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">
+      Explicación de 1-2 frases: qué decidimos, por qué, qué impacto tuvo.
+    </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
     <span class="text-sm font-semibold">Decisión 2</span>
-    <span class="text-sm leading-relaxed text-muted-foreground">Explicación.</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">
+      Explicación.
+    </span>
   </div>
 </div>
 
@@ -97,11 +125,11 @@ Narrativa del CMS.
 
 ## Stack técnico
 
-| Capa | Tecnología |
-|---|---|
-| **Frontend** | Astro 5, Tailwind v4 |
-| **Backend** | Supabase (PostgreSQL, Auth) |
-| **Infraestructura** | Vercel, Cloudflare |
+| Capa                | Tecnología                  |
+| ------------------- | --------------------------- |
+| **Frontend**        | Astro 5, Tailwind v4        |
+| **Backend**         | Supabase (PostgreSQL, Auth) |
+| **Infraestructura** | Vercel, Cloudflare          |
 
 ---
 

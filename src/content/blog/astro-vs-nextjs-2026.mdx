@@ -3,7 +3,15 @@ title: "Astro vs Next.js en 2026: cuál elegir para una web o aplicación"
 description: "Comparativa práctica entre Astro y Next.js: renderizado, JavaScript, contenido dinámico, infraestructura y criterios para elegir sin seguir la moda."
 publishDate: "2026-07-31"
 draft: false
-tags: ["Astro", "Next.js", "arquitectura frontend", "rendimiento web", "React", "decisión tecnológica"]
+tags:
+  [
+    "Astro",
+    "Next.js",
+    "arquitectura frontend",
+    "rendimiento web",
+    "React",
+    "decisión tecnológica",
+  ]
 resourceType: "guia"
 buyerStage: "consideration"
 author: "doscientos"
@@ -41,16 +49,16 @@ La diferencia no es solo técnica. Cambia la cantidad de código que llega al na
 
 ## Comparativa rápida
 
-| Criterio | Astro | Next.js |
-|---|---|---|
-| Punto de partida | Sitio de contenido | Aplicación React |
-| JavaScript en cliente | Se añade por componente | Se controla con límites servidor/cliente |
-| Contenido Markdown/MDX | Integración directa mediante colecciones | Requiere definir la capa de contenido |
-| Datos por usuario | Posible, pero no es su caso más natural | Caso de uso central |
-| Formularios y mutaciones | API externa o endpoints del servidor | Server Functions y rutas del servidor |
-| Exportación estática | Natural | Disponible con limitaciones |
-| ISR | Depende del adaptador y la estrategia | Integrado en despliegues compatibles, no en exportación estática |
-| Complejidad operativa | Baja en sitios estáticos | Variable: de estática a servidor completo |
+| Criterio                 | Astro                                    | Next.js                                                          |
+| ------------------------ | ---------------------------------------- | ---------------------------------------------------------------- |
+| Punto de partida         | Sitio de contenido                       | Aplicación React                                                 |
+| JavaScript en cliente    | Se añade por componente                  | Se controla con límites servidor/cliente                         |
+| Contenido Markdown/MDX   | Integración directa mediante colecciones | Requiere definir la capa de contenido                            |
+| Datos por usuario        | Posible, pero no es su caso más natural  | Caso de uso central                                              |
+| Formularios y mutaciones | API externa o endpoints del servidor     | Server Functions y rutas del servidor                            |
+| Exportación estática     | Natural                                  | Disponible con limitaciones                                      |
+| ISR                      | Depende del adaptador y la estrategia    | Integrado en despliegues compatibles, no en exportación estática |
+| Complejidad operativa    | Baja en sitios estáticos                 | Variable: de estática a servidor completo                        |
 
 ---
 
@@ -139,15 +147,15 @@ SEO no debería ser el criterio que decide entre ambos. **La naturaleza del prod
 
 Suma un punto a la columna que describa mejor el proyecto:
 
-| Pregunta | Astro | Next.js |
-|---|---:|---:|
-| ¿Más del 80% es contenido público? | +1 | |
-| ¿La mayoría de componentes no necesita JavaScript? | +1 | |
-| ¿El equipo editorial trabaja con Markdown o MDX? | +1 | |
-| ¿Cada usuario ve datos personalizados? | | +1 |
-| ¿Hay autenticación y permisos en muchas rutas? | | +1 |
-| ¿Las mutaciones son parte central del producto? | | +1 |
-| ¿Marketing y aplicación deben compartir un único runtime? | | +1 |
+| Pregunta                                                  | Astro | Next.js |
+| --------------------------------------------------------- | ----: | ------: |
+| ¿Más del 80% es contenido público?                        |    +1 |         |
+| ¿La mayoría de componentes no necesita JavaScript?        |    +1 |         |
+| ¿El equipo editorial trabaja con Markdown o MDX?          |    +1 |         |
+| ¿Cada usuario ve datos personalizados?                    |       |      +1 |
+| ¿Hay autenticación y permisos en muchas rutas?            |       |      +1 |
+| ¿Las mutaciones son parte central del producto?           |       |      +1 |
+| ¿Marketing y aplicación deben compartir un único runtime? |       |      +1 |
 
 No es una fórmula matemática. Sirve para hacer visible qué necesidad está empujando la decisión.
 

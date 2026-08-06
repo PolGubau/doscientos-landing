@@ -3,7 +3,8 @@ title: "Modernizar sistemas legacy sin parar el negocio | Guía 2026"
 description: "Cómo modernizar un sistema legacy por fases, sin reescribir desde cero ni bloquear operaciones. Estrategia, costes, riesgos y señales para empezar."
 publishDate: "2025-02-28"
 updatedDate: "2026-03-25"
-tags: ["modernización", "legacy", "arquitectura", "refactoring", "sistemas legacy"]
+tags:
+  ["modernización", "legacy", "arquitectura", "refactoring", "sistemas legacy"]
 author: "doscientos"
 draft: false
 faqs:
@@ -24,7 +25,12 @@ import legacyShowcase from "../../assets/media/projects/ifco/showcase.webp";
 
 ¿Tienes un sistema que lleva años funcionando, que nadie se atreve a tocar y que cada vez cuesta más mantener? Bienvenido al problema más común —y más costoso— del software empresarial.
 
-<Image src={legacyGraph} alt="Visualización de integración de sistemas complejos a escala global - Proyecto IFCO Systems" width={1200} class="rounded-2xl my-8 border bg-muted" />
+<Image
+  src={legacyGraph}
+  alt="Visualización de integración de sistemas complejos a escala global - Proyecto IFCO Systems"
+  width={1200}
+  class="rounded-2xl my-8 border bg-muted"
+/>
 
 **Un sistema legacy no es sinónimo de sistema roto.** Es un sistema que funciona, que tiene valor de negocio real, pero que acumula deuda técnica que frena el crecimiento.
 
@@ -111,6 +117,7 @@ Con el tiempo, el sistema legacy queda "estrangulado" por el nuevo. Cuando el 10
 Introduce una capa de abstracción sobre el código legacy que permite cambiar la implementación interna sin romper los contratos externos.
 
 **Pasos:**
+
 1. Crea una interfaz/abstracción sobre el componente a migrar
 2. Haz que el código existente use la abstracción
 3. Implementa la nueva versión detrás de la abstracción
@@ -124,6 +131,7 @@ Introduce una capa de abstracción sobre el código legacy que permite cambiar l
 Cuando el mayor problema es la base de datos (tablas sin índices, esquema sin normalizar, stored procedures de miles de líneas), la migración empieza por los datos.
 
 **Pasos:**
+
 1. Crear nuevo esquema paralelo
 2. Sincronizar datos en tiempo real (dual write)
 3. Migrar reads progresivamente
@@ -140,18 +148,23 @@ Extraer funcionalidades del monolito como microservicios independientes. No se h
 
 ---
 
-<Image src={legacyShowcase} alt="Interfaz moderna para sistema de trazabilidad global a escala - Proyecto IFCO Systems" width={1200} class="rounded-2xl my-8 border bg-muted" />
+<Image
+  src={legacyShowcase}
+  alt="Interfaz moderna para sistema de trazabilidad global a escala - Proyecto IFCO Systems"
+  width={1200}
+  class="rounded-2xl my-8 border bg-muted"
+/>
 
 ## Señales de que tu sistema necesita modernización urgente
 
-| Señal | Impacto |
-|-------|---------|
-| Cambios simples tardan días o semanas | Velocidad de negocio frenada |
-| Solo 1-2 personas pueden hacer cambios | Riesgo operacional crítico |
+| Señal                                            | Impacto                             |
+| ------------------------------------------------ | ----------------------------------- |
+| Cambios simples tardan días o semanas            | Velocidad de negocio frenada        |
+| Solo 1-2 personas pueden hacer cambios           | Riesgo operacional crítico          |
 | Los deploys se hacen de madrugada "por si acaso" | Calidad de vida del equipo y riesgo |
-| No puedes hacer onboarding de nuevos devs | Escalabilidad del equipo imposible |
-| Los bugs en producción son recurrentes | Pérdida de confianza del cliente |
-| Infraestructura no escala ante picos de demanda | Pérdida de ingresos |
+| No puedes hacer onboarding de nuevos devs        | Escalabilidad del equipo imposible  |
+| Los bugs en producción son recurrentes           | Pérdida de confianza del cliente    |
+| Infraestructura no escala ante picos de demanda  | Pérdida de ingresos                 |
 
 Si tienes 3 o más de estas señales, la deuda técnica ya está costando más de lo que costaría modernizar.
 

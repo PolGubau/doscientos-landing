@@ -14,26 +14,26 @@ const linkSvg = `
 `;
 
 export function applyAnchorHeadings() {
-	const anchorHeadings = document.querySelectorAll(
-		".prose h2, .prose h3, .prose h4, .prose h5, .prose h6",
-	);
+  const anchorHeadings = document.querySelectorAll(
+    ".prose h2, .prose h3, .prose h4, .prose h5, .prose h6",
+  );
 
-	[...anchorHeadings].filter(
-		(heading: Element) => heading.id !== "table-of-contents",
-	);
+  [...anchorHeadings].filter(
+    (heading: Element) => heading.id !== "table-of-contents",
+  );
 
-	for (const heading of anchorHeadings) {
-		const anchor = document.createElement("a");
-		anchor.className =
-			"group relative cursor-pointer no-underline hover:underline";
-		anchor.href = `#${heading.id}`;
-		heading.parentNode?.insertBefore(anchor, heading);
+  for (const heading of anchorHeadings) {
+    const anchor = document.createElement("a");
+    anchor.className =
+      "group relative cursor-pointer no-underline hover:underline";
+    anchor.href = `#${heading.id}`;
+    heading.parentNode?.insertBefore(anchor, heading);
 
-		const linkIconWrapper = document.createElement("div");
-		linkIconWrapper.className = "hidden group-hover:block animate-fade-in";
+    const linkIconWrapper = document.createElement("div");
+    linkIconWrapper.className = "hidden group-hover:block animate-fade-in";
 
-		linkIconWrapper.innerHTML = linkSvg;
-		anchor.appendChild(linkIconWrapper);
-		anchor.appendChild(heading);
-	}
+    linkIconWrapper.innerHTML = linkSvg;
+    anchor.appendChild(linkIconWrapper);
+    anchor.appendChild(heading);
+  }
 }

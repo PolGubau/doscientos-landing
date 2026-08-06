@@ -51,7 +51,11 @@ export const copy = {
         },
         { icon: "calendar", label: "Recordatorio manual", color: "#0891b2" },
         { icon: "receipt", label: "Ticket sin registrar", color: "#ca8a04" },
-        { icon: "file-text", label: "Contrato sin seguimiento", color: "#4f46e5" },
+        {
+          icon: "file-text",
+          label: "Contrato sin seguimiento",
+          color: "#4f46e5",
+        },
         {
           icon: "sticky-note",
           label: "Tarea que depende de una persona",

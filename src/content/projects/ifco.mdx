@@ -29,12 +29,31 @@ Cada palé que no se puede registrar en el sistema es un palé perdido para un c
 
 **Migramos el sistema completo a una arquitectura moderna sin parar las operaciones ni un día.**
 
-<Image src={showcaseView} alt="IFCO Systems - Plataforma de trazabilidad de palés reutilizables" class="rounded-2xl my-6" />
+<Image
+  src={showcaseView}
+  alt="IFCO Systems - Plataforma de trazabilidad de palés reutilizables"
+  class="rounded-2xl my-6"
+/>
 
 <div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
-  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">0</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">interrupciones de servicio</span></div>
-  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">100%</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">datos históricos migrados</span></div>
-  <div class="flex flex-col gap-0.5"><span class="text-2xl font-bold leading-none">-60%</span><span class="text-[11px] uppercase tracking-wide text-muted-foreground">tiempo de respuesta</span></div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">0</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">
+      interrupciones de servicio
+    </span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">100%</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">
+      datos históricos migrados
+    </span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">-60%</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">
+      tiempo de respuesta
+    </span>
+  </div>
 </div>
 
 ---
@@ -51,11 +70,19 @@ Ningún cliente podía notar el cambio. Ningún dato histórico podía perderse.
 
 Diseñamos una **migración en fases con sistemas en paralelo**. El legacy seguía operando mientras el nuevo iba tomando el relevo módulo a módulo, con reconciliación de datos continua entre ambos para detectar cualquier divergencia antes de que llegara a cliente.
 
-<Image src={graphView} alt="IFCO Systems - Trazabilidad de palés en tiempo real en la nueva arquitectura" class="rounded-2xl my-6" />
+<Image
+  src={graphView}
+  alt="IFCO Systems - Trazabilidad de palés en tiempo real en la nueva arquitectura"
+  class="rounded-2xl my-6"
+/>
 
 El trabajo cubrió cuatro frentes: **auditoría** del sistema legacy mapeando dependencias y puntos críticos; **nueva arquitectura escalable** con separación clara de responsabilidades; **migración de base de datos** con cero pérdida de histórico; y un **sistema de trazabilidad en tiempo real** con alertas automáticas y APIs documentadas para las integraciones de clientes.
 
-<Image src={handView} alt="IFCO Systems - Operaciones logísticas con palés reutilizables en planta" class="rounded-2xl my-6" />
+<Image
+  src={handView}
+  alt="IFCO Systems - Operaciones logísticas con palés reutilizables en planta"
+  class="rounded-2xl my-6"
+/>
 
 ---
 
@@ -69,4 +96,3 @@ El trabajo cubrió cuatro frentes: **auditoría** del sistema legacy mapeando de
 ---
 
 > Migrar un sistema crítico en producción sin parar las operaciones es lo más difícil que existe en ingeniería de software. El equipo lo ejecutó exactamente así.
-

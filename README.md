@@ -146,6 +146,7 @@ La landing está estructurada en secciones estratégicas:
 ### Branding
 
 Edita `src/config/branding.ts` para cambiar:
+
 - Nombre de la marca
 - Dominio y URL
 - Información de contacto (email, WhatsApp)
@@ -155,6 +156,7 @@ Edita `src/config/branding.ts` para cambiar:
 ### Contenido
 
 Edita `src/shared/lib/copy.ts` para modificar:
+
 - Textos de todas las secciones
 - Casos de estudio
 - Pasos del método
@@ -168,6 +170,7 @@ El blog usa Content Collections de Astro:
 
 1. Crea archivos `.mdx` en `src/content/blog/`
 2. Incluye el frontmatter requerido:
+
 ```yaml
 ---
 title: "Título del post"
@@ -178,6 +181,7 @@ author: "doscientos"
 draft: false
 ---
 ```
+
 3. El post aparecerá automáticamente en `/blog`
 
 ## 🎨 Personalización de Estilos

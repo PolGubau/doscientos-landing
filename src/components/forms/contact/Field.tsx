@@ -73,12 +73,13 @@ export function Field({
           spellCheck={isEmail ? false : undefined}
           aria-invalid={hasError}
           aria-describedby={hasError ? `${id}-error` : undefined}
-          className={`h-12 w-full px-4 ${isValid ? "pr-11" : ""} rounded-xl bg-background text-foreground placeholder:text-muted-foreground border transition-all ${hasError
+          className={`h-12 w-full px-4 ${isValid ? "pr-11" : ""} rounded-xl bg-background text-foreground placeholder:text-muted-foreground border transition-all ${
+            hasError
               ? "border-red-500 ring-1 ring-red-500"
               : isValid
                 ? "border-green-500 focus:border-green-500 focus:ring-1 focus:ring-green-500"
                 : "border-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
-            }`}
+          }`}
         />
         {isValid && (
           <Check

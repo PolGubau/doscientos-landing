@@ -511,7 +511,7 @@
           data-diagnostic-report
           href="#"
           class="inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-background"
-          >Descargar diagnóstico</a
+          >Ver mi diagnóstico online</a
         >
       </div>
     </div>
@@ -525,7 +525,9 @@
   } from "~/shared/lib/attribution";
   const endpoint =
     import.meta.env.PUBLIC_DIAGNOSTIC_ENDPOINT ||
-    "https://app.doscientos.es/api/public/diagnostics";
+    (import.meta.env.DEV
+      ? "http://localhost:3000/api/public/diagnostics"
+      : "https://app.doscientos.es/api/public/diagnostics");
   const euro = new Intl.NumberFormat("es-ES", {
     style: "currency",
     currency: "EUR",
