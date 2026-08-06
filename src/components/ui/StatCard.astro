@@ -22,7 +22,7 @@ const Tag = href ? "a" : "div";
 <Tag
   href={href}
   class:list={[
-    "p-8 md:p-12 rounded-3xl bg-accent flex flex-col gap-4 h-full",
+    "p-7 md:p-9 rounded-3xl bg-accent border border-primary/10 flex flex-col gap-4 h-full min-h-[19rem] shadow-pastel-sm",
     href &&
       "group transition-all duration-300 hover:-translate-y-1 hover:shadow-pastel",
   ]}
@@ -33,7 +33,7 @@ const Tag = href ? "a" : "div";
 >
   <!-- Number -->
   <div
-    class="text-5xl font-semibold"
+    class="text-6xl md:text-7xl font-black tracking-[-0.08em] text-primary"
     data-count={numericValue}
     data-count-prefix={prefix}
     data-count-suffix={suffix}
@@ -42,12 +42,12 @@ const Tag = href ? "a" : "div";
   </div>
 
   <!-- Label -->
-  <h3 class="text-lg text-balance font-semibold text-muted-foreground">
+  <h3 class="text-lg text-balance font-bold text-foreground max-w-[18rem]">
     {label}
   </h3>
 
   <!-- Description -->
-  <p class="text-muted-foreground">
+  <p class="text-sm leading-relaxed text-muted-foreground max-w-[28rem]">
     {description}
   </p>
 

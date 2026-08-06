@@ -15,8 +15,9 @@ const { projects, id } = Astro.props;
   data-stagger="150"
 >
   {
-    projects.map((project) => (
+    projects.map((project, projectIndex) => (
       <div
+        class:list={projectIndex === 0 && "lg:col-span-2"}
         data-reveal="bottom"
         data-speed="normal"
         data-easing="smooth"
@@ -25,10 +26,13 @@ const { projects, id } = Astro.props;
         <ProjectCard
           id={project.id}
           title={project.data.title}
+          client={project.data.client}
+          timeline={project.data.timeline}
           summary={project.data.summary}
           services_provided={project.data.services_provided ?? []}
           color={project.data.color}
           cover={project.data.cover}
+          featured={projectIndex === 0}
         />
       </div>
     ))

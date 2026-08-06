@@ -84,9 +84,10 @@ const chaos = hero.stage.chaos.map((item, i) => ({
 
 <section
   id="hero"
-  class="relative flex flex-col px-6 items-center justify-start min-h-[100svh] pt-20 pb-8 md:pt-24 gap-5 md:gap-7 overflow-hidden"
+  class="hero-section relative flex flex-col px-6 items-center justify-start min-h-[calc(100svh-4rem)] pt-20 pb-8 md:pt-20 gap-5 md:gap-6 overflow-hidden"
 >
   <div class="hero-intro relative z-20 max-w-4xl text-center">
+    <p class="hero-eyebrow">Software a medida y automatización para PYMEs</p>
     <h1 class="hero-title text-balance" data-hero-static="true">
       {hero.title}
     </h1>
@@ -116,6 +117,7 @@ const chaos = hero.stage.chaos.map((item, i) => ({
           Ver resultados reales <span aria-hidden="true">→</span>
         </a>
       </div>
+      <p class="hero-cta-note">{hero.ctaNote}</p>
 
       <script is:inline>
         ["hero-cta-primary", "hero-cta-secondary"].forEach((id) => {
@@ -224,7 +226,19 @@ const chaos = hero.stage.chaos.map((item, i) => ({
       <div class="hero-window-body">
         {
           hero.stage.window.rows.map((row) => (
-            <div class="hero-window-row">{row}</div>
+            <div class="hero-window-row">
+              <span>{row}</span>
+              <span class="hero-window-row-status" aria-hidden="true">
+                <span class="hero-window-row-loader" />
+                <svg
+                  class="hero-window-row-check"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path d="m3.25 8.25 3 3 6.5-6.5" />
+                </svg>
+              </span>
+            </div>
           ))
         }
         <div class="hero-window-metric">
@@ -241,6 +255,26 @@ const chaos = hero.stage.chaos.map((item, i) => ({
           >
         </div>
       </div>
+      <div id="hero-window-flow" aria-hidden="true">
+        <span class="hero-window-flow-line"></span>
+        <svg class="hero-window-flow-packet" viewBox="0 0 16 16" fill="none">
+          <path d="M3.5 2.5h6l3 3v8H3.5z"></path>
+          <path d="M9.5 2.5v3h3M5.5 8h5M5.5 10.5h5"></path>
+        </svg>
+        <span class="hero-window-flow-line"></span>
+        <svg class="hero-window-flow-packet" viewBox="0 0 16 16" fill="none">
+          <path d="M3.5 2.5h6l3 3v8H3.5z"></path>
+          <path d="M9.5 2.5v3h3M5.5 8h5M5.5 10.5h5"></path>
+        </svg>
+      </div>
+    </div>
+    <div id="hero-cursor" aria-hidden="true">
+      <svg class="hero-cursor-pointer" viewBox="0 0 20 25" fill="none">
+        <path
+          d="M3.2 2.8c-.78-.42-1.68.25-1.47 1.11l4.57 18.5c.2.83 1.35.96 1.74.2l2.35-4.67 4.86-1.38c.8-.23.96-1.29.26-1.74L3.2 2.8Z"
+        ></path>
+      </svg>
+      <span class="hero-cursor-label">Tú</span>
     </div>
   </div>
 </section>
@@ -254,6 +288,34 @@ const chaos = hero.stage.chaos.map((item, i) => ({
     line-height: 1.02;
     letter-spacing: -0.045em;
     color: var(--foreground);
+  }
+
+  .hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 4rem 0 auto;
+    height: 28rem;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at 50% 38%,
+      color-mix(in srgb, var(--brand-lime) 16%, transparent),
+      transparent 68%
+    );
+  }
+
+  .hero-eyebrow {
+    margin-bottom: 1rem;
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hero-cta-note {
+    margin-top: 0.85rem;
+    color: var(--muted-foreground);
+    font-size: 0.78rem;
   }
 
   .hero-title,
@@ -544,14 +606,15 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   }
 
   #hero-window {
+    position: relative;
     opacity: 0;
     transform: translateY(16px) scale(0.85);
-    width: min(380px, 90%);
+    width: min(420px, 90%);
     border-radius: var(--radius-xl);
     border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--muted));
     background: var(--background);
     box-shadow:
-      0 22px 60px color-mix(in srgb, var(--primary) 16%, transparent),
+      0 24px 70px color-mix(in srgb, var(--primary) 22%, transparent),
       var(--shadow-pastel);
     overflow: hidden;
   }
@@ -588,11 +651,120 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   .hero-window-row {
     opacity: 0;
     transform: translateY(8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
     font-size: 0.8rem;
     color: var(--foreground);
     background: var(--muted);
+    border: 1px solid transparent;
     border-radius: var(--radius-md);
     padding: 0.5rem 0.65rem;
+  }
+
+  .hero-window-row-status {
+    position: relative;
+    flex: 0 0 1.15rem;
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .hero-window-row-loader,
+  .hero-window-row-check {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  .hero-window-row-loader {
+    border: 2px solid color-mix(in srgb, var(--brand-lime) 24%, var(--muted));
+    border-top-color: var(--brand-lime);
+    border-radius: 9999px;
+  }
+
+  .hero-window-row-check {
+    border-radius: 9999px;
+    background: var(--brand-lime);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: var(--primary);
+    stroke-width: 2.5;
+  }
+
+  #hero-window-flow {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .hero-window-flow-line {
+    position: absolute;
+    height: 2px;
+    width: 1px;
+    border-radius: 9999px;
+    opacity: 0;
+    background: linear-gradient(
+      to right,
+      var(--brand-lime),
+      color-mix(in srgb, var(--brand-lime) 25%, transparent)
+    );
+    transform-origin: 0 50%;
+  }
+
+  .hero-window-flow-packet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 1rem;
+    height: 1rem;
+    padding: 0.12rem;
+    border-radius: 0.28rem;
+    background: var(--background);
+    color: var(--primary);
+    filter: drop-shadow(0 2px 3px rgb(12 17 11 / 0.16));
+    opacity: 0;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.4;
+  }
+
+  #hero-cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.15rem;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .hero-cursor-pointer {
+    width: 1.35rem;
+    height: 1.7rem;
+    fill: var(--background);
+    stroke: var(--primary);
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+    filter: drop-shadow(0 3px 5px rgb(12 17 11 / 0.18));
+  }
+
+  .hero-cursor-label {
+    margin-top: 1rem;
+    padding: 0.14rem 0.38rem;
+    border-radius: 9999px;
+    background: var(--brand-lime);
+    color: var(--primary);
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1.2;
+    box-shadow: 0 3px 10px rgb(12 17 11 / 0.16);
   }
 
   .hero-window-metric {
@@ -628,8 +800,9 @@ const chaos = hero.stage.chaos.map((item, i) => ({
        the next proof block arrive as soon as the user continues scrolling. */
     #hero {
       min-height: auto;
-      padding-top: 5.5rem;
-      padding-bottom: 3.5rem;
+      min-height: 0;
+      padding-top: 5rem;
+      padding-bottom: 1.5rem;
       gap: 1.25rem;
     }
 

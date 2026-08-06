@@ -19,134 +19,357 @@
     </p>
   </header>
 
-  <form data-diagnostic-calculator class="space-y-7">
-    <div class="grid md:grid-cols-2 gap-5">
-      <label class="space-y-2"
-        ><span class="text-sm font-medium text-foreground"
-          >¿Qué proceso quieres revisar?</span
-        ><input
+  <form data-diagnostic-calculator class="mx-auto max-w-2xl space-y-7">
+    <div class="space-y-2" aria-live="polite">
+      <div
+        class="flex items-center justify-between text-xs font-medium text-muted-foreground"
+      >
+        <span data-diagnostic-step-label>Paso 1 de 3</span>
+        <span data-diagnostic-progress-percent>33%</span>
+      </div>
+      <div
+        class="h-1.5 overflow-hidden rounded-full bg-muted"
+        aria-hidden="true"
+      >
+        <div
+          data-diagnostic-progress
+          class="h-full w-1/3 rounded-full bg-primary transition-all duration-300"
+        >
+        </div>
+      </div>
+    </div>
+
+    <section data-diagnostic-step="1" class="space-y-6">
+      <div class="space-y-2">
+        <h3 class="text-2xl font-bold text-foreground">
+          Empecemos por la tarea que más se repite
+        </h3>
+        <p class="text-sm leading-relaxed text-muted-foreground">
+          No hace falta saber de procesos: cuéntanoslo como se lo contarías a un
+          compañero.
+        </p>
+      </div>
+      <label class="block space-y-2">
+        <span class="text-sm font-medium text-foreground"
+          >¿Qué tarea quieres quitarte de encima?</span
+        >
+        <input
           name="process"
           required
           placeholder="Ej. Pasar pedidos de email a Excel"
-          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
-        /></label
-      >
-      <label class="space-y-2"
-        ><span class="text-sm font-medium text-foreground"
-          >¿Cuántas personas participan?</span
-        ><input
+          autocomplete="off"
+          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary"
+        />
+        <span class="block text-xs text-muted-foreground"
+          >Puede ser copiar datos, perseguir documentos, preparar informes…</span
+        >
+      </label>
+      <label class="block max-w-xs space-y-2">
+        <span class="text-sm font-medium text-foreground"
+          >¿Cuántas personas la hacen habitualmente?</span
+        >
+        <input
           name="people"
           type="number"
           min="1"
           value="2"
           required
-          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
-        /></label
-      >
-      <label class="space-y-2"
-        ><span class="text-sm font-medium text-foreground">Minutos por vez</span
-        ><input
-          name="minutes"
-          type="number"
-          min="1"
-          value="20"
-          required
-          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
-        /></label
-      >
-      <label class="space-y-2"
-        ><span class="text-sm font-medium text-foreground"
-          >Veces por semana</span
-        ><input
-          name="weekly"
-          type="number"
-          min="1"
-          value="5"
-          required
-          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
-        /></label
-      >
-      <label class="space-y-2"
-        ><span class="text-sm font-medium text-foreground"
-          >Coste/hora estimado</span
-        ><input
-          name="hourly"
-          type="number"
-          min="1"
-          value="25"
-          required
-          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
-        /></label
-      >
-      <label class="space-y-2"
-        ><span class="text-sm font-medium text-foreground"
-          >¿Qué ocurre si falla?</span
-        ><select
-          name="impact"
-          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
-          ><option>Retrasos y seguimiento manual</option><option
-            >Errores o datos duplicados</option
-          ><option>Se pierden oportunidades</option><option
-            >Un poco de todo</option
-          ></select
-        ></label
-      >
-    </div>
-
-    <div
-      class="rounded-2xl bg-background border border-muted p-5 md:p-7 space-y-5"
-    >
-      <div class="flex items-end justify-between gap-4">
-        <div>
-          <p class="text-sm text-muted-foreground">
-            Tu estimación ahora mismo
-          </p><p
-            class="text-3xl md:text-4xl font-bold text-foreground"
-            data-diagnostic-hours
-          >
-            0 h/mes
-          </p>
-        </div><p class="text-right text-sm text-muted-foreground">
-          Coste anual<br /><strong
-            class="text-xl text-primary"
-            data-diagnostic-cost>0 €</strong
-          >
-        </p>
-      </div>
-      <div class="h-3 rounded-full bg-muted overflow-hidden">
-        <div
-          data-diagnostic-meter
-          class="h-full rounded-full bg-primary transition-all duration-500"
-          style="width: 12%"
+          inputmode="numeric"
+          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary"
+        />
+        <span class="block text-xs text-muted-foreground"
+          >Inclúyete si también participas.</span
         >
-        </div>
-      </div>
-      <p
-        class="text-sm text-muted-foreground leading-relaxed"
-        data-diagnostic-note
+      </label>
+      <button
+        type="button"
+        data-diagnostic-next
+        class="inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3.5 font-semibold text-background transition-opacity hover:opacity-90 sm:w-auto"
+        >Continuar</button
       >
-        Completa los datos para ver dónde puede estar la oportunidad.
-      </p>
-    </div>
+    </section>
 
-    <div class="border-t border-muted pt-7 space-y-4">
-      <div>
-        <h3 class="text-xl font-bold text-foreground">
-          Recibe el diagnóstico completo
-        </h3><p class="text-sm text-muted-foreground mt-1">
-          Incluye tus cifras, una lectura de la oportunidad, beneficios del
-          software a medida y casos reales.
+    <section data-diagnostic-step="2" class="hidden space-y-7">
+      <div class="space-y-2">
+        <h3 class="text-2xl font-bold text-foreground">
+          Ahora piensa en una semana normal
+        </h3>
+        <p class="text-sm leading-relaxed text-muted-foreground">
+          Elige una aproximación. No buscamos una cifra perfecta.
         </p>
       </div>
-      <div class="grid md:grid-cols-2 gap-4">
+
+      <fieldset class="space-y-3">
+        <legend class="text-sm font-medium text-foreground"
+          >¿Con qué frecuencia ocurre?</legend
+        >
+        <div class="grid gap-3 sm:grid-cols-3">
+          <label
+            class="cursor-pointer rounded-xl border border-primary bg-primary/5 p-4 text-sm transition has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+          >
+            <input
+              class="sr-only"
+              type="radio"
+              name="frequency"
+              value="daily"
+              checked
+            />
+            <strong class="block text-foreground">Cada día laboral</strong><span
+              class="mt-1 block text-muted-foreground">Lo habitual</span
+            >
+          </label>
+          <label
+            class="cursor-pointer rounded-xl border border-muted-foreground/30 p-4 text-sm transition has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+          >
+            <input
+              class="sr-only"
+              type="radio"
+              name="frequency"
+              value="weekly"
+            />
+            <strong class="block text-foreground"
+              >Algunas veces por semana</strong
+            ><span class="mt-1 block text-muted-foreground"
+              >No todos los días</span
+            >
+          </label>
+          <label
+            class="cursor-pointer rounded-xl border border-muted-foreground/30 p-4 text-sm transition has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+          >
+            <input
+              class="sr-only"
+              type="radio"
+              name="frequency"
+              value="monthly"
+            />
+            <strong class="block text-foreground">Algunas veces al mes</strong
+            ><span class="mt-1 block text-muted-foreground">Puntualmente</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <label class="block max-w-xs space-y-2">
+        <span
+          data-diagnostic-frequency-question
+          class="text-sm font-medium text-foreground"
+          >En un día normal, ¿cuántas veces ocurre?</span
+        >
+        <input
+          data-diagnostic-times
+          name="times"
+          type="number"
+          min="1"
+          value="1"
+          required
+          inputmode="numeric"
+          class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary"
+        />
+        <span
+          data-diagnostic-frequency-hint
+          class="block text-xs text-muted-foreground"
+          >Calcularemos 5 días laborables por semana.</span
+        >
+      </label>
+
+      <fieldset class="space-y-3">
+        <legend class="text-sm font-medium text-foreground"
+          >Cuando ocurre, suele llevaros…</legend
+        >
+        <input
+          type="hidden"
+          name="minutes"
+          value="15"
+          data-diagnostic-minutes
+        />
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <button
+            type="button"
+            data-diagnostic-duration="5"
+            aria-pressed="false"
+            class="rounded-xl border border-muted-foreground/30 p-3 text-left text-sm transition hover:border-primary"
+            ><strong class="block text-foreground">Menos de 5 min</strong><span
+              class="text-muted-foreground">Una gestión rápida</span
+            ></button
+          >
+          <button
+            type="button"
+            data-diagnostic-duration="15"
+            aria-pressed="true"
+            class="rounded-xl border border-primary bg-primary/10 p-3 text-left text-sm transition"
+            ><strong class="block text-foreground">10–20 min</strong><span
+              class="text-muted-foreground">Lo normal</span
+            ></button
+          >
+          <button
+            type="button"
+            data-diagnostic-duration="30"
+            aria-pressed="false"
+            class="rounded-xl border border-muted-foreground/30 p-3 text-left text-sm transition hover:border-primary"
+            ><strong class="block text-foreground">20–45 min</strong><span
+              class="text-muted-foreground">Requiere atención</span
+            ></button
+          >
+          <button
+            type="button"
+            data-diagnostic-duration="60"
+            aria-pressed="false"
+            class="rounded-xl border border-muted-foreground/30 p-3 text-left text-sm transition hover:border-primary"
+            ><strong class="block text-foreground">Más de una hora</strong><span
+              class="text-muted-foreground">Trabajo profundo</span
+            ></button
+          >
+        </div>
+      </fieldset>
+
+      <div
+        class="rounded-2xl border border-muted bg-background p-5 md:p-6 space-y-4"
+      >
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <p class="text-sm text-muted-foreground">
+              Tiempo que se va cada mes
+            </p><p
+              class="text-3xl font-bold text-foreground"
+              data-diagnostic-hours
+            >
+              0 h/mes
+            </p>
+          </div>
+          <p class="text-right text-sm text-muted-foreground">
+            Coste anual estimado<br /><strong
+              class="text-xl text-primary"
+              data-diagnostic-cost>0 €</strong
+            >
+          </p>
+        </div>
+        <div class="h-2 overflow-hidden rounded-full bg-muted">
+          <div
+            data-diagnostic-meter
+            class="h-full rounded-full bg-primary transition-all duration-500"
+            style="width: 12%"
+          >
+          </div>
+        </div>
+        <p
+          class="text-sm leading-relaxed text-muted-foreground"
+          data-diagnostic-note
+        >
+          Tu estimación aparecerá aquí.
+        </p>
+      </div>
+
+      <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+        <button
+          type="button"
+          data-diagnostic-back
+          class="rounded-full px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground"
+          >Volver</button
+        >
+        <button
+          type="button"
+          data-diagnostic-next
+          class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3.5 font-semibold text-background transition-opacity hover:opacity-90"
+          >Ver el diagnóstico completo</button
+        >
+      </div>
+    </section>
+
+    <section data-diagnostic-step="3" class="hidden space-y-6">
+      <div class="space-y-2">
+        <h3 class="text-2xl font-bold text-foreground">
+          Tu estimación ya está lista
+        </h3><p class="text-sm leading-relaxed text-muted-foreground">
+          Déjanos un email y te enviamos la lectura completa, con próximos pasos
+          prácticos.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-primary/20 bg-primary/5 p-5">
+        <p class="text-sm text-muted-foreground">
+          En este proceso se van aproximadamente
+        </p><p class="mt-1 text-3xl font-bold text-foreground">
+          <span data-diagnostic-hours>0 h/mes</span> · <span
+            class="text-primary"
+            data-diagnostic-cost>0 €</span
+          ><span class="text-base font-medium text-muted-foreground">/año</span>
+        </p>
+      </div>
+      <fieldset class="space-y-3">
+        <legend class="text-sm font-medium text-foreground"
+          >Para afinar el coste, ¿qué encaja mejor?</legend
+        ><div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <label
+            class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-center text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+            ><input class="sr-only" type="radio" name="hourly" value="20" />20
+            €/h</label
+          ><label
+            class="cursor-pointer rounded-xl border border-primary bg-primary/10 p-3 text-center text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+            ><input
+              class="sr-only"
+              type="radio"
+              name="hourly"
+              value="25"
+              checked
+            />25 €/h</label
+          ><label
+            class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-center text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+            ><input class="sr-only" type="radio" name="hourly" value="40" />40
+            €/h</label
+          ><label
+            class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-center text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+            ><input class="sr-only" type="radio" name="hourly" value="25" />No
+            lo sé</label
+          >
+        </div>
+      </fieldset>
+      <fieldset class="space-y-3">
+        <legend class="text-sm font-medium text-foreground"
+          >Si esta tarea falla, ¿qué suele pasar?</legend
+        ><div class="grid gap-3 sm:grid-cols-2">
+          <label
+            class="cursor-pointer rounded-xl border border-primary bg-primary/10 p-3 text-sm has-[:checked]:border-primary"
+            ><input
+              class="sr-only"
+              type="radio"
+              name="impact"
+              value="Retrasos y seguimiento manual"
+              checked
+            />Retrasos y seguimiento manual</label
+          ><label
+            class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+            ><input
+              class="sr-only"
+              type="radio"
+              name="impact"
+              value="Errores o datos duplicados"
+            />Errores o datos duplicados</label
+          ><label
+            class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+            ><input
+              class="sr-only"
+              type="radio"
+              name="impact"
+              value="Se pierden oportunidades"
+            />Se pierden oportunidades</label
+          ><label
+            class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+            ><input
+              class="sr-only"
+              type="radio"
+              name="impact"
+              value="Un poco de todo"
+            />Un poco de todo</label
+          >
+        </div>
+      </fieldset>
+      <div class="grid gap-4 md:grid-cols-2">
         <input
           name="name"
-          placeholder="Tu nombre"
+          placeholder="Tu nombre (opcional)"
           autocomplete="name"
           class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
         /><input
           name="company"
-          placeholder="Empresa"
+          placeholder="Empresa (opcional)"
           autocomplete="organization"
           class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
         /><input
@@ -164,20 +387,26 @@
           name="consent"
           required
           class="mt-0.5 accent-primary"
-        />
-        <span
+        /><span
           >Acepto recibir este diagnóstico y comunicaciones relacionadas con mi
           solicitud. Puedo darme de baja cuando quiera.</span
         ></label
       >
-      <button
-        type="submit"
-        class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3.5 font-semibold text-background hover:opacity-90 transition-opacity"
-        data-diagnostic-submit
-        >Quiero recibir mi diagnóstico personalizado</button
-      >
-      <p class="hidden text-sm text-red-600" data-diagnostic-error></p>
-    </div>
+      <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+        <button
+          type="button"
+          data-diagnostic-back
+          class="rounded-full px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground"
+          >Volver</button
+        ><button
+          type="submit"
+          class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3.5 font-semibold text-background transition-opacity hover:opacity-90"
+          data-diagnostic-submit>Enviarme el diagnóstico completo</button
+        >
+      </div>
+      <p class="hidden text-sm text-red-600" data-diagnostic-error role="alert">
+      </p>
+    </section>
   </form>
   <div
     class="hidden rounded-2xl border border-primary/20 bg-background p-6 space-y-3"
@@ -215,13 +444,41 @@
   document
     .querySelectorAll<HTMLFormElement>("[data-diagnostic-calculator]")
     .forEach((form) => {
-      const hoursEl = form.querySelector<HTMLElement>(
+      const totalSteps = 3;
+      let currentStep = 1;
+      const stepEls = form.querySelectorAll<HTMLElement>(
+        "[data-diagnostic-step]",
+      );
+      const hoursEls = form.querySelectorAll<HTMLElement>(
         "[data-diagnostic-hours]",
       );
-      const costEl = form.querySelector<HTMLElement>("[data-diagnostic-cost]");
+      const costEls = form.querySelectorAll<HTMLElement>(
+        "[data-diagnostic-cost]",
+      );
       const noteEl = form.querySelector<HTMLElement>("[data-diagnostic-note]");
       const meterEl = form.querySelector<HTMLElement>(
         "[data-diagnostic-meter]",
+      );
+      const stepLabelEl = form.querySelector<HTMLElement>(
+        "[data-diagnostic-step-label]",
+      );
+      const progressEl = form.querySelector<HTMLElement>(
+        "[data-diagnostic-progress]",
+      );
+      const progressPercentEl = form.querySelector<HTMLElement>(
+        "[data-diagnostic-progress-percent]",
+      );
+      const timesEl = form.querySelector<HTMLInputElement>(
+        "[data-diagnostic-times]",
+      );
+      const minutesEl = form.querySelector<HTMLInputElement>(
+        "[data-diagnostic-minutes]",
+      );
+      const frequencyQuestionEl = form.querySelector<HTMLElement>(
+        "[data-diagnostic-frequency-question]",
+      );
+      const frequencyHintEl = form.querySelector<HTMLElement>(
+        "[data-diagnostic-frequency-hint]",
       );
       const errorEl = form.querySelector<HTMLElement>(
         "[data-diagnostic-error]",
@@ -232,10 +489,21 @@
       const reportEl = successEl?.querySelector<HTMLAnchorElement>(
         "[data-diagnostic-report]",
       );
+      const weeklyFrequency = (d: FormData) => {
+        const times = Number(d.get("times") || 0);
+        switch (d.get("frequency")) {
+          case "daily":
+            return times * 5;
+          case "monthly":
+            return Math.round((times / 4.33) * 10) / 10;
+          default:
+            return times;
+        }
+      };
       const values = () => {
         const d = new FormData(form);
         const minutes = Number(d.get("minutes") || 0);
-        const weekly = Number(d.get("weekly") || 0);
+        const weekly = weeklyFrequency(d);
         const people = Number(d.get("people") || 0);
         const hourly = Number(d.get("hourly") || 0);
         const monthlyHours = Math.round(
@@ -262,8 +530,8 @@
       };
       const calculate = () => {
         const m = values();
-        if (hoursEl) hoursEl.textContent = `${m.monthlyHours} h/mes`;
-        if (costEl) costEl.textContent = euro.format(m.yearlyCost);
+        hoursEls.forEach((el) => (el.textContent = `${m.monthlyHours} h/mes`));
+        costEls.forEach((el) => (el.textContent = euro.format(m.yearlyCost)));
         if (meterEl)
           meterEl.style.width = `${Math.min(100, Math.max(12, m.yearlyCost / 150))}%`;
         if (noteEl)
@@ -272,6 +540,61 @@
               ? "Ya hay una oportunidad suficiente para revisar este proceso con números y decidir qué automatizar primero."
               : "La cifra directa es moderada; también conviene valorar errores, retrasos y oportunidades perdidas.";
         return m;
+      };
+      const updateFrequencyCopy = () => {
+        const frequency = new FormData(form).get("frequency");
+        const copy =
+          frequency === "monthly"
+            ? [
+                "En un mes normal, ¿cuántas veces ocurre?",
+                "Lo convertiremos a una media semanal.",
+              ]
+            : frequency === "weekly"
+              ? [
+                  "En una semana normal, ¿cuántas veces ocurre?",
+                  "Una aproximación es suficiente.",
+                ]
+              : [
+                  "En un día normal, ¿cuántas veces ocurre?",
+                  "Calcularemos 5 días laborables por semana.",
+                ];
+        if (frequencyQuestionEl) frequencyQuestionEl.textContent = copy[0];
+        if (frequencyHintEl) frequencyHintEl.textContent = copy[1];
+      };
+      const setStep = (step: number) => {
+        currentStep = step;
+        stepEls.forEach((stepEl) => {
+          stepEl.classList.toggle(
+            "hidden",
+            Number(stepEl.dataset.diagnosticStep) !== currentStep,
+          );
+        });
+        const percent = Math.round((currentStep / totalSteps) * 100);
+        if (stepLabelEl)
+          stepLabelEl.textContent = `Paso ${currentStep} de ${totalSteps}`;
+        if (progressPercentEl) progressPercentEl.textContent = `${percent}%`;
+        if (progressEl) progressEl.style.width = `${percent}%`;
+        const firstInput = form.querySelector<HTMLElement>(
+          `[data-diagnostic-step="${currentStep}"] input:not([type="hidden"])`,
+        );
+        requestAnimationFrame(() => firstInput?.focus());
+      };
+      const validStep = (step: number) => {
+        const stepEl = form.querySelector<HTMLElement>(
+          `[data-diagnostic-step="${step}"]`,
+        );
+        if (!stepEl) return true;
+        const controls = stepEl.querySelectorAll<
+          HTMLInputElement | HTMLSelectElement
+        >("input[required], select[required]");
+        for (const control of controls) {
+          if (!control.checkValidity()) {
+            control.reportValidity();
+            control.focus();
+            return false;
+          }
+        }
+        return true;
       };
       // Solo la primera interacción real cuenta como diagnóstico iniciado;
       // el resto de pulsaciones se limitan a recalcular.
@@ -290,9 +613,55 @@
           });
         }),
       );
+      form.querySelectorAll("[data-diagnostic-duration]").forEach((button) =>
+        button.addEventListener("click", () => {
+          const duration = button.getAttribute("data-diagnostic-duration");
+          if (minutesEl && duration) minutesEl.value = duration;
+          form
+            .querySelectorAll<HTMLElement>("[data-diagnostic-duration]")
+            .forEach((option) => {
+              const selected = option === button;
+              option.setAttribute("aria-pressed", String(selected));
+              option.classList.toggle("border-primary", selected);
+              option.classList.toggle("bg-primary/10", selected);
+              option.classList.toggle("border-muted-foreground/30", !selected);
+            });
+          calculate();
+        }),
+      );
+      form
+        .querySelectorAll<HTMLInputElement>('input[name="frequency"]')
+        .forEach((input) =>
+          input.addEventListener("change", () => {
+            updateFrequencyCopy();
+            calculate();
+          }),
+        );
+      form
+        .querySelectorAll<HTMLButtonElement>("[data-diagnostic-next]")
+        .forEach((button) =>
+          button.addEventListener("click", () => {
+            if (!validStep(currentStep)) return;
+            const completed = currentStep;
+            setStep(Math.min(totalSteps, currentStep + 1));
+            trackEvent("diagnostic_step_completed", {
+              conversionStep: "diagnostic_form",
+              payload: { step: completed },
+            });
+          }),
+        );
+      form
+        .querySelectorAll<HTMLButtonElement>("[data-diagnostic-back]")
+        .forEach((button) =>
+          button.addEventListener("click", () =>
+            setStep(Math.max(1, currentStep - 1)),
+          ),
+        );
+      updateFrequencyCopy();
       calculate();
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
+        if (!validStep(currentStep)) return;
         const m = calculate();
         const button = form.querySelector<HTMLButtonElement>(
           "[data-diagnostic-submit]",
@@ -342,6 +711,14 @@
           form.classList.add("hidden");
           successEl?.classList.remove("hidden");
           if (reportEl && result.reportUrl) reportEl.href = result.reportUrl;
+          trackEvent("diagnostic_completed", {
+            conversionStep: "diagnostic_form",
+            payload: {
+              monthly_hours: m.monthlyHours,
+              yearly_cost: m.yearlyCost,
+              risk: m.risk,
+            },
+          });
           const browserWindow = window as Window & {
             fbq?: (...args: unknown[]) => void;
           };

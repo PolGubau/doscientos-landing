@@ -1,15 +1,40 @@
 .landing-section {
-  @apply max-w-7xl px-6 mx-auto w-full flex flex-col gap-10 justify-center items-center;
+  @apply max-w-7xl px-6 mx-auto w-full flex flex-col gap-12 justify-center items-center;
+}
+
+.impact-section {
+  position: relative;
+  isolation: isolate;
+}
+
+.impact-section::before {
+  content: "";
+  position: absolute;
+  inset: -2rem 0;
+  z-index: -1;
+  border-radius: 3rem;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-lime) 24%, var(--background)),
+    color-mix(in srgb, var(--accent) 50%, var(--background))
+  );
 }
 
 /* Panels standalone (ForWho, etc.) */
 .panel {
-  @apply flex flex-col gap-4 bg-accent rounded-3xl border border-muted/60 p-7;
+  @apply flex flex-col gap-4 bg-muted rounded-3xl border border-muted/60 p-7;
 }
 
 ul.bento {
   li.panel {
-    @apply flex flex-col gap-4 bg-accent rounded-3xl border border-muted/60 shadow-pastel p-7;
+    @apply flex flex-col gap-4 bg-muted rounded-3xl border border-muted/60 shadow-pastel p-7;
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      border-color: color-mix(in srgb, var(--primary) 20%, var(--muted));
+      box-shadow: var(--shadow-pastel);
+    }
 
     h3 {
       @apply text-2xl font-bold text-pretty;
@@ -18,6 +43,17 @@ ul.bento {
     p {
       @apply text-sm text-muted-foreground max-w-sm text-pretty;
     }
+  }
+}
+
+@media (max-width: 767px) {
+  .landing-section {
+    @apply gap-8;
+  }
+
+  .impact-section::before {
+    inset-inline: 0.75rem;
+    border-radius: 2rem;
   }
 }
 

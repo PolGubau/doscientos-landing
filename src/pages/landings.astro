@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import {
   Building2,
   CalendarCheck,
@@ -19,6 +18,7 @@ import {
   Store,
   Utensils,
 } from "@lucide/astro";
+import { Image } from "astro:assets";
 import imgArnau from "~/assets/media/landing/examples-landings/arnaumartinez.avif";
 import imgCyber from "~/assets/media/landing/examples-landings/cyberimpulsa.avif";
 import imgDoscientos from "~/assets/media/landing/examples-landings/doscientos.jpg";
@@ -461,7 +461,7 @@ const faqs = [
           {
             highlights.map((item) => (
               <li
-                class="flex items-center gap-3 rounded-full border border-muted/80 bg-accent px-4 py-3 text-sm font-medium text-foreground shadow-pastel-sm"
+                class="flex items-center gap-3 rounded-full border border-muted/80 bg-muted px-4 py-3 text-sm font-medium text-foreground shadow-pastel-sm"
                 data-reveal="bottom"
                 data-speed="normal"
                 data-easing="soft"
@@ -607,7 +607,7 @@ const faqs = [
               class={`group rounded-3xl border shadow-pastel p-5 md:p-7 flex flex-col gap-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-pastel-sm ${
                 featured
                   ? "bg-foreground text-background border-foreground"
-                  : "bg-accent text-foreground border-muted/60"
+                  : "bg-muted text-foreground border-muted/60"
               }`}
               data-reveal="bottom"
               data-speed="normal"
@@ -800,7 +800,7 @@ const faqs = [
 
     <div class="grid md:grid-cols-2 gap-4 w-full max-w-5xl">
       <article
-        class="rounded-3xl bg-accent border border-muted/60 shadow-pastel p-6 md:p-8 space-y-6"
+        class="rounded-3xl bg-muted border border-muted/60 shadow-pastel p-6 md:p-8 space-y-6"
         data-reveal="left"
         data-speed="normal"
         data-easing="smooth"
@@ -863,7 +863,7 @@ const faqs = [
       {
         projects.map((project) => (
           <article
-            class="group rounded-3xl bg-accent border border-muted/60 shadow-pastel overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-pastel-sm"
+            class="group rounded-3xl bg-muted border border-muted/60 shadow-pastel overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-pastel-sm"
             data-reveal="bottom"
             data-speed="normal"
             data-easing="smooth"

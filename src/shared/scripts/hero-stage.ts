@@ -40,8 +40,8 @@ const CONVERGE_SCALE = 0.18;
 const P1_END = 0.2;
 const P2_END = 0.62;
 // Window has fully formed and its rows/metric have finished revealing by
-// ~1.07 (see the phase 3 reveal loop below); P3_END gives it a short beat to
-// be seen before phase 4 removes it.
+// ~0.94 (see the phase 3 reveal loop below). Phase 4 then shows that a single
+// user action triggers the remaining automated work.
 const P3_END = 1;
 
 export const setupHeroStage = () => {
@@ -61,6 +61,22 @@ export const setupHeroStage = () => {
     document.querySelectorAll<HTMLElement>(".hero-window-row"),
   );
   const metric = document.querySelector<HTMLElement>(".hero-window-metric");
+  const rowStatuses = Array.from(
+    document.querySelectorAll<HTMLElement>(".hero-window-row-status"),
+  );
+  const rowLoaders = Array.from(
+    document.querySelectorAll<HTMLElement>(".hero-window-row-loader"),
+  );
+  const rowChecks = Array.from(
+    document.querySelectorAll<HTMLElement>(".hero-window-row-check"),
+  );
+  const cursor = document.getElementById("hero-cursor");
+  const flowLines = Array.from(
+    document.querySelectorAll<HTMLElement>(".hero-window-flow-line"),
+  );
+  const flowPackets = Array.from(
+    document.querySelectorAll<HTMLElement>(".hero-window-flow-packet"),
+  );
   // Content pieces inside each chip's preview (mail draft bars, spreadsheet/
   // calendar cells, WhatsApp photo + read receipt) — filled in progressively
   // during phase 1 instead of growing the whole card. See the gsap.set below
@@ -211,11 +227,9 @@ export const setupHeroStage = () => {
       trigger: hero,
       start: `top ${startOffset}`,
       pin: true,
-      // Scroll distance for the whole storyboard, scaled to the timeline's
-      // total duration (~1.4 units, up from ~1.07 before phase 4 was added)
-      // so the added window-removal + payoff beat gets proportionally the
-      // same scroll-per-unit pacing as the rest of the story.
-      end: "+=105%",
+      // The closing automation sequence earns a little extra scroll space so
+      // the user can read the causal chain instead of seeing it flash by.
+      end: "+=125%",
       // Lower smoothing than the default scrub:1 so the very first wheel
       // tick visibly moves the timeline right away instead of spending its
       // first fraction of a second catching up (which read as a dead
@@ -436,10 +450,8 @@ export const setupHeroStage = () => {
     fusionStart + fusionSpan * 0.6,
   );
 
-  // Phase 3 (P2_END → P3_END): "el resultado funciona" — the
-  // chips are gone, fully integrated; reveal the window's rows and metric
-  // one by one as the finished, running result, then hold so it's actually
-  // seen before phase 4 removes it.
+  // Phase 3 (P2_END → P3_END): "el resultado funciona" — the chips are
+  // gone, fully integrated; reveal the window's rows and metric one by one.
   rows.forEach((row, i) => {
     tl?.fromTo(
       row,
@@ -457,17 +469,209 @@ export const setupHeroStage = () => {
     );
   }
 
-  // Final proof beat: the result gets a short, high-contrast pulse. It gives
-  // the story a memorable payoff without removing the system or the CTA.
+  // Phase 4: the cursor represents the user starting the workflow once. An
+  // invoice then visibly travels through the following steps, making the
+  // remaining completions read as automation rather than more manual clicks.
+  // All values are in the scrubbed timeline, which also makes this sequence
+  // reverse cleanly when the visitor scrolls back.
+  let proofStart = P3_END;
+  if (
+    cursor &&
+    rowStatuses.length === rows.length &&
+    rowLoaders.length === rows.length &&
+    rowChecks.length === rows.length &&
+    rows.length > 0
+  ) {
+    const windowRect = win.getBoundingClientRect();
+    const windowScale = windowRect.width / win.offsetWidth || 1;
+    const statusTargets = rowStatuses.map((status) => {
+      const statusRect = status.getBoundingClientRect();
+      return {
+        x:
+          (statusRect.left - windowRect.left) / windowScale +
+          statusRect.width / windowScale / 2,
+        y:
+          (statusRect.top - windowRect.top) / windowScale +
+          statusRect.height / windowScale / 2,
+      };
+    });
+    const cursorTargets = statusTargets.map((target) => ({
+      x: win.offsetLeft + target.x - 4,
+      y: win.offsetTop + target.y - 4,
+    }));
+    const hasFlow =
+      flowLines.length >= rows.length - 1 &&
+      flowPackets.length >= rows.length - 1;
+    const flowSegments = statusTargets.slice(0, -1).map((start, index) => {
+      const end = statusTargets[index + 1];
+      const dx = end.x - start.x;
+      const dy = end.y - start.y;
+      const line = flowLines[index];
+      if (line) {
+        gsap.set(line, {
+          x: start.x,
+          y: start.y,
+          width: Math.hypot(dx, dy),
+          rotation: (Math.atan2(dy, dx) * 180) / Math.PI,
+          transformOrigin: "0% 50%",
+          autoAlpha: 0,
+          scaleX: 0,
+        });
+      }
+      return { start, end, line, packet: flowPackets[index] };
+    });
+    const automationStart = P3_END;
+    const firstTarget = cursorTargets[0];
+    const doneRow = (rowIndex: number, at: number) => {
+      tl.fromTo(
+        rows[rowIndex],
+        { backgroundColor: "#e3e5e7", borderColor: "transparent" },
+        {
+          backgroundColor: "#e4f5cf",
+          borderColor: "#acd97a",
+          duration: 0.1,
+          ease: "power1.out",
+        },
+        at,
+      );
+    };
+
+    if (firstTarget) {
+      tl.fromTo(
+        cursor,
+        {
+          autoAlpha: 0,
+          x: firstTarget.x + 84,
+          y: firstTarget.y + 28,
+          scale: 0.85,
+        },
+        {
+          autoAlpha: 1,
+          x: firstTarget.x,
+          y: firstTarget.y,
+          scale: 1,
+          duration: 0.1,
+          ease: "power2.out",
+        },
+        automationStart,
+      ).fromTo(
+        rowChecks[0],
+        { autoAlpha: 0, scale: 0.45 },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          duration: 0.08,
+          ease: "back.out(2)",
+        },
+        automationStart + 0.11,
+      );
+      doneRow(0, automationStart + 0.11);
+      tl.to(
+        cursor,
+        {
+          autoAlpha: 0,
+          x: firstTarget.x + 26,
+          y: firstTarget.y - 18,
+          scale: 0.92,
+          duration: 0.08,
+          ease: "power1.in",
+        },
+        automationStart + 0.21,
+      );
+    }
+
+    rows.slice(1).forEach((_, index) => {
+      const rowIndex = index + 1;
+      const flowStart = automationStart + 0.27 + index * 0.25;
+      const segment = flowSegments[index];
+      if (hasFlow && segment?.line && segment.packet) {
+        tl.fromTo(
+          segment.line,
+          {
+            autoAlpha: 0,
+            scaleX: 0,
+          },
+          {
+            autoAlpha: 0.72,
+            scaleX: 1,
+            duration: 0.1,
+            ease: "power2.out",
+          },
+          flowStart,
+        ).fromTo(
+          segment.packet,
+          {
+            autoAlpha: 0,
+            x: segment.start.x,
+            y: segment.start.y,
+            scale: 0.7,
+          },
+          {
+            autoAlpha: 1,
+            x: segment.end.x,
+            y: segment.end.y,
+            scale: 1,
+            duration: 0.13,
+            ease: "power1.inOut",
+          },
+          flowStart,
+        ).to(
+          segment.packet,
+          { autoAlpha: 0, scale: 0.7, duration: 0.04, ease: "power1.in" },
+          flowStart + 0.13,
+        );
+      }
+      tl.fromTo(
+        rowLoaders[rowIndex],
+        { autoAlpha: 0, scale: 0.45, rotation: 0 },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          rotation: 180,
+          duration: 0.08,
+          ease: "power1.out",
+        },
+        flowStart + 0.08,
+      )
+        .to(
+          rowLoaders[rowIndex],
+          {
+            autoAlpha: 0,
+            scale: 0.45,
+            rotation: 270,
+            duration: 0.06,
+            ease: "power1.in",
+          },
+          flowStart + 0.16,
+        )
+        .fromTo(
+          rowChecks[rowIndex],
+          { autoAlpha: 0, scale: 0.45 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 0.08,
+            ease: "back.out(2)",
+          },
+          flowStart + 0.16,
+        );
+      doneRow(rowIndex, flowStart + 0.16);
+    });
+
+    proofStart = automationStart + 0.77;
+  }
+
+  // Final proof beat: the completed workflow and its metric get a short,
+  // high-contrast pulse without removing the system or the CTA.
   const metricValue = document.querySelector<HTMLElement>(
     ".hero-window-metric-value",
   );
-  tl.to(win, { scale: 1.035, y: -6, duration: 0.16, ease: "power2.out" }, P3_END)
+  tl.to(win, { scale: 1.035, y: -6, duration: 0.16, ease: "power2.out" }, proofStart)
     .to(win, { scale: 1, y: 0, duration: 0.16, ease: "power2.inOut" }, ">")
     .to(
       metricValue,
       { scale: 1.12, color: "#1f5b35", duration: 0.16, ease: "back.out(1.7)" },
-      P3_END,
+      proofStart,
     )
     .to(metricValue, { scale: 1, duration: 0.2, ease: "power2.out" }, ">")
     .to({}, { duration: 0.08 }, ">");

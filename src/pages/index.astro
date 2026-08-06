@@ -11,11 +11,8 @@ import Hero from "~/components/sections/Hero.astro";
 import Hype from "~/components/sections/Hype.astro";
 import Impact from "~/components/sections/Impact.astro";
 import Method from "~/components/sections/Method.astro";
-import MidCTA from "~/components/sections/MidCTA.astro";
 import Services from "~/components/sections/Services.astro";
-import SolutionsGrid from "~/components/sections/SolutionsGrid.astro";
 import Testimonials from "~/components/sections/Testimonials.astro";
-import TechnicalInsights from "~/components/sections/TechnicalInsights.astro";
 import ProjectsBadge from "~/components/ui/ProjectsBadge.astro";
 
 const title =
@@ -63,17 +60,14 @@ const faqs = [
   <div class="relative z-20 w-full">
     <ClientsCarousel />
   </div>
+  <Impact />
   <Services />
-  <SolutionsGrid />
+  <CaseStudies />
   <ForWho />
   <Method />
-  <Impact />
   <Testimonials />
-  <CaseStudies />
-  <TechnicalInsights />
   <Authority />
   <Comparison />
-  <MidCTA />
   <FAQ />
   <Hype />
 </MainLayout>
