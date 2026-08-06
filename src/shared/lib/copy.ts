@@ -8,9 +8,14 @@ export const copy = {
   hero: {
     title: heroTitle,
     subtitle:
-      "Convertimos tus procesos manuales en sistemas internos que trabajan solos, sin obligarte a cambiar cómo trabaja tu equipo.",
+      "Creamos sistemas internos para que tu equipo deje de copiar datos y perseguir tareas.",
     brand: "doscientos.",
-    cta: "Cuéntanos tu proyecto",
+    cta: "Pedir diagnóstico gratis",
+    highlights: [
+      "Precio fijo y alcance cerrado",
+      "En producción en 6 semanas",
+      "El código es 100 % tuyo",
+    ],
     // Scroll-driven storyboard rendered above the stage (desktop-only GSAP
     // pin, see setupHeroStage in hero-stage.ts). Captions crossfade as the
     // scattered tools converge into the software window; the payoff line

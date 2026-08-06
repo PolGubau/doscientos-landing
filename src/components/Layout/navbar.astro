@@ -11,7 +11,7 @@ const pathname = Astro.url.pathname;
 
 <header
   data-reveal="top"
-  class="fixed w-[calc(100vw-2rem)] max-w-[90vw] lg:w-fit rounded-full top-6 left-1/2 -translate-x-1/2 z-50 bg-accent/90 backdrop-blur-md shadow-pastel-sm flex items-center justify-between p-1 gap-2 lg:gap-4"
+  class="site-nav fixed w-[calc(100vw-2rem)] max-w-[90vw] lg:w-fit rounded-full top-6 left-1/2 -translate-x-1/2 z-50 backdrop-blur-xl shadow-pastel-sm flex items-center justify-between p-1 gap-2 lg:gap-4"
 >
   <a
     href="/"
@@ -235,6 +235,11 @@ const pathname = Astro.url.pathname;
 <div class="h-20"></div>
 
 <style>
+  .site-nav {
+    background: color-mix(in srgb, var(--background) 76%, transparent);
+    border: 1px solid color-mix(in srgb, var(--primary) 13%, transparent);
+  }
+
   #bar-top,
   #bar-mid,
   #bar-bot {

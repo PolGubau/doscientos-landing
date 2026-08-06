@@ -15,7 +15,6 @@ import {
 } from "@lucide/astro";
 import { copy } from "~/shared/lib/copy";
 import Button from "../ui/Button.astro";
-import SectionTag from "../ui/SectionTag.astro";
 
 const { hero } = copy;
 
@@ -85,11 +84,15 @@ const chaos = hero.stage.chaos.map((item, i) => ({
 
 <section
   id="hero"
-    class="relative flex flex-col px-6 items-center justify-start min-h-[100svh] pt-20 pb-8 md:pt-24 gap-5 md:gap-7 overflow-hidden"
+  class="relative flex flex-col px-6 items-center justify-start min-h-[100svh] pt-20 pb-8 md:pt-24 gap-5 md:gap-7 overflow-hidden"
 >
-  <div class="relative z-20 max-w-4xl text-center">
-    <h1 class="hero-title text-balance" data-hero-static="true">{hero.title}</h1>
-    <p class="mt-4 max-w-2xl mx-auto text-base md:text-lg text-muted-foreground text-pretty">
+  <div class="hero-intro relative z-20 max-w-4xl text-center">
+    <h1 class="hero-title text-balance" data-hero-static="true">
+      {hero.title}
+    </h1>
+    <p
+      class="hero-subtitle mt-4 max-w-2xl mx-auto text-base md:text-lg text-muted-foreground text-pretty"
+    >
       {hero.subtitle}
     </p>
   </div>
@@ -99,12 +102,18 @@ const chaos = hero.stage.chaos.map((item, i) => ({
     class="relative z-20 flex flex-col items-center text-center max-w-2xl mx-auto shrink-0"
   >
     <div id="hero-scroll-reveal" class="flex flex-col items-center w-full">
-      <div class="flex flex-col sm:flex-row gap-3 justify-center items-center w-full max-w-xs sm:max-w-none">
-        <a href={`/contact`} id="hero-cta-primary" class="w-full sm:w-auto">
-          <Button withArrow class="w-full sm:w-fit">Revisar mi proceso</Button>
+      <div
+        class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-xs sm:max-w-none"
+      >
+        <a
+          href="/diagnostico?ref=home-hero"
+          id="hero-cta-primary"
+          class="w-full sm:w-auto"
+        >
+          <Button withArrow class="w-full sm:w-fit">{hero.cta}</Button>
         </a>
-        <a href="/projects" id="hero-cta-secondary" class="w-full sm:w-auto">
-          <Button variant="outline" class="w-full sm:w-fit">Ver un caso parecido</Button>
+        <a href="/projects" id="hero-cta-secondary" class="hero-secondary-link">
+          Ver resultados reales <span aria-hidden="true">→</span>
         </a>
       </div>
 
@@ -121,27 +130,6 @@ const chaos = hero.stage.chaos.map((item, i) => ({
         });
       </script>
     </div>
-  </div>
-
-  <!--
-    Caption stack: three short beats crossfade in sync with the storyboard
-    below as the visitor scrolls.
-    Absolutely-stacked so the swap never shifts layout. Only the first is
-    visible at rest (CSS default) — that is also the mobile/reduced-motion
-    fallback, no JS required. aria-live announces each change to screen
-    readers.
-  -->
-  <div
-    aria-live="polite"
-    class="relative z-20 h-10 md:h-12 w-full flex items-center justify-center shrink-0 px-4"
-  >
-    {
-      hero.stage.captions.map((caption) => (
-        <SectionTag class="hero-caption absolute inset-0 flex items-center justify-center text-center !z-30">
-          {caption}
-        </SectionTag>
-      ))
-    }
   </div>
 
   <!--
@@ -272,73 +260,10 @@ const chaos = hero.stage.chaos.map((item, i) => ({
         </div>
       </div>
     </div>
-
   </div>
-
 </section>
 
-<style is:global>
-  /*
-   * .hero-caption is applied as a class prop to <SectionTag>, which renders
-   * its own <span> inside SectionTag.astro — a different file. Astro's
-   * style scoping only instruments elements written directly in the file
-   * that owns the <style> block, so a *scoped* rule here would never match
-   * that <span> and Tailwind's `text-xs` (from SectionTag's own markup)
-   * would silently win. Must be global to actually override it.
-   */
-  .hero-caption {
-    opacity: 0;
-    transition: none;
-    font-size: 1.05rem !important;
-    line-height: 1.3;
-    font-weight: 600 !important;
-    letter-spacing: normal !important;
-    text-transform: none !important;
-    color: var(--foreground) !important;
-    /*
-     * SectionTag's own markup hardcodes `w-fit` on this span. Combined with
-     * the `absolute inset-0` we add here, top/left/right/bottom AND width
-     * are all specified at once — CSS resolves that over-constrained box by
-     * dropping `right` (ltr), so the span shrinks to fit its text and
-     * anchors at left:0 instead of stretching to fill the caption row.
-     * `justify-center`/`text-center` then have nothing to centre within,
-     * since the box is already exactly as wide as the text. Forcing the
-     * width back to 100% here restores the stretch so centring works.
-     */
-    width: 100% !important;
-    height: 100% !important;
-  }
-  /*
-   * The first caption is the very first thing a visitor reads, before any
-   * JS has had a chance to run (dynamic-imported on desktop, entirely
-   * skipped on reduced-motion) — so unlike the other two captions (which
-   * only ever appear via hero-stage.ts's scrubbed crossfade) it must reveal
-   * itself with a pure-CSS entrance rather than depending on GSAP.
-   * Previously this was a static `opacity: 1`, which meant hero-stage.ts's
-   * own entrance tween (gsap.from with immediateRender) had to snap it back
-   * to hidden the instant its dynamically-imported chunk finished loading —
-   * reading as "pops in fully formed, then vanishes, then replays" whenever
-   * that import lagged even slightly behind first paint. Animating it here
-   * instead makes the entrance identical (and immediate) regardless of JS
-   * timing, so there's never a blank/flash gap — see the removed
-   * gsap.from(captions[0]) in hero-stage.ts.
-   */
-  @keyframes hero-caption-intro {
-    from {
-      opacity: 0;
-      transform: translateY(16px) scale(0.94);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-  .hero-caption:first-child {
-    opacity: 1;
-    animation: hero-caption-intro 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s
-      both;
-  }
-
+<style>
   .hero-title {
     max-width: 54rem;
     margin: 0 auto;
@@ -349,16 +274,66 @@ const chaos = hero.stage.chaos.map((item, i) => ({
     color: var(--foreground);
   }
 
-  @media (min-width: 768px) {
-    .hero-caption {
-      font-size: 1.5rem !important;
+  .hero-title,
+  .hero-subtitle,
+  #hero-content {
+    animation: hero-content-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero-title {
+    animation-delay: 0.08s;
+  }
+
+  #hero-content {
+    animation-delay: 0.24s;
+  }
+
+  .hero-subtitle {
+    animation-delay: 0.16s;
+  }
+
+  @keyframes hero-content-enter {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 
+  .hero-secondary-link {
+    color: var(--foreground);
+    font-size: 0.9rem;
+    font-weight: 650;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--primary) 40%, transparent);
+    text-underline-offset: 0.28rem;
+    transition:
+      color 0.2s ease,
+      text-decoration-color 0.2s ease;
+  }
+
+  .hero-secondary-link:hover {
+    color: var(--primary);
+    text-decoration-color: currentColor;
+  }
+
+  .hero-secondary-link span {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .hero-secondary-link:hover span {
+    transform: translateX(0.2rem);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .hero-caption:first-child {
+    .hero-title,
+    #hero-content,
+    .hero-subtitle {
       animation: none;
-      opacity: 1;
     }
   }
 </style>
@@ -655,7 +630,9 @@ const chaos = hero.stage.chaos.map((item, i) => ({
     border-radius: var(--radius-xl);
     border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--muted));
     background: var(--background);
-    box-shadow: 0 22px 60px color-mix(in srgb, var(--primary) 16%, transparent), var(--shadow-pastel);
+    box-shadow:
+      0 22px 60px color-mix(in srgb, var(--primary) 16%, transparent),
+      var(--shadow-pastel);
     overflow: hidden;
   }
 
@@ -733,7 +710,7 @@ const chaos = hero.stage.chaos.map((item, i) => ({
       min-height: auto;
       padding-top: 5.5rem;
       padding-bottom: 3.5rem;
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
 
     #hero-stage {

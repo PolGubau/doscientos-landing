@@ -58,9 +58,6 @@ export const setupHeroStage = () => {
   const chaosInners = Array.from(
     document.querySelectorAll<HTMLElement>(".hero-chaos-inner"),
   );
-  const captions = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-caption"),
-  );
   const rows = Array.from(
     document.querySelectorAll<HTMLElement>(".hero-window-row"),
   );
@@ -95,45 +92,6 @@ export const setupHeroStage = () => {
   if (loader) {
     loader.style.animation = "none";
     loader.style.opacity = "0";
-  }
-
-  // Same story for the first caption's CSS keyframe entrance (see
-  // .hero-caption:first-child in Hero.astro, `animation-fill-mode:
-  // forwards`): a forwards-filling CSS animation keeps "owning"
-  // opacity/transform even once it has finished playing, overriding any
-  // inline style GSAP sets on top of it afterwards. Left alone, that
-  // silently blocks the outgoing autoAlpha tween near the end of this
-  // function that fades caption 0 out at P1_END — depending on exactly
-  // when this dynamically-imported chunk finishes loading relative to the
-  // CSS animation's 0.65s run (0.15s delay + 0.5s duration), the fade can
-  // appear to never happen, or the caption can appear to never show at
-  // all. Hand control back to plain inline styles the moment the CSS
-  // entrance is actually done — immediately if it already finished by the
-  // time this code runs, otherwise once its `animationend` fires — so the
-  // CSS pop-in still plays uninterrupted, but GSAP can drive the element
-  // cleanly afterwards. Same "kill the CSS animation" pattern as the
-  // loader above.
-  const firstCaption = captions[0];
-  if (firstCaption) {
-    const killFirstCaptionAnimation = () => {
-      firstCaption.style.animation = "none";
-    };
-    const introAnim = firstCaption
-      .getAnimations()
-      .find(
-        (anim) =>
-          "animationName" in anim &&
-          (anim as CSSAnimation).animationName === "hero-caption-intro",
-      );
-    if (introAnim?.playState === "finished") {
-      killFirstCaptionAnimation();
-    } else {
-      firstCaption.addEventListener(
-        "animationend",
-        killFirstCaptionAnimation,
-        { once: true },
-      );
-    }
   }
 
   // Pre-compute how far each chip must travel to reach the stage's centre,
@@ -277,72 +235,6 @@ export const setupHeroStage = () => {
       scrub: 0.35,
     },
   });
-
-  // Caption crossfade: 3 beats, one per storyboard phase (chaos, fusion,
-  // integrated result). Caption 0's entrance is a pure CSS keyframe (see
-  // .hero-caption:first-child in Hero.astro), not GSAP, so only the
-  // transitions between captions are animated here. Each transition is
-  // pinned to the exact phase boundary it narrates (P1_END/P2_END above)
-  // instead of being evenly spread across the timeline. The payoff line
-  // itself is not part of this stack — see the #hero-payoff tween in phase
-  // 4 below.
-  //
-  // Beyond a plain opacity fade, the outgoing caption also drifts up and
-  // shrinks slightly while the incoming one rises up from below and pops
-  // back to full size (`back.out`) — a pure fade was too subtle to notice
-  // mid-scroll, so the added motion gives the eye something to track and
-  // makes each change register as a distinct "beat" instead of one static
-  // line quietly changing text.
-  //
-  // The two tweens are sequential, not overlapping: the outgoing caption
-  // must reach autoAlpha:0 by `boundary` before the incoming one starts
-  // there, otherwise both are partially visible at once mid-scroll (looks
-  // like the new line "arrives" on top of the old one instead of after it).
-  const captionDuration = 0.14;
-  // The very first transition (caption 0 -> 1) lands on P1_END, the shortest
-  // phase boundary (0.15). Reusing the standard 0.14 duration there would
-  // start the fade-out at 0.15 - 0.14 = 0.01 — i.e. right at the very top of
-  // the scroll, giving caption 0 no real hold before it starts disappearing.
-  // In practice a single scroll tick jumps straight past that in a couple of
-  // frames, reading as "the first caption never shows". A shorter duration
-  // just for this transition keeps it pinned to the same P1_END boundary
-  // while giving caption 0 a proper hold beforehand.
-  const firstCaptionDuration = 0.05;
-  // One boundary/duration per transition (i.e. captions.length - 1 entries).
-  const captionBoundaries = [P1_END, P2_END];
-  const captionDurations = [firstCaptionDuration, captionDuration];
-  captions.forEach((caption, i) => {
-    if (i === 0) return;
-    const boundary = captionBoundaries[i - 1];
-    const duration = captionDurations[i - 1] ?? captionDuration;
-    if (boundary === undefined) return;
-    tl?.to(
-      captions[i - 1],
-      {
-        autoAlpha: 0,
-        y: -16,
-        scale: 0.94,
-        duration,
-        ease: "power2.in",
-      },
-      boundary - duration,
-    ).fromTo(
-      caption,
-      { autoAlpha: 0, y: 16, scale: 0.94 },
-      {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        duration,
-        ease: "back.out(1.7)",
-      },
-      boundary,
-    );
-  });
-
-  // The last caption remains visible while the finished system gets its
-  // proof moment. It is the line that should leave the lead thinking:
-  // "this is what my team needs".
 
   // Phase 1 (0 → P1_END): "el problema se reconoce" — each
   // chip's card is already visible (poco a poco entrance above) but starts
@@ -590,5 +482,5 @@ export const setupHeroStage = () => {
       P3_END,
     )
     .to(metricValue, { scale: 1, duration: 0.2, ease: "power2.out" }, ">")
-    .to({}, { duration: 0.08 }, ">" );
+    .to({}, { duration: 0.08 }, ">");
 };
