@@ -5,30 +5,30 @@ import SectionHeader from "../ui/SectionHeader.astro";
 const proof = [
   {
     icon: ShieldCheck,
-    title: "Duermes tranquilo",
+    title: "Trazabilidad desde el inicio",
     description:
-      "Tu facturación cumple la normativa desde la primera factura. Sin sustos si llega una inspección.",
+      "Diseñamos el flujo de facturación con trazabilidad y dejamos documentadas las decisiones técnicas y operativas.",
   },
   {
     icon: BadgeCheck,
-    title: "Referencia en el sector",
+    title: "Tecnología auditable",
     description:
-      "Otros equipos confían en nuestra herramienta para cumplir la ley. Ese es el nivel que aplicamos a tu proyecto.",
+      "Nuestra librería open source permite revisar cómo resolvemos la parte técnica del cumplimiento.",
   },
   {
     icon: FileCheck,
-    title: "Cero multas, cero dolores de cabeza",
+    title: "Preparado para evolucionar",
     description:
-      "Nos ocupamos de que sigas cumpliendo también el año que viene. Tú solo facturas.",
+      "Incluimos documentación y un plan de mantenimiento para revisar cambios normativos con tu asesoría.",
   },
 ];
 ---
 
 <section class="landing-section">
   <SectionHeader
-    title="Con Hacienda no se juega."
-    subtitle="Por eso lo hacemos nosotros."
-    description="Si Hacienda inspecciona tu negocio y las facturas no cumplen VeriFactu, la sanción es directa. Nosotros construimos la librería técnica que otros equipos usan como referencia para cumplir esa norma — y la aplicamos en cada proyecto que tocamos."
+    title="VeriFactu sin sorpresas técnicas"
+    subtitle="Cumplimiento con trazabilidad."
+    description="Ayudamos a implementar los requisitos técnicos aplicables a la facturación y dejamos el sistema documentado para que puedas revisarlo con tu asesoría."
     align="center"
   />
 
@@ -90,5 +90,8 @@ const proof = [
     Para técnicos: nuestra librería <code class="text-foreground font-medium"
       >@doscientos/verifactu</code
     > es open source y está publicada en npm.
+  </p>
+  <p class="text-xs text-muted-foreground/60 text-center max-w-2xl mx-auto">
+    La configuración fiscal final depende de la operativa de cada empresa y debe validarse con su asesoría.
   </p>
 </section>

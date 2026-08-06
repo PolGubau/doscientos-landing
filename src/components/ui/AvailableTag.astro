@@ -1,18 +1,4 @@
 ---
-const today = new Date();
-const day = today.getDate();
-const daysInMonth = new Date(
-  today.getFullYear(),
-  today.getMonth() + 1,
-  0,
-).getDate();
-const spotsLeft = Math.max(
-  1,
-  Math.round(10 - ((day - 1) / (daysInMonth - 1)) * 9),
-);
-const nextMonth = new Date(
-  Date.now() + 30 * 24 * 60 * 60 * 1000,
-).toLocaleString("es-ES", { month: "long" });
 ---
 
 <div
@@ -22,8 +8,5 @@ const nextMonth = new Date(
   class="rounded-full py-2 px-4 items-center w-fit text-muted-foreground justify-center bg-accent flex gap-1 text-xs"
 >
   <div class="bg-green-400 rounded-full size-2 animate-pulse mr-1"></div>
-  Solo <strong class="text-foreground">{spotsLeft} plazas</strong> disponibles en
-  <span class="capitalize">
-    {nextMonth}
-  </span>
+  <strong class="text-foreground">Agenda abierta</strong> para nuevos proyectos
 </div>

@@ -161,7 +161,7 @@ doscientos publica análisis basados en decisiones y proyectos del equipo. Los c
 - 100% proyectos a precio cerrado
 - 100% clientes con el código en propiedad
 - Clientes en Barcelona, Madrid, Castellón, Alemania y más
-- Valoración media: 5/5 estrellas
+- Tres casos publicados con métricas operativas
 
 ## Preguntas frecuentes
 

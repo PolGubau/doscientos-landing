@@ -8,14 +8,14 @@ export const branding = {
 
 	team: [
 		{
-			name: "Pol",
+			name: "Pol Gubau Amores",
 			role: "Co-fundador · Frontend & Design",
 			bio: "Ingeniero de software especializado en interfaces de usuario y arquitectura frontend. Antes en equipos de producto de empresas tecnológicas europeas. Obsesionado con la velocidad y la experiencia de usuario.",
 			image: "/assets/team/pol.jpg",
-			link: "https://polgubau.com",
+			link: "https://www.linkedin.com/in/polgubauamores/",
 		},
 		{
-			name: "Gerard",
+			name: "Gerard Martínez Alcocer",
 			role: "Co-fundador · Backend & DevOps",
 			bio: "Ingeniero de software con experiencia en backend, infraestructura y DevOps. Ha trabajado en startups tecnológicas europeas, liderando proyectos de migración a la nube y optimización de sistemas críticos.",
 			image: "/assets/team/gerard.jpg",

@@ -31,18 +31,15 @@ import MainLayout from "~/layouts/MainLayout.astro";
 
 const title = "Web profesional lista en 48 horas | doscientos";
 const description =
-  "Elige el pack de tu negocio y consigue una web profesional lista en 48 horas. Precio especial solo para los 10 primeros clientes.";
+  "Elige el pack de tu negocio y consigue una web profesional lista en 48 horas. Precio y alcance visibles desde el principio.";
 
 const highlights = [
   "Entrega en 48 horas",
-  "Oferta de lanzamiento",
-  "Solo 10 plazas",
+  "Precio visible",
   "Dominio incluido",
   "Hosting y soporte incluidos",
 ];
 
-// Cambiar por "7 de 10 plazas ocupadas" cuando avance la promoción.
-const launchAvailability = "10 plazas disponibles";
 
 const included = [
   {
@@ -396,8 +393,8 @@ const faqs = [
     answer: "No. No tienes permanencia.",
   },
   {
-    question: "¿Qué pasa después de los 10 primeros clientes?",
-    answer: "La oferta de lanzamiento finalizará y los precios subirán.",
+    question: "¿Cómo funciona la disponibilidad?",
+    answer: "Trabajamos con una agenda limitada para mantener los plazos. Te confirmamos la primera fecha disponible antes de empezar.",
   },
   {
     question: "¿Puedo contratar aunque mi negocio no aparezca en los packs?",
@@ -479,8 +476,7 @@ const faqs = [
           data-speed="fast"
           data-easing="soft"
         >
-          Precio especial solo para los 10 primeros clientes. Cuando se
-          completen las plazas, los precios subirán.
+          Te confirmamos la primera fecha disponible antes de empezar y mantenemos el precio acordado en tu propuesta.
         </p>
       </header>
 
@@ -560,12 +556,12 @@ const faqs = [
           <span
             class="rounded-full bg-background/10 text-background px-3 py-1 text-xs font-semibold"
           >
-            Oferta de lanzamiento
+            Disponibilidad actual
           </span>
         </div>
         <div class="space-y-2">
           <h2 class="text-2xl md:text-4xl font-bold text-balance">
-            Precio especial solo para los 10 primeros clientes
+            Precio y alcance definidos antes de empezar
           </h2>
           <p class="text-background/70 text-pretty">
             Estamos lanzando esta oferta para negocios locales que quieren una
@@ -573,16 +569,15 @@ const faqs = [
             clientes.
           </p>
           <p class="text-sm font-semibold text-background">
-            Cuando se completen las 10 plazas, esta promoción desaparecerá y los
-            precios aumentarán.
+            Consulta la fecha disponible para tu negocio y recibe una propuesta clara.
           </p>
         </div>
       </div>
       <div
         class="rounded-2xl bg-background text-foreground p-5 md:min-w-[220px] text-center"
       >
-        <p class="text-sm text-muted-foreground">Plazas de lanzamiento</p>
-        <p class="text-3xl font-bold">{launchAvailability}</p>
+        <p class="text-sm text-muted-foreground">Próxima fecha disponible</p>
+        <p class="text-xl font-bold">A consultar</p>
       </div>
     </div>
   </section>

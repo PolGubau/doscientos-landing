@@ -31,12 +31,9 @@ const REST_SCALE = 0.9;
 const CONVERGE_SCALE = 0.18;
 
 // Phase boundaries, expressed as timeline position (not evenly spaced — each
-// phase gets however long its beat needs). They intentionally match the
-// caption crossfade points below so the visuals and the copy beat change
-// together: "vive repartida" -> growth, "lo conectamos" -> fusion, "hecho a
-// medida" -> integrated result, then the software window is removed and the
-// payoff headline ("deja de hacer a mano...") fades in in its place as the
-// closing beat.
+// phase gets however long its beat needs): scattered work becomes an
+// integrated result, then the completed software remains on screen as the
+// closing proof point.
 const P1_END = 0.2;
 const P2_END = 0.62;
 // Window has fully formed and its rows/metric have finished revealing by
@@ -674,9 +671,8 @@ export const setupHeroStage = () => {
       proofStart,
     )
     .to(metricValue, { scale: 1, duration: 0.2, ease: "power2.out" }, ">")
-    // Antes de liberar el pin, retiramos la ventana. Sin esta salida, al
-    // volver el hero al flujo normal el borde superior del viewport la corta
-    // a mitad y el salto hacia las pruebas de confianza parece accidental.
-    .to(win, { autoAlpha: 0, y: -24, duration: 0.16, ease: "power1.in" }, ">+=0.08")
-    .to({}, { duration: 0.08 }, ">");
+    // Hold the finished product long enough to read the completed workflow
+    // before the pin releases. The window then leaves naturally with the hero
+    // as the next section enters the normal document flow.
+    .to({}, { duration: 0.24 }, ">");
 };
