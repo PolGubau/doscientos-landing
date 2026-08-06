@@ -16,46 +16,31 @@
       >
       </div>
       <div class="relative flex h-full flex-col">
-        <p
-          class="text-xs font-semibold uppercase tracking-[0.18em] text-primary"
-        >
-          Diagnóstico personalizado
-        </p>
         <h2
-          class="mt-4 text-3xl font-bold tracking-tight text-background md:text-4xl lg:text-[2.65rem] lg:leading-[1.04]"
+          class="text-3xl font-bold tracking-tight text-background md:text-4xl lg:text-[2.65rem] lg:leading-[1.04]"
         >
-          Ponemos números al tiempo que se va.
+          ¿Cuánto os cuesta seguir haciéndolo a mano?
         </h2>
         <p class="mt-5 max-w-sm leading-relaxed text-background/70">
-          Una estimación clara para decidir si merece la pena automatizar ese
-          proceso.
+          Cuéntanos la tarea tal como ocurre. Verás una estimación antes de
+          dejarnos el correo.
         </p>
-        <div
-          class="mt-8 grid gap-3 text-sm sm:grid-cols-3 lg:mt-auto lg:grid-cols-1"
-        >
-          <div
-            class="rounded-2xl border border-background/15 bg-background/10 p-3.5"
-          >
-            <strong class="block text-background">1 minuto</strong><span
-              class="mt-1 block text-background/60">Sin cálculos raros</span
-            >
-          </div>
-          <div
-            class="rounded-2xl border border-background/15 bg-background/10 p-3.5"
-          >
-            <strong class="block text-background">Tu resultado primero</strong
-            ><span class="mt-1 block text-background/60"
-              >Antes de pedir el email</span
-            >
-          </div>
-          <div
-            class="rounded-2xl border border-background/15 bg-background/10 p-3.5"
-          >
-            <strong class="block text-background">Sin compromiso</strong><span
-              class="mt-1 block text-background/60"
-              >Si no compensa, te lo decimos</span
-            >
-          </div>
+        <div class="mt-10 border-t border-background/15 pt-5 lg:mt-auto">
+          <p class="text-sm font-semibold text-background">Lo que vas a ver</p>
+          <ul class="mt-4 space-y-3 text-sm text-background/65">
+            <li class="flex gap-3">
+              <span class="text-primary">•</span>Horas que consume el equipo
+              cada mes
+            </li>
+            <li class="flex gap-3">
+              <span class="text-primary">•</span>Coste anual aproximado de
+              mantenerlo igual
+            </li>
+            <li class="flex gap-3">
+              <span class="text-primary">•</span>Una señal clara para decidir si
+              priorizarlo
+            </li>
+          </ul>
         </div>
       </div>
     </header>
@@ -140,22 +125,22 @@
             <h3
               data-diagnostic-step-heading
               tabindex="-1"
-              class="text-2xl font-bold text-foreground"
+              class="text-2xl font-bold tracking-tight text-foreground md:text-3xl"
             >
               Ahora piensa en una semana normal
             </h3>
-            <p class="text-sm leading-relaxed text-muted-foreground">
+            <p class="leading-relaxed text-muted-foreground">
               Elige una aproximación. No buscamos una cifra perfecta.
             </p>
           </div>
 
           <fieldset class="space-y-3">
-            <legend class="text-sm font-medium text-foreground"
+            <legend class="text-sm font-semibold text-foreground"
               >¿Con qué frecuencia ocurre?</legend
             >
             <div class="grid gap-3 sm:grid-cols-3">
               <label
-                class="cursor-pointer rounded-xl border border-primary bg-primary/5 p-4 text-sm transition has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+                class="min-h-28 cursor-pointer rounded-2xl border border-primary bg-primary/5 p-4 text-sm transition duration-200 hover:-translate-y-0.5 hover:border-primary has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:shadow-sm"
               >
                 <input
                   class="sr-only"
@@ -170,7 +155,7 @@
                 >
               </label>
               <label
-                class="cursor-pointer rounded-xl border border-muted-foreground/30 p-4 text-sm transition has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+                class="min-h-28 cursor-pointer rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-sm transition duration-200 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-background has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:shadow-sm"
               >
                 <input
                   class="sr-only"
@@ -185,7 +170,7 @@
                 >
               </label>
               <label
-                class="cursor-pointer rounded-xl border border-muted-foreground/30 p-4 text-sm transition has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+                class="min-h-28 cursor-pointer rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-sm transition duration-200 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-background has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:shadow-sm"
               >
                 <input
                   class="sr-only"
@@ -202,10 +187,10 @@
             </div>
           </fieldset>
 
-          <label class="block max-w-xs space-y-2">
+          <label class="block max-w-md space-y-2">
             <span
               data-diagnostic-frequency-question
-              class="text-sm font-medium text-foreground"
+              class="text-sm font-semibold text-foreground"
               >En un día normal, ¿cuántas veces ocurre?</span
             >
             <input
@@ -216,7 +201,7 @@
               value="1"
               required
               inputmode="numeric"
-              class="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground transition focus:border-primary focus:ring-1 focus:ring-primary"
+              class="h-14 w-full rounded-2xl border border-muted-foreground/25 bg-muted/30 px-4 text-base text-foreground transition focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/15"
             />
             <span
               data-diagnostic-frequency-hint
@@ -226,7 +211,7 @@
           </label>
 
           <fieldset class="space-y-3">
-            <legend class="text-sm font-medium text-foreground"
+            <legend class="text-sm font-semibold text-foreground"
               >Cuando ocurre, suele llevaros…</legend
             >
             <input
@@ -240,7 +225,7 @@
                 type="button"
                 data-diagnostic-duration="5"
                 aria-pressed="false"
-                class="rounded-xl border border-muted-foreground/30 p-3 text-left text-sm transition hover:border-primary"
+                class="min-h-28 rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-left text-sm transition duration-200 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-background"
                 ><strong class="block text-foreground">Menos de 5 min</strong
                 ><span class="text-muted-foreground">Una gestión rápida</span
                 ></button
@@ -249,7 +234,7 @@
                 type="button"
                 data-diagnostic-duration="15"
                 aria-pressed="true"
-                class="rounded-xl border border-primary bg-primary/10 p-3 text-left text-sm transition"
+                class="min-h-28 rounded-2xl border border-primary bg-primary/10 p-4 text-left text-sm shadow-sm transition duration-200"
                 ><strong class="block text-foreground">10–20 min</strong><span
                   class="text-muted-foreground">Lo normal</span
                 ></button
@@ -258,7 +243,7 @@
                 type="button"
                 data-diagnostic-duration="30"
                 aria-pressed="false"
-                class="rounded-xl border border-muted-foreground/30 p-3 text-left text-sm transition hover:border-primary"
+                class="min-h-28 rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-left text-sm transition duration-200 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-background"
                 ><strong class="block text-foreground">20–45 min</strong><span
                   class="text-muted-foreground">Requiere atención</span
                 ></button
@@ -267,7 +252,7 @@
                 type="button"
                 data-diagnostic-duration="60"
                 aria-pressed="false"
-                class="rounded-xl border border-muted-foreground/30 p-3 text-left text-sm transition hover:border-primary"
+                class="min-h-28 rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-left text-sm transition duration-200 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-background"
                 ><strong class="block text-foreground">Más de una hora</strong
                 ><span class="text-muted-foreground">Trabajo profundo</span
                 ></button
@@ -276,36 +261,36 @@
           </fieldset>
 
           <div
-            class="rounded-2xl border border-muted bg-background p-5 md:p-6 space-y-4"
+            class="space-y-5 rounded-3xl bg-foreground p-6 text-background shadow-lg shadow-foreground/10"
           >
             <div class="flex items-end justify-between gap-4">
               <div>
-                <p class="text-sm text-muted-foreground">
+                <p class="text-sm text-background/60">
                   Tiempo que se va cada mes
                 </p><p
-                  class="text-3xl font-bold text-foreground"
+                  class="text-4xl font-bold tracking-tight text-background"
                   data-diagnostic-hours
                 >
                   0 h/mes
                 </p>
               </div>
-              <p class="text-right text-sm text-muted-foreground">
+              <p class="text-right text-sm text-background/60">
                 Coste anual estimado<br /><strong
-                  class="text-xl text-primary"
+                  class="text-xl text-background"
                   data-diagnostic-cost>0 €</strong
                 >
               </p>
             </div>
-            <div class="h-2 overflow-hidden rounded-full bg-muted">
+            <div class="h-2 overflow-hidden rounded-full bg-background/15">
               <div
                 data-diagnostic-meter
-                class="h-full rounded-full bg-primary transition-all duration-500"
+                class="h-full rounded-full bg-[var(--brand-lime)] transition-all duration-500"
                 style="width: 12%"
               >
               </div>
             </div>
             <p
-              class="text-sm leading-relaxed text-muted-foreground"
+              class="text-sm leading-relaxed text-background/70"
               data-diagnostic-note
             >
               Tu estimación aparecerá aquí.
@@ -318,14 +303,15 @@
             <button
               type="button"
               data-diagnostic-back
-              class="rounded-full px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground"
+              class="rounded-full px-4 py-3 text-sm font-semibold text-muted-foreground transition hover:bg-muted hover:text-foreground"
               >Volver</button
             >
             <button
               type="button"
               data-diagnostic-next
-              class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3.5 font-semibold text-background transition-opacity hover:opacity-90"
-              >Ver el diagnóstico completo</button
+              class="inline-flex min-w-56 items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 font-semibold text-background transition hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+              >Ver el diagnóstico completo <span aria-hidden="true">→</span
+              ></button
             >
           </div>
         </section>
@@ -335,32 +321,35 @@
             <h3
               data-diagnostic-step-heading
               tabindex="-1"
-              class="text-2xl font-bold text-foreground"
+              class="text-2xl font-bold tracking-tight text-foreground md:text-3xl"
             >
               Tu estimación ya está lista
-            </h3><p class="text-sm leading-relaxed text-muted-foreground">
+            </h3><p class="leading-relaxed text-muted-foreground">
               Déjanos un email y te enviamos la lectura completa, con próximos
               pasos prácticos.
             </p>
           </div>
-          <div class="rounded-2xl border border-primary/20 bg-primary/5 p-5">
-            <p class="text-sm text-muted-foreground">
+          <div
+            class="rounded-3xl bg-foreground p-6 text-background shadow-lg shadow-foreground/10"
+          >
+            <p class="text-sm text-background/60">
               En este proceso se van aproximadamente
-            </p><p class="mt-1 text-3xl font-bold text-foreground">
+            </p><p
+              class="mt-1 text-3xl font-bold tracking-tight text-background sm:text-4xl"
+            >
               <span data-diagnostic-hours>0 h/mes</span> · <span
-                class="text-primary"
+                class="text-[var(--brand-lime)]"
                 data-diagnostic-cost>0 €</span
-              ><span class="text-base font-medium text-muted-foreground"
-                >/año</span
+              ><span class="text-base font-medium text-background/60">/año</span
               >
             </p>
           </div>
           <fieldset class="space-y-3">
-            <legend class="text-sm font-medium text-foreground"
+            <legend class="text-sm font-semibold text-foreground"
               >Para afinar el coste, ¿qué encaja mejor?</legend
             ><div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
               <label
-                class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-center text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+                class="cursor-pointer rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-center text-sm font-semibold transition hover:border-primary/60 hover:bg-background has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:shadow-sm"
                 ><input
                   class="sr-only"
                   type="radio"
@@ -368,7 +357,7 @@
                   value="20"
                 />20 €/h</label
               ><label
-                class="cursor-pointer rounded-xl border border-primary bg-primary/10 p-3 text-center text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+                class="cursor-pointer rounded-2xl border border-primary bg-primary/10 p-4 text-center text-sm font-semibold shadow-sm transition has-[:checked]:border-primary has-[:checked]:bg-primary/10"
                 ><input
                   class="sr-only"
                   type="radio"
@@ -377,7 +366,7 @@
                   checked
                 />25 €/h</label
               ><label
-                class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-center text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+                class="cursor-pointer rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-center text-sm font-semibold transition hover:border-primary/60 hover:bg-background has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:shadow-sm"
                 ><input
                   class="sr-only"
                   type="radio"
@@ -385,7 +374,7 @@
                   value="40"
                 />40 €/h</label
               ><label
-                class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-center text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+                class="cursor-pointer rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-center text-sm font-semibold transition hover:border-primary/60 hover:bg-background has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:shadow-sm"
                 ><input
                   class="sr-only"
                   type="radio"
@@ -396,11 +385,11 @@
             </div>
           </fieldset>
           <fieldset class="space-y-3">
-            <legend class="text-sm font-medium text-foreground"
+            <legend class="text-sm font-semibold text-foreground"
               >Si esta tarea falla, ¿qué suele pasar?</legend
             ><div class="grid gap-3 sm:grid-cols-2">
               <label
-                class="cursor-pointer rounded-xl border border-primary bg-primary/10 p-3 text-sm has-[:checked]:border-primary"
+                class="cursor-pointer rounded-2xl border border-primary bg-primary/10 p-4 text-sm font-semibold shadow-sm has-[:checked]:border-primary"
                 ><input
                   class="sr-only"
                   type="radio"
@@ -409,7 +398,7 @@
                   checked
                 />Retrasos y seguimiento manual</label
               ><label
-                class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+                class="cursor-pointer rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-sm font-semibold transition hover:border-primary/60 hover:bg-background has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:shadow-sm"
                 ><input
                   class="sr-only"
                   type="radio"
@@ -417,7 +406,7 @@
                   value="Errores o datos duplicados"
                 />Errores o datos duplicados</label
               ><label
-                class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+                class="cursor-pointer rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-sm font-semibold transition hover:border-primary/60 hover:bg-background has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:shadow-sm"
                 ><input
                   class="sr-only"
                   type="radio"
@@ -425,7 +414,7 @@
                   value="Se pierden oportunidades"
                 />Se pierden oportunidades</label
               ><label
-                class="cursor-pointer rounded-xl border border-muted-foreground/30 p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+                class="cursor-pointer rounded-2xl border border-muted-foreground/25 bg-muted/20 p-4 text-sm font-semibold transition hover:border-primary/60 hover:bg-background has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:shadow-sm"
                 ><input
                   class="sr-only"
                   type="radio"
@@ -440,19 +429,19 @@
               name="name"
               placeholder="Tu nombre (opcional)"
               autocomplete="name"
-              class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
+              class="h-14 rounded-2xl border border-muted-foreground/25 bg-muted/30 px-4 text-base text-foreground placeholder:text-muted-foreground/70 transition focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/15"
             /><input
               name="company"
               placeholder="Empresa (opcional)"
               autocomplete="organization"
-              class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground"
+              class="h-14 rounded-2xl border border-muted-foreground/25 bg-muted/30 px-4 text-base text-foreground placeholder:text-muted-foreground/70 transition focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/15"
             /><input
               name="email"
               type="email"
               required
               placeholder="Tu email profesional"
               autocomplete="email"
-              class="h-12 rounded-xl border border-muted-foreground/30 bg-background px-4 text-foreground md:col-span-2"
+              class="h-14 rounded-2xl border border-muted-foreground/25 bg-muted/30 px-4 text-base text-foreground placeholder:text-muted-foreground/70 transition focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/15 md:col-span-2"
             />
           </div>
           <label class="flex items-start gap-3 text-xs text-muted-foreground"
@@ -472,12 +461,14 @@
             <button
               type="button"
               data-diagnostic-back
-              class="rounded-full px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground"
+              class="rounded-full px-4 py-3 text-sm font-semibold text-muted-foreground transition hover:bg-muted hover:text-foreground"
               >Volver</button
             ><button
               type="submit"
-              class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3.5 font-semibold text-background transition-opacity hover:opacity-90"
-              data-diagnostic-submit>Enviarme el diagnóstico completo</button
+              class="inline-flex min-w-60 items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 font-semibold text-background transition hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+              data-diagnostic-submit
+              >Enviarme el diagnóstico completo <span aria-hidden="true">→</span
+              ></button
             >
           </div>
           <p
@@ -743,6 +734,7 @@
               option.classList.toggle("border-primary", selected);
               option.classList.toggle("bg-primary/10", selected);
               option.classList.toggle("border-muted-foreground/30", !selected);
+              option.classList.toggle("bg-muted/20", !selected);
             });
           calculate();
         }),
