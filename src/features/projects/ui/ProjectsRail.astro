@@ -17,7 +17,7 @@ const { projects, id } = Astro.props;
   {
     projects.map((project, projectIndex) => (
       <div
-        class:list={projectIndex === 0 && "lg:col-span-2"}
+        class:list={{ "lg:col-span-2": projectIndex === 0 }}
         data-reveal="bottom"
         data-speed="normal"
         data-easing="smooth"

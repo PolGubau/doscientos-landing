@@ -1,11 +1,11 @@
 ---
 import {
   ArrowRight,
-  CheckCircle2,
-  ClipboardList,
-  FileSearch,
-  Workflow,
+  CircleCheck,
 } from "@lucide/astro";
+import List from "@lucide/astro/icons/list";
+import Search from "@lucide/astro/icons/search";
+import GitBranch from "@lucide/astro/icons/git-branch";
 import CostCalculator from "~/components/conversion/CostCalculator.astro";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import Button from "~/components/ui/Button.astro";
@@ -186,7 +186,7 @@ const showCostCalculator = currentLanding.slug === "automatizar-excel";
               Que automatizar primero
             </p>
           </div>
-          <FileSearch class="size-8 text-primary" />
+          <Search class="size-8 text-primary" />
         </div>
         <div class="space-y-3">
           {
@@ -243,7 +243,7 @@ const showCostCalculator = currentLanding.slug === "automatizar-excel";
               data-speed="normal"
               data-easing="soft"
             >
-              <ClipboardList class="size-7 text-primary" />
+              <List class="size-7 text-primary" />
               <h2 class="text-xl font-semibold text-foreground">
                 {pain.title}
               </h2>
@@ -277,7 +277,7 @@ const showCostCalculator = currentLanding.slug === "automatizar-excel";
           currentLanding.solution.map((item) => (
             <article class="rounded-2xl border border-muted p-6 flex gap-4 items-start">
               <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                <Workflow class="size-5 text-primary" />
+                <GitBranch class="size-5 text-primary" />
               </div>
               <div class="space-y-2">
                 <h3 class="text-xl font-semibold text-foreground">
@@ -334,7 +334,7 @@ const showCostCalculator = currentLanding.slug === "automatizar-excel";
         {
           currentLanding.fit.map((item) => (
             <li class="flex gap-3 items-start rounded-xl border border-muted p-4">
-              <CheckCircle2 class="size-5 text-primary shrink-0 mt-0.5" />
+              <CircleCheck class="size-5 text-primary shrink-0 mt-0.5" />
               <span class="text-foreground">{item}</span>
             </li>
           ))

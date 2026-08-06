@@ -21,7 +21,7 @@ export interface CommercialRoute {
 }
 
 export const diagnosticRoute = {
-  href: "/diagnostico",
+  href: "/diagnostico-procesos",
   label: "Diagnóstico de procesos",
   description:
     "Te decimos qué automatizar primero, qué evitar y si merece la pena construir.",

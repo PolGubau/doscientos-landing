@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { Check, StarIcon } from "@lucide/astro";
+import { Check, Star } from "@lucide/astro";
 import SectionHeader from "../ui/SectionHeader.astro";
 
 import carlosImg from "~/assets/media/testimonials/carlos-ruiz.webp";
@@ -75,7 +75,7 @@ const testimonials = [
             {/* Rating */}
             <div class="flex gap-0">
               {Array.from({ length: testimonial.rating }).map(() => (
-                <StarIcon
+                <Star
                   class="size-5 text-yellow-400"
                   fill="currentColor"
                   stroke="currentColor"

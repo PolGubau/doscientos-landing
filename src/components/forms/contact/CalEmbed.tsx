@@ -45,7 +45,7 @@ export function CalEmbed({ name, email, leadId, dedupeKey }: CalEmbedProps) {
           name,
           email,
           layout: "month_view",
-          metadata: { leadId, landingDedupeKey: dedupeKey },
+          metadata: { leadId: leadId ?? "", landingDedupeKey: dedupeKey },
         }}
       />
     </div>

@@ -1,0 +1,191 @@
+---
+title: "Skills de IA para desarrollo de software: más velocidad sin perder criterio técnico"
+description: "Cómo usamos en Doscientos skills técnicas reutilizables para construir software a medida con decisiones consistentes, menos retrabajo y control humano en cada fase."
+publishDate: "2026-08-06"
+draft: false
+tags:
+  [
+    "IA aplicada",
+    "software a medida",
+    "desarrollo web",
+    "arquitectura de software",
+    "automatización",
+    "calidad de software",
+  ]
+resourceType: "guia"
+buyerStage: "consideration"
+author: "doscientos"
+faqs:
+  - question: "¿Qué es una skill de IA en desarrollo de software?"
+    answer: "Es un conjunto versionado de instrucciones técnicas reutilizables para un agente de IA. Define cómo analizar, decidir, implementar y validar una parte del trabajo sin sustituir los requisitos ni las decisiones del cliente."
+  - question: "¿Las skills sustituyen a un equipo de desarrollo?"
+    answer: "No. Aceleran tareas repetibles y ayudan a mantener criterios consistentes, pero el equipo sigue definiendo el alcance, validando decisiones de arquitectura, revisando el código y aprobando cada entrega."
+  - question: "¿El resultado será una web genérica como la de otras empresas?"
+    answer: "No. Las skills estandarizan la calidad técnica, no el negocio ni la identidad visual. El producto, los flujos, las integraciones y la marca se definen para cada empresa."
+  - question: "¿Qué necesita aportar una empresa para empezar?"
+    answer: "El problema que quiere resolver, las personas que usarán el producto, el alcance inicial, los sistemas que debe conectar y, si existe, su identidad visual aprobada."
+  - question: "¿Es seguro usar IA en un proyecto con datos sensibles?"
+    answer: "La seguridad no se delega en una herramienta. Las skills obligan a tratar permisos, validación, secretos y políticas de acceso como decisiones explícitas que se revisan en servidor y base de datos."
+---
+
+La IA puede escribir código muy deprisa. El riesgo no está en que escriba lento: está en que escriba mucho antes de entender el problema, la marca, los datos o las restricciones de una empresa.
+
+En Doscientos usamos IA como una capa de aceleración dentro de un proceso técnico. No como un botón para generar una aplicación completa ni como sustituto de una conversación con el cliente. Para conseguirlo convertimos decisiones repetibles —arquitectura, calidad, accesibilidad, seguridad o implementación de marca— en **skills** versionadas y reutilizables.
+
+El resultado no es un producto clonado. Es una forma más consistente de empezar cada proyecto: menos tiempo reinventando la base, más atención al proceso que hace única a cada empresa.
+
+---
+
+## El problema no es usar IA: es usarla sin un método
+
+Un agente sin contexto puede proponer una tecnología por moda, instalar dependencias innecesarias o convertir una necesidad de negocio en una lista de funciones que nadie pidió. Puede producir una primera pantalla convincente y dejar decisiones importantes sin resolver: permisos, datos sensibles, rendimiento, SEO, mantenimiento o propiedad del código.
+
+Por eso una instrucción como “hazme un CRM” no basta. Antes de programar hay que responder preguntas como estas:
+
+- ¿Quién va a usarlo y qué decisión o tarea debe mejorar?
+- ¿Cuál es la primera entrega útil, no la lista de deseos completa?
+- ¿Qué datos son sensibles y quién puede verlos o modificarlos?
+- ¿Qué sistemas actuales hay que respetar o integrar?
+- ¿La solución necesita SEO, autenticación, trabajo offline o una API propia?
+- ¿Qué identidad visual debe aplicar: la de Doscientos o la del cliente?
+
+La IA ayuda a estructurar estas respuestas. No debe inventarlas.
+
+---
+
+## Qué es una skill técnica
+
+Una skill es un documento de instrucciones específico para una responsabilidad concreta. Se guarda con el proyecto, se versiona y se instala solo cuando aplica.
+
+No es un prompt largo pegado en cada conversación. Tampoco es una dependencia de producción. Es una guía operativa que le indica al agente qué debe comprobar, qué decisiones puede proponer, qué no puede asumir y cómo validar su trabajo.
+
+En nuestro catálogo inicial hay tres capas:
+
+| Skill                       | Qué resuelve                                                                   | Cuándo se usa                                   |
+| --------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------- |
+| `technical-details`         | Framework, arquitectura, seguridad, accesibilidad, testing y validación.       | En cualquier proyecto nuevo.                    |
+| `brand-implementation`      | Traduce la identidad aprobada de un cliente a tokens y utilidades de Tailwind. | En proyectos de cliente con marca propia.       |
+| `doscientos-internal-brand` | Aplica los tokens, tipografía y assets propios de Doscientos.                  | Solo en productos y comunicación de Doscientos. |
+
+La separación importa. Una empresa puede compartir nuestra exigencia técnica sin compartir nuestra paleta, nuestro logo o nuestro producto.
+
+---
+
+## Qué cambia para tu negocio
+
+### 1. Menos tiempo en decisiones que ya están resueltas
+
+No tiene sentido debatir desde cero en cada proyecto cómo estructurar una aplicación, cómo validar un formulario o cómo comprobar que una ruta privada no expone datos. La base técnica ya contiene esos criterios.
+
+Eso reduce el tiempo de arranque, pero también evita un problema más caro: descubrir a mitad de proyecto que cada pantalla, integración o formulario se ha resuelto de una forma distinta.
+
+### 2. Más tiempo en lo que sí te diferencia
+
+Estandarizar no significa uniformar el producto. El trabajo específico sigue estando donde importa:
+
+- Mapear cómo vendes, produces, atiendes o gestionas contratos.
+- Diseñar flujos que se adapten a tu equipo y no al revés.
+- Conectar el software con tu ERP, CRM, tienda o herramientas actuales.
+- Decidir qué información necesita cada persona para trabajar mejor.
+- Aplicar tu identidad visual de forma coherente.
+
+La tecnología deja de consumir reuniones que no aportan valor y el proyecto se centra antes en el proceso de negocio.
+
+### 3. Calidad visible y calidad que no se ve
+
+Una web puede parecer terminada y, aun así, ser difícil de mantener, lenta, inaccesible o insegura. Las skills obligan a incluir desde el inicio aspectos que normalmente aparecen tarde:
+
+- Navegación por teclado, foco visible y mensajes de error comprensibles.
+- Validación de datos en cliente y servidor.
+- Permisos revisados en servidor y base de datos, no solo ocultos en la interfaz.
+- Estados de carga, vacío, error y reintento.
+- Pruebas de la lógica crítica y comprobaciones de build antes de cerrar una fase.
+
+No eliminan la necesidad de revisión. Hacen que esas revisiones tengan una lista de criterios clara.
+
+### 4. Un proyecto que se entiende mejor dentro de un año
+
+El valor de un producto no acaba al publicarlo. Cuando hay que añadir una integración, cambiar una persona de equipo o ampliar un módulo, importa saber por qué se eligió una arquitectura y dónde viven sus reglas.
+
+Las skills se guardan en el repositorio junto a la configuración, las pruebas y la documentación. Es el mismo principio que usamos al [documentar decisiones de arquitectura](/recursos/como-documentar-decisiones-arquitectura-adr): dejar constancia del contexto evita volver a empezar cada conversación desde cero.
+
+---
+
+## El proceso: IA con aprobación humana
+
+El flujo no consiste en pedir una aplicación y aceptar la primera respuesta. Trabajamos por fases pequeñas y verificables:
+
+1. **Entender el problema.** Definimos usuarios, proceso actual, alcance inicial, datos e integraciones.
+2. **Inspeccionar el contexto.** La IA revisa el repositorio y propone el framework adecuado: Astro, Next.js o Vite, según el producto.
+3. **Proponer un plan.** Se separan decisiones técnicas, riesgos y preguntas que realmente bloquean el avance.
+4. **Aprobar antes de construir.** No se implementa una fase sustancial sin validación humana.
+5. **Construir la mínima entrega útil.** Se prioriza valor visible frente a funciones imaginadas.
+6. **Comprobar el resultado.** Lint, tipos, pruebas y build forman parte de la entrega, no de una promesa posterior.
+
+La IA acelera análisis, documentación y ejecución. La responsabilidad de producto, seguridad y decisiones irreversibles sigue teniendo personas responsables.
+
+---
+
+## Una base común, no una receta cerrada
+
+Para un proyecto de cliente con marca propia, la instalación de las reglas técnicas y de marca es tan simple como esta:
+
+```bash
+pnpm dlx skills add doscientos-es/skills --skill technical-details,brand-implementation --agent augment,codex --copy --yes
+```
+
+Ese comando no añade una aplicación prefabricada ni copia el historial de otro proyecto. Instala las instrucciones que ayudan al agente a trabajar dentro de una base conocida.
+
+Después, el proyecto sigue necesitando lo que ninguna skill puede inventar: vuestro conocimiento del negocio, prioridades reales, personas usuarias, sistemas existentes y criterios para considerar una primera versión útil.
+
+---
+
+## Lo que esta forma de trabajar no promete
+
+No prometemos que la IA sustituya el descubrimiento de producto, reduzca cualquier proyecto a unos días o tome decisiones de negocio sin información.
+
+Tampoco usamos una misma identidad visual para todos los clientes. Las reglas técnicas son compartidas porque mejoran el mantenimiento; los procesos y la marca se adaptan porque son parte de la ventaja competitiva de cada empresa.
+
+La promesa más útil es otra: **cada proyecto empieza con un estándar de calidad definido y deja más espacio para resolver lo que de verdad importa.**
+
+---
+
+## Cuándo tiene sentido
+
+Esta forma de trabajo es especialmente útil si:
+
+- Quieres construir un CRM, portal, aplicación interna o software a medida sin empezar cada decisión desde cero.
+- Tu empresa tiene procesos propios que un SaaS cubre solo a medias.
+- Necesitas conectar varias herramientas y reducir tareas manuales.
+- Te importa que la primera versión sea mantenible, accesible y segura, no solo presentable.
+- Quieres que la IA aporte velocidad sin convertir el proyecto en una caja negra.
+
+Si tu proceso ya depende de hojas de cálculo, copias manuales o varios sistemas que no se comunican, el primer paso no es escoger una herramienta. Es entender qué debe cambiar. Puedes empezar por un [diagnóstico de procesos](/diagnostico?ref=recurso-skills-ia) y priorizar la mejora con más impacto.
+
+---
+
+## Preguntas frecuentes
+
+### ¿Una skill hace que todos los proyectos sean iguales?
+
+No. Estandariza la forma de asegurar calidad técnica, no la solución de negocio. Un CRM para renovaciones, un portal de cliente y una aplicación de operaciones pueden compartir validación, accesibilidad y estructura, pero sus datos, flujos e integraciones son distintos.
+
+### ¿Por qué no usar un único prompt para todo?
+
+Porque un prompt grande es difícil de mantener, revisar y activar solo cuando corresponde. Las skills separan responsabilidades: la técnica base siempre aplica; la identidad de una marca se incorpora solo cuando está aprobada; una futura skill de SEO se instalará solo en proyectos que la necesiten.
+
+### ¿Cómo se evita que la IA introduzca riesgos?
+
+Con límites explícitos y revisión: no inventar credenciales ni requisitos, validar entradas, proteger permisos en servidor y base de datos, no desplegar ni ejecutar acciones irreversibles sin confirmación y ejecutar comprobaciones reales antes de dar una fase por terminada.
+
+### ¿Puede mi equipo mantener el proyecto después?
+
+Sí. El objetivo es exactamente el contrario a una caja negra: TypeScript, documentación, pruebas, reglas versionadas y una estructura comprensible. La IA acelera el trabajo, pero el código, las decisiones y el control siguen siendo tuyos.
+
+---
+
+## Lecturas relacionadas
+
+- [Cómo documentar decisiones de arquitectura con ADR](/recursos/como-documentar-decisiones-arquitectura-adr)
+- [Software a medida vs SaaS: cómo decidir qué le conviene a tu empresa](/recursos/software-a-medida-vs-saas)
+- [Integración de sistemas y APIs: cómo conectar tu ERP, tienda y CRM](/recursos/integracion-de-sistemas-apis)

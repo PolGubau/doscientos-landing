@@ -1,10 +1,9 @@
 ﻿---
 import {
   ArrowRight,
-  CheckCircle2,
   CircleCheck,
-  ClipboardList,
 } from "@lucide/astro";
+import List from "@lucide/astro/icons/list";
 import DiagnosticCalculator from "~/components/conversion/DiagnosticCalculator.astro";
 import ContactForm from "~/components/forms/ContactForm";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
@@ -217,7 +216,7 @@ const faqs = [
           data-reveal="bottom"
         >
           <div class="flex items-start justify-between">
-            <ClipboardList class="size-6 text-primary" />
+            <List class="size-6 text-primary" />
             <span class="text-xs font-mono text-muted-foreground">01</span>
           </div>
           <div class="space-y-2">
@@ -234,7 +233,7 @@ const faqs = [
           data-reveal="bottom"
         >
           <div class="flex items-start justify-between">
-            <CheckCircle2 class="size-6 text-primary" />
+            <CircleCheck class="size-6 text-primary" />
             <span class="text-xs font-mono text-muted-foreground">02</span>
           </div>
           <div class="space-y-2">

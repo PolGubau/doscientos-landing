@@ -1,11 +1,10 @@
 ---
 import {
   ArrowUpRight,
-  BookOpenText,
-  GitBranch,
-  Scale,
-  Wrench,
 } from "@lucide/astro";
+import BookOpen from "@lucide/astro/icons/book-open";
+import GitBranch from "@lucide/astro/icons/git-branch";
+import Settings from "@lucide/astro/icons/settings";
 import { getCollection } from "astro:content";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 
@@ -13,7 +12,7 @@ const editorial = [
   {
     slug: "astro-vs-nextjs-2026",
     eyebrow: "Comparativa tecnológica",
-    icon: Scale,
+    icon: Settings,
   },
   {
     slug: "monolito-modular-vs-microservicios",
@@ -23,12 +22,12 @@ const editorial = [
   {
     slug: "como-documentar-decisiones-arquitectura-adr",
     eyebrow: "Plantilla práctica",
-    icon: Wrench,
+    icon: Settings,
   },
   {
     slug: "arquitectura-offline-first-apps-eventos",
     eyebrow: "Aprendizajes de proyecto",
-    icon: BookOpenText,
+    icon: BookOpen,
   },
 ] as const;
 

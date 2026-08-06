@@ -1,0 +1,50 @@
+---
+import { Check, Rocket, ShieldCheck } from "@lucide/astro";
+import LifeBuoy from "@lucide/astro/icons/life-buoy";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+
+const stages = [
+  {
+    icon: Rocket,
+    title: "Lanzamiento acompañado",
+    text: "Publicamos el producto, configuramos analytics y monitorización, y te entregamos el código y la documentación.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "30 días incluidos",
+    text: "Corregimos errores del alcance acordado y respondemos a las dudas del equipo durante el primer mes de producción.",
+  },
+  {
+    icon: LifeBuoy,
+    title: "Después, tú decides",
+    text: "Puedes continuar con tu equipo, pedir soporte puntual o contratar sprints de evolución con condiciones y alcance definidos.",
+  },
+];
+---
+
+<section class="landing-section bg-accent/5" id="post-lanzamiento">
+  <SectionHeader
+    title="El proyecto no termina cuando hacemos deploy"
+    description="Te dejamos una herramienta operativa, entendible y sin dependencia forzada de nosotros. Esto es lo que ocurre después."
+    align="center"
+  />
+
+  <div class="grid gap-4 md:grid-cols-3 max-w-6xl mx-auto w-full">
+    {stages.map(({ icon: Icon, title, text }, index) => (
+      <article class="rounded-2xl border border-muted bg-background p-6 md:p-8" data-reveal="bottom" data-delay={index * 100}>
+        <div class="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <Icon class="size-5" aria-hidden="true" />
+        </div>
+        <p class="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-primary">{index + 1}</p>
+        <h3 class="mt-2 text-xl font-semibold text-foreground">{title}</h3>
+        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
+      </article>
+    ))}
+  </div>
+
+  <div class="mx-auto mt-8 flex max-w-6xl flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground">
+    <span class="inline-flex items-center gap-2"><Check class="size-4 text-green-600" /> Código y repositorio tuyos</span>
+    <span class="inline-flex items-center gap-2"><Check class="size-4 text-green-600" /> Sin lock-in</span>
+    <span class="inline-flex items-center gap-2"><Check class="size-4 text-green-600" /> Soporte con alcance claro</span>
+  </div>
+</section>

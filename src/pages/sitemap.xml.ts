@@ -85,7 +85,7 @@ export const GET: APIRoute = async ({ site }) => {
 		FALLBACK_DATE,
 	);
 	const commercialRouteUrls = commercialRoutes
-		.filter((route) => route.href !== "/diagnostico")
+		.filter((route) => route.href !== "/diagnostico-procesos")
 		.map((route) => ({
 			url: route.href.replace(/^\//, ""),
 			priority: route.priority === "primary" ? "0.95" : "0.9",

@@ -41,7 +41,11 @@
 
     <section data-diagnostic-step="1" class="space-y-6">
       <div class="space-y-2">
-        <h3 class="text-2xl font-bold text-foreground">
+        <h3
+          data-diagnostic-step-heading
+          tabindex="-1"
+          class="text-2xl font-bold text-foreground"
+        >
           Empecemos por la tarea que más se repite
         </h3>
         <p class="text-sm leading-relaxed text-muted-foreground">
@@ -91,7 +95,11 @@
 
     <section data-diagnostic-step="2" class="hidden space-y-7">
       <div class="space-y-2">
-        <h3 class="text-2xl font-bold text-foreground">
+        <h3
+          data-diagnostic-step-heading
+          tabindex="-1"
+          class="text-2xl font-bold text-foreground"
+        >
           Ahora piensa en una semana normal
         </h3>
         <p class="text-sm leading-relaxed text-muted-foreground">
@@ -276,7 +284,11 @@
 
     <section data-diagnostic-step="3" class="hidden space-y-6">
       <div class="space-y-2">
-        <h3 class="text-2xl font-bold text-foreground">
+        <h3
+          data-diagnostic-step-heading
+          tabindex="-1"
+          class="text-2xl font-bold text-foreground"
+        >
           Tu estimación ya está lista
         </h3><p class="text-sm leading-relaxed text-muted-foreground">
           Déjanos un email y te enviamos la lectura completa, con próximos pasos
@@ -406,6 +418,21 @@
       </div>
       <p class="hidden text-sm text-red-600" data-diagnostic-error role="alert">
       </p>
+      <div
+        class="hidden rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground space-y-3"
+        data-diagnostic-fallback
+      >
+        <p>
+          Para que no se pierda tu solicitud, puedes continuar con el formulario
+          de contacto.
+        </p>
+        <a
+          data-diagnostic-contact
+          href="/contact?ref=diagnostico-error"
+          class="inline-flex rounded-full bg-primary px-4 py-2 font-semibold text-background transition-opacity hover:opacity-90"
+          >Continuar con el formulario de contacto</a
+        >
+      </div>
     </section>
   </form>
   <div
@@ -468,9 +495,6 @@
       const progressPercentEl = form.querySelector<HTMLElement>(
         "[data-diagnostic-progress-percent]",
       );
-      const timesEl = form.querySelector<HTMLInputElement>(
-        "[data-diagnostic-times]",
-      );
       const minutesEl = form.querySelector<HTMLInputElement>(
         "[data-diagnostic-minutes]",
       );
@@ -482,6 +506,12 @@
       );
       const errorEl = form.querySelector<HTMLElement>(
         "[data-diagnostic-error]",
+      );
+      const fallbackEl = form.querySelector<HTMLElement>(
+        "[data-diagnostic-fallback]",
+      );
+      const contactEl = form.querySelector<HTMLAnchorElement>(
+        "[data-diagnostic-contact]",
       );
       const successEl = form.parentElement?.querySelector<HTMLElement>(
         "[data-diagnostic-success]",
@@ -574,10 +604,10 @@
           stepLabelEl.textContent = `Paso ${currentStep} de ${totalSteps}`;
         if (progressPercentEl) progressPercentEl.textContent = `${percent}%`;
         if (progressEl) progressEl.style.width = `${percent}%`;
-        const firstInput = form.querySelector<HTMLElement>(
-          `[data-diagnostic-step="${currentStep}"] input:not([type="hidden"])`,
+        const heading = form.querySelector<HTMLElement>(
+          `[data-diagnostic-step="${currentStep}"] [data-diagnostic-step-heading]`,
         );
-        requestAnimationFrame(() => firstInput?.focus());
+        requestAnimationFrame(() => heading?.focus());
       };
       const validStep = (step: number) => {
         const stepEl = form.querySelector<HTMLElement>(
@@ -595,6 +625,22 @@
           }
         }
         return true;
+      };
+      const showSubmissionFallback = (m: ReturnType<typeof values>) => {
+        if (errorEl) {
+          errorEl.textContent =
+            "Ha habido un error técnico al preparar tu diagnóstico. Si la solicitud se ha registrado, te lo enviaremos en cuanto esté listo.";
+          errorEl.classList.remove("hidden");
+        }
+        if (contactEl) {
+          const url = new URL("/contact", window.location.origin);
+          url.searchParams.set("subject", "Necesito mi diagnóstico");
+          url.searchParams.set("ref", "diagnostico-error");
+          url.searchParams.set("coste", String(m.yearlyCost));
+          url.searchParams.set("horas", String(m.yearlyHours));
+          contactEl.href = `${url.pathname}${url.search}`;
+        }
+        fallbackEl?.classList.remove("hidden");
       };
       // Solo la primera interacción real cuenta como diagnóstico iniciado;
       // el resto de pulsaciones se limitan a recalcular.
@@ -671,6 +717,7 @@
           button.textContent = "Preparando tu diagnóstico…";
         }
         if (errorEl) errorEl.classList.add("hidden");
+        fallbackEl?.classList.add("hidden");
         const d = m.d;
         const process = String(d.get("process") || "");
         const impact = String(d.get("impact") || "");
@@ -697,11 +744,14 @@
           },
           attribution: buildAttributionPayload("diagnostic_completed"),
         };
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 15_000);
         try {
           const response = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
+            signal: controller.signal,
           });
           const result = await response.json().catch(() => ({}));
           if (!response.ok)
@@ -725,18 +775,14 @@
           browserWindow.fbq?.("track", "CompleteRegistration", {
             content_name: "diagnostic_completed",
           });
-        } catch (error) {
-          if (errorEl) {
-            errorEl.textContent =
-              error instanceof Error
-                ? error.message
-                : "No se pudo enviar. Inténtalo de nuevo.";
-            errorEl.classList.remove("hidden");
-          }
+        } catch {
+          showSubmissionFallback(m);
           if (button) {
             button.disabled = false;
-            button.textContent = "Quiero recibir mi diagnóstico personalizado";
+            button.textContent = "Enviarme el diagnóstico completo";
           }
+        } finally {
+          window.clearTimeout(timeout);
         }
       });
     });

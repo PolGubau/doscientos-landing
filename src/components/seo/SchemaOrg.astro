@@ -54,9 +54,15 @@ const professionalServiceSchema = {
   geo: { "@type": "GeoCoordinates", latitude: company.geo.latitude, longitude: company.geo.longitude },
   hasMap: "https://www.google.com/maps/search/?api=1&query=Premi%C3%A0+de+Mar",
   areaServed: company.serviceAreas.map((name) => ({ "@type": name === "España" ? "Country" : "Place", name })),
-  contactPoint: company.contactPoints,
-  openingHoursSpecification: company.openingHours,
-} as WithContext<ProfessionalService>;
+      contactPoint: company.contactPoints.map((point) => ({
+        "@type": "ContactPoint",
+        ...point,
+      })),
+  openingHoursSpecification: company.openingHours.map((hours) => ({
+    "@type": "OpeningHoursSpecification",
+    ...hours,
+  })),
+} as unknown as WithContext<ProfessionalService>;
 
 const websiteSchema = {
   "@context": "https://schema.org",

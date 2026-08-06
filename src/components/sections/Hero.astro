@@ -1,34 +1,30 @@
 ---
 import {
   Calendar,
-  CheckCheck,
-  FileSpreadsheet,
+  Check,
   FileText,
-  Folder,
-  Image,
   Mail,
-  MessageCircle,
-  NotebookPen,
-  PenLine,
-  Receipt,
-  StickyNote,
+  MessageSquare,
 } from "@lucide/astro";
+import Folder from "@lucide/astro/icons/folder";
+import PencilLine from "@lucide/astro/icons/pencil-line";
 import { copy } from "~/shared/lib/copy";
+import { branding } from "~/config/branding";
 import Button from "../ui/Button.astro";
 
 const { hero } = copy;
 
 const ICONS = {
-  "file-spreadsheet": FileSpreadsheet,
+  "file-spreadsheet": FileText,
   folder: Folder,
-  "notebook-pen": NotebookPen,
-  "pen-line": PenLine,
+  "notebook-pen": PencilLine,
+  "pen-line": PencilLine,
   mail: Mail,
-  "message-circle": MessageCircle,
+  "message-circle": MessageSquare,
   calendar: Calendar,
-  receipt: Receipt,
+  receipt: FileText,
   "file-text": FileText,
-  "sticky-note": StickyNote,
+  "sticky-note": FileText,
 } as const;
 
 // Each chip's thumbnail (above the filename caption) is rendered differently
@@ -92,7 +88,7 @@ const chaos = hero.stage.chaos.map((item, i) => ({
       {hero.title}
     </h1>
     <p
-      class="hero-subtitle mt-4 max-w-2xl mx-auto text-base md:text-lg text-muted-foreground text-pretty"
+      class="hero-subtitle mt-4 max-w-2xl mx-auto text-base md:text-lg text-muted-foreground text-balance"
     >
       {hero.subtitle}
     </p>
@@ -113,8 +109,8 @@ const chaos = hero.stage.chaos.map((item, i) => ({
         >
           <Button withArrow class="w-full sm:w-fit">{hero.cta}</Button>
         </a>
-        <a href="/projects" id="hero-cta-secondary" class="hero-secondary-link">
-          Ver resultados reales <span aria-hidden="true">→</span>
+        <a href={branding.contact.calCom.bookingUrl} id="hero-cta-secondary" class="hero-secondary-link" target="_blank" rel="noopener noreferrer">
+          Agendar llamada de 30 min <span aria-hidden="true">→</span>
         </a>
       </div>
       <p class="hero-cta-note">{hero.ctaNote}</p>
@@ -182,11 +178,11 @@ const chaos = hero.stage.chaos.map((item, i) => ({
                 {kind === "chat" && (
                   <div class="hero-chaos-chat">
                     <div class="hero-chaos-chat-photo">
-                      <Image class="size-6" />
+                      <span class="size-6 rounded bg-primary/20" />
                     </div>
                     <div class="hero-chaos-chat-meta">
                       <span>12:04</span>
-                      <CheckCheck class="size-3" />
+                      <Check class="size-3" />
                     </div>
                   </div>
                 )}
@@ -293,11 +289,15 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   .hero-section::before {
     content: "";
     position: absolute;
-    inset: 4rem 0 auto;
-    height: 28rem;
+    /* El radial debe empezar fuera del hero: si su caja empieza a 4rem,
+     * aparece una línea horizontal aunque los colores del degradado sean
+     * transparentes. Extendemos la caja hacia arriba y mantenemos el foco
+     * visual dentro del titular. */
+    inset: -6rem 0 auto;
+    height: 38rem;
     pointer-events: none;
     background: radial-gradient(
-      circle at 50% 38%,
+      circle at 50% 44%,
       color-mix(in srgb, var(--brand-lime) 16%, transparent),
       transparent 68%
     );
@@ -783,6 +783,46 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   .hero-window-metric-label {
     font-size: 0.75rem;
     color: var(--muted-foreground);
+  }
+
+  /* Short desktop windows (for example 1024 × 512) have ample horizontal
+   * space but cannot fit the full editorial stack plus the product scene.
+   * Prioritize the value proposition, CTA, and a complete software window;
+   * the eyebrow and CTA note remain available on standard-height desktops. */
+  @media (min-width: 768px) and (max-height: 680px) {
+    #hero {
+      padding-top: 4rem;
+      padding-bottom: 1rem;
+      gap: 0.75rem;
+    }
+
+    .hero-eyebrow,
+    .hero-cta-note {
+      display: none;
+    }
+
+    .hero-title {
+      font-size: clamp(2.15rem, 4vw, 3.2rem);
+      line-height: 1.04;
+    }
+
+    .hero-subtitle {
+      margin-top: 0.6rem;
+      max-width: 34rem;
+      font-size: 0.95rem;
+    }
+
+    #hero-stage {
+      min-height: 252px;
+    }
+
+    .hero-chaos-inner {
+      width: 112px;
+    }
+
+    #hero-window {
+      width: min(360px, 90%);
+    }
   }
 
   /*

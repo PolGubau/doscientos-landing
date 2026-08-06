@@ -68,6 +68,8 @@ const alternateUrl = new URL(
   href={new URL("rss.xml", Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+<meta property="og:image" content={new URL(image, Astro.site)} />
+<meta name="twitter:card" content="summary_large_image" />
 {
   googleSiteVerification && (
     <meta name="google-site-verification" content={googleSiteVerification} />

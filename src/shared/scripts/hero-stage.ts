@@ -523,7 +523,7 @@ export const setupHeroStage = () => {
     const automationStart = P3_END;
     const firstTarget = cursorTargets[0];
     const doneRow = (rowIndex: number, at: number) => {
-      tl.fromTo(
+      tl!.fromTo(
         rows[rowIndex],
         { backgroundColor: "#e3e5e7", borderColor: "transparent" },
         {
@@ -537,7 +537,7 @@ export const setupHeroStage = () => {
     };
 
     if (firstTarget) {
-      tl.fromTo(
+      tl!.fromTo(
         cursor,
         {
           autoAlpha: 0,
@@ -585,7 +585,7 @@ export const setupHeroStage = () => {
       const flowStart = automationStart + 0.27 + index * 0.25;
       const segment = flowSegments[index];
       if (hasFlow && segment?.line && segment.packet) {
-        tl.fromTo(
+        tl!.fromTo(
           segment.line,
           {
             autoAlpha: 0,
@@ -621,7 +621,7 @@ export const setupHeroStage = () => {
           flowStart + 0.13,
         );
       }
-      tl.fromTo(
+      tl!.fromTo(
         rowLoaders[rowIndex],
         { autoAlpha: 0, scale: 0.45, rotation: 0 },
         {
@@ -674,5 +674,9 @@ export const setupHeroStage = () => {
       proofStart,
     )
     .to(metricValue, { scale: 1, duration: 0.2, ease: "power2.out" }, ">")
+    // Antes de liberar el pin, retiramos la ventana. Sin esta salida, al
+    // volver el hero al flujo normal el borde superior del viewport la corta
+    // a mitad y el salto hacia las pruebas de confianza parece accidental.
+    .to(win, { autoAlpha: 0, y: -24, duration: 0.16, ease: "power1.in" }, ">+=0.08")
     .to({}, { duration: 0.08 }, ">");
 };
