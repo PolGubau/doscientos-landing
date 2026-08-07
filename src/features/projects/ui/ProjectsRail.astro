@@ -15,9 +15,8 @@ const { projects, id } = Astro.props;
   data-stagger="150"
 >
   {
-    projects.map((project, projectIndex) => (
+    projects.map((project) => (
       <div
-        class:list={{ "lg:col-span-2": projectIndex === 0 }}
         data-reveal="bottom"
         data-speed="normal"
         data-easing="smooth"
@@ -32,7 +31,6 @@ const { projects, id } = Astro.props;
           services_provided={project.data.services_provided ?? []}
           color={project.data.color}
           cover={project.data.cover}
-          featured={projectIndex === 0}
         />
       </div>
     ))
