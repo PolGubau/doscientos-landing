@@ -1,0 +1,269 @@
+---
+import { ArrowUpRight, Check, CircleX, Download } from "@lucide/astro";
+import Button from "~/components/ui/Button.astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+import { branding } from "~/config/branding";
+import { getBrandGuides } from "~/data/brandGuides";
+import MainLayout from "~/layouts/MainLayout.astro";
+
+const guides = await getBrandGuides();
+
+const colors = [
+  {
+    name: "Verde doscientos",
+    value: "#2A4227",
+    usage: "Color de decisión y reconocimiento",
+  },
+  {
+    name: "Lima",
+    value: "OKLCH 0.93 0.18 131",
+    usage: "Detalle, energía y acento puntual",
+  },
+  { name: "Fondo", value: "#F6F7F9", usage: "Superficie principal" },
+  { name: "Tinta", value: "#0C110B", usage: "Texto y contraste" },
+];
+---
+
+<MainLayout
+  title="Guía de marca | doscientos"
+  description="Logotipos, color, tipografía y pautas de voz para representar a doscientos de forma coherente."
+  showFooterCta={false}
+>
+  <div
+    class="mx-auto flex w-full max-w-7xl flex-col gap-24 px-6 pb-8 pt-16 md:px-10 lg:gap-32"
+  >
+    <header
+      class="overflow-hidden rounded-[2rem] bg-primary px-7 py-12 text-background md:px-12 md:py-16"
+      data-reveal="bottom"
+    >
+      <div
+        class="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between"
+      >
+        <div class="max-w-3xl">
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.18em] text-background/65"
+          >
+            Kit de marca · versión 1.0
+          </p>
+          <h1
+            class="mt-5 max-w-2xl text-5xl font-bold leading-[0.95] tracking-tight md:text-7xl"
+          >
+            Hagamos que cada detalle diga doscientos.
+          </h1>
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-background/75">
+            Recursos y principios para partners, prensa y personas que
+            construyen con nosotros.
+          </p>
+        </div>
+        <nav
+          aria-label="Secciones de la guía"
+          class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-background/75"
+        >
+          <a href="#logotipo" class="hover:text-background hover:underline"
+            >Logotipo</a
+          >
+          <a href="#color" class="hover:text-background hover:underline"
+            >Color</a
+          >
+          <a href="#tipografia" class="hover:text-background hover:underline"
+            >Tipografía</a
+          >
+          <a href="#guias" class="hover:text-background hover:underline"
+            >Guías</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <section id="logotipo" class="scroll-mt-28">
+      <SectionHeader
+        title="Logotipo"
+        subtitle="reconocible a primera vista"
+        description="Utiliza siempre los archivos originales. No redibujes, deformes ni combines el isotipo con otros símbolos."
+      />
+      <div class="mt-10 grid gap-4 lg:grid-cols-[1.4fr_0.6fr]">
+        <article
+          class="flex min-h-72 flex-col justify-between rounded-3xl border border-muted bg-background p-8 shadow-pastel"
+        >
+          <img
+            src="/logo.png"
+            alt="Logotipo de doscientos"
+            class="h-auto w-52 max-w-full object-contain"
+          />
+          <div class="flex flex-wrap gap-3">
+            <a href="/logo.png" download="doscientos-logo.png"
+              ><Button size="sm" withArrow
+                ><Download class="size-4" />Descargar PNG</Button
+              ></a
+            >
+            <a href="/iso.svg" download="doscientos-isotipo.svg"
+              ><Button size="sm" variant="outline"
+                ><Download class="size-4" />Isotipo SVG</Button
+              ></a
+            >
+          </div>
+        </article>
+        <article
+          class="flex min-h-72 flex-col justify-between rounded-3xl bg-foreground p-8 text-background"
+        >
+          <img
+            src="/logo.png"
+            alt="Logotipo de doscientos sobre fondo oscuro"
+            class="h-auto w-48 max-w-full brightness-0 invert"
+          />
+          <p class="max-w-xs text-sm leading-relaxed text-background/65">
+            En fondos oscuros, utiliza la versión blanca. Conserva espacio libre
+            alrededor del logo equivalente a la altura del isotipo.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="color" class="scroll-mt-28">
+      <SectionHeader
+        title="Color"
+        subtitle="intención antes que decoración"
+        description="La paleta aporta contraste y jerarquía. El verde concentra atención; los neutros sostienen la lectura."
+      />
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          colors.map((color) => (
+            <article class="overflow-hidden rounded-2xl border border-muted bg-background">
+              <div
+                class="h-28"
+                style={`background: ${color.value.startsWith("#") ? color.value : "var(--brand-lime)"}`}
+              />
+              <div class="space-y-2 p-5">
+                <h3 class="font-semibold">{color.name}</h3>
+                <code class="block text-xs text-primary">{color.value}</code>
+                <p class="text-sm leading-relaxed text-muted-foreground">
+                  {color.usage}
+                </p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section
+      id="tipografia"
+      class="scroll-mt-28 grid gap-10 lg:grid-cols-2 lg:items-end"
+    >
+      <SectionHeader
+        title="Tipografía"
+        subtitle="clara, humana y directa"
+        description="Onest es nuestra voz tipográfica. La usamos con peso y espacio: titulares contundentes, cuerpo cómodo y jerarquía visible."
+      />
+      <div class="rounded-3xl border border-primary/15 bg-accent p-7 md:p-10">
+        <p
+          class="text-xs font-semibold uppercase tracking-[0.16em] text-primary"
+        >
+          Onest · 100–900
+        </p>
+        <p
+          class="mt-5 text-4xl font-bold leading-none tracking-tight md:text-5xl"
+        >
+          Sistemas claros. Progreso real.
+        </p>
+        <p
+          class="mt-6 max-w-md text-base leading-relaxed text-muted-foreground"
+        >
+          Cuerpo en 16 px como base, line-height generoso y contraste
+          suficiente. La legibilidad nunca se negocia.
+        </p>
+      </div>
+    </section>
+
+    <section
+      aria-label="Usos correctos e incorrectos"
+      class="grid gap-4 md:grid-cols-2"
+    >
+      <article
+        class="rounded-3xl border border-primary/20 bg-primary p-7 text-background"
+      >
+        <Check class="size-5" /><h2 class="mt-7 text-2xl font-bold">
+          Sí: simple y con propósito
+        </h2><p
+          class="mt-3 max-w-md text-sm leading-relaxed text-background/75"
+        >
+          Prioriza claridad, contraste, espacio y mensajes que expliquen una
+          decisión concreta.
+        </p>
+      </article>
+      <article class="rounded-3xl border border-muted bg-background p-7">
+        <CircleX class="size-5 text-destructive" /><h2
+          class="mt-7 text-2xl font-bold"
+        >
+          No: ruido ni promesas vacías
+        </h2><p
+          class="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground"
+        >
+          Evita degradados arbitrarios, tecnicismos sin contexto, efectos que
+          dificulten leer o afirmaciones que no podamos demostrar.
+        </p>
+      </article>
+    </section>
+
+    <section id="guias" class="scroll-mt-28">
+      <SectionHeader
+        title="Cómo sonamos"
+        subtitle="cuando las palabras también diseñan"
+        description="Estos principios ayudan a escribir y revisar cualquier pieza de comunicación de doscientos."
+      />
+      <div class="mt-10 grid gap-4 lg:grid-cols-2">
+        {
+          guides.map((guide) => (
+            <article
+              id={guide.slug}
+              class="scroll-mt-28 rounded-3xl border border-muted bg-background p-7 md:p-8"
+            >
+              <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+                Guía
+              </p>
+              <h3 class="mt-3 text-2xl font-bold">{guide.title}</h3>
+              {guide.description && (
+                <p class="mt-2 text-sm text-muted-foreground">
+                  {guide.description}
+                </p>
+              )}
+              <div class="mt-6 space-y-4 text-sm leading-7 text-foreground/80">
+                {guide.content
+                  .split("\n\n")
+                  .filter(Boolean)
+                  .map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section
+      class="rounded-3xl bg-foreground p-8 text-background md:flex md:items-center md:justify-between md:gap-8 md:p-12"
+      data-reveal="bottom"
+    >
+      <div>
+        <p
+          class="text-xs font-semibold uppercase tracking-[0.16em] text-background/60"
+        >
+          ¿Un uso especial?
+        </p><h2 class="mt-3 text-3xl font-bold">
+          Hablemos antes de publicar.
+        </h2><p class="mt-3 max-w-xl text-background/70">
+          Para campañas, colaboraciones, prensa o un formato que no aparezca
+          aquí, escríbenos y lo revisamos contigo.
+        </p>
+      </div>
+      <a
+        class="mt-6 inline-flex shrink-0 md:mt-0"
+        href={`mailto:${branding.contact.email}?subject=Consulta%20sobre%20uso%20de%20marca`}
+        ><Button size="lg" withArrow
+          ><ArrowUpRight class="size-4" />Contactar</Button
+        ></a
+      >
+    </section>
+  </div>
+</MainLayout>

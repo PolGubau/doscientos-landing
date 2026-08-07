@@ -146,6 +146,12 @@ export const GET: APIRoute = async ({ site }) => {
       priority: "0.6",
       changefreq: "monthly",
     },
+    {
+      url: "marca",
+      source: "src/pages/marca.astro",
+      priority: "0.6",
+      changefreq: "monthly",
+    },
     // Páginas SEO locales
     {
       url: "desarrollo-web-valencia",
