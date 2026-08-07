@@ -119,7 +119,7 @@ const typography = tokens.filter((token) => token.token_group === "typography");
             <article class="overflow-hidden rounded-2xl border border-muted bg-background">
               <div class="h-28" style={`background: ${color.value}`} />
               <div class="space-y-2 p-5">
-                <h3 class="font-semibold">{color.name}</h3>
+                <h3 class="font-semibold">{color.key}</h3>
                 <code class="block text-xs text-primary">{color.value}</code>
                 <p class="text-sm leading-relaxed text-muted-foreground">
                   {color.description ?? "Token de color"}
