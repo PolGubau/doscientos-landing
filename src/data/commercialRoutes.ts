@@ -71,6 +71,7 @@ export const footerLinkColumns = [
       { label: "Caso Bitacora ERP", href: "/projects/bitacora-erp" },
       { label: "Packs de webs", href: "/packs" },
       { label: "Recursos", href: "/recursos" },
+      { label: "Guía de marca", href: "/marca" },
       { label: "Sobre nosotros", href: "/sobre-nosotros" },
       { label: "Trabaja con nosotros", href: "/trabaja-con-nosotros" },
       { label: "Contacto", href: "/contact" },
