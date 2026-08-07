@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
 import { ArrowUpRight, CircleCheck } from "@lucide/astro";
+import { Image } from "astro:assets";
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import { branding } from "~/config/branding";
@@ -65,7 +65,11 @@ const personSchemas = branding.team.map((member) => ({
 >
   {
     personSchemas.map((schema) => (
-      <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />
+      <script
+        is:inline
+        type="application/ld+json"
+        set:html={serializeJsonLd(schema)}
+      />
     ))
   }
   <div
@@ -93,15 +97,27 @@ const personSchemas = branding.team.map((member) => ({
       </p>
       <div class="mt-8 grid gap-4 sm:grid-cols-2 max-w-3xl">
         <div class="rounded-2xl border border-muted bg-accent p-5">
-          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-primary">La empresa</p>
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.14em] text-primary"
+          >
+            La empresa
+          </p>
           <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-            doscientos es una sociedad constituida en 2026 en Premià de Mar. La empresa es nueva; la experiencia viene del trabajo previo de sus fundadores en producto, software y sistemas en producción.
+            Con sede en Premià de Mar, doscientos es la empresa desde la que
+            desarrollamos proyectos como Palumba, Les Santes u Optinergia.
+            Sumamos experiencia en producto digital, desarrollo de software y
+            sistemas en producción.
           </p>
         </div>
         <div class="rounded-2xl border border-muted bg-accent p-5">
-          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-primary">Cómo trabajamos</p>
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.14em] text-primary"
+          >
+            Cómo trabajamos
+          </p>
           <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-            Trabajas directamente con Pol y Gerard. No hay capas comerciales ni una rotación de perfiles entre la propuesta y el desarrollo.
+            Trabajas directamente con Pol y Gerard. No hay capas comerciales ni
+            una rotación de perfiles entre la propuesta y el desarrollo.
           </p>
         </div>
       </div>
