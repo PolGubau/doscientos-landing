@@ -110,7 +110,10 @@ const metaDescription = project.data.metaDescription ?? project.data.summary;
         >
           <Layout class="size-5 text-muted-foreground" />
         </Highlight>
-        <Highlight label="Timeline" value={`${project.data.timeline} semanas`}>
+        <Highlight
+          label="Timeline"
+          value={`${project.data.timeline} ${project.data.timelineUnit}${project.data.timeline === 1 ? "" : project.data.timelineUnit === "semana" ? "s" : "es"}`}
+        >
           <Timer class="size-5 text-muted-foreground" />
         </Highlight>
       </ul>

@@ -1,0 +1,104 @@
+---
+title: "Palumba"
+summary: "Definimos desde cero la nueva experiencia móvil de Palumba: una app cívica para entender mejor las opciones políticas y participar en democracia."
+seoTitle: "Palumba | Discovery y estrategia para una app cívica"
+metaDescription: "Discovery, estrategia de producto y mentoría técnica para reconstruir la app móvil de Palumba, una herramienta cívica para facilitar la participación democrática."
+available: true
+link: "https://palumba.org/"
+client: "Palumba EU"
+endedAt: "2026-06-20"
+timeline: 1
+timelineUnit: "semana"
+color: "#f8c45c"
+services_provided:
+  - Discovery
+  - Estrategia de producto
+  - UX/UI
+  - Mentoría técnica
+cover: "../../assets/media/projects/palumba/logo.webp"
+logo: "../../assets/media/projects/palumba/logo.webp"
+---
+
+import { Image } from "astro:assets";
+
+import palumbaMark from "../../assets/media/projects/palumba/logo.webp";
+
+Palumba es una asociación europea sin ánimo de lucro que trabaja para acercar la política y la participación democrática a las nuevas generaciones. El equipo quería reconstruir su aplicación móvil desde cero: una experiencia más clara, más fácil de usar y preparada para acompañar al usuario antes de votar.
+
+Durante una semana trabajamos junto al equipo en la oficina, poniendo en común producto, diseño y tecnología. La app nueva no llegó a desarrollarse en esta fase porque el presupuesto se agotó antes de comenzar la implementación, pero el trabajo de definición sí quedó preparado.
+
+**Convertimos una idea ambiciosa en un plan de producto concreto para poder construirla con criterio.**
+
+<Image
+  src={palumbaMark}
+  alt="Identidad visual de Palumba, la aplicación cívica para entender mejor las opciones políticas"
+  class="rounded-2xl my-6 max-w-sm mx-auto"
+/>
+
+<div class="not-prose grid grid-cols-2 sm:grid-cols-4 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">1</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">semana de trabajo</span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">0 → 1</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">definición de producto</span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">App</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">experiencia móvil</span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">Listo</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">plan para desarrollar</span>
+  </div>
+</div>
+
+---
+
+## El reto
+
+**La aplicación existente necesitaba una reconstrucción completa para ofrecer una experiencia más clara y útil.** El reto no era solo dibujar pantallas nuevas: había que decidir qué debía hacer el producto, cómo ordenar la información y qué arquitectura permitiría llevarlo a una app móvil sólida.
+
+En una semana intensiva alineamos visión, alcance, flujos y decisiones técnicas con el equipo de Palumba, los diseñadores y la empresa que iba a encargarse del desarrollo.
+
+---
+
+## La solución
+
+Empezamos por la experiencia de usuario: qué necesita entender una persona antes de votar, qué preguntas debe responder la app y cómo reducir la fricción para que el proceso sea accesible incluso para quien llega sin contexto político previo.
+
+Después aterrizamos la propuesta en flujos y pantallas concretas. Trabajé sobre los diseños en Figma junto a la diseñadora, revisando jerarquías, estados, navegación y decisiones de interacción para que el diseño no se quedara en una colección de pantallas bonitas, sino que pudiera convertirse en un producto coherente.
+
+La semana también sirvió para dejar preparado el camino técnico: revisamos cómo estructurar la aplicación, qué partes debían resolverse desde el principio y qué decisiones convenía posponer para no sobredimensionar la primera versión.
+
+---
+
+## Qué dejamos preparado
+
+<div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
+  <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
+    <span class="text-sm font-semibold">Visión y alcance de la primera versión</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">Qué debía resolver la nueva app, para quién y con qué prioridades.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
+    <span class="text-sm font-semibold">Flujos y pantallas principales</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">Una base compartida para que diseño y desarrollo trabajaran sobre el mismo producto.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
+    <span class="text-sm font-semibold">Revisión de UX/UI</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">Acompañamiento a la diseñadora para validar jerarquías, estados y decisiones de interacción.</span>
+  </div>
+  <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
+    <span class="text-sm font-semibold">Criterio técnico para empezar</span>
+    <span class="text-sm leading-relaxed text-muted-foreground">Decisiones de arquitectura y prioridades para que el desarrollo pudiera arrancar con una base clara.</span>
+  </div>
+</div>
+
+---
+
+## Estado del proyecto
+
+La nueva aplicación quedó definida y lista para pasar a desarrollo, pero esa fase se pausó cuando el proyecto se quedó sin presupuesto. La app pública actual de Palumba sigue disponible en su [web oficial](https://palumba.org/); este caso documenta el trabajo de producto y mentoría realizado para plantear su siguiente versión, no un desarrollo que llegara a producción.
+
+> Un buen desarrollo empieza mucho antes de escribir código: empieza cuando el equipo comparte qué problema está resolviendo y qué significa hacerlo bien.

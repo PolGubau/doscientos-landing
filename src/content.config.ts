@@ -17,6 +17,7 @@ const projects = defineCollection({
       available: z.boolean(),
       client: z.string(),
       timeline: z.number().int().positive(),
+      timelineUnit: z.enum(["semana", "mes"]).default("mes"),
       endedAt: z.string().transform((str) => new Date(str)),
       color: z.string(),
       link: z.string().optional(),
