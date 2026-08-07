@@ -94,7 +94,9 @@ function isBrandToken(value: unknown): value is BrandToken {
   const token = value as Record<string, unknown>;
   return (
     typeof token.token_group === "string" &&
-    ["color", "typography", "spacing", "radius", "shadow"].includes(token.token_group) &&
+    ["color", "typography", "spacing", "radius", "shadow"].includes(
+      token.token_group,
+    ) &&
     typeof token.key === "string" &&
     typeof token.value === "string" &&
     (token.value_dark === null || typeof token.value_dark === "string") &&
@@ -118,7 +120,10 @@ export async function getBrandKit(): Promise<BrandKit> {
       signal: AbortSignal.timeout(4_000),
     });
     if (!response.ok) return { guides: fallbackGuides, tokens: fallbackTokens };
-    const payload = (await response.json()) as { guides?: unknown; tokens?: unknown };
+    const payload = (await response.json()) as {
+      guides?: unknown;
+      tokens?: unknown;
+    };
     const guides = Array.isArray(payload.guides)
       ? payload.guides.filter(isBrandGuide)
       : [];
@@ -126,8 +131,14 @@ export async function getBrandKit(): Promise<BrandKit> {
       ? payload.tokens.filter(isBrandToken)
       : [];
     return {
-      guides: guides.length > 0 ? guides.sort((a, b) => a.sort_order - b.sort_order) : fallbackGuides,
-      tokens: tokens.length > 0 ? tokens.sort((a, b) => a.sort_order - b.sort_order) : fallbackTokens,
+      guides:
+        guides.length > 0
+          ? guides.sort((a, b) => a.sort_order - b.sort_order)
+          : fallbackGuides,
+      tokens:
+        tokens.length > 0
+          ? tokens.sort((a, b) => a.sort_order - b.sort_order)
+          : fallbackTokens,
     };
   } catch {
     return { guides: fallbackGuides, tokens: fallbackTokens };
