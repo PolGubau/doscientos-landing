@@ -3,25 +3,13 @@ import { ArrowUpRight, Check, CircleX, Download } from "@lucide/astro";
 import Button from "~/components/ui/Button.astro";
 import SectionHeader from "~/components/ui/SectionHeader.astro";
 import { branding } from "~/config/branding";
-import { getBrandGuides } from "~/data/brandGuides";
+import { getBrandKit } from "~/data/brandGuides";
 import MainLayout from "~/layouts/MainLayout.astro";
 
-const guides = await getBrandGuides();
+const { guides, tokens } = await getBrandKit();
 
-const colors = [
-  {
-    name: "Verde doscientos",
-    value: "#2A4227",
-    usage: "Color de decisión y reconocimiento",
-  },
-  {
-    name: "Lima",
-    value: "OKLCH 0.93 0.18 131",
-    usage: "Detalle, energía y acento puntual",
-  },
-  { name: "Fondo", value: "#F6F7F9", usage: "Superficie principal" },
-  { name: "Tinta", value: "#0C110B", usage: "Texto y contraste" },
-];
+const colors = tokens.filter((token) => token.token_group === "color");
+const typography = tokens.filter((token) => token.token_group === "typography");
 ---
 
 <MainLayout
@@ -129,15 +117,12 @@ const colors = [
         {
           colors.map((color) => (
             <article class="overflow-hidden rounded-2xl border border-muted bg-background">
-              <div
-                class="h-28"
-                style={`background: ${color.value.startsWith("#") ? color.value : "var(--brand-lime)"}`}
-              />
+              <div class="h-28" style={`background: ${color.value}`} />
               <div class="space-y-2 p-5">
                 <h3 class="font-semibold">{color.name}</h3>
                 <code class="block text-xs text-primary">{color.value}</code>
                 <p class="text-sm leading-relaxed text-muted-foreground">
-                  {color.usage}
+                  {color.description ?? "Token de color"}
                 </p>
               </div>
             </article>
@@ -159,7 +144,7 @@ const colors = [
         <p
           class="text-xs font-semibold uppercase tracking-[0.16em] text-primary"
         >
-          Onest · 100–900
+          {typography[0]?.key ?? "Tipografía"}
         </p>
         <p
           class="mt-5 text-4xl font-bold leading-none tracking-tight md:text-5xl"
@@ -169,8 +154,10 @@ const colors = [
         <p
           class="mt-6 max-w-md text-base leading-relaxed text-muted-foreground"
         >
-          Cuerpo en 16 px como base, line-height generoso y contraste
-          suficiente. La legibilidad nunca se negocia.
+          {
+            typography[0]?.value ??
+              "La tipografía se define en el kit de marca publicado."
+          }
         </p>
       </div>
     </section>

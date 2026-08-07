@@ -7,6 +7,15 @@ export type BrandGuide = {
   published_at?: string | null;
 };
 
+export type BrandToken = {
+  token_group: "color" | "typography" | "spacing" | "radius" | "shadow";
+  key: string;
+  value: string;
+  value_dark: string | null;
+  description: string | null;
+  sort_order: number;
+};
+
 const fallbackGuides: BrandGuide[] = [
   {
     slug: "voz-y-tono",
@@ -26,6 +35,49 @@ const fallbackGuides: BrandGuide[] = [
   },
 ];
 
+const fallbackTokens: BrandToken[] = [
+  {
+    token_group: "color",
+    key: "primary",
+    value: "#2a4227",
+    value_dark: null,
+    description: "Color primario de marca",
+    sort_order: 10,
+  },
+  {
+    token_group: "color",
+    key: "accent",
+    value: "#2a4227",
+    value_dark: null,
+    description: "Color de acento",
+    sort_order: 20,
+  },
+  {
+    token_group: "color",
+    key: "background",
+    value: "#fafafa",
+    value_dark: null,
+    description: "Fondo principal",
+    sort_order: 30,
+  },
+  {
+    token_group: "color",
+    key: "foreground",
+    value: "#171717",
+    value_dark: null,
+    description: "Texto principal",
+    sort_order: 31,
+  },
+  {
+    token_group: "typography",
+    key: "font-sans",
+    value: "Inter, ui-sans-serif, system-ui, sans-serif",
+    value_dark: null,
+    description: "Fuente principal",
+    sort_order: 10,
+  },
+];
+
 function isBrandGuide(value: unknown): value is BrandGuide {
   if (!value || typeof value !== "object") return false;
   const guide = value as Record<string, unknown>;
@@ -37,27 +89,47 @@ function isBrandGuide(value: unknown): value is BrandGuide {
   );
 }
 
+function isBrandToken(value: unknown): value is BrandToken {
+  if (!value || typeof value !== "object") return false;
+  const token = value as Record<string, unknown>;
+  return (
+    typeof token.token_group === "string" &&
+    ["color", "typography", "spacing", "radius", "shadow"].includes(token.token_group) &&
+    typeof token.key === "string" &&
+    typeof token.value === "string" &&
+    (token.value_dark === null || typeof token.value_dark === "string") &&
+    (token.description === null || typeof token.description === "string") &&
+    typeof token.sort_order === "number"
+  );
+}
+
+export type BrandKit = { guides: BrandGuide[]; tokens: BrandToken[] };
+
 /**
  * A build can opt into the backoffice feed with PUBLIC_BRAND_KIT_API_URL.
  * The checked-in content is a resilient public fallback, never a draft source.
  */
-export async function getBrandGuides(): Promise<BrandGuide[]> {
+export async function getBrandKit(): Promise<BrandKit> {
   const endpoint = import.meta.env.PUBLIC_BRAND_KIT_API_URL;
-  if (!endpoint) return fallbackGuides;
+  if (!endpoint) return { guides: fallbackGuides, tokens: fallbackTokens };
 
   try {
     const response = await fetch(endpoint, {
       signal: AbortSignal.timeout(4_000),
     });
-    if (!response.ok) return fallbackGuides;
-    const payload = (await response.json()) as { guides?: unknown };
+    if (!response.ok) return { guides: fallbackGuides, tokens: fallbackTokens };
+    const payload = (await response.json()) as { guides?: unknown; tokens?: unknown };
     const guides = Array.isArray(payload.guides)
       ? payload.guides.filter(isBrandGuide)
       : [];
-    return guides.length > 0
-      ? guides.sort((a, b) => a.sort_order - b.sort_order)
-      : fallbackGuides;
+    const tokens = Array.isArray(payload.tokens)
+      ? payload.tokens.filter(isBrandToken)
+      : [];
+    return {
+      guides: guides.length > 0 ? guides.sort((a, b) => a.sort_order - b.sort_order) : fallbackGuides,
+      tokens: tokens.length > 0 ? tokens.sort((a, b) => a.sort_order - b.sort_order) : fallbackTokens,
+    };
   } catch {
-    return fallbackGuides;
+    return { guides: fallbackGuides, tokens: fallbackTokens };
   }
 }
