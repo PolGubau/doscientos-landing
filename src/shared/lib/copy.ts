@@ -11,7 +11,7 @@ export const copy = {
       "Software interno y automatizaciones a medida para que tu equipo deje de copiar datos y perseguir tareas.",
     brand: "doscientos.",
     cta: "Pedir diagnóstico gratis",
-    ctaNote: "60 min para detectar qué automatizar primero",
+    ctaNote: "30 min para detectar qué automatizar primero",
     highlights: [
       "Precio fijo y alcance cerrado",
       "En producción en 6 semanas",
