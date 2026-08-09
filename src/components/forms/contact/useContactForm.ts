@@ -64,8 +64,18 @@ export function useContactForm() {
   const [formData, setFormData] = useState<ContactValues>(() => {
     if (typeof window === "undefined") return EMPTY_FORM;
     try {
-      const saved = window.localStorage.getItem(STORAGE_KEY);
-      return saved ? { ...EMPTY_FORM, ...JSON.parse(saved) } : EMPTY_FORM;
+      const saved = window.sessionStorage.getItem(STORAGE_KEY);
+      if (!saved) return EMPTY_FORM;
+      const parsed = JSON.parse(saved) as Partial<ContactValues>;
+      // Do not persist name, email, phone or free-text company data in the
+      // browser. Only restore the low-sensitivity selector choices.
+      return {
+        ...EMPTY_FORM,
+        solutionType: parsed.solutionType ?? "",
+        companySize: parsed.companySize ?? "",
+        urgency: parsed.urgency ?? "",
+        budget: parsed.budget ?? "",
+      };
     } catch {
       return EMPTY_FORM;
     }
@@ -108,7 +118,15 @@ export function useContactForm() {
 
   useEffect(() => {
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+      window.sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          solutionType: formData.solutionType,
+          companySize: formData.companySize,
+          urgency: formData.urgency,
+          budget: formData.budget,
+        }),
+      );
     } catch {
       // localStorage no disponible (modo privado / SSR)
     }
@@ -203,6 +221,19 @@ export function useContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const honeypot = (e.currentTarget as HTMLFormElement).elements.namedItem(
+      "website",
+    );
+    const website = honeypot instanceof HTMLInputElement ? honeypot.value : "";
+
+    // Drop bot submissions before validating the human-facing fields.
+    if (website) {
+      console.warn("Honeypot triggered");
+      setStatus("success");
+      setStep(3);
+      return;
+    }
+
     const isPhoneValid = validateField("phone", formData.phone);
     setTouched((prev) => ({ ...prev, phone: true }));
     if (!isPhoneValid) {
@@ -212,10 +243,6 @@ export function useContactForm() {
 
     setStatus("loading");
 
-    const honeypot = (e.currentTarget as HTMLFormElement).elements.namedItem(
-      "website",
-    );
-    const website = honeypot instanceof HTMLInputElement ? honeypot.value : "";
     const hasLeadContext = Boolean(
       contextParams.current.subject ||
       contextParams.current.ref ||
@@ -236,14 +263,6 @@ export function useContactForm() {
       contextParams.current.horas &&
       `Horas calculadas: ${contextParams.current.horas}`,
     ].filter(Boolean);
-
-    // Si el honeypot está lleno, simulamos éxito para despistar al bot
-    if (website) {
-      console.warn("Honeypot triggered");
-      setStatus("success");
-      setStep(3);
-      return;
-    }
 
     trackEvent("form_submit_attempted", { conversionStep: "contact_form" });
 
@@ -304,7 +323,7 @@ export function useContactForm() {
       setSubmittedLeadId(payload?.leadId ?? null);
       setStep(3);
       try {
-        window.localStorage.removeItem(STORAGE_KEY);
+        window.sessionStorage.removeItem(STORAGE_KEY);
         window.sessionStorage.removeItem(DEDUPE_STORAGE_KEY);
       } catch {
         // localStorage no disponible

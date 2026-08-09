@@ -14,6 +14,7 @@ import SEOHead from "../components/seo/SEOHead.astro";
 import SchemaOrg from "../components/seo/SchemaOrg.astro";
 import FloatingCTA from "../components/ui/FloatingCTA.astro";
 import ReadingProgress from "../components/ui/ReadingProgress.astro";
+import { brandTokenStyle, loadPublishedBrandTokens } from "~/config/brand-kit";
 
 interface Props {
   title?: string;
@@ -53,6 +54,8 @@ interface Props {
 }
 
 const metadata = getMetadata();
+const publishedBrandTokens = await loadPublishedBrandTokens();
+const publishedBrandStyle = brandTokenStyle(publishedBrandTokens);
 
 const {
   title = metadata.title,
@@ -70,6 +73,7 @@ const {
 
 <html lang="es" dir="ltr" class="w-full overflow-x-clip">
   <head>
+    {publishedBrandStyle && <style is:inline>:root { {publishedBrandStyle} }</style>}
     <ConsentScript />
     <BaseHead title={title} description={description} image={image} />
     <SEOHead robots={robots} />

@@ -33,6 +33,7 @@ pnpm install
 | `PUBLIC_GOOGLE_SITE_VERIFICATION` | No          | Token de verificación HTML de Google Search Console.                                                                |
 | `PUBLIC_CLARITY_ID`               | No          | ID de Microsoft Clarity. Sin él, Clarity no se carga.                                                               |
 | `PUBLIC_LEADS_ENDPOINT`           | No          | Endpoint público del backoffice para los formularios. Por defecto usa `https://app.doscientos.es/api/public/leads`. |
+| `PUBLIC_BRAND_KIT_API_URL`         | No          | Feed público de tokens publicados del backoffice. Si falla, se usan los tokens incluidos en CSS.                 |
 
 ### Analítica, consentimiento y tráfico interno
 
