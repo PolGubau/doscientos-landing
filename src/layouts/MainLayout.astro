@@ -142,6 +142,10 @@ const {
     <script is:inline>
       window.GHL_TRACKING_ID_PENDING = "tk_bd6c82a0afde449a8ffd7dd348ef5130";
       window.__loadGHL = function () {
+        if (
+          window.sessionStorage.getItem("doscientos:internal-traffic") === "1"
+        )
+          return;
         if (!window.GHL_TRACKING_ID_PENDING) return;
         if (document.getElementById("ghl-tracking")) return;
         var s = document.createElement("script");

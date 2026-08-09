@@ -22,19 +22,28 @@ if (isDev) {
 
     <!-- gtag.js siempre carga; Consent Mode controla qué datos se envían -->
     <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', GA_MEASUREMENT_ID);
+      var internalParam = new URLSearchParams(window.location.search).get('internal_traffic');
+      if (internalParam === '1' || internalParam === 'true') {
+        window.sessionStorage.setItem('doscientos:internal-traffic', '1');
+      } else if (internalParam === '0' || internalParam === 'false') {
+        window.sessionStorage.removeItem('doscientos:internal-traffic');
+      }
 
-      // Cargar el script externo de gtag
-      (function () {
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
-        document.head.appendChild(s);
-      })();
+      if (window.sessionStorage.getItem('doscientos:internal-traffic') !== '1') {
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', GA_MEASUREMENT_ID);
+
+        // Cargar el script externo de gtag
+        (function () {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+          document.head.appendChild(s);
+        })();
+      }
     </script>
   </>
 )}

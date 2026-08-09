@@ -169,8 +169,23 @@
       // GA4 ya carga siempre vía GoogleAnalytics.astro + Consent Mode v2.
       // Aquí solo cargamos trackers que no soportan Consent Mode (hard-block).
 
+      const internalParam = new URLSearchParams(window.location.search).get(
+        "internal_traffic",
+      );
+      if (internalParam === "1" || internalParam === "true") {
+        window.sessionStorage.setItem("doscientos:internal-traffic", "1");
+      } else if (internalParam === "0" || internalParam === "false") {
+        window.sessionStorage.removeItem("doscientos:internal-traffic");
+      }
+      const isInternalTraffic =
+        window.sessionStorage.getItem("doscientos:internal-traffic") === "1";
+
       // Analytics: Clarity (no soporta Consent Mode → hard-block)
-      if (consent.analytics && window.CLARITY_ID_PENDING) {
+      if (
+        consent.analytics &&
+        !isInternalTraffic &&
+        window.CLARITY_ID_PENDING
+      ) {
         (function (c, l, a, r, i, t, y) {
           c[a] =
             c[a] ||
@@ -185,17 +200,6 @@
         })(window, document, "clarity", "script", window.CLARITY_ID_PENDING);
       }
       // Marketing: Meta Pixel (no soporta Consent Mode → hard-block)
-      const internalParam = new URLSearchParams(window.location.search).get(
-        "internal_traffic",
-      );
-      if (internalParam === "1" || internalParam === "true") {
-        window.sessionStorage.setItem("doscientos:internal-traffic", "1");
-      } else if (internalParam === "0" || internalParam === "false") {
-        window.sessionStorage.removeItem("doscientos:internal-traffic");
-      }
-      const isInternalTraffic =
-        window.sessionStorage.getItem("doscientos:internal-traffic") === "1";
-
       if (
         consent.marketing &&
         !isInternalTraffic &&
@@ -234,7 +238,7 @@
         fbq("track", "PageView", {}, { eventID: eventId });
       }
       // Marketing: GoHighLevel (única fuente de carga definida en MainLayout)
-      if (consent.marketing) {
+      if (consent.marketing && !isInternalTraffic) {
         window.__loadGHL?.();
       }
     }
