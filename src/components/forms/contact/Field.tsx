@@ -7,6 +7,7 @@ export type FieldProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   autoComplete: string;
   type?: string;
@@ -25,6 +26,7 @@ export function Field({
   value,
   onChange,
   onBlur,
+  onFocus,
   onKeyDown,
   autoComplete,
   type = "text",
@@ -61,6 +63,7 @@ export function Field({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
+          onFocus={onFocus}
           onKeyDown={onKeyDown}
           placeholder={placeholder}
           autoComplete={autoComplete}

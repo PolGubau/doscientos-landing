@@ -1,6 +1,7 @@
 const FIRST_TOUCH_KEY = "doscientos:first-touch";
 const EVENT_ID_KEY = "doscientos:event-id";
 const VISITOR_ID_KEY = "doscientos:visitor-id";
+const INTERNAL_TRAFFIC_KEY = "doscientos:internal-traffic";
 
 const TRACKING_ENDPOINT =
   import.meta.env.PUBLIC_TRACKING_ENDPOINT || "https://app.doscientos.es";
@@ -13,6 +14,7 @@ type Touch = {
   utm_campaign: string;
   utm_term: string;
   utm_content: string;
+  fbclid: string;
   captured_at: string;
 };
 
@@ -34,12 +36,34 @@ export type AttributionPayload = {
   last_utm_campaign: string;
   last_utm_term: string;
   last_utm_content: string;
+  internal_traffic: boolean;
 };
 
 function params(): URLSearchParams {
   return typeof window === "undefined"
     ? new URLSearchParams()
     : new URLSearchParams(window.location.search);
+}
+
+/**
+ * A session-scoped opt-out for the team’s manual landing tests. It is activated
+ * explicitly with `?internal_traffic=1` and reset with `?internal_traffic=0`.
+ * This avoids relying on fragile office IP lists while leaving real visitors
+ * unaffected.
+ */
+export function isInternalTraffic(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const internalTraffic = params().get("internal_traffic");
+    if (internalTraffic === "1" || internalTraffic === "true") {
+      window.sessionStorage.setItem(INTERNAL_TRAFFIC_KEY, "1");
+    } else if (internalTraffic === "0" || internalTraffic === "false") {
+      window.sessionStorage.removeItem(INTERNAL_TRAFFIC_KEY);
+    }
+    return window.sessionStorage.getItem(INTERNAL_TRAFFIC_KEY) === "1";
+  } catch {
+    return false;
+  }
 }
 
 function currentTouch(): Touch {
@@ -52,6 +76,7 @@ function currentTouch(): Touch {
     utm_campaign: p.get("utm_campaign") || "",
     utm_term: p.get("utm_term") || "",
     utm_content: p.get("utm_content") || "",
+    fbclid: p.get("fbclid") || "",
     captured_at: new Date().toISOString(),
   };
 }
@@ -135,6 +160,46 @@ export function buildAttributionPayload(
     last_utm_campaign: last.utm_campaign,
     last_utm_term: last.utm_term,
     last_utm_content: last.utm_content,
+    internal_traffic: isInternalTraffic(),
+  };
+}
+
+function readCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const prefix = `${encodeURIComponent(name)}=`;
+  return (
+    document.cookie
+      .split(";")
+      .map((part) => part.trim())
+      .find((part) => part.startsWith(prefix))
+      ?.slice(prefix.length) ?? null
+  );
+}
+
+/**
+ * Meta click/cookie identifiers are only collected after explicit marketing
+ * consent. They improve CAPI match quality but are never required to create a
+ * lead or to use the form.
+ */
+export function getMetaAttribution(): {
+  marketing_consent: boolean;
+  meta_fbc: string | null;
+  meta_fbp: string | null;
+  meta_fbclid: string | null;
+} {
+  const consent = (
+    window as unknown as { __DOS_CONSENT?: { marketing?: boolean } | null }
+  ).__DOS_CONSENT?.marketing === true;
+  if (!consent) {
+    return { marketing_consent: false, meta_fbc: null, meta_fbp: null, meta_fbclid: null };
+  }
+
+  const first = readFirstTouch(currentTouch());
+  return {
+    marketing_consent: true,
+    meta_fbc: readCookie("_fbc"),
+    meta_fbp: readCookie("_fbp"),
+    meta_fbclid: first.fbclid || null,
   };
 }
 
@@ -170,6 +235,7 @@ export function buildTrackedWhatsappUrl({
  */
 export function hydrateWhatsappLinks(): void {
   if (typeof document === "undefined") return;
+  if (isInternalTraffic()) return;
   const touch = currentTouch();
   readFirstTouch(touch); // side-effect only: persists first-touch once per visitor
   const eventId = getOrCreateEventId();
@@ -258,6 +324,7 @@ export function trackEvent(
   eventName: string,
   options: { conversionStep?: string; payload?: Record<string, unknown> } = {},
 ): void {
+  if (isInternalTraffic()) return;
   if (typeof window === "undefined") return;
 
   const dedupeKey = `${eventName}:${options.conversionStep ?? ""}`;
@@ -302,12 +369,14 @@ export function trackEvent(
   } catch {
     // sendBeacon puede fallar por tamaño o política: probamos con fetch.
   }
-  void fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": contentType },
-    body,
-    keepalive: true,
-  }).catch(() => {
+  void Promise.resolve(
+    fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": contentType },
+      body,
+      keepalive: true,
+    }),
+  ).catch(() => {
     // El tracking nunca debe romper la navegación.
   });
 }

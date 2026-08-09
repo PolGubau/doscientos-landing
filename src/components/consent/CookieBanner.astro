@@ -185,7 +185,22 @@
         })(window, document, "clarity", "script", window.CLARITY_ID_PENDING);
       }
       // Marketing: Meta Pixel (no soporta Consent Mode → hard-block)
-      if (consent.marketing && window.META_PIXEL_IDS_PENDING?.length) {
+      const internalParam = new URLSearchParams(window.location.search).get(
+        "internal_traffic",
+      );
+      if (internalParam === "1" || internalParam === "true") {
+        window.sessionStorage.setItem("doscientos:internal-traffic", "1");
+      } else if (internalParam === "0" || internalParam === "false") {
+        window.sessionStorage.removeItem("doscientos:internal-traffic");
+      }
+      const isInternalTraffic =
+        window.sessionStorage.getItem("doscientos:internal-traffic") === "1";
+
+      if (
+        consent.marketing &&
+        !isInternalTraffic &&
+        window.META_PIXEL_IDS_PENDING?.length
+      ) {
         !(function (f, b, e, v, n, t, s) {
           if (f.fbq) return;
           n = f.fbq = function () {
@@ -215,6 +230,7 @@
         const eventId =
           window.sessionStorage.getItem("doscientos:event-id") ||
           crypto.randomUUID();
+        window.sessionStorage.setItem("doscientos:event-id", eventId);
         fbq("track", "PageView", {}, { eventID: eventId });
       }
       // Marketing: GoHighLevel (única fuente de carga definida en MainLayout)

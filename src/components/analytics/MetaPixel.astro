@@ -8,10 +8,19 @@ const isDev = import.meta.env.DEV;
 {!isDev && (
   <script is:inline define:vars={{ PIXEL_IDS }}>
     window.META_PIXEL_IDS_PENDING = PIXEL_IDS;
-    // Generamos o recuperamos el ID de evento para deduplicación con CAPI
+    // Conservamos el identificador de sesión que después reutiliza el evento Lead
+    // para deduplicarse con CAPI. No se envía como identidad publicitaria por sí solo.
     const eventId = window.sessionStorage.getItem("doscientos:event-id") || crypto.randomUUID();
+    window.sessionStorage.setItem("doscientos:event-id", eventId);
+    const internalParam = new URLSearchParams(window.location.search).get("internal_traffic");
+    if (internalParam === "1" || internalParam === "true") {
+      window.sessionStorage.setItem("doscientos:internal-traffic", "1");
+    } else if (internalParam === "0" || internalParam === "false") {
+      window.sessionStorage.removeItem("doscientos:internal-traffic");
+    }
+    const isInternalTraffic = window.sessionStorage.getItem("doscientos:internal-traffic") === "1";
 
-    if (window.__DOS_CONSENT?.marketing) {
+    if (window.__DOS_CONSENT?.marketing && !isInternalTraffic) {
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
       n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;

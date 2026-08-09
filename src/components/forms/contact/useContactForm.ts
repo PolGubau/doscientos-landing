@@ -1,6 +1,6 @@
 import confetti from "canvas-confetti";
 import { useEffect, useRef, useState } from "react";
-import { buildAttributionPayload, trackEvent } from "~/shared/lib/attribution";
+import { buildAttributionPayload, getMetaAttribution, trackEvent } from "~/shared/lib/attribution";
 import {
   type ContactValues,
   EMPTY_FORM,
@@ -45,6 +45,7 @@ export function useContactForm() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submittedLeadId, setSubmittedLeadId] = useState<string | null>(null);
+  const focusedFields = useRef(new Set<string>());
   const dedupeKey = useRef(
     (() => {
       if (typeof window === "undefined") return crypto.randomUUID();
@@ -102,6 +103,10 @@ export function useContactForm() {
   }, []);
 
   useEffect(() => {
+    trackEvent("form_view", { conversionStep: "contact_form" });
+  }, []);
+
+  useEffect(() => {
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
     } catch {
@@ -132,6 +137,25 @@ export function useContactForm() {
     validateField(name, value);
   };
 
+  const handleFieldFocus = (
+    e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const field = e.currentTarget.name;
+    if (!field || focusedFields.current.has(field)) return;
+    focusedFields.current.add(field);
+    trackEvent("form_field_focus", {
+      conversionStep: "contact_form",
+      payload: { field },
+    });
+  };
+
+  const trackValidationFailure = (field: string) => {
+    trackEvent("form_validation_failed", {
+      conversionStep: "contact_form",
+      payload: { field },
+    });
+  };
+
   const selectBudget = (value: string) =>
     setFormData((prev) => ({ ...prev, budget: value }));
 
@@ -152,8 +176,11 @@ export function useContactForm() {
       setStepDirection(1);
       setStep(2);
       trackEvent("form_started", { conversionStep: "contact_form" });
+      trackEvent("form_step_1_completed", { conversionStep: "contact_form" });
+      trackEvent("form_step_2_viewed", { conversionStep: "contact_form" });
     } else {
       const firstInvalid = !nameOk ? "name" : "email";
+      trackValidationFailure(firstInvalid);
       requestAnimationFrame(() => {
         (
           document.getElementById(firstInvalid) as HTMLInputElement | null
@@ -178,7 +205,10 @@ export function useContactForm() {
     e.preventDefault();
     const isPhoneValid = validateField("phone", formData.phone);
     setTouched((prev) => ({ ...prev, phone: true }));
-    if (!isPhoneValid) return;
+    if (!isPhoneValid) {
+      trackValidationFailure("phone");
+      return;
+    }
 
     setStatus("loading");
 
@@ -196,15 +226,15 @@ export function useContactForm() {
     );
     const contextLines = [
       contextParams.current.subject &&
-        `Asunto: ${contextParams.current.subject}`,
+      `Asunto: ${contextParams.current.subject}`,
       contextParams.current.ref && `Ref: ${contextParams.current.ref}`,
       hasLeadContext &&
-        contextParams.current.page_path &&
-        `Pagina: ${contextParams.current.page_path}`,
+      contextParams.current.page_path &&
+      `Pagina: ${contextParams.current.page_path}`,
       contextParams.current.coste &&
-        `Coste calculado: ${contextParams.current.coste}`,
+      `Coste calculado: ${contextParams.current.coste}`,
       contextParams.current.horas &&
-        `Horas calculadas: ${contextParams.current.horas}`,
+      `Horas calculadas: ${contextParams.current.horas}`,
     ].filter(Boolean);
 
     // Si el honeypot está lleno, simulamos éxito para despistar al bot
@@ -215,9 +245,13 @@ export function useContactForm() {
       return;
     }
 
+    trackEvent("form_submit_attempted", { conversionStep: "contact_form" });
+
     const attribution = buildAttributionPayload();
+    const metaAttribution = getMetaAttribution();
     const body = {
       ...attribution,
+      ...metaAttribution,
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
@@ -262,8 +296,8 @@ export function useContactForm() {
       const payload =
         typeof response.json === "function"
           ? ((await response.json().catch(() => null)) as {
-              leadId?: string;
-            } | null)
+            leadId?: string;
+          } | null)
           : null;
 
       setStatus("success");
@@ -294,8 +328,7 @@ export function useContactForm() {
         window.fbq("track", "Lead", {
           content_name: "contact_form_multistep",
           status: "success",
-          eventID: attribution.event_id,
-        });
+        }, { eventID: attribution.event_id });
       }
     } catch (err) {
       setStatus("error");
@@ -316,6 +349,7 @@ export function useContactForm() {
     dedupeKey: dedupeKey.current,
     handleChange,
     handleBlur,
+    handleFieldFocus,
     handleStep1KeyDown,
     selectBudget,
     selectCompanySize,

@@ -3,6 +3,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { BUDGET_OPTIONS } from "./types";
+import { isInternalTraffic } from "~/shared/lib/attribution";
 import { useContactForm } from "./useContactForm";
 
 vi.mock("canvas-confetti", () => ({ default: vi.fn() }));
@@ -61,6 +62,24 @@ describe("BUDGET_OPTIONS", () => {
       "10.000€ - 30.000€",
       "Más de 30.000€",
     ]);
+  });
+});
+
+describe("exclusión de tráfico interno", () => {
+  afterEach(() => {
+    window.history.replaceState({}, "", "/");
+    window.sessionStorage.removeItem("doscientos:internal-traffic");
+  });
+
+  it("persiste la exclusión de sesión y permite desactivarla explícitamente", () => {
+    window.history.replaceState({}, "", "/?internal_traffic=1");
+    expect(isInternalTraffic()).toBe(true);
+
+    window.history.replaceState({}, "", "/");
+    expect(isInternalTraffic()).toBe(true);
+
+    window.history.replaceState({}, "", "/?internal_traffic=0");
+    expect(isInternalTraffic()).toBe(false);
   });
 });
 
@@ -155,7 +174,7 @@ describe("useContactForm — submit", () => {
       String(url).includes("/api/public/leads"),
     );
     expect(leadCall).toBeTruthy();
-    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
     const sent = JSON.parse(leadCall?.[1].body as string);
     expect(Object.keys(sent).sort()).toEqual(
       [
@@ -176,6 +195,7 @@ describe("useContactForm — submit", () => {
         "first_utm_campaign",
         "first_utm_term",
         "first_utm_content",
+        "internal_traffic",
         "landing_path",
         "landing_ref",
         "landing_subject",
@@ -186,8 +206,12 @@ describe("useContactForm — submit", () => {
         "last_utm_medium",
         "last_utm_campaign",
         "last_utm_term",
+        "marketing_consent",
         "last_utm_content",
         "message",
+        "meta_fbc",
+        "meta_fbclid",
+        "meta_fbp",
         "name",
         "phone",
         "referrer",

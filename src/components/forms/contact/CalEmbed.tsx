@@ -2,6 +2,7 @@ import Cal, { getCalApi } from "@calcom/embed-react";
 import { Check } from "lucide-react";
 import { useEffect } from "react";
 import { branding } from "~/config/branding";
+import { trackEvent } from "~/shared/lib/attribution";
 
 const CAL_LINK = branding.contact.calCom.path;
 const CAL_ORIGIN = new URL(branding.contact.calCom.bookingUrl).origin; // "https://cal.eu"
@@ -15,6 +16,7 @@ type CalEmbedProps = {
 
 export function CalEmbed({ name, email, leadId, dedupeKey }: CalEmbedProps) {
   useEffect(() => {
+    trackEvent("calendar_viewed", { conversionStep: "contact_form" });
     (async () => {
       const cal = await getCalApi({
         embedJsUrl: `${CAL_ORIGIN}/embed/embed.js`,

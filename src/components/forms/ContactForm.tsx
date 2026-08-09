@@ -25,6 +25,7 @@ export default function ContactForm() {
     dedupeKey,
     handleChange,
     handleBlur,
+    handleFieldFocus,
     handleStep1KeyDown,
     selectBudget,
     selectCompanySize,
@@ -64,11 +65,10 @@ export default function ContactForm() {
         {step === 1 && (
           <div
             key="step-1"
-            className={`w-full motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${
-              stepDirection === 1
+            className={`w-full motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
                 ? "motion-safe:slide-in-from-right-4"
                 : "motion-safe:slide-in-from-left-4"
-            }`}
+              }`}
           >
             <div className="grid lg:grid-cols-2 lg:gap-6">
               <Field
@@ -77,6 +77,7 @@ export default function ContactForm() {
                 value={formData.name}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                onFocus={handleFieldFocus}
                 onKeyDown={handleStep1KeyDown}
                 placeholder="Ej. Pol Gubau"
                 autoComplete="name"
@@ -92,6 +93,7 @@ export default function ContactForm() {
                 value={formData.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                onFocus={handleFieldFocus}
                 onKeyDown={handleStep1KeyDown}
                 placeholder="pol@doscientos.es"
                 autoComplete="email"
@@ -116,11 +118,10 @@ export default function ContactForm() {
         {step === 2 && (
           <div
             key="step-2"
-            className={`space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${
-              stepDirection === 1
+            className={`space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
                 ? "motion-safe:slide-in-from-right-4"
                 : "motion-safe:slide-in-from-left-4"
-            }`}
+              }`}
           >
             <Field
               id="phone"
@@ -129,6 +130,7 @@ export default function ContactForm() {
               value={formData.phone}
               onChange={handleChange}
               onBlur={handleBlur}
+              onFocus={handleFieldFocus}
               placeholder="666 123 456"
               autoComplete="tel"
               inputMode="tel"
@@ -163,6 +165,7 @@ export default function ContactForm() {
                 name="solutionType"
                 value={formData.solutionType}
                 onChange={(e) => selectSolutionType(e.target.value)}
+                onFocus={handleFieldFocus}
                 className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm text-foreground transition-all focus:border-primary focus:ring-1 focus:ring-primary"
               >
                 <option value="">Selecciona una opción</option>
@@ -187,6 +190,7 @@ export default function ContactForm() {
                 name="companySize"
                 value={formData.companySize}
                 onChange={(e) => selectCompanySize(e.target.value)}
+                onFocus={handleFieldFocus}
                 className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm text-foreground transition-all focus:border-primary focus:ring-1 focus:ring-primary"
               >
                 <option value="">Selecciona un rango</option>
@@ -211,6 +215,7 @@ export default function ContactForm() {
                 name="urgency"
                 value={formData.urgency}
                 onChange={(e) => selectUrgency(e.target.value)}
+                onFocus={handleFieldFocus}
                 className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm text-foreground transition-all focus:border-primary focus:ring-1 focus:ring-primary"
               >
                 <option value="">Selecciona una opción</option>
