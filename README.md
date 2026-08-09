@@ -5,7 +5,8 @@ Landing page premium de **doscientos** construida con Astro 5, especializada en 
 ## 🚀 Características
 
 - ✅ **Diseño Premium** - Minimalista, moderno y profesional
-- ✅ **Consentimiento de cookies (RGPD)** con activación condicional de analytics y marketing
+- ✅ **Consentimiento de cookies (RGPD)** — Google Consent Mode v2, preferencias granulares y bloqueo previo de los trackers que no lo soportan
+- ✅ **Exclusión de tráfico interno** — evita que las visitas del equipo lleguen a GA4, Clarity, Meta Pixel y GoHighLevel
 - ✅ **Configuración Centralizada** - Branding y contenido en archivos TypeScript
 - ✅ **Content Collections** - Blog y proyectos con MDX
 - ✅ **SEO Optimizado** - Meta tags, sitemap, y estructura semántica
@@ -22,6 +23,26 @@ pnpm install
 ```
 
 ## 🔧 Configuración
+
+1. Copia `.env.example` como `.env.local`.
+2. Configura las integraciones que vayas a utilizar. Las variables públicas se incorporan en el build, por lo que no deben contener secretos.
+
+| Variable                          | Obligatoria | Uso                                                                                                                 |
+| --------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------- |
+| `PUBLIC_GA_MEASUREMENT_ID`        | No          | ID de medición de Google Analytics 4. Si no se define, GA4 no se carga.                                             |
+| `PUBLIC_GOOGLE_SITE_VERIFICATION` | No          | Token de verificación HTML de Google Search Console.                                                                |
+| `PUBLIC_CLARITY_ID`               | No          | ID de Microsoft Clarity. Sin él, Clarity no se carga.                                                               |
+| `PUBLIC_LEADS_ENDPOINT`           | No          | Endpoint público del backoffice para los formularios. Por defecto usa `https://app.doscientos.es/api/public/leads`. |
+
+### Analítica, consentimiento y tráfico interno
+
+El banner guarda las preferencias del visitante en `localStorage` bajo la clave `doscientos-consent`:
+
+- **Google Analytics 4** usa Google Consent Mode v2: se inicia con consentimiento denegado en el EEE y se actualiza cuando el visitante decide.
+- **Microsoft Clarity** solo se carga al aceptar analítica.
+- **Meta Pixel** y **GoHighLevel** solo se cargan al aceptar marketing.
+
+Para no contaminar las métricas durante pruebas o navegación del equipo, abre cualquier URL con `?internal_traffic=1` (también se acepta `true`). La exclusión se conserva solo en la sesión del navegador y bloquea GA4, Clarity, Meta Pixel y GoHighLevel incluso si hay consentimiento previo. Para desactivarla, visita una URL con `?internal_traffic=0` o `?internal_traffic=false` y recarga la página.
 
 ### Branding Centralizado
 
@@ -78,6 +99,19 @@ pnpm preview
 
 # Lint
 pnpm lint
+
+# Comprobación de tipos y plantillas Astro
+pnpm check
+
+# Tests y validaciones SEO
+pnpm test
+pnpm seo:check
+
+# Validación completa previa a publicar
+pnpm test:build
+
+# Comprobar formato sin modificar archivos
+pnpm format:check
 ```
 
 ## 📁 Estructura del Proyecto
@@ -189,31 +223,16 @@ draft: false
 Los estilos usan Tailwind CSS 4 con variables CSS personalizadas. Puedes modificar:
 
 - `src/styles/global.css` - Variables de color y estilos globales
-- `tailwind.config.mjs` - Configuración de Tailwind
-
-## 📝 Secciones
-
-- **Hero** - Presentación principal
-- **Services** - Servicios ofrecidos
-- **Portfolio** - Proyectos destacados
-- **FAQ** - Preguntas frecuentes
-- **Contact** - Formulario de contacto
+- `src/styles/custom-styles.css` - Estilos globales adicionales
+- Los componentes de `src/components/` - Estilos específicos de cada interfaz
 
 ## 🚢 Deployment
 
 ### Vercel
 
-```bash
-vercel --prod
-```
+El proyecto genera un sitio estático. Conecta el repositorio a Vercel y configura el directorio raíz como `landing`. Vercel instalará las dependencias y ejecutará el build de Astro; replica allí las variables de entorno que necesite la publicación.
 
-### Netlify
-
-```bash
-netlify deploy --prod
-```
-
-Recuerda configurar las variables de entorno en tu plataforma de hosting.
+Antes de publicar, ejecuta `pnpm test:build` localmente.
 
 ## 👀 Más información
 
