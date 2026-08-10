@@ -44,7 +44,6 @@ const featuredProject = projectById.get(featured.id);
   <div class="impact-section-new__inner">
     <header class="impact-section-new__header">
       <div>
-        <p class="impact-section-new__eyebrow">Resultados de proyectos</p>
         <h2 id="impact-title">Trabajo que ya está cambiando negocios.</h2>
       </div>
       <div class="impact-section-new__intro">
@@ -162,9 +161,9 @@ const featuredProject = projectById.get(featured.id);
     max-width: 48rem;
     margin: 0;
     color: var(--foreground);
-    font-size: clamp(2.5rem, 5.4vw, 5.25rem);
+    font-size: clamp(2.25rem, 4.25vw, 4.25rem);
     font-weight: 800;
-    line-height: 0.96;
+    line-height: 0.98;
     letter-spacing: -0.07em;
     text-wrap: balance;
   }
@@ -354,19 +353,16 @@ const featuredProject = projectById.get(featured.id);
     gap: 1.25rem;
     min-height: 19rem;
     padding: 1.75rem;
-    border: 1px solid color-mix(in srgb, var(--primary) 14%, var(--muted));
     border-radius: 1.5rem;
-    background: color-mix(in srgb, var(--accent) 32%, var(--background));
+    background: var(--muted);
     transition:
       transform 250ms ease,
-      border-color 250ms ease,
       background 250ms ease;
   }
 
   .impact-secondary__item:hover {
     transform: translateY(-3px);
-    border-color: color-mix(in srgb, var(--primary) 35%, var(--muted));
-    background: var(--accent);
+    background: color-mix(in srgb, var(--muted) 92%, var(--foreground));
   }
 
   .impact-secondary__number {
