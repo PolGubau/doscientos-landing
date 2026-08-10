@@ -75,9 +75,9 @@
       analytics_storage: "granted",
     });
 
-    // Redacción de IDs de clic + URL passthrough cuando ad_storage es denied
+    // Mantener los IDs de clic fuera de las URLs públicas. No hay medición
+    // entre dominios en la landing, así que no activamos URL passthrough (_gl).
     gtag("set", "ads_data_redaction", true);
-    gtag("set", "url_passthrough", true);
 
     // ── 3. Leer preferencias guardadas ──
     try {

@@ -1,6 +1,6 @@
 ---
-import { cn } from "~/shared/lib/utils";
 import { serializeJsonLd } from "~/shared/lib/schema/jsonLd";
+import { cn } from "~/shared/lib/utils";
 
 /**
  * Breadcrumbs Schema.org para mejorar SEO y navegación
@@ -19,6 +19,7 @@ interface Props {
 
 const { items, className } = Astro.props;
 const baseUrl = Astro.site?.toString() || "https://doscientos.es";
+const showVisualBreadcrumbs = items.length > 1;
 
 // Siempre incluir Home como primer item
 const breadcrumbItems = [{ name: "Inicio", url: baseUrl }, ...items];
@@ -42,39 +43,40 @@ const breadcrumbSchema = {
   set:html={serializeJsonLd(breadcrumbSchema)}
 />
 
-<!-- Visual Breadcrumbs (opcional) -->
-<nav
-  aria-label="Breadcrumb"
-  class={cn(`text-sm text-muted-foreground mb-8`, className)}
->
-  <ol class="flex items-center gap-2">
-    {
-      breadcrumbItems.map((item, index) => (
-        <li class="flex items-center gap-2">
-          {index > 0 && (
-            <svg
-              class="size-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          )}
-          {index === breadcrumbItems.length - 1 ? (
-            <span class="text-foreground font-medium">{item.name}</span>
-          ) : (
-            <a href={item.url} class="hover:text-primary transition-colors">
-              {item.name}
-            </a>
-          )}
-        </li>
-      ))
-    }
-  </ol>
-</nav>
+<!-- Ocultamos la miga visual si solo hay Inicio + una página, pero mantenemos el Schema. -->{
+  showVisualBreadcrumbs && (
+    <nav
+      aria-label="Breadcrumb"
+      class={cn(`text-sm text-muted-foreground mb-8`, className)}
+    >
+      <ol class="flex items-center gap-2">
+        {breadcrumbItems.map((item, index) => (
+          <li class="flex items-center gap-2">
+            {index > 0 && (
+              <svg
+                class="size-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            )}
+            {index === breadcrumbItems.length - 1 ? (
+              <span class="text-foreground font-medium">{item.name}</span>
+            ) : (
+              <a href={item.url} class="hover:text-primary transition-colors">
+                {item.name}
+              </a>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
