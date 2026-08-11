@@ -52,15 +52,16 @@ const faqs = [
 ---
 
 <MainLayout title={title} description={description} faqs={faqs}>
-  <!-- Block-level wrapper so ScrollTrigger's pin-spacer lives in normal flow.
-       Pinning a direct flex child of <main> collapses pin-spacing to 0. -->
-  <div class="block">
-    <Hero />
-  </div>
-  <ProjectsBadge />
-  <!-- Clients carousel below the hero, full-width -->
-  <div class="relative z-20 w-full">
-    <ClientsCarousel />
+  <div class="home-top-surface">
+    <!-- Block-level wrapper so ScrollTrigger's pin-spacer lives in normal flow.
+         Pinning a direct flex child of <main> collapses pin-spacing to 0. -->
+    <div class="block">
+      <Hero />
+    </div>
+    <ProjectsBadge />
+    <div class="relative z-20 w-full">
+      <ClientsCarousel />
+    </div>
   </div>
   <Impact />
   <Services />
@@ -75,3 +76,9 @@ const faqs = [
   <LocalPartner />
   <Hype />
 </MainLayout>
+
+<style>
+  .home-top-surface {
+    background: color-mix(in srgb, var(--foreground) 6%, var(--background));
+  }
+</style>

@@ -11,12 +11,12 @@ const pathname = Astro.url.pathname;
 
 <header
   data-reveal="top"
-  class="site-nav fixed w-[calc(100vw-2rem)] max-w-[90vw] lg:w-fit rounded-full top-6 left-1/2 -translate-x-1/2 z-50 backdrop-blur-xl shadow-pastel-sm flex items-center justify-between p-1 gap-2 lg:gap-4"
-  style="background: rgb(246 247 249 / 0.76); border: 1px solid rgb(42 66 39 / 0.13);"
+  class="site-nav fixed w-[calc(100vw-2rem)] max-w-[90vw] lg:w-fit rounded-full top-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between gap-2 lg:gap-4"
 >
   <a
+    id="nav-home-link"
     href="/"
-    class="flex cursor-pointer items-center gap-2 hover:opacity-80 transition-opacity px-2"
+    class="flex cursor-pointer items-center gap-2 rounded-full bg-background shadow-pastel-sm px-3 py-2 hover:opacity-80 transition-opacity lg:bg-transparent lg:shadow-none lg:px-2 lg:py-0"
   >
     <div
       id="nav-logo-iso"
@@ -53,7 +53,7 @@ const pathname = Astro.url.pathname;
 
   <button
     id="mobile-menu-button"
-    class="lg:hidden p-2 text-foreground hover:bg-accent rounded-full transition-colors"
+    class="lg:hidden p-2.5 text-foreground bg-background shadow-pastel-sm hover:bg-background/85 rounded-full transition-colors"
     aria-label="Toggle menu"
     aria-expanded="false"
   >
@@ -134,11 +134,35 @@ const pathname = Astro.url.pathname;
 
     const menuButton = document.getElementById("mobile-menu-button");
     const mobileMenu = document.getElementById("mobile-menu");
+    const homeLink = document.getElementById("nav-home-link");
     const barTop = document.getElementById("bar-top") as SVGLineElement | null;
     const barMid = document.getElementById("bar-mid") as SVGLineElement | null;
     const barBot = document.getElementById("bar-bot") as SVGLineElement | null;
 
     let isOpen = false;
+    let scrollPosition = 0;
+
+    function lockPageScroll() {
+      scrollPosition = window.scrollY;
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollPosition}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+      homeLink?.classList.add("pointer-events-none");
+      homeLink?.setAttribute("aria-hidden", "true");
+    }
+
+    function unlockPageScroll() {
+      document.documentElement.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      homeLink?.classList.remove("pointer-events-none");
+      homeLink?.removeAttribute("aria-hidden");
+      window.scrollTo(0, scrollPosition);
+    }
 
     function openMenu() {
       isOpen = true;
@@ -146,7 +170,7 @@ const pathname = Astro.url.pathname;
       mobileMenu?.classList.add("opacity-100");
       menuButton?.setAttribute("aria-expanded", "true");
       mobileMenu?.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
+      lockPageScroll();
 
       if (barTop) barTop.style.transform = "translateY(6px) rotate(45deg)";
       if (barMid) {
@@ -174,7 +198,7 @@ const pathname = Astro.url.pathname;
       mobileMenu?.classList.remove("opacity-100");
       menuButton?.setAttribute("aria-expanded", "false");
       mobileMenu?.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
+      unlockPageScroll();
 
       if (barTop) barTop.style.transform = "";
       if (barMid) {
@@ -233,9 +257,21 @@ const pathname = Astro.url.pathname;
   document.addEventListener("astro:page-load", initNavbar);
 </script>
 
-<div class="h-20"></div>
-
 <style>
+  .site-nav {
+    background: transparent;
+  }
+
+  @media (min-width: 1024px) {
+    .site-nav {
+      padding: 0.25rem;
+      border: 1px solid rgb(42 66 39 / 0.13);
+      background: rgb(246 247 249 / 0.76);
+      box-shadow: var(--shadow-pastel-sm);
+      backdrop-filter: blur(24px);
+    }
+  }
+
   #bar-top,
   #bar-mid,
   #bar-bot {

@@ -1,11 +1,8 @@
 ---
-import {
-  ArrowRight,
-  CircleCheck,
-} from "@lucide/astro";
+import { ArrowRight, CircleCheck } from "@lucide/astro";
+import GitBranch from "@lucide/astro/icons/git-branch";
 import List from "@lucide/astro/icons/list";
 import Search from "@lucide/astro/icons/search";
-import GitBranch from "@lucide/astro/icons/git-branch";
 import CostCalculator from "~/components/conversion/CostCalculator.astro";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import Button from "~/components/ui/Button.astro";
@@ -134,7 +131,7 @@ const showCostCalculator = currentLanding.slug === "automatizar-excel";
     />
 
     <header class="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
-      <div class="space-y-8" data-stagger="100">
+      <div class="10" data-stagger="100">
         <div data-reveal="top" data-speed="fast" data-easing="smooth">
           <SectionTag>{currentLanding.eyebrow}</SectionTag>
         </div>

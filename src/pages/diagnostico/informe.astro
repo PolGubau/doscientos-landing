@@ -2,74 +2,179 @@
 import MainLayout from "~/layouts/MainLayout.astro";
 
 const title = "Tu diagnóstico de procesos | doscientos";
-const description = "Consulta el diagnóstico personalizado de tu proceso y decide qué mejorar primero.";
+const description =
+  "Consulta el diagnóstico personalizado de tu proceso y decide qué mejorar primero.";
 ---
 
-<MainLayout title={title} description={description} robots="noindex, nofollow" showFooterCta={false}>
-  <main class="mx-auto w-full max-w-6xl px-5 pb-20 pt-12 sm:px-8 sm:pt-20" data-diagnostic-report>
+<MainLayout
+  title={title}
+  description={description}
+  robots="noindex, nofollow"
+  showFooterCta={false}
+>
+  <main
+    class="mx-auto w-full max-w-6xl px-5 pb-20 pt-24 sm:px-8"
+    data-diagnostic-report
+  >
     <div class="mx-auto max-w-3xl" data-report-loading aria-live="polite">
       <p class="text-sm font-semibold text-primary">Cargando tu diagnóstico…</p>
     </div>
 
     <section class="hidden" data-report-content>
-      <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary">Diagnóstico personalizado</p>
+      <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+        Diagnóstico personalizado
+      </p>
       <div class="mt-4 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
         <div>
-          <h1 class="max-w-3xl text-4xl font-bold leading-[1.02] tracking-tight text-foreground text-pretty sm:text-6xl" data-report-title>
+          <h1
+            class="max-w-3xl text-4xl font-bold leading-[1.02] tracking-tight text-foreground text-pretty sm:text-6xl"
+            data-report-title
+          >
             Tu diagnóstico
           </h1>
-          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground text-pretty">
-            Esto es lo que vemos con los datos que nos has dado. Es un punto de partida para decidir qué merece la pena revisar primero.
+          <p
+            class="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground text-pretty"
+          >
+            Esto es lo que vemos con los datos que nos has dado. Es un punto de
+            partida para decidir qué merece la pena revisar primero.
           </p>
         </div>
-        <aside class="rounded-3xl bg-primary p-7 text-primary-foreground shadow-[0_22px_55px_rgb(42_66_39_/_0.22)]">
-          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-accent">Proceso a revisar</p>
-          <p class="mt-3 text-xl font-bold leading-snug text-pretty" data-report-process>—</p>
+        <aside
+          class="rounded-3xl bg-primary p-7 text-primary-foreground shadow-[0_22px_55px_rgb(42_66_39_/_0.22)]"
+        >
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.14em] text-accent"
+          >
+            Proceso a revisar
+          </p>
+          <p
+            class="mt-3 text-xl font-bold leading-snug text-pretty"
+            data-report-process
+          >
+            —
+          </p>
         </aside>
       </div>
 
-      <section class="mt-10 grid gap-3 sm:grid-cols-3" aria-label="Métricas del diagnóstico">
+      <section
+        class="mt-10 grid gap-3 sm:grid-cols-3"
+        aria-label="Métricas del diagnóstico"
+      >
         <div class="rounded-2xl border border-primary/10 bg-primary/5 p-5">
-          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Tiempo anual</p>
-          <p class="mt-3 text-3xl font-bold tracking-tight text-foreground" data-report-hours>—</p>
-          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">Estimación del tiempo que consume hoy.</p>
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.12em] text-primary"
+          >
+            Tiempo anual
+          </p>
+          <p
+            class="mt-3 text-3xl font-bold tracking-tight text-foreground"
+            data-report-hours
+          >
+            —
+          </p>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Estimación del tiempo que consume hoy.
+          </p>
         </div>
         <div class="rounded-2xl border border-primary/10 bg-primary/5 p-5">
-          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Coste orientativo</p>
-          <p class="mt-3 text-3xl font-bold tracking-tight text-foreground" data-report-cost>—</p>
-          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">Sin sumar retrasos, errores ni ventas perdidas.</p>
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.12em] text-primary"
+          >
+            Coste orientativo
+          </p>
+          <p
+            class="mt-3 text-3xl font-bold tracking-tight text-foreground"
+            data-report-cost
+          >
+            —
+          </p>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Sin sumar retrasos, errores ni ventas perdidas.
+          </p>
         </div>
         <div class="rounded-2xl border border-primary/10 bg-primary/5 p-5">
-          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Prioridad</p>
-          <p class="mt-3 text-3xl font-bold tracking-tight text-foreground" data-report-risk>—</p>
-          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">Una referencia para ordenar la conversación.</p>
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.12em] text-primary"
+          >
+            Prioridad
+          </p>
+          <p
+            class="mt-3 text-3xl font-bold tracking-tight text-foreground"
+            data-report-risk
+          >
+            —
+          </p>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Una referencia para ordenar la conversación.
+          </p>
         </div>
       </section>
 
-      <section class="mt-10 rounded-3xl border border-primary/15 bg-background p-7 sm:p-10">
-        <p class="text-xs font-semibold uppercase tracking-[0.14em] text-primary">Primer foco</p>
-        <h2 class="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-foreground text-pretty sm:text-4xl" data-report-opportunity>—</h2>
+      <section
+        class="mt-10 rounded-3xl border border-primary/15 bg-background p-7 sm:p-10"
+      >
+        <p
+          class="text-xs font-semibold uppercase tracking-[0.14em] text-primary"
+        >
+          Primer foco
+        </p>
+        <h2
+          class="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-foreground text-pretty sm:text-4xl"
+          data-report-opportunity
+        >
+          —
+        </h2>
         <p class="mt-5 max-w-2xl leading-relaxed text-muted-foreground">
-          La siguiente conversación sirve para contrastar esta hipótesis con el trabajo real: herramientas, excepciones y responsables. Con eso podemos decirte si conviene simplificar, conectar lo que ya usas o construir una pieza nueva.
+          La siguiente conversación sirve para contrastar esta hipótesis con el
+          trabajo real: herramientas, excepciones y responsables. Con eso
+          podemos decirte si conviene simplificar, conectar lo que ya usas o
+          construir una pieza nueva.
         </p>
       </section>
 
-      <section class="mt-10 grid gap-5 rounded-3xl bg-foreground p-7 text-background sm:p-10 lg:grid-cols-[1fr_auto] lg:items-center">
+      <section
+        class="mt-10 grid gap-5 rounded-3xl bg-foreground p-7 text-background sm:p-10 lg:grid-cols-[1fr_auto] lg:items-center"
+      >
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-accent">Siguiente paso</p>
-          <h2 class="mt-3 max-w-xl text-3xl font-bold leading-tight tracking-tight text-pretty">Revisemos el proceso con vuestro equipo.</h2>
-          <p class="mt-3 max-w-xl leading-relaxed text-background/70">Sin compromiso: validamos esta estimación y te devolvemos un primer paso concreto.</p>
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.14em] text-accent"
+          >
+            Siguiente paso
+          </p>
+          <h2
+            class="mt-3 max-w-xl text-3xl font-bold leading-tight tracking-tight text-pretty"
+          >
+            Revisemos el proceso con vuestro equipo.
+          </h2>
+          <p class="mt-3 max-w-xl leading-relaxed text-background/70">
+            Sin compromiso: validamos esta estimación y te devolvemos un primer
+            paso concreto.
+          </p>
         </div>
-        <a data-report-contact href="/contact?ref=diagnostico-personalizado" class="inline-flex min-h-12 items-center justify-center rounded-full bg-accent px-6 py-3 text-center font-semibold text-accent-foreground transition hover:bg-accent/90">
+        <a
+          data-report-contact
+          href="/contact?ref=diagnostico-personalizado"
+          class="inline-flex min-h-12 items-center justify-center rounded-full bg-accent px-6 py-3 text-center font-semibold text-accent-foreground transition hover:bg-accent/90"
+        >
           Solicitar revisión del proceso →
         </a>
       </section>
     </section>
 
-    <section class="hidden rounded-3xl border border-red-200 bg-red-50 p-7 text-red-950" data-report-error>
+    <section
+      class="hidden rounded-3xl border border-red-200 bg-red-50 p-7 text-red-950"
+      data-report-error
+    >
       <p class="font-semibold">No hemos podido abrir este diagnóstico.</p>
-      <p class="mt-2 text-sm leading-relaxed">Comprueba que has abierto el enlace completo del correo o vuelve a solicitar el diagnóstico.</p>
-      <a href="/diagnostico" class="mt-5 inline-flex font-semibold underline underline-offset-4">Ir al diagnóstico de procesos</a>
+      <p class="mt-2 text-sm leading-relaxed">
+        Comprueba que has abierto el enlace completo del correo o vuelve a
+        solicitar el diagnóstico.
+      </p>
+      <a
+        href="/diagnostico"
+        class="mt-5 inline-flex font-semibold underline underline-offset-4"
+        >Ir al diagnóstico de procesos</a
+      >
     </section>
   </main>
 </MainLayout>
@@ -81,9 +186,11 @@ const description = "Consulta el diagnóstico personalizado de tu proceso y deci
     metrics: Record<string, unknown>;
   };
 
-  const endpoint = import.meta.env.PUBLIC_DIAGNOSTIC_ENDPOINT || (import.meta.env.DEV
-    ? "http://localhost:3000/api/public/diagnostics"
-    : "https://app.doscientos.es/api/public/diagnostics");
+  const endpoint =
+    import.meta.env.PUBLIC_DIAGNOSTIC_ENDPOINT ||
+    (import.meta.env.DEV
+      ? "http://localhost:3000/api/public/diagnostics"
+      : "https://app.doscientos.es/api/public/diagnostics");
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
   const token = params.get("token");
@@ -95,9 +202,15 @@ const description = "Consulta el diagnóstico personalizado de tu proceso y deci
     const element = document.querySelector<HTMLElement>(selector);
     if (element) element.textContent = value;
   };
-  const asString = (value: unknown, fallback = "—") => typeof value === "string" && value.trim() ? value.trim() : fallback;
-  const asNumber = (value: unknown) => typeof value === "number" && Number.isFinite(value) ? value : 0;
-  const euro = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+  const asString = (value: unknown, fallback = "—") =>
+    typeof value === "string" && value.trim() ? value.trim() : fallback;
+  const asNumber = (value: unknown) =>
+    typeof value === "number" && Number.isFinite(value) ? value : 0;
+  const euro = new Intl.NumberFormat("es-ES", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  });
 
   const showError = () => {
     loading?.classList.add("hidden");
@@ -116,8 +229,14 @@ const description = "Consulta el diagnóstico personalizado de tu proceso y deci
       })
       .then((report) => {
         const company = asString(report.company, "tu empresa");
-        const process = asString(report.answers.proceso, "El proceso que has indicado");
-        const opportunity = asString(report.metrics.primaryOpportunity, "Revisar el proceso repetitivo con mayor volumen y riesgo.");
+        const process = asString(
+          report.answers.proceso,
+          "El proceso que has indicado",
+        );
+        const opportunity = asString(
+          report.metrics.primaryOpportunity,
+          "Revisar el proceso repetitivo con mayor volumen y riesgo.",
+        );
         const yearlyHours = asNumber(report.metrics.yearlyHours);
         const yearlyCost = asNumber(report.metrics.yearlyCost);
         const risk = asString(report.metrics.risk, "Pendiente de revisar");
@@ -129,7 +248,9 @@ const description = "Consulta el diagnóstico personalizado de tu proceso y deci
         setText("[data-report-risk]", risk);
         setText("[data-report-opportunity]", opportunity);
 
-        const contact = document.querySelector<HTMLAnchorElement>("[data-report-contact]");
+        const contact = document.querySelector<HTMLAnchorElement>(
+          "[data-report-contact]",
+        );
         if (contact) {
           const contactUrl = new URL(contact.href, window.location.origin);
           contactUrl.searchParams.set("ref", "diagnostico-personalizado");

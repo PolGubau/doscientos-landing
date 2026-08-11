@@ -1,16 +1,9 @@
 ---
-import {
-  Calendar,
-  Check,
-  FileText,
-  Mail,
-  MessageSquare,
-} from "@lucide/astro";
+import { Calendar, Check, FileText, Mail, MessageSquare } from "@lucide/astro";
 import Folder from "@lucide/astro/icons/folder";
 import PencilLine from "@lucide/astro/icons/pencil-line";
 import { copy } from "~/shared/lib/copy";
 import { branding } from "~/config/branding";
-import Button from "../ui/Button.astro";
 
 const { hero } = copy;
 
@@ -80,15 +73,15 @@ const chaos = hero.stage.chaos.map((item, i) => ({
 
 <section
   id="hero"
-  class="hero-section relative flex flex-col px-6 items-center justify-start min-h-[calc(100svh-4rem)] pt-20 pb-8 md:pt-20 gap-5 md:gap-6 overflow-hidden"
+  class="hero-section relative flex flex-col px-6 items-center justify-start min-h-[calc(100svh-4rem)] pt-8 pb-8 md:pt-8 gap-7 md:gap-8 overflow-hidden"
 >
-  <div class="hero-intro relative z-20 max-w-4xl text-center">
+  <div class="hero-intro relative z-20 max-w-3xl text-center">
     <p class="hero-eyebrow">Software a medida y automatización para PYMEs</p>
     <h1 class="hero-title text-balance" data-hero-static="true">
       {hero.title}
     </h1>
     <p
-      class="hero-subtitle mt-4 max-w-2xl mx-auto text-base md:text-lg text-muted-foreground text-balance"
+      class="hero-subtitle mt-4 max-w-xl mx-auto text-base md:text-lg text-muted-foreground text-balance"
     >
       {hero.subtitle}
     </p>
@@ -100,17 +93,49 @@ const chaos = hero.stage.chaos.map((item, i) => ({
   >
     <div id="hero-scroll-reveal" class="flex flex-col items-center w-full">
       <div
-        class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-xs sm:max-w-none"
+        class="flex flex-col sm:flex-row gap-3 justify-center items-center w-full max-w-xs sm:max-w-none"
       >
         <a
           href="/diagnostico?ref=home-hero"
           id="hero-cta-primary"
-          class="w-full sm:w-auto"
+          class="hero-cta hero-cta--primary w-full sm:w-auto"
         >
-          <Button withArrow class="w-full sm:w-fit">{hero.cta}</Button>
+          <Calendar class="size-3.5" aria-hidden="true" />
+          {hero.cta}
         </a>
-        <a href={branding.contact.calCom.bookingUrl} id="hero-cta-secondary" class="hero-secondary-link" target="_blank" rel="noopener noreferrer">
-          Agendar llamada de 30 min <span aria-hidden="true">→</span>
+        <a
+          href={branding.contact.calCom.bookingUrl}
+          id="hero-cta-secondary"
+          class="hero-cta hero-cta--secondary w-full sm:w-auto"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg
+            aria-hidden="true"
+            class="h-3.5 w-auto shrink-0"
+            viewBox="0 0 87.5 72"
+            fill="none"
+          >
+            <path
+              fill="#00832d"
+              d="M49.5 36l8.53 9.75 11.47 7.33 2-17.02-2-16.64-11.69 6.44z"
+            ></path>
+            <path
+              fill="#0066da"
+              d="M0 51.5V66c0 3.315 2.685 6 6 6h14.5l3-10.96-3-9.54-9.95-3z"
+            ></path>
+            <path fill="#e94235" d="M20.5 0L0 20.5l10.55 3 9.95-3 2.95-9.41z"
+            ></path>
+            <path fill="#2684fc" d="M20.5 20.5H0v31h20.5z"></path>
+            <path
+              fill="#00ac47"
+              d="M82.6 8.68L69.5 19.42v33.66l13.16 10.79c1.97 1.54 4.85.135 4.85-2.37V11c0-2.535-2.945-3.925-4.91-2.32zM49.5 36v15.5h-29V72h43c3.315 0 6-2.685 6-6V53.08z"
+            ></path>
+            <path
+              fill="#ffba00"
+              d="M63.5 0h-43v20.5h29V36l20-16.57V6c0-3.315-2.685-6-6-6z"></path>
+          </svg>
+          Agendar videollamada
         </a>
       </div>
       <p class="hero-cta-note">{hero.ctaNote}</p>
@@ -277,39 +302,86 @@ const chaos = hero.stage.chaos.map((item, i) => ({
 
 <style>
   .hero-title {
-    max-width: 54rem;
+    max-width: 36rem;
     margin: 0 auto;
-    font-size: clamp(2.25rem, 4.2vw, 3.9rem);
-    font-weight: 850;
-    line-height: 1.02;
+    font-size: clamp(2.2rem, 3.4vw, 3.2rem);
+    font-weight: 750;
+    line-height: 1.04;
     letter-spacing: -0.045em;
     color: var(--foreground);
   }
 
-  .hero-section::before {
-    content: "";
-    position: absolute;
-    /* El radial debe empezar fuera del hero: si su caja empieza a 4rem,
-     * aparece una línea horizontal aunque los colores del degradado sean
-     * transparentes. Extendemos la caja hacia arriba y mantenemos el foco
-     * visual dentro del titular. */
-    inset: -6rem 0 auto;
-    height: 38rem;
-    pointer-events: none;
-    background: radial-gradient(
-      circle at 50% 44%,
-      color-mix(in srgb, var(--brand-lime) 16%, transparent),
-      transparent 68%
-    );
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 1.15rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 9999px;
+    background: var(--background);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--foreground) 8%, transparent);
+    color: var(--muted-foreground);
+    font-size: 0.68rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    line-height: 1;
   }
 
-  .hero-eyebrow {
-    margin-bottom: 1rem;
-    color: var(--primary);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 2.85rem;
+    padding: 0.7rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1;
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-1px);
+  }
+
+  .hero-cta:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+
+  .hero-cta--primary {
+    background: var(--foreground);
+    box-shadow: 0 8px 20px
+      color-mix(in srgb, var(--foreground) 14%, transparent);
+    color: var(--background);
+  }
+
+  .hero-cta--primary:hover {
+    background: color-mix(in srgb, var(--foreground) 91%, var(--background));
+    box-shadow: 0 10px 24px
+      color-mix(in srgb, var(--foreground) 18%, transparent);
+  }
+
+  .hero-cta--secondary {
+    background: var(--background);
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--foreground) 8%, transparent);
+    color: var(--foreground);
+  }
+
+  .hero-cta--secondary:hover {
+    background: color-mix(in srgb, var(--foreground) 4%, var(--background));
+  }
+
+  @media (min-width: 640px) {
+    .hero-cta {
+      gap: 0.45rem;
+      min-height: 2.3rem;
+      padding: 0.52rem 0.8rem;
+      font-size: 0.78rem;
+    }
   }
 
   .hero-cta-note {
@@ -345,32 +417,6 @@ const chaos = hero.stage.chaos.map((item, i) => ({
       opacity: 1;
       transform: translateY(0);
     }
-  }
-
-  .hero-secondary-link {
-    color: var(--foreground);
-    font-size: 0.9rem;
-    font-weight: 650;
-    text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--primary) 40%, transparent);
-    text-underline-offset: 0.28rem;
-    transition:
-      color 0.2s ease,
-      text-decoration-color 0.2s ease;
-  }
-
-  .hero-secondary-link:hover {
-    color: var(--primary);
-    text-decoration-color: currentColor;
-  }
-
-  .hero-secondary-link span {
-    display: inline-block;
-    transition: transform 0.2s ease;
-  }
-
-  .hero-secondary-link:hover span {
-    transform: translateX(0.2rem);
   }
 
   @media (prefers-reduced-motion: reduce) {

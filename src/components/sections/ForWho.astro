@@ -18,20 +18,20 @@ const doesntFit = [
 ];
 
 const routes = [
-	{
-		title: "Ya tienes operación y se te queda pequeña",
-		description:
-			"CRM, backoffice, ERP o automatización para sacar trabajo de Excel, emails y procesos que dependen de una persona.",
-		href: "/diagnostico?ref=home-segmento-software",
-		cta: "Revisar un proceso",
-	},
-	{
-		title: "Necesitas una web que convierta visitas en contactos",
-		description:
-			"Páginas para barberías, restaurantes, gimnasios, profesionales y clínicas, con precio y mantenimiento visibles.",
-		href: "/packs?ref=home-segmento-web",
-		cta: "Ver packs de webs",
-	},
+  {
+    title: "Ya tienes operación y se te queda pequeña",
+    description:
+      "CRM, backoffice, ERP o automatización para sacar trabajo de Excel, emails y procesos que dependen de una persona.",
+    href: "/diagnostico?ref=home-segmento-software",
+    cta: "Revisar un proceso",
+  },
+  {
+    title: "Necesitas una web que convierta visitas en contactos",
+    description:
+      "Páginas para barberías, restaurantes, gimnasios, profesionales y clínicas, con precio y mantenimiento visibles.",
+    href: "/packs?ref=home-segmento-web",
+    cta: "Ver packs de webs",
+  },
 ];
 ---
 
@@ -44,17 +44,26 @@ const routes = [
   />
 
   <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full mb-8">
-    {routes.map((route) => (
-      <article class="panel flex flex-col gap-5" data-reveal="bottom">
-        <div class="space-y-2">
-          <h3 class="text-xl font-bold text-foreground">{route.title}</h3>
-          <p class="text-sm text-muted-foreground leading-relaxed">{route.description}</p>
-        </div>
-        <a href={route.href} class="mt-auto text-sm font-semibold text-primary hover:underline">
-          {route.cta} →
-        </a>
-      </article>
-    ))}
+    {
+      routes.map((route) => (
+        <article class="panel flex flex-col gap-5" data-reveal="bottom">
+          <div class="space-y-2">
+            <h3 class="text-xl font-bold text-foreground text-balance">
+              {route.title}
+            </h3>
+            <p class="text-sm text-muted-foreground leading-relaxed">
+              {route.description}
+            </p>
+          </div>
+          <a
+            href={route.href}
+            class="mt-auto text-sm font-semibold text-primary hover:underline"
+          >
+            {route.cta} →
+          </a>
+        </article>
+      ))
+    }
   </div>
 
   <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full">

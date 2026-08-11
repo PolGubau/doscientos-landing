@@ -1,22 +1,105 @@
 ---
-import ClientsMarqueeRail from "../ui/clients/ClientsMarqueeRail.astro";
+import { getProjects } from "~/shared/lib/collections";
+import ClientLogo from "../ui/clients/ClientLogo.astro";
+
+const projectsWithLogo = (await getProjects()).filter(
+  (project) => project.data.logo,
+);
+const featuredProjects = projectsWithLogo.slice(0, 8);
+const DEFAULT_LOGO_SIZE = { width: 90, height: 30 };
+const LOGO_SIZES: Record<string, typeof DEFAULT_LOGO_SIZE> = {
+  arenas: { width: 88, height: 32 },
+  "cash-movil-canarias": { width: 76, height: 38 },
+  cyberimpulsa: { width: 112, height: 30 },
+  flatmatch: { width: 76, height: 36 },
+  ifco: { width: 96, height: 30 },
+  "les-santes": { width: 90, height: 34 },
+  optinergia: { width: 80, height: 36 },
+  palumba: { width: 42, height: 42 },
+};
 ---
 
-<section class="w-full">
-  <div class="max-w-5xl mx-auto px-6">
+<section class="clients-section w-full">
+  <div class="max-w-5xl mx-auto px-6 py-8 md:py-10">
     <p
-      class="text-center text-xs text-muted-foreground mb-6 uppercase"
+      class="text-center text-xs font-bold text-foreground mb-5"
       data-reveal="top"
       data-speed="fast"
       data-easing="smooth"
       data-distance="small"
     >
-      Confían en nosotros
+      Empresas que confían en nosotros
     </p>
 
-    <!-- Marquee respeta el max-w-5xl del padre -->
-    <div data-reveal="scale" data-speed="normal" data-easing="smooth">
-      <ClientsMarqueeRail />
-    </div>
+    <ul
+      class="client-logo-grid"
+      aria-label="Clientes de doscientos"
+      data-reveal="scale"
+      data-speed="normal"
+      data-easing="smooth"
+    >
+      {
+        featuredProjects.map((project) => {
+          const size = LOGO_SIZES[project.id] ?? DEFAULT_LOGO_SIZE;
+
+          return (
+            <li>
+              <ClientLogo
+                logo={project.data.logo!}
+                alt={`Logo de ${project.data.client}`}
+                height={size.height}
+                width={size.width}
+              />
+            </li>
+          );
+        })
+      }
+      <li class="client-more" aria-label="Más de 20 proyectos entregados">
+        20+ más
+      </li>
+    </ul>
   </div>
 </section>
+
+<style>
+  .client-logo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    max-width: 32rem;
+    margin: 0 auto;
+  }
+
+  .client-logo-grid li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .client-logo-grid :global(.client-logo-wrapper) {
+    opacity: 0.6;
+  }
+
+  .client-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 9999px;
+    background: var(--background);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--foreground) 8%, transparent);
+    color: var(--foreground);
+    font-size: 0.72rem;
+    font-weight: 750;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 639px) {
+    .client-logo-grid {
+      gap: 0.8rem 0.55rem;
+    }
+  }
+</style>

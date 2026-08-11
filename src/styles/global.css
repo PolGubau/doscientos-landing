@@ -53,7 +53,7 @@
   color-scheme: light;
   --radius: 0.625rem;
   --background: #f6f7f9;
-  --foreground: #0c110b;
+  --foreground: #232323;
   --primary: #2a4227;
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.968 0.007 247.896);
@@ -144,6 +144,7 @@ button {
 
 html {
   scrollbar-gutter: stable;
+  scroll-padding-top: 6rem;
 }
 
 body {
@@ -208,22 +209,6 @@ strong {
 @layer base {
   body {
     @apply bg-background text-foreground;
-    background:
-      radial-gradient(
-        ellipse 72rem 42rem at 50% -14rem,
-        color-mix(in oklab, var(--brand-lime) 22%, transparent),
-        transparent 70%
-      ),
-      radial-gradient(
-        ellipse 44rem 32rem at 4% 19rem,
-        color-mix(in oklab, var(--primary) 8%, transparent),
-        transparent 74%
-      ),
-      radial-gradient(
-        ellipse 38rem 28rem at 96% 34rem,
-        color-mix(in oklab, var(--brand-lime) 6%, transparent),
-        transparent 76%
-      ),
-      var(--background);
+    background: color-mix(in srgb, var(--foreground) 6%, var(--background));
   }
 }
