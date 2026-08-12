@@ -74,17 +74,17 @@ const typography = tokens.filter((token) => token.token_group === "typography");
           class="flex min-h-72 flex-col justify-between rounded-3xl border border-muted bg-background p-8 shadow-pastel"
         >
           <img
-            src="/logo.png"
+            src={branding.assets.logo}
             alt="Logotipo de doscientos"
             class="h-auto w-52 max-w-full object-contain"
           />
           <div class="flex flex-wrap gap-3">
-            <a href="/logo.png" download="doscientos-logo.png"
+            <a href={branding.assets.logo} download="doscientos-logo.png"
               ><Button size="sm" withArrow
                 ><Download class="size-4" />Descargar PNG</Button
               ></a
             >
-            <a href="/iso.svg" download="doscientos-isotipo.svg"
+            <a href={branding.assets.isotype} download="doscientos-isotipo.svg"
               ><Button size="sm" variant="outline"
                 ><Download class="size-4" />Isotipo SVG</Button
               ></a
@@ -95,7 +95,7 @@ const typography = tokens.filter((token) => token.token_group === "typography");
           class="flex min-h-72 flex-col justify-between rounded-3xl bg-foreground p-8 text-background"
         >
           <img
-            src="/logo.png"
+            src={branding.assets.logo}
             alt="Logotipo de doscientos sobre fondo oscuro"
             class="h-auto w-48 max-w-full brightness-0 invert"
           />

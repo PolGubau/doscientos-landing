@@ -77,7 +77,8 @@ export const branding = {
 
   // Assets
   assets: {
-    logo: "/assets/branding/logo.png",
+    logo: "/logo.png",
+    isotype: "/iso.svg",
     thumbnail: "/assets/media/og-image.png",
   },
 } as const;

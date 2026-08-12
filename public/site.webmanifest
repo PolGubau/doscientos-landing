@@ -6,11 +6,15 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
+  "theme_color": "#0c110b",
+  "background_color": "#bdff7b",
   "lang": "es",
   "dir": "ltr",
-  "categories": ["business", "productivity", "development"],
+  "categories": [
+    "business",
+    "productivity",
+    "development"
+  ],
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
