@@ -105,24 +105,27 @@ const {
     <MicrosoftClarity />
     <MetaPixel />
     <script>
-      // Prefetch links on hover for instant navigation
-      document.addEventListener("astro:page-load", () => {
-        const links = document.querySelectorAll('a[href^="/"]');
-        links.forEach((link) => {
-          link.addEventListener("mouseenter", () => {
-            const href = link.getAttribute("href");
-            if (href) {
-              const url = new URL(href, window.location.origin);
-              if (url.origin === window.location.origin) {
-                // Prefetch the page
-                const prefetchLink = document.createElement("link");
-                prefetchLink.rel = "prefetch";
-                prefetchLink.href = href;
-                document.head.appendChild(prefetchLink);
-              }
-            }
-          });
-        });
+      // Event delegation prevents duplicated hover listeners after Astro navigation.
+      const prefetched = new Set<string>();
+      document.addEventListener("pointerover", (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        const link = target.closest<HTMLAnchorElement>('a[href^="/"]');
+        const href = link?.getAttribute("href");
+        if (!href || prefetched.has(href)) return;
+
+        const connection = (
+          navigator as Navigator & {
+            connection?: { effectiveType?: string; saveData?: boolean };
+          }
+        ).connection;
+        if (connection?.saveData || connection?.effectiveType === "2g") return;
+
+        prefetched.add(href);
+        const prefetchLink = document.createElement("link");
+        prefetchLink.rel = "prefetch";
+        prefetchLink.href = href;
+        document.head.appendChild(prefetchLink);
       });
     </script>
   </head>
@@ -141,25 +144,6 @@ const {
     <Footer showCta={showFooterCta} />
     {Astro.url.pathname !== "/contact" && <FloatingCTA />}
     <CookieBanner />
-    <!-- GoHighLevel CRM tracking: única fuente de carga (con guard anti-doble-carga).
-         CookieBanner reutiliza window.__loadGHL() al aceptar consent de marketing. -->
-    <script is:inline>
-      window.GHL_TRACKING_ID_PENDING = "tk_bd6c82a0afde449a8ffd7dd348ef5130";
-      window.__loadGHL = function () {
-        if (
-          window.sessionStorage.getItem("doscientos:internal-traffic") === "1"
-        )
-          return;
-        if (!window.GHL_TRACKING_ID_PENDING) return;
-        if (document.getElementById("ghl-tracking")) return;
-        var s = document.createElement("script");
-        s.id = "ghl-tracking";
-        s.src = "https://link.msgsndr.com/js/external-tracking.js";
-        s.dataset.trackingId = window.GHL_TRACKING_ID_PENDING;
-        document.body.appendChild(s);
-      };
-      if (window.__DOS_CONSENT?.marketing) window.__loadGHL();
-    </script>
   </body>
 </html>
 

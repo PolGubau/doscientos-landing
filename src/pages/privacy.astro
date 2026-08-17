@@ -1,8 +1,8 @@
 ---
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
-import "~/styles/prose.css";
 import { getMetadata } from "~/shared/lib/constants";
+import "~/styles/prose.css";
 
 const { name, legalName, legal, links } = getMetadata();
 const lastUpdated = "18 de mayo de 2026";
@@ -62,8 +62,8 @@ const fullAddress = `${legal.address.street}, ${legal.address.postalCode} ${lega
         <li>
           <strong>Datos de navegación:</strong> dirección IP, tipo de navegador, páginas
           visitadas y tiempo de permanencia, recopilados mediante herramientas analíticas
-          (Google Analytics, Microsoft Clarity) y de marketing (Meta Pixel, GoHighLevel),
-          siempre previa obtención de tu consentimiento.
+          (Google Analytics, Microsoft Clarity) y de marketing (Meta Pixel), siempre
+          previa obtención de tu consentimiento.
         </li>
       </ul>
 
@@ -129,10 +129,6 @@ const fullAddress = `${legal.address.street}, ${legal.address.postalCode} ${lega
         </li>
         <li>
           <strong>Meta (Facebook Pixel)</strong> — seguimiento de campañas publicitarias,
-          solo con tu consentimiento.
-        </li>
-        <li>
-          <strong>GoHighLevel</strong> — seguimiento de conversiones de campañas,
           solo con tu consentimiento.
         </li>
       </ul>

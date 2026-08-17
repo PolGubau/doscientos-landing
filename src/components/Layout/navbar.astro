@@ -33,7 +33,7 @@ const pathname = Astro.url.pathname;
     <span class="text-xl font-bold text-primary">{branding.name}</span>
   </a>
 
-  <nav class="hidden lg:flex items-center">
+  <nav class="hidden lg:flex items-center" aria-label="Navegación principal">
     {
       desktopNavItems.map((item) => {
         const isActive =
@@ -42,6 +42,7 @@ const pathname = Astro.url.pathname;
         return (
           <a
             href={item.href}
+            aria-current={isActive ? "page" : undefined}
             class={`py-2 px-4 text-sm font-medium transition-colors ${isActive ? "text-foreground underline" : "text-muted-foreground hover:underline"}`}
           >
             {item.label}
@@ -54,7 +55,8 @@ const pathname = Astro.url.pathname;
   <button
     id="mobile-menu-button"
     class="lg:hidden p-2.5 text-foreground bg-background shadow-pastel-sm hover:bg-background/85 rounded-full transition-colors"
-    aria-label="Toggle menu"
+    aria-label="Abrir menú"
+    aria-controls="mobile-menu"
     aria-expanded="false"
   >
     <svg
@@ -85,9 +87,15 @@ const pathname = Astro.url.pathname;
 <div
   id="mobile-menu"
   class="fixed inset-0 z-40 lg:hidden bg-background/95 backdrop-blur-md pointer-events-none opacity-0 transition-opacity duration-300"
+  role="dialog"
+  aria-label="Navegación principal"
   aria-hidden="true"
+  inert
 >
-  <nav class="flex flex-col items-center justify-center h-full gap-8">
+  <nav
+    class="flex flex-col items-center justify-center h-full gap-8"
+    aria-label="Navegación móvil"
+  >
     {
       mobileNavItems.map((item, i) => {
         const isActive =
@@ -96,6 +104,7 @@ const pathname = Astro.url.pathname;
         return (
           <a
             href={item.href}
+            aria-current={isActive ? "page" : undefined}
             class={`mobile-menu-link text-2xl font-medium transition-colors translate-y-4 opacity-0 ${isActive ? "text-primary underline" : "text-foreground hover:text-primary"}`}
             style={`transition: opacity 300ms ${80 + i * 60}ms, transform 300ms ${80 + i * 60}ms;`}
           >
@@ -115,7 +124,12 @@ const pathname = Astro.url.pathname;
 </div>
 
 <script>
+  let cleanupNavbar: (() => void) | undefined;
+
   function initNavbar() {
+    cleanupNavbar?.();
+    const controller = new AbortController();
+    const { signal } = controller;
     const logoIso = document.getElementById("nav-logo-iso");
     const updateLogo = () => {
       if (!logoIso) return;
@@ -129,7 +143,7 @@ const pathname = Astro.url.pathname;
         logoIso.style.marginRight = "";
       }
     };
-    window.addEventListener("scroll", updateLogo, { passive: true });
+    window.addEventListener("scroll", updateLogo, { passive: true, signal });
     updateLogo();
 
     const menuButton = document.getElementById("mobile-menu-button");
@@ -169,7 +183,9 @@ const pathname = Astro.url.pathname;
       mobileMenu?.classList.remove("opacity-0", "pointer-events-none");
       mobileMenu?.classList.add("opacity-100");
       menuButton?.setAttribute("aria-expanded", "true");
+      menuButton?.setAttribute("aria-label", "Cerrar menú");
       mobileMenu?.setAttribute("aria-hidden", "false");
+      mobileMenu?.removeAttribute("inert");
       lockPageScroll();
 
       if (barTop) barTop.style.transform = "translateY(6px) rotate(45deg)";
@@ -197,7 +213,9 @@ const pathname = Astro.url.pathname;
       mobileMenu?.classList.add("opacity-0", "pointer-events-none");
       mobileMenu?.classList.remove("opacity-100");
       menuButton?.setAttribute("aria-expanded", "false");
+      menuButton?.setAttribute("aria-label", "Abrir menú");
       mobileMenu?.setAttribute("aria-hidden", "true");
+      mobileMenu?.setAttribute("inert", "");
       unlockPageScroll();
 
       if (barTop) barTop.style.transform = "";
@@ -217,41 +235,55 @@ const pathname = Astro.url.pathname;
       menuButton?.focus();
     }
 
-    mobileMenu?.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (!isOpen) return;
-      const focusable = Array.from(
-        mobileMenu.querySelectorAll<HTMLElement>(
-          "a, button, [tabindex]:not([tabindex='-1'])",
-        ),
-      );
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
+    mobileMenu?.addEventListener(
+      "keydown",
+      (e: KeyboardEvent) => {
+        if (!isOpen) return;
+        const focusable = Array.from(
+          mobileMenu.querySelectorAll<HTMLElement>(
+            "a, button, [tabindex]:not([tabindex='-1'])",
+          ),
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
 
-      if (e.key === "Escape") {
-        closeMenu();
-        return;
-      }
-      if (e.key !== "Tab") return;
-
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          last.focus();
-          e.preventDefault();
+        if (e.key === "Escape") {
+          closeMenu();
+          return;
         }
-      } else {
-        if (document.activeElement === last) {
-          first.focus();
-          e.preventDefault();
-        }
-      }
-    });
+        if (e.key !== "Tab") return;
 
-    menuButton?.addEventListener("click", () =>
-      isOpen ? closeMenu() : openMenu(),
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            last.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === last) {
+            first.focus();
+            e.preventDefault();
+          }
+        }
+      },
+      { signal },
+    );
+
+    menuButton?.addEventListener(
+      "click",
+      () => {
+        if (isOpen) closeMenu();
+        else openMenu();
+      },
+      { signal },
     );
     document.querySelectorAll(".mobile-menu-link").forEach((link) => {
-      link.addEventListener("click", closeMenu);
+      link.addEventListener("click", closeMenu, { signal });
     });
+
+    cleanupNavbar = () => {
+      controller.abort();
+      if (isOpen) unlockPageScroll();
+    };
   }
 
   document.addEventListener("astro:page-load", initNavbar);

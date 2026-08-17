@@ -22,15 +22,19 @@ import UpRightArrow from "./UpRightArrow.astro";
 </div>
 
 <script>
-  // Mostrar CTA flotante después de scroll
-  let lastScroll = 0;
-  const floatingCTA = document.getElementById("floating-cta");
+  let cleanupFloatingCta: (() => void) | undefined;
 
-  if (floatingCTA) {
-    window.addEventListener("scroll", () => {
+  function initFloatingCta() {
+    cleanupFloatingCta?.();
+    const controller = new AbortController();
+    const { signal } = controller;
+    let lastScroll = 0;
+    let animationFrame: number | undefined;
+    const floatingCTA = document.getElementById("floating-cta");
+    if (!floatingCTA) return;
+
+    const updateVisibility = () => {
       const currentScroll = window.scrollY;
-
-      // Mostrar después de 500px de scroll y cuando se hace scroll hacia abajo
       if (currentScroll > 500 && currentScroll > lastScroll) {
         floatingCTA.classList.remove("opacity-0", "translate-y-4");
         floatingCTA.classList.add("opacity-100", "translate-y-0");
@@ -40,12 +44,22 @@ import UpRightArrow from "./UpRightArrow.astro";
       }
 
       lastScroll = currentScroll;
-    });
+    };
 
-    // Evento GA4 al hacer click
-    document
-      .getElementById("floating-cta-link")
-      ?.addEventListener("click", () => {
+    const onScroll = () => {
+      if (animationFrame) return;
+      animationFrame = requestAnimationFrame(() => {
+        animationFrame = undefined;
+        updateVisibility();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true, signal });
+    updateVisibility();
+
+    document.getElementById("floating-cta-link")?.addEventListener(
+      "click",
+      () => {
         if ("gtag" in window) {
           // @ts-ignore
           window.gtag("event", "cta_click", {
@@ -53,6 +67,16 @@ import UpRightArrow from "./UpRightArrow.astro";
             event_label: "floating_cta",
           });
         }
-      });
+      },
+      { signal },
+    );
+
+    cleanupFloatingCta = () => {
+      controller.abort();
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+    };
   }
+
+  initFloatingCta();
+  document.addEventListener("astro:page-load", initFloatingCta);
 </script>

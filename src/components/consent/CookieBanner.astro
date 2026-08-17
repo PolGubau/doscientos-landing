@@ -3,7 +3,7 @@
  * CookieBanner — Banner de consentimiento de cookies (RGPD/LOPDGDD)
  * Categorías:
  *   - analytics: GA4 + Microsoft Clarity
- *   - marketing: Meta Pixel + GoHighLevel CRM
+ *   - marketing: Meta Pixel
  * Se muestra solo si no hay preferencias guardadas.
  */
 ---
@@ -148,7 +148,11 @@
         marketing: !!marketing,
         date: new Date().toISOString(),
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
+      } catch (_) {
+        // Consent Mode must still work when storage is blocked by the browser.
+      }
       window.__DOS_CONSENT = consent;
 
       // Google Consent Mode v2 — actualizar estado en cuanto el usuario decide
@@ -173,18 +177,32 @@
         "internal_traffic",
       );
       if (internalParam === "1" || internalParam === "true") {
-        window.sessionStorage.setItem("doscientos:internal-traffic", "1");
+        try {
+          window.sessionStorage.setItem("doscientos:internal-traffic", "1");
+        } catch (_) {
+          // The query parameter remains effective for this page view.
+        }
       } else if (internalParam === "0" || internalParam === "false") {
-        window.sessionStorage.removeItem("doscientos:internal-traffic");
+        try {
+          window.sessionStorage.removeItem("doscientos:internal-traffic");
+        } catch (_) {
+          // Ignore unavailable session storage.
+        }
       }
-      const isInternalTraffic =
-        window.sessionStorage.getItem("doscientos:internal-traffic") === "1";
+      let isInternalTraffic = internalParam === "1" || internalParam === "true";
+      try {
+        isInternalTraffic ||=
+          window.sessionStorage.getItem("doscientos:internal-traffic") === "1";
+      } catch (_) {
+        // No persisted internal-traffic preference is available.
+      }
 
       // Analytics: Clarity (no soporta Consent Mode → hard-block)
       if (
         consent.analytics &&
         !isInternalTraffic &&
-        window.CLARITY_ID_PENDING
+        window.CLARITY_ID_PENDING &&
+        !document.getElementById("clarity-tracking")
       ) {
         (function (c, l, a, r, i, t, y) {
           c[a] =
@@ -193,6 +211,7 @@
               (c[a].q = c[a].q || []).push(arguments);
             };
           t = l.createElement(r);
+          t.id = "clarity-tracking";
           t.async = 1;
           t.src = "https://www.clarity.ms/tag/" + i;
           y = l.getElementsByTagName(r)[0];
@@ -203,8 +222,10 @@
       if (
         consent.marketing &&
         !isInternalTraffic &&
-        window.META_PIXEL_IDS_PENDING?.length
+        window.META_PIXEL_IDS_PENDING?.length &&
+        !window.__DOS_META_PIXEL_LOADED
       ) {
+        window.__DOS_META_PIXEL_LOADED = true;
         !(function (f, b, e, v, n, t, s) {
           if (f.fbq) return;
           n = f.fbq = function () {
@@ -231,15 +252,19 @@
         window.META_PIXEL_IDS_PENDING.forEach(function (id) {
           fbq("init", id);
         });
-        const eventId =
-          window.sessionStorage.getItem("doscientos:event-id") ||
-          crypto.randomUUID();
-        window.sessionStorage.setItem("doscientos:event-id", eventId);
+        let eventId;
+        try {
+          eventId = window.sessionStorage.getItem("doscientos:event-id");
+        } catch (_) {
+          // A per-page event ID is sufficient when session storage is blocked.
+        }
+        eventId ||= crypto.randomUUID();
+        try {
+          window.sessionStorage.setItem("doscientos:event-id", eventId);
+        } catch (_) {
+          // Preserve the current-page event even when it cannot be persisted.
+        }
         fbq("track", "PageView", {}, { eventID: eventId });
-      }
-      // Marketing: GoHighLevel (única fuente de carga definida en MainLayout)
-      if (consent.marketing && !isInternalTraffic) {
-        window.__loadGHL?.();
       }
     }
 
@@ -259,6 +284,8 @@
     // Show banner only if no consent stored
     if (!window.__DOS_CONSENT) {
       banner.classList.remove("hidden");
+    } else {
+      loadTrackers(window.__DOS_CONSENT);
     }
 
     document

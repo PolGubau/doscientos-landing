@@ -24,12 +24,27 @@ if (isDev) {
     <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
       var internalParam = new URLSearchParams(window.location.search).get('internal_traffic');
       if (internalParam === '1' || internalParam === 'true') {
-        window.sessionStorage.setItem('doscientos:internal-traffic', '1');
+        try {
+          window.sessionStorage.setItem('doscientos:internal-traffic', '1');
+        } catch (_) {
+          // The query parameter still excludes this page view.
+        }
       } else if (internalParam === '0' || internalParam === 'false') {
-        window.sessionStorage.removeItem('doscientos:internal-traffic');
+        try {
+          window.sessionStorage.removeItem('doscientos:internal-traffic');
+        } catch (_) {
+          // No persisted preference can be cleared when storage is unavailable.
+        }
       }
 
-      if (window.sessionStorage.getItem('doscientos:internal-traffic') !== '1') {
+      var isInternalTraffic = internalParam === '1' || internalParam === 'true';
+      try {
+        isInternalTraffic ||= window.sessionStorage.getItem('doscientos:internal-traffic') === '1';
+      } catch (_) {
+        // No persisted preference is available in this browser context.
+      }
+
+      if (!isInternalTraffic) {
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         window.gtag = gtag;

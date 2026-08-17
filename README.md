@@ -6,7 +6,7 @@ Landing page premium de **doscientos** construida con Astro 5, especializada en 
 
 - ✅ **Diseño Premium** - Minimalista, moderno y profesional
 - ✅ **Consentimiento de cookies (RGPD)** — Google Consent Mode v2, preferencias granulares y bloqueo previo de los trackers que no lo soportan
-- ✅ **Exclusión de tráfico interno** — evita que las visitas del equipo lleguen a GA4, Clarity, Meta Pixel y GoHighLevel
+- ✅ **Exclusión de tráfico interno** — evita que las visitas del equipo lleguen a GA4, Clarity y Meta Pixel
 - ✅ **Configuración Centralizada** - Branding y contenido en archivos TypeScript
 - ✅ **Content Collections** - Blog y proyectos con MDX
 - ✅ **SEO Optimizado** - Meta tags, sitemap, y estructura semántica
@@ -41,9 +41,9 @@ El banner guarda las preferencias del visitante en `localStorage` bajo la clave 
 
 - **Google Analytics 4** usa Google Consent Mode v2: se inicia con consentimiento denegado en el EEE y se actualiza cuando el visitante decide.
 - **Microsoft Clarity** solo se carga al aceptar analítica.
-- **Meta Pixel** y **GoHighLevel** solo se cargan al aceptar marketing.
+- **Meta Pixel** solo se carga al aceptar marketing.
 
-Para no contaminar las métricas durante pruebas o navegación del equipo, abre cualquier URL con `?internal_traffic=1` (también se acepta `true`). La exclusión se conserva solo en la sesión del navegador y bloquea GA4, Clarity, Meta Pixel y GoHighLevel incluso si hay consentimiento previo. Para desactivarla, visita una URL con `?internal_traffic=0` o `?internal_traffic=false` y recarga la página.
+Para no contaminar las métricas durante pruebas o navegación del equipo, abre cualquier URL con `?internal_traffic=1` (también se acepta `true`). La exclusión se conserva solo en la sesión del navegador y bloquea GA4, Clarity y Meta Pixel incluso si hay consentimiento previo. Para desactivarla, visita una URL con `?internal_traffic=0` o `?internal_traffic=false` y recarga la página.
 
 ### Branding Centralizado
 
