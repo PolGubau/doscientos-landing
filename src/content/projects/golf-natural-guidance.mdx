@@ -1,0 +1,83 @@
+---
+title: "Golf Natural Guidance"
+summary: "Desarrollamos una demo funcional de reservas y gestión para Golf Natural Guidance, conectando la experiencia del alumno con la operación diaria del equipo."
+seoTitle: "Golf Natural Guidance | Demo de plataforma de reservas y gestión"
+metaDescription: "Demo funcional desarrollada para Golf Natural Guidance: reservas, agenda, clientes, cobros, facturación y automatizaciones en una experiencia conectada."
+available: true
+link: ""
+client: "Golf Natural Guidance"
+endedAt: "2026-08-24"
+timeline: 1
+timelineUnit: "mes"
+color: "#183e32"
+services_provided:
+  - Web
+  - Backend
+  - Backoffice
+  - Database
+cover: "../../assets/media/projects/academia-demo/cover.webp"
+logo: "../../assets/media/projects/golf-natural-guidance/logo.png"
+---
+
+import { Image } from "astro:assets";
+
+import cover from "../../assets/media/projects/academia-demo/cover.webp";
+
+Para Golf Natural Guidance desarrollamos una demo funcional de una plataforma de gestión para academias de golf. El proyecto exploraba cómo coordinar profesores, horarios, alumnos, actividades, pagos y facturas desde una experiencia conectada.
+
+La demo parte de ese flujo completo y lo convierte en un producto coherente: una experiencia pública para reservar y un backoffice para operar el negocio. El proyecto no llegó a implantarse en producción, pero permitió validar el recorrido completo y dejar una base navegable.
+
+**El resultado es una base de producto preparada para enseñar cómo una operación compleja puede sentirse sencilla.**
+
+<Image
+  src={cover}
+  alt="Plataforma de gestión para academias de golf - Dashboard de reservas y vista móvil de nueva reserva"
+  class="rounded-2xl my-6"
+/>
+
+<div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">2</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">superficies conectadas</span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">5</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">módulos de operación</span>
+  </div>
+  <div class="flex flex-col gap-0.5">
+    <span class="text-2xl font-bold leading-none">0</span>
+    <span class="text-[11px] uppercase tracking-wide text-muted-foreground">datos reales expuestos</span>
+  </div>
+</div>
+
+---
+
+## El problema
+
+Cuando reservas, agenda, cobros y facturación viven en herramientas separadas, el equipo acaba haciendo de puente entre sistemas. El alumno ve sólo una parte del proceso, pero la academia tiene que sostenerlo entero.
+
+**El reto era diseñar una experiencia única sin esconder la complejidad operativa que existe detrás.**
+
+---
+
+## La solución
+
+Construimos para Golf Natural Guidance una demo navegable con dos superficies que comparten el mismo contexto.
+
+La experiencia pública permite elegir servicio, profesor, fecha y horario, guardar los datos del alumno y completar un pago simulado. El flujo está pensado para móvil y mantiene el foco en la siguiente decisión.
+
+El backoffice reúne resumen, agenda, clientes, profesores, captación, automatizaciones y facturación. La información se organiza por tareas reales del equipo, no por la estructura interna de la base de datos.
+
+La arquitectura deja preparada la evolución hacia autenticación real, pagos, notificaciones e integraciones fiscales, sin convertir esas futuras piezas en una dependencia para validar el producto.
+
+---
+
+## Resultados
+
+- **2 superficies conectadas**: reserva pública y backoffice de gestión
+- **5 módulos principales**: reservas, agenda, clientes, cobros y facturación
+- **Flujo completo** desde la selección de servicio hasta la confirmación
+- **Datos ficticios** para poder enseñar la experiencia sin exponer información de cliente
+- **Base reutilizable** para explorar productos operativos en otros servicios profesionales
+
+> Una demo de producto también puede funcionar como herramienta de venta: permite hablar de decisiones concretas antes de hablar de funcionalidades.

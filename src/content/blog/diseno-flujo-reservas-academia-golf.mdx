@@ -1,0 +1,70 @@
+---
+title: "Cómo diseñar un flujo de reservas para clases y actividades de golf"
+description: "Un recorrido práctico por las decisiones UX que simplifican la reserva de clases privadas, actividades y horarios variables en una academia de golf."
+publishDate: "2026-08-24"
+tags: ["UX", "reservas online", "diseño de producto", "academias de golf"]
+resourceType: "guia"
+buyerStage: "consideration"
+author: "doscientos"
+draft: false
+---
+
+# Cómo diseñar un flujo de reservas para clases y actividades de golf
+
+Un flujo de reservas funciona cuando la persona sabe qué puede hacer, qué necesita decidir y qué ocurrirá después. En una academia de golf, esa claridad es más difícil porque conviven clases privadas, grupos, programas juveniles y profesores con horarios diferentes.
+
+En la [demo de Golf Natural Guidance](/projects/golf-natural-guidance) usamos ese escenario para explorar un flujo de reserva completo.
+
+## Empieza por la intención del alumno
+
+Hay personas que llegan buscando “una clase el sábado por la mañana” y otras que ya quieren reservar con un profesor concreto. La interfaz debe soportar ambos comportamientos:
+
+- Buscar una experiencia y después revisar horarios.
+- Buscar una hora y después elegir entre profesores disponibles.
+- Elegir directamente a un profesor cuando ya existe una preferencia.
+
+No hay una única entrada correcta. El diseño debe adaptarse a la información que el alumno ya tiene.
+
+## Divide la decisión en pasos cortos
+
+Un flujo claro puede seguir esta secuencia:
+
+1. Servicio o experiencia.
+2. Fecha y hora.
+3. Profesor y tarifa.
+4. Datos del alumno.
+5. Pago y confirmación.
+
+Cada pantalla debe resolver una pregunta. Si mezcla disponibilidad, datos fiscales, reglas de cancelación y opciones de pago demasiado pronto, aumenta la carga mental.
+
+## Muestra el contexto antes de confirmar
+
+Antes de pagar, el alumno debería poder revisar el servicio, profesor, duración, fecha, hora, jugadores, lugar y precio total. El resumen no es un detalle visual: reduce dudas y evita errores de reserva.
+
+En actividades de grupo, además, conviene mostrar plazas disponibles y si el pago debe hacerse online. Las reglas que afectan a la decisión deben estar visibles antes de la confirmación.
+
+## Diseña los casos que rompen el flujo
+
+El flujo feliz es sólo una parte del producto. También hay que decidir qué ocurre cuando:
+
+- El profesor elegido no tiene disponibilidad.
+- La actividad está completa.
+- El alumno ya tiene una reserva en ese horario.
+- Faltan datos fiscales para emitir la factura.
+- El pago se completa, pero la reserva necesita revisión.
+
+Una buena alternativa no es un mensaje de error genérico. Es ofrecer el siguiente camino posible: otro profesor, otra hora, una lista de espera o contacto con el equipo.
+
+## Mantén la reserva conectada con la operación
+
+La confirmación que ve el alumno debe alimentar la agenda, la ficha del cliente, el pago y la facturación. Si cada parte se gestiona por separado, la experiencia puede parecer digital por delante y seguir siendo manual por detrás.
+
+Por eso, incluso al diseñar un prototipo, conviene modelar los estados principales: pendiente, confirmada, pagada, cancelada y completada.
+
+## Qué validamos en la demo
+
+La demo desarrollada para Golf Natural Guidance permitió recorrer el flujo desde la selección de servicio hasta la confirmación y conectarlo con un backoffice de reservas, clientes, profesores y facturación.
+
+No era una implantación ni una prueba de métricas en producción. Era una forma concreta de validar decisiones de producto antes de invertir en integraciones reales.
+
+Para profundizar en el contexto, puedes leer el [caso completo de Golf Natural Guidance](/projects/golf-natural-guidance) y la guía sobre [software de gestión para academias de golf](/blog/software-gestion-academias-golf).

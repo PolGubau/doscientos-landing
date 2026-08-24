@@ -1,0 +1,64 @@
+---
+title: "Golf Natural Guidance: cómo diseñamos una demo de reservas y gestión para una academia de golf"
+description: "Un caso de producto sobre cómo conectar reservas, agenda, clientes, cobros y facturación en una demo funcional para una academia de golf."
+publishDate: "2026-08-24"
+tags: ["caso de estudio", "producto digital", "software de gestión", "reservas online", "golf"]
+resourceType: "caso"
+buyerStage: "decision"
+author: "doscientos"
+draft: false
+---
+
+# Golf Natural Guidance: cómo diseñamos una demo de reservas y gestión para una academia de golf
+
+Una academia de golf no gestiona sólo reservas. Coordina profesores, horarios, alumnos, actividades, pagos y facturas; cada pieza afecta a la experiencia de la siguiente.
+
+Para Golf Natural Guidance desarrollamos una demo funcional que exploraba cómo conectar esa operación en una sola experiencia. El proyecto no llegó a implantarse en producción, pero sí permitió convertir un proceso complejo en un producto navegable y fácil de discutir.
+
+## El reto: conectar dos experiencias distintas
+
+El alumno necesita una experiencia rápida: elegir un servicio, encontrar un horario, seleccionar profesor y confirmar. El equipo necesita algo diferente: revisar la agenda, gestionar clientes, controlar actividades, seguir oportunidades y preparar la facturación.
+
+El reto de producto estaba en que ambas superficies compartieran el mismo contexto sin obligar al usuario a entender la estructura interna del negocio.
+
+## La experiencia pública de reserva
+
+La demo empieza por la intención del alumno. Puede buscar una clase privada, una actividad de grupo o un programa específico. A partir de ahí, el flujo permite elegir fecha, disponibilidad, profesor y número de jugadores.
+
+La decisión importante fue mostrar la información necesaria en cada paso, en lugar de presentar un formulario largo. El precio, la duración y el siguiente paso aparecen cuando son relevantes para continuar.
+
+También incluimos un acceso simulado para que un alumno recurrente pueda reutilizar sus datos y completar una reserva con menos fricción.
+
+## El backoffice como centro de operación
+
+El backoffice reúne los módulos que el equipo necesita para trabajar:
+
+- Reservas y agenda semanal.
+- Ficha e historial de clientes.
+- Profesores, disponibilidad y liquidaciones.
+- Actividades, plazas y pagos.
+- Captación de oportunidades y seguimientos.
+- Facturación y presentación fiscal simulada.
+
+La interfaz no trata estos módulos como pantallas aisladas. Una reserva conecta con un cliente, un profesor, un pago y una factura; esa trazabilidad es la que permite que el equipo deje de rehacer el mismo trabajo en varias herramientas.
+
+## Por qué una demo funcional
+
+Antes de construir integraciones reales, una demo navegable permite validar si el flujo tiene sentido. Es más útil discutir una reserva concreta, una agenda semanal o una factura simulada que hablar de funcionalidades abstractas.
+
+En este caso, el prototipo permitió explorar decisiones de experiencia, roles, estados y reglas de negocio sin comprometer todavía una implantación completa.
+
+## Qué aprendimos
+
+- **El flujo principal debe ser corto**: el alumno no necesita conocer la operación interna.
+- **El backoffice debe reflejar tareas reales**: no basta con replicar tablas de base de datos.
+- **Las reglas de negocio deben aparecer en el contexto correcto**: disponibilidad, precio y pagos no pueden quedar escondidos.
+- **La demo debe ser honesta**: enseñar lo que funciona y separar claramente lo que queda preparado para una fase posterior.
+
+Puedes ver la ficha completa del proyecto en [Golf Natural Guidance](/projects/golf-natural-guidance) y consultar también nuestra guía sobre [qué debería tener un software de gestión para una academia de golf](/blog/software-gestion-academias-golf).
+
+## Una demo también es una herramienta de decisión
+
+Una demo funcional no sustituye a un proyecto implantado, pero ayuda a tomar mejores decisiones antes de invertir en él. Permite al equipo validar el recorrido, detectar excepciones y hablar de prioridades con algo concreto delante.
+
+Ese fue el objetivo de este trabajo para Golf Natural Guidance: convertir una idea de plataforma en una experiencia que se pudiera recorrer, discutir y mejorar.
