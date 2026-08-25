@@ -8,6 +8,7 @@ import {
   type BlogCtaVariant,
 } from "~/data/commercialRoutes";
 import MainLayout from "~/layouts/MainLayout.astro";
+import { getResourceCategories } from "~/shared/lib/resourceCategories";
 import { getBuyerStageLabel, getResourceLabel } from "~/shared/lib/resources";
 
 export async function getStaticPaths() {
@@ -20,6 +21,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const postCategories = getResourceCategories(post.data.tags);
 
 const allPosts = await getCollection("blog", ({ data }) => !data.draft);
 const relatedPosts = allPosts
@@ -80,10 +82,14 @@ const ctaVariant: BlogCtaVariant =
       <header class="space-y-6">
         <div class="space-y-4">
           <div class="flex flex-wrap gap-2">
-            <span class="text-xs px-3 py-1 rounded-full bg-primary text-background font-semibold">
+            <span
+              class="text-xs px-3 py-1 rounded-full bg-primary text-background font-semibold"
+            >
               {getResourceLabel(post.data.resourceType)}
             </span>
-            <span class="text-xs px-3 py-1 rounded-full bg-muted text-foreground">
+            <span
+              class="text-xs px-3 py-1 rounded-full bg-muted text-foreground"
+            >
               {getBuyerStageLabel(post.data.buyerStage)}
             </span>
           </div>
@@ -111,14 +117,14 @@ const ctaVariant: BlogCtaVariant =
           </div>
 
           {
-            post.data.tags && post.data.tags.length > 0 && (
+            postCategories.length > 0 && (
               <div class="flex flex-wrap gap-2">
-                {post.data.tags.map((tag: string) => (
+                {postCategories.map((category) => (
                   <a
-                    href={`/recursos/tags/${tag.toLowerCase()}`}
+                    href={`/recursos/tags/${category.slug}`}
                     class="text-sm px-4 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
                   >
-                    {tag}
+                    {category.label}
                   </a>
                 ))}
               </div>
@@ -189,7 +195,7 @@ const ctaVariant: BlogCtaVariant =
               {displayPosts.map((p) => (
                 <a href={`/recursos/${p.id}`} class="group space-y-3 block">
                   <div class="aspect-video overflow-hidden rounded-xl border bg-accent/50 group-hover:bg-accent transition-colors flex items-center justify-center p-6 text-center">
-                    <span class="text-xs uppercase tracking-widest text-muted-foreground font-semibold group-hover:text-primary transition-colors">
+                    <span class="text-xs text-muted-foreground font-semibold group-hover:text-primary transition-colors">
                       {getResourceLabel(p.data.resourceType)}
                     </span>
                   </div>

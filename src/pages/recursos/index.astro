@@ -122,7 +122,7 @@ const filters = resourceCategories.map((category) => ({
                     class="rounded-full border border-muted bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary/40"
                   >
                     {filter.label}{" "}
-                    <span class="text-muted-foreground">{filter.count}</span>
+                    <span class="opacity-70">{filter.count}</span>
                   </button>
                 ))}
               </div>
@@ -207,7 +207,8 @@ const filters = resourceCategories.map((category) => ({
               })}
             </div>
             <p
-              class="hidden py-12 text-center text-muted-foreground"
+              hidden
+              class="py-12 text-center text-muted-foreground"
               data-resource-empty
             >
               No hay recursos publicados en esta categoría todavía.
