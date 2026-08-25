@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
 import type { Project } from "~/content.config";
-import UpRightArrow from "./UpRightArrow.astro";
 
 type ProjectProps = Pick<
   Project,
@@ -13,7 +12,6 @@ type Props = {
   client: string;
   timeline: number;
   timelineUnit?: "semana" | "mes";
-  featured?: boolean;
 } & ProjectProps;
 
 const {
@@ -26,45 +24,30 @@ const {
   timeline,
   timelineUnit = "mes",
   color,
-  featured = false,
 } = Astro.props;
 ---
 
 <a
   href={`/projects/${id}`}
-  class:list={[
-    "project-card-link block w-full focus-visible:outline-none",
-    featured && "project-card-link--featured",
-  ]}
+  class="project-card-link group block h-full w-full focus-visible:outline-none"
+  style={`--project-color: ${color}`}
 >
-  <article
-    class="project-card group h-full flex flex-col transition-transform duration-500 ease-out hover:-translate-y-1 [will-change:transform]"
-    style={`--project-color: ${color}`}
-  >
+  <article class="project-card flex h-full flex-col">
     <header
-      class:list={[
-        "project-card-media relative w-full aspect-[1.5] max-h-80 overflow-hidden rounded-[1.5rem]",
-        featured && "project-card-media--featured",
-      ]}
+      class="project-card-media relative aspect-[16/10] w-full overflow-hidden"
     >
-      <div
-        class="w-full h-full bg-gradient-to-br from-muted to-primary/20 flex items-center justify-center relative overflow-hidden"
-        data-parallax="6"
-      >
-        <Image
-          src={cover}
-          alt={`Imagen de portada del proyecto ${title}, mostrando una vista previa visual del trabajo realizado para el cliente. La imagen refleja el estilo y la esencia del proyecto, utilizando colores y elementos gráficos relacionados con ${title}.`}
-          widths={[400, 800, 1200]}
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          loading="lazy"
-          decoding="async"
-          class="w-full h-full object-cover object-center transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04] [will-change:transform]"
-        />
-        <div class="project-card-media-shade"></div>
-      </div>
+      <Image
+        src={cover}
+        alt={`Vista previa del proyecto ${title}`}
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        loading="lazy"
+        decoding="async"
+        class="h-full w-full object-cover object-center"
+      />
     </header>
 
-    <footer class="project-card-content flex flex-col gap-4">
+    <footer class="project-card-content flex grow flex-col">
       <div class="project-card-meta">
         <span class="project-card-client">{client}</span>
         <span class="project-card-timeline">
@@ -81,37 +64,22 @@ const {
         </span>
       </div>
 
-      <div class="flex flex-col gap-2">
-        <span
-          class="project-card-services text-[10px] uppercase tracking-[0.12em] font-bold"
-        >
-          {
-            services_provided?.length > 0 &&
-              services_provided
-                .slice(0, 3)
-                .map((cat) => cat.trim())
-                .join(" · ")
-          }
-        </span>
-        <h3
-          class="text-2xl font-bold tracking-tight text-balance transition-colors duration-300 group-hover:text-primary"
-        >
-          {title}
-        </h3>
+      <div class="project-card-heading">
+        <h3>{title}</h3>
+        <span class="project-card-arrow" aria-hidden="true">↗</span>
       </div>
 
-      <p
-        class="project-card-summary text-sm leading-relaxed text-muted-foreground"
-      >
-        {summary}
-      </p>
+      <p class="project-card-summary">{summary}</p>
 
-      <span
-        class="project-card-cta inline-flex items-center gap-2 text-sm font-bold text-primary"
-      >
-        Ver caso
-        <UpRightArrow class="project-card-arrow p-2 shrink-0" />
-      </span>
+      <p class="project-card-services">
+        {
+          services_provided?.length > 0 &&
+            services_provided
+              .slice(0, 3)
+              .map((service) => service.trim())
+              .join(" · ")
+        }
+      </p>
     </footer>
   </article>
 </a>
@@ -122,39 +90,17 @@ const {
   }
 
   .project-card-media {
-    background: color-mix(in srgb, var(--project-color) 42%, var(--muted));
-    border: 1px solid color-mix(in srgb, var(--project-color) 22%, var(--muted));
-    box-shadow: var(--shadow-pastel-sm);
-    transition:
-      box-shadow 300ms ease,
-      border-color 300ms ease;
+    border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+    border-radius: 0.75rem;
+    background: var(--muted);
   }
 
-  .project-card:hover .project-card-media,
-  .project-card-link:focus-visible .project-card-media {
-    border-color: color-mix(in srgb, var(--project-color) 56%, var(--primary));
-    box-shadow: var(--shadow-pastel);
+  .project-card-media :global(img) {
+    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .project-card-media--featured {
-    aspect-ratio: 2.15;
-    max-height: 30rem;
-  }
-
-  .project-card-media-shade {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(
-      to bottom,
-      rgb(12 17 11 / 0.04),
-      transparent 55%,
-      rgb(12 17 11 / 0.12)
-    );
-  }
-
-  .project-card-content {
-    padding: 1rem 0.2rem 0.35rem;
+  .project-card-link:hover .project-card-media :global(img) {
+    transform: scale(1.02);
   }
 
   .project-card-meta {
@@ -162,17 +108,17 @@ const {
     align-items: baseline;
     justify-content: space-between;
     gap: 1rem;
+    padding-top: 0.9rem;
     color: var(--muted-foreground);
     font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-weight: 650;
+    letter-spacing: 0.08em;
     line-height: 1.35;
     text-transform: uppercase;
   }
 
   .project-card-timeline {
     flex: none;
-    color: color-mix(in srgb, var(--project-color) 75%, var(--primary));
   }
 
   .project-card-client {
@@ -180,34 +126,60 @@ const {
     overflow-wrap: anywhere;
   }
 
-  .project-card-services {
-    color: color-mix(in srgb, var(--project-color) 80%, var(--primary));
+  .project-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.7rem;
+  }
+
+  .project-card-heading h3 {
+    margin: 0;
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
   }
 
   .project-card-summary {
     display: -webkit-box;
     overflow: hidden;
+    margin-top: 0.75rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.55;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
+  }
+
+  .project-card-services {
+    margin-top: auto;
+    padding-top: 1rem;
+    color: var(--muted-foreground);
+    font-size: 0.72rem;
+    line-height: 1.4;
   }
 
   .project-card-arrow {
-    transition: transform 220ms ease;
+    flex: none;
+    color: var(--muted-foreground);
+    font-size: 1.15rem;
+    line-height: 1;
+    transition:
+      color 180ms ease,
+      transform 180ms ease;
   }
 
-  .project-card:hover .project-card-arrow {
+  .project-card-link:hover .project-card-arrow {
+    color: var(--primary);
     transform: translate(0.15rem, -0.15rem);
   }
 
   .project-card-link:focus-visible .project-card-media {
-    outline: 3px solid
-      color-mix(in srgb, var(--project-color) 55%, var(--primary));
+    outline: 2px solid
+      color-mix(in srgb, var(--project-color) 70%, var(--primary));
     outline-offset: 3px;
-  }
-
-  @media (max-width: 767px) {
-    .project-card-media--featured {
-      aspect-ratio: 1.45;
-    }
   }
 </style>

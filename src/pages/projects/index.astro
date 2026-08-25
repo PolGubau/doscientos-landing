@@ -102,15 +102,18 @@ const projects = await getProjects();
         data-easing="soft"
         data-distance="small"
       >
-        Casos de éxito destacados
+        Casos de éxito
       </h2>
 
       <!-- Projects grid -->
-      <section class="grid grid-cols-1 lg:grid-cols-2 gap-4" data-stagger="150">
+      <section
+        class="grid grid-cols-1 gap-x-6 gap-y-12 lg:grid-cols-2"
+        data-stagger="150"
+      >
         {
-          projects.map((project, projectIndex) => (
+          projects.map((project) => (
             <article
-              class:list={{ "lg:col-span-2": projectIndex === 0 }}
+              class="h-full"
               data-reveal="bottom"
               data-speed="normal"
               data-easing="smooth"
@@ -126,7 +129,6 @@ const projects = await getProjects();
                 services_provided={project.data.services_provided}
                 color={project.data.color}
                 cover={project.data.cover}
-                featured={projectIndex === 0}
               />
             </article>
           ))

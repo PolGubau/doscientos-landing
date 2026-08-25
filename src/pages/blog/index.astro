@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import BlogCard from "~/components/blog/BlogCard.astro";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import SectionTag from "~/components/ui/SectionTag.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
@@ -18,88 +19,38 @@ const sortedPosts = blogPosts.sort(
     <div class="max-w-6xl mx-auto space-y-12">
       <Breadcrumbs items={[{ name: "Blog", url: "/blog" }]} />
 
-      <header
-        class="flex flex-col max-w-2xl items-center justify-center text-center gap-6 mx-auto"
-      >
+      <header class="flex max-w-4xl flex-col items-start gap-6">
         <SectionTag>Nuestro blog</SectionTag>
         <h1
-          class="font-semibold text-foreground flex flex-col text-3xl md:text-5xl items-center text-center"
+          class="max-w-3xl text-balance text-4xl font-semibold leading-[1.05] text-foreground md:text-6xl"
         >
-          <span>Criterio técnico, explicado con contexto</span>
+          Criterio técnico, explicado con contexto
         </h1>
-        <p class="text-muted-foreground max-w-md text-pretty">
+        <p
+          class="max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground"
+        >
           Análisis, comparativas y aprendizajes de proyectos reales para decidir
           qué construir, con qué tecnología y por qué.
         </p>
       </header>
 
-      <!-- Posts grid -->
       {
         sortedPosts.length > 0 ? (
-          <div class="grid md:grid-cols-2 gap-6">
-            {sortedPosts.map((post) => (
-              <article class="group">
-                <div class="flex flex-col h-full p-6 rounded-2xl gap-2 shadow-pastel border border-muted bg-accent hover:border-primary transition-colors">
-                  <time
-                    class="text-sm text-muted-foreground mb-2"
-                    datetime={post.data.publishDate.toISOString()}
-                  >
-                    {post.data.publishDate.toLocaleDateString("es-ES", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-
-                  <a href={`/blog/${post.id}`} class="group/title">
-                    <h2 class="text-2xl font-bold text-foreground group-hover/title:text-primary transition-colors">
-                      {post.data.title}
-                    </h2>
-                  </a>
-
-                  <p class="text-muted-foreground line-clamp-3">
-                    {post.data.description}
-                  </p>
-
-                  {/* Tags */}
-                  {post.data.tags && post.data.tags.length > 0 && (
-                    <div class="flex flex-wrap gap-2 pt-2">
-                      {post.data.tags.map((tag: string) => (
-                        <a
-                          href={`/blog/tags/${tag.toLowerCase()}`}
-                          class="text-xs px-3 py-1 rounded-full bg-muted text-foreground hover:bg-primary hover:text-background transition-colors"
-                        >
-                          {tag}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-
-                  <div class="mt-auto pt-4">
-                    <a
-                      href={`/blog/${post.id}`}
-                      class="flex items-center gap-2 text-foreground font-medium"
-                    >
-                      Leer más
-                      <svg
-                        class="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          <section aria-labelledby="latest-posts" class="space-y-6">
+            <div class="flex items-end justify-between gap-6 border-b border-muted pb-4">
+              <h2 id="latest-posts" class="text-xl font-semibold">
+                Últimas publicaciones
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {sortedPosts.length} artículos
+              </p>
+            </div>
+            <div class="grid gap-5 md:grid-cols-2">
+              {sortedPosts.map((post, index) => (
+                <BlogCard post={post} featured={index === 0} />
+              ))}
+            </div>
+          </section>
         ) : (
           <div class="text-center py-20">
             <p class="text-xl text-neutral-500 dark:text-neutral-400">

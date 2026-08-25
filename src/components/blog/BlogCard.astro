@@ -1,0 +1,113 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+  featured?: boolean;
+}
+
+const { post, featured = false } = Astro.props;
+const tags = post.data.tags?.slice(0, 3) ?? [];
+const publishedAt = post.data.publishDate.toLocaleDateString("es-ES", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<article class:list={["group h-full", { "md:col-span-2": featured }]}>
+  <a
+    href={`/blog/${post.id}`}
+    class:list={[
+      "relative isolate flex h-full min-h-80 flex-col overflow-hidden rounded-4xl border p-6 shadow-pastel-sm transition-[transform,box-shadow,border-color] duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary md:p-8",
+      featured
+        ? "border-primary bg-primary text-background md:min-h-96 md:p-10"
+        : "border-muted/80 bg-background text-foreground hover:-translate-y-1 hover:border-primary/30 hover:shadow-pastel",
+    ]}
+  >
+    <span
+      aria-hidden="true"
+      class:list={[
+        "pointer-events-none absolute -right-20 -top-24 -z-10 size-72 rounded-full blur-3xl transition-transform duration-500 group-hover:scale-110",
+        featured ? "bg-background/10" : "bg-accent/70",
+      ]}
+    ></span>
+
+    <header class="flex items-center justify-between gap-4">
+      <span
+        class:list={[
+          "text-xs font-semibold uppercase tracking-[0.16em]",
+          featured ? "text-background/70" : "text-primary",
+        ]}
+      >
+        Artículo
+      </span>
+      <time
+        class:list={[
+          "text-xs md:text-sm",
+          featured ? "text-background/65" : "text-muted-foreground",
+        ]}
+        datetime={post.data.publishDate.toISOString()}
+      >
+        {publishedAt}
+      </time>
+    </header>
+
+    <div class:list={["mt-12 space-y-4", { "md:mt-16 md:max-w-4xl": featured }]}>
+      <h2
+        class:list={[
+          "text-balance font-semibold leading-[1.08] tracking-tight",
+          featured ? "text-3xl md:text-5xl" : "text-2xl md:text-3xl",
+        ]}
+      >
+        {post.data.title}
+      </h2>
+      <p
+        class:list={[
+          "max-w-2xl text-pretty leading-relaxed",
+          featured ? "text-background/75 md:text-lg" : "text-muted-foreground",
+        ]}
+      >
+        {post.data.description}
+      </p>
+    </div>
+
+    <footer class="mt-auto flex items-end justify-between gap-5 pt-10">
+      <div class="flex min-w-0 flex-wrap gap-2" aria-label="Etiquetas">
+        {
+          tags.map((tag) => (
+            <span
+              class:list={[
+                "rounded-full border px-3 py-1 text-xs font-medium",
+                featured
+                  ? "border-background/15 bg-background/10 text-background/80"
+                  : "border-muted bg-secondary text-muted-foreground",
+              ]}
+            >
+              {tag}
+            </span>
+          ))
+        }
+      </div>
+
+      <span
+        aria-hidden="true"
+        class:list={[
+          "flex size-11 shrink-0 items-center justify-center rounded-full border transition-transform duration-300 group-hover:translate-x-1",
+          featured
+            ? "border-background/25 bg-background/10"
+            : "border-muted bg-secondary text-primary",
+        ]}
+      >
+        <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 12h14m-6-6 6 6-6 6"
+          ></path>
+        </svg>
+      </span>
+    </footer>
+  </a>
+</article>

@@ -7,10 +7,7 @@ const { class: className } = Astro.props;
 ---
 
 <span
-  class:list={[
-    "text-xs w-fit text-muted-foreground uppercase tracking-wider text-center",
-    className,
-  ]}
+  class:list={["text-xs w-fit text-muted-foreground text-center", className]}
 >
   <slot />
 </span>

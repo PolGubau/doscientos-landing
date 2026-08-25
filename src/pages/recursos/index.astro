@@ -10,7 +10,9 @@ const sortedResources = resources.sort(
   (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
 );
 
-const featuredResources = sortedResources.filter((post) => post.data.leadMagnet).slice(0, 3);
+const featuredResources = sortedResources
+  .filter((post) => post.data.leadMagnet)
+  .slice(0, 3);
 ---
 
 <MainLayout
@@ -45,14 +47,16 @@ const featuredResources = sortedResources.filter((post) => post.data.leadMagnet)
                 class="group rounded-2xl border border-primary/20 bg-primary text-background p-6 space-y-4 shadow-pastel hover:opacity-95 transition-opacity"
               >
                 <div class="flex items-center justify-between gap-3">
-                  <span class="text-xs font-semibold uppercase tracking-[0.16em] opacity-80">
+                  <span class="text-xs font-semibold opacity-80">
                     {getResourceLabel(post.data.resourceType)}
                   </span>
                   <span class="rounded-full bg-background/15 px-3 py-1 text-xs font-semibold">
                     Gratis
                   </span>
                 </div>
-                <h2 class="text-xl font-bold leading-tight">{post.data.leadMagnet?.title}</h2>
+                <h2 class="text-xl font-bold leading-tight">
+                  {post.data.leadMagnet?.title}
+                </h2>
                 <p class="text-sm opacity-80 leading-relaxed">
                   {post.data.leadMagnet?.description}
                 </p>

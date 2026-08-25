@@ -54,13 +54,12 @@ const highlights = [
 
     <div class="impact-grid">
       {
-        highlights.map((item, index) => {
+        highlights.map((item) => {
           const project = projectById.get(item.id);
           if (!project) return null;
 
           return (
             <a href={`/projects/${project.id}`} class="impact-card">
-              <div class="impact-card__number">0{index + 1}</div>
               <div class="impact-card__topline">
                 <span>{item.eyebrow}</span>
                 <span>{project.data.client}</span>
@@ -159,7 +158,7 @@ const highlights = [
   .impact-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 2rem;
   }
 
   .impact-card {
@@ -167,25 +166,13 @@ const highlights = [
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
-    min-height: 25rem;
-    padding: 1.75rem;
-    border-radius: 1.5rem;
-    background: var(--muted);
-    transition:
-      transform 250ms ease,
-      background 250ms ease;
+    min-height: 21rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--foreground) 18%, transparent);
   }
 
-  .impact-card:hover {
-    transform: translateY(-3px);
-    background: color-mix(in srgb, var(--muted) 92%, var(--foreground));
-  }
-
-  .impact-card__number {
-    color: var(--muted-foreground);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
+  .impact-card:hover h3 {
+    color: var(--primary);
   }
 
   .impact-card__topline {
@@ -207,6 +194,7 @@ const highlights = [
     line-height: 1;
     letter-spacing: -0.045em;
     text-wrap: balance;
+    transition: color 180ms ease;
   }
 
   .impact-card > p {
@@ -225,10 +213,10 @@ const highlights = [
 
   .impact-card__result strong {
     color: var(--primary);
-    font-size: clamp(2.25rem, 4vw, 3.5rem);
-    font-weight: 850;
-    line-height: 0.85;
-    letter-spacing: -0.08em;
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.06em;
   }
 
   .impact-card__result span {
@@ -253,7 +241,8 @@ const highlights = [
     }
 
     .impact-card {
-      min-height: 21rem;
+      min-height: auto;
+      padding-bottom: 2.5rem;
     }
   }
 
@@ -268,12 +257,6 @@ const highlights = [
 
     .impact-section-new h2 {
       font-size: clamp(2.5rem, 12vw, 4rem);
-    }
-
-    .impact-card {
-      border-radius: 1.25rem;
-      padding: 1.5rem;
-      min-height: auto;
     }
   }
 </style>
