@@ -115,4 +115,4 @@ export const commercialBlogLinks = commercialRoutes
       "/crm-renovaciones",
     ].includes(route.href),
   )
-  .map(({ href, label }) => ({ href, label }));
+  .map(({ href, label, description }) => ({ href, label, description }));
