@@ -2,6 +2,10 @@
 import { getCollection } from "astro:content";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
+import {
+  getResourceCategories,
+  resourceCategories,
+} from "~/shared/lib/resourceCategories";
 import { getBuyerStageLabel, getResourceLabel } from "~/shared/lib/resources";
 
 const resources = await getCollection("blog", ({ data }) => !data.draft);
@@ -12,6 +16,14 @@ const sortedResources = resources.sort(
 const featuredResources = sortedResources
   .filter((post) => post.data.leadMagnet)
   .slice(0, 3);
+const filters = resourceCategories.map((category) => ({
+  ...category,
+  count: sortedResources.filter((post) =>
+    getResourceCategories(post.data.tags).some(
+      ({ slug }) => slug === category.slug,
+    ),
+  ).length,
+}));
 ---
 
 <MainLayout
@@ -66,78 +78,141 @@ const featuredResources = sortedResources
 
       {
         sortedResources.length > 0 ? (
-          <div class="grid md:grid-cols-2 gap-6">
-            {sortedResources.map((post) => (
-              <article class="group">
-                <div class="flex flex-col h-full p-6 rounded-2xl gap-3 shadow-pastel border border-muted bg-secondary hover:border-primary transition-colors">
-                  <div class="flex flex-wrap items-center gap-2">
-                    <span class="text-xs px-3 py-1 rounded-full bg-background text-foreground border border-muted font-semibold">
-                      {getResourceLabel(post.data.resourceType)}
-                    </span>
-                    <span class="text-xs px-3 py-1 rounded-full bg-muted text-foreground">
-                      {getBuyerStageLabel(post.data.buyerStage)}
-                    </span>
-                  </div>
-
-                  <time
-                    class="text-sm text-muted-foreground"
-                    datetime={post.data.publishDate.toISOString()}
+          <section class="space-y-8" aria-labelledby="resources-heading">
+            <div class="space-y-4 border-b border-muted pb-6">
+              <div class="flex flex-wrap items-end justify-between gap-4">
+                <div class="space-y-1">
+                  <h2
+                    id="resources-heading"
+                    class="text-2xl font-semibold text-foreground"
                   >
-                    {post.data.publishDate.toLocaleDateString("es-ES", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-
-                  <a href={`/recursos/${post.id}`} class="group/title">
-                    <h2 class="text-2xl font-bold text-foreground group-hover/title:text-primary transition-colors">
-                      {post.data.title}
-                    </h2>
-                  </a>
-
-                  <p class="text-muted-foreground line-clamp-3">
-                    {post.data.description}
+                    Explora los recursos
+                  </h2>
+                  <p class="text-sm text-muted-foreground">
+                    Filtra por los temas principales sin salir de esta página.
                   </p>
-
-                  {post.data.tags && post.data.tags.length > 0 && (
-                    <div class="flex flex-wrap gap-2 pt-1">
-                      {post.data.tags.map((tag: string) => (
-                        <a
-                          href={`/recursos/tags/${tag.toLowerCase()}`}
-                          class="text-xs px-3 py-1 rounded-full bg-muted text-foreground hover:bg-primary hover:text-background transition-colors"
-                        >
-                          {tag}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-
-                  <div class="mt-auto pt-4">
-                    <a
-                      href={`/recursos/${post.id}`}
-                      class="flex items-center gap-2 text-foreground font-medium"
-                    >
-                      Ver recurso
-                      <svg
-                        class="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </a>
-                  </div>
                 </div>
-              </article>
-            ))}
-          </div>
+                <p
+                  id="resource-filter-status"
+                  class="text-sm text-muted-foreground"
+                  aria-live="polite"
+                >
+                  {sortedResources.length} recursos
+                </p>
+              </div>
+
+              <div
+                class="flex flex-wrap gap-2"
+                data-resource-filters
+                aria-label="Filtrar recursos por tema"
+              >
+                <button
+                  type="button"
+                  data-resource-filter="all"
+                  aria-pressed="true"
+                  class="rounded-full border border-primary bg-primary px-4 py-2 text-sm font-semibold text-background transition-colors"
+                >
+                  Todos
+                </button>
+                {filters.map((filter) => (
+                  <button
+                    type="button"
+                    data-resource-filter={filter.slug}
+                    aria-pressed="false"
+                    class="rounded-full border border-muted bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary/40"
+                  >
+                    {filter.label}{" "}
+                    <span class="text-muted-foreground">{filter.count}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-2" data-resource-grid>
+              {sortedResources.map((post) => {
+                const postCategories = getResourceCategories(post.data.tags);
+                return (
+                  <article
+                    class="group"
+                    data-resource-card
+                    data-resource-categories={postCategories
+                      .map(({ slug }) => slug)
+                      .join(" ")}
+                  >
+                    <div class="flex flex-col h-full p-6 rounded-2xl gap-3 shadow-pastel border border-muted bg-secondary hover:border-primary transition-colors">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-xs px-3 py-1 rounded-full bg-background text-foreground border border-muted font-semibold">
+                          {getResourceLabel(post.data.resourceType)}
+                        </span>
+                        <span class="text-xs px-3 py-1 rounded-full bg-muted text-foreground">
+                          {getBuyerStageLabel(post.data.buyerStage)}
+                        </span>
+                      </div>
+
+                      <time
+                        class="text-sm text-muted-foreground"
+                        datetime={post.data.publishDate.toISOString()}
+                      >
+                        {post.data.publishDate.toLocaleDateString("es-ES", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </time>
+
+                      <a href={`/recursos/${post.id}`} class="group/title">
+                        <h2 class="text-2xl font-bold text-foreground group-hover/title:text-primary transition-colors">
+                          {post.data.title}
+                        </h2>
+                      </a>
+
+                      <p class="text-muted-foreground line-clamp-3">
+                        {post.data.description}
+                      </p>
+
+                      {postCategories.length > 0 && (
+                        <div class="flex flex-wrap gap-2 pt-1">
+                          {postCategories.slice(0, 2).map((category) => (
+                            <span class="text-xs px-3 py-1 rounded-full bg-muted text-foreground">
+                              {category.label}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      <div class="mt-auto pt-4">
+                        <a
+                          href={`/recursos/${post.id}`}
+                          class="flex items-center gap-2 text-foreground font-medium"
+                        >
+                          Ver recurso
+                          <svg
+                            class="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M17 8l4 4m0 0l-4 4m4-4H3"
+                            />
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+            <p
+              class="hidden py-12 text-center text-muted-foreground"
+              data-resource-empty
+            >
+              No hay recursos publicados en esta categoría todavía.
+            </p>
+          </section>
         ) : (
           <div class="text-center py-20">
             <p class="text-xl text-neutral-500 dark:text-neutral-400">
@@ -149,3 +224,55 @@ const featuredResources = sortedResources
     </div>
   </div>
 </MainLayout>
+
+<script>
+  const filterBar = document.querySelector<HTMLElement>(
+    "[data-resource-filters]",
+  );
+
+  if (filterBar && filterBar.dataset.ready !== "true") {
+    filterBar.dataset.ready = "true";
+    const cards = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-resource-card]"),
+    );
+    const status = document.querySelector<HTMLElement>(
+      "#resource-filter-status",
+    );
+    const empty = document.querySelector<HTMLElement>("[data-resource-empty]");
+
+    filterBar.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const button = target.closest<HTMLButtonElement>(
+        "[data-resource-filter]",
+      );
+      const selected = button?.dataset.resourceFilter;
+      if (!button || !selected) return;
+
+      let visible = 0;
+      cards.forEach((card) => {
+        const categories = card.dataset.resourceCategories?.split(" ") ?? [];
+        const matches = selected === "all" || categories.includes(selected);
+        card.hidden = !matches;
+        if (matches) visible += 1;
+      });
+
+      filterBar
+        .querySelectorAll<HTMLButtonElement>("[data-resource-filter]")
+        .forEach((item) => {
+          const active = item === button;
+          item.setAttribute("aria-pressed", String(active));
+          item.classList.toggle("border-primary", active);
+          item.classList.toggle("bg-primary", active);
+          item.classList.toggle("text-background", active);
+          item.classList.toggle("border-muted", !active);
+          item.classList.toggle("bg-background", !active);
+          item.classList.toggle("text-foreground", !active);
+        });
+
+      if (status)
+        status.textContent = `${visible} ${visible === 1 ? "recurso" : "recursos"}`;
+      if (empty) empty.hidden = visible !== 0;
+    });
+  }
+</script>

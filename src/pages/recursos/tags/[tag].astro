@@ -1,64 +1,67 @@
 ---
-import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
 import SectionTag from "~/components/ui/SectionTag.astro";
 import MainLayout from "~/layouts/MainLayout.astro";
+import {
+  getResourceCategories,
+  resourceCategories,
+  type ResourceCategory,
+} from "~/shared/lib/resourceCategories";
 import { getResourceLabel } from "~/shared/lib/resources";
 
 export async function getStaticPaths() {
   const allPosts = await getCollection("blog", ({ data }) => !data.draft);
-  const tagMap = new Map<string, { name: string; posts: CollectionEntry<"blog">[] }>();
 
-  allPosts.forEach((post) => {
-    post.data.tags?.forEach((tag) => {
-      const lowerTag = tag.toLowerCase();
-      if (!tagMap.has(lowerTag)) {
-        tagMap.set(lowerTag, { name: tag, posts: [] as CollectionEntry<"blog">[] });
-      }
-      tagMap.get(lowerTag)!.posts.push(post);
-    });
-  });
-
-  return Array.from(tagMap.entries()).map(([slug, { name, posts }]) => ({
-    params: { tag: slug },
+  return resourceCategories.map((category) => ({
+    params: { tag: category.slug },
     props: {
-      posts: posts.sort(
-        (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
-      ),
-      tagName: name,
+      category,
+      posts: allPosts
+        .filter((post) =>
+          getResourceCategories(post.data.tags).some(
+            ({ slug }) => slug === category.slug,
+          ),
+        )
+        .sort(
+          (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+        ),
     },
   }));
 }
 
-const { posts, tagName } = Astro.props as {
+const { posts, category } = Astro.props as {
   posts: CollectionEntry<"blog">[];
-  tagName: string;
+  category: ResourceCategory;
 };
 ---
 
 <MainLayout
-  title={`Recursos sobre ${tagName} | doscientos`}
-  description={`Explora guias, articulos y recursos practicos sobre ${tagName}. Contenido tecnico y estrategico escrito por el equipo de doscientos.`}
+  title={`Recursos sobre ${category.label} | doscientos`}
+  description={category.description}
 >
   <div class="min-h-screen py-32 px-6">
     <div class="max-w-6xl mx-auto space-y-12">
       <Breadcrumbs
         items={[
           { name: "Recursos", url: "/recursos" },
-          { name: tagName, url: Astro.url.pathname },
+          { name: category.label, url: Astro.url.pathname },
         ]}
       />
 
       <header
         class="flex flex-col max-w-2xl items-center justify-center text-center gap-6 mx-auto"
       >
-        <SectionTag>Etiqueta: {tagName}</SectionTag>
+        <SectionTag>Tema: {category.label}</SectionTag>
         <h1
           class="font-semibold text-foreground flex flex-col text-3xl md:text-5xl items-center text-center text-pretty"
         >
-          <span>Recursos sobre {tagName}</span>
+          <span>Recursos sobre {category.label}</span>
         </h1>
+        <p class="text-muted-foreground max-w-xl text-pretty">
+          {category.description}
+        </p>
         <p class="text-muted-foreground max-w-md text-pretty">
           {posts.length}
           {posts.length === 1 ? "recurso publicado" : "recursos publicados"} bajo

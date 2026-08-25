@@ -1,8 +1,12 @@
-﻿import { execFileSync } from "node:child_process";
+﻿import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import type { APIRoute } from "astro";
+import { execFileSync } from "node:child_process";
 import { commercialRoutes } from "~/data/commercialRoutes";
 import { packs } from "~/data/packs";
+import {
+  getResourceCategories,
+  resourceCategories,
+} from "~/shared/lib/resourceCategories";
 
 // Fecha de fallback cuando no hay historial git disponible (clones superficiales)
 const FALLBACK_DATE = "2025-01-01";
@@ -65,6 +69,27 @@ export const GET: APIRoute = async ({ site }) => {
       priority: "0.7",
       changefreq: "monthly",
       lastmod: date instanceof Date ? date.toISOString().split("T")[0] : date,
+    };
+  });
+
+  const resourceCategoryUrls = resourceCategories.map((category) => {
+    const lastmods = blogPosts
+      .filter((post) =>
+        getResourceCategories(post.data.tags).some(
+          ({ slug }) => slug === category.slug,
+        ),
+      )
+      .map((post) =>
+        (post.data.updatedDate ?? post.data.publishDate)
+          .toISOString()
+          .split("T")[0],
+      );
+
+    return {
+      url: `recursos/tags/${category.slug}`,
+      priority: "0.5",
+      changefreq: "monthly",
+      lastmod: maxDate(lastmods, FALLBACK_DATE),
     };
   });
 
@@ -238,6 +263,7 @@ export const GET: APIRoute = async ({ site }) => {
     ...commercialRouteUrls,
     ...projectUrls,
     ...blogUrls,
+    ...resourceCategoryUrls,
     ...packUrls,
   ];
 
@@ -245,15 +271,15 @@ export const GET: APIRoute = async ({ site }) => {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls
-  .map(
-    (page) => `  <url>
+      .map(
+        (page) => `  <url>
     <loc>${baseUrl}/${page.url}</loc>
     ${page.lastmod ? `<lastmod>${page.lastmod}</lastmod>` : ""}
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`,
-  )
-  .join("\n")}
+      )
+      .join("\n")}
 </urlset>`;
 
   return new Response(sitemap, {

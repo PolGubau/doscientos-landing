@@ -1,3 +1,16 @@
 {
-  "trailingSlash": false
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/blog/tags/:path*",
+      "destination": "/recursos",
+      "permanent": true
+    },
+    {
+      "source": "/recursos/tags/:tag((?!automatizacion|software-a-medida|digitalizacion|desarrollo-web|aplicaciones-moviles|arquitectura-software|gestion-empresarial).*)",
+      "destination": "/recursos",
+      "permanent": true
+    }
+  ]
 }
