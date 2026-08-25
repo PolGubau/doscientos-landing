@@ -1,5 +1,5 @@
 ---
-import { ArrowRight, CircleCheck } from "@lucide/astro";
+import { CircleCheck } from "@lucide/astro";
 import GitBranch from "@lucide/astro/icons/git-branch";
 import List from "@lucide/astro/icons/list";
 import Search from "@lucide/astro/icons/search";
@@ -31,9 +31,6 @@ const currentLanding = getSpecificLanding(landing.slug) ?? landing;
 const contactHref = `/contact?subject=${encodeURIComponent(
   currentLanding.subject,
 )}&ref=${currentLanding.slug}`;
-const otherLandings = specificLandings.filter(
-  (item) => item.slug !== currentLanding.slug,
-);
 const resourcesBySlug: Record<
   string,
   { title: string; href: string; description: string }[]
@@ -359,30 +356,6 @@ const showCostCalculator = currentLanding.slug === "automatizar-excel";
               <p class="text-sm text-muted-foreground mt-2 leading-relaxed">
                 {resource.description}
               </p>
-            </a>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="space-y-8">
-      <SectionHeader
-        title="Otras landings especificas"
-        subtitle="para comparar problemas"
-        description="Cada pagina ataca una intencion distinta: renovaciones, Excel, fincas, energia o servicios."
-        align="center"
-      />
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {
-          otherLandings.map((item) => (
-            <a
-              href={`/${item.slug}`}
-              class="group rounded-2xl border border-muted p-5 hover:border-primary transition-colors flex items-center justify-between gap-4"
-            >
-              <span class="font-medium text-foreground group-hover:text-primary transition-colors">
-                {item.label}
-              </span>
-              <ArrowRight class="size-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </a>
           ))
         }
