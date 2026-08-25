@@ -9,7 +9,8 @@ export const resourceCategories: readonly ResourceCategory[] = [
   {
     slug: "automatizacion",
     label: "Automatización",
-    description: "Procesos, productividad, RPA e inteligencia artificial aplicada.",
+    description:
+      "Procesos, productividad, RPA e inteligencia artificial aplicada.",
     aliases: [
       "automatización",
       "automatizacion",
@@ -23,7 +24,8 @@ export const resourceCategories: readonly ResourceCategory[] = [
   {
     slug: "software-a-medida",
     label: "Software a medida",
-    description: "Producto digital, SaaS, MVP y desarrollo de soluciones propias.",
+    description:
+      "Producto digital, SaaS, MVP y desarrollo de soluciones propias.",
     aliases: [
       "software a medida",
       "software empresarial",
@@ -38,7 +40,8 @@ export const resourceCategories: readonly ResourceCategory[] = [
   {
     slug: "digitalizacion",
     label: "Digitalización",
-    description: "Modernización de sistemas, migraciones y transformación digital.",
+    description:
+      "Modernización de sistemas, migraciones y transformación digital.",
     aliases: [
       "digitalización",
       "transformación digital",
@@ -53,7 +56,8 @@ export const resourceCategories: readonly ResourceCategory[] = [
   {
     slug: "desarrollo-web",
     label: "Desarrollo web",
-    description: "Webs, ecommerce, rendimiento, conversión y tecnología frontend.",
+    description:
+      "Webs, ecommerce, rendimiento, conversión y tecnología frontend.",
     aliases: [
       "desarrollo web",
       "desarrollo-web",
@@ -73,7 +77,8 @@ export const resourceCategories: readonly ResourceCategory[] = [
   {
     slug: "aplicaciones-moviles",
     label: "Aplicaciones móviles",
-    description: "Apps nativas y multiplataforma, sincronización y trabajo offline.",
+    description:
+      "Apps nativas y multiplataforma, sincronización y trabajo offline.",
     aliases: [
       "app móvil",
       "desarrollo móvil",
@@ -90,7 +95,8 @@ export const resourceCategories: readonly ResourceCategory[] = [
   {
     slug: "arquitectura-software",
     label: "Arquitectura de software",
-    description: "Decisiones técnicas, APIs, escalabilidad y calidad de software.",
+    description:
+      "Decisiones técnicas, APIs, escalabilidad y calidad de software.",
     aliases: [
       "arquitectura de software",
       "arquitectura frontend",
@@ -113,7 +119,8 @@ export const resourceCategories: readonly ResourceCategory[] = [
   {
     slug: "gestion-empresarial",
     label: "Gestión empresarial",
-    description: "CRM, ERP, backoffice, clientes, contratos y operativa interna.",
+    description:
+      "CRM, ERP, backoffice, clientes, contratos y operativa interna.",
     aliases: [
       "gestión empresarial",
       "software de gestión",
@@ -140,13 +147,17 @@ function normalizeTag(tag: string): string {
   return tag.trim().toLocaleLowerCase("es").replaceAll("-", " ");
 }
 
-export function getResourceCategories(tags: readonly string[] = []): ResourceCategory[] {
+export function getResourceCategories(
+  tags: readonly string[] = [],
+): ResourceCategory[] {
   const normalizedTags = new Set(tags.map(normalizeTag));
   return resourceCategories.filter((category) =>
     category.aliases.some((alias) => normalizedTags.has(normalizeTag(alias))),
   );
 }
 
-export function getResourceCategory(slug: string): ResourceCategory | undefined {
+export function getResourceCategory(
+  slug: string,
+): ResourceCategory | undefined {
   return resourceCategories.find((category) => category.slug === slug);
 }

@@ -79,10 +79,11 @@ export const GET: APIRoute = async ({ site }) => {
           ({ slug }) => slug === category.slug,
         ),
       )
-      .map((post) =>
-        (post.data.updatedDate ?? post.data.publishDate)
-          .toISOString()
-          .split("T")[0],
+      .map(
+        (post) =>
+          (post.data.updatedDate ?? post.data.publishDate)
+            .toISOString()
+            .split("T")[0],
       );
 
     return {
@@ -271,15 +272,15 @@ export const GET: APIRoute = async ({ site }) => {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls
-      .map(
-        (page) => `  <url>
+  .map(
+    (page) => `  <url>
     <loc>${baseUrl}/${page.url}</loc>
     ${page.lastmod ? `<lastmod>${page.lastmod}</lastmod>` : ""}
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`,
-      )
-      .join("\n")}
+  )
+  .join("\n")}
 </urlset>`;
 
   return new Response(sitemap, {

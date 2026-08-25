@@ -8,13 +8,16 @@ import {
 describe("resource categories", () => {
   it("keeps a small taxonomy with URL-safe slugs", () => {
     expect(resourceCategories).toHaveLength(7);
-    expect(resourceCategories.every(({ slug }) => /^[a-z0-9-]+$/.test(slug))).toBe(true);
+    expect(
+      resourceCategories.every(({ slug }) => /^[a-z0-9-]+$/.test(slug)),
+    ).toBe(true);
   });
 
   it("groups spelling variants under the same category", () => {
-    const slugs = getResourceCategories(["automatización", "software de gestion"]).map(
-      ({ slug }) => slug,
-    );
+    const slugs = getResourceCategories([
+      "automatización",
+      "software de gestion",
+    ]).map(({ slug }) => slug);
 
     expect(slugs).toEqual(["automatizacion", "gestion-empresarial"]);
   });
