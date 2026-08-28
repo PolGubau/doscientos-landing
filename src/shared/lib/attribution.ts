@@ -164,6 +164,43 @@ export function buildAttributionPayload(
   };
 }
 
+/** Adds the current visitor context to a Cal.com booking URL for its signed webhook. */
+export function buildAttributedCalendarBookingUrl(
+  baseUrl: string,
+  attribution: AttributionPayload,
+  landingRef = "",
+): string | null {
+  try {
+    const url = new URL(baseUrl);
+    const metadata: Record<string, string> = {
+      eventId: attribution.event_id,
+      visitorId: attribution.visitor_id,
+      conversionStep: attribution.conversion_step,
+      landingPath: attribution.last_landing_path,
+      referrer: attribution.last_referrer,
+      firstLandingPath: attribution.first_landing_path,
+      firstReferrer: attribution.first_referrer,
+      firstUtmSource: attribution.first_utm_source,
+      firstUtmMedium: attribution.first_utm_medium,
+      firstUtmCampaign: attribution.first_utm_campaign,
+      firstUtmTerm: attribution.first_utm_term,
+      firstUtmContent: attribution.first_utm_content,
+      lastUtmSource: attribution.last_utm_source,
+      lastUtmMedium: attribution.last_utm_medium,
+      lastUtmCampaign: attribution.last_utm_campaign,
+      lastUtmTerm: attribution.last_utm_term,
+      lastUtmContent: attribution.last_utm_content,
+    };
+    if (landingRef) metadata.landingRef = landingRef;
+    for (const [key, value] of Object.entries(metadata)) {
+      if (value) url.searchParams.set(`metadata[${key}]`, value);
+    }
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
 function readCookie(name: string): string | null {
   if (typeof document === "undefined") return null;
   const prefix = `${encodeURIComponent(name)}=`;
@@ -264,6 +301,34 @@ export function hydrateWhatsappLinks(): void {
     } catch {
       // Leave the original href untouched if URL parsing fails.
     }
+  }
+}
+
+/**
+ * Stamps direct Cal.com CTAs with the same context the embedded calendar sends.
+ * The booking webhook can then link the click, booking and resulting lead.
+ */
+export function hydrateCalendarBookingLinks(): void {
+  if (typeof document === "undefined" || isInternalTraffic()) return;
+  const attribution = buildAttributionPayload("calendar_booking");
+  const links = document.querySelectorAll<HTMLAnchorElement>("a[data-cal-booking]");
+
+  for (const link of links) {
+    const attributedUrl = buildAttributedCalendarBookingUrl(
+      link.href,
+      attribution,
+      link.dataset.calBookingRef ?? "",
+    );
+    if (attributedUrl) link.href = attributedUrl;
+
+    if (link.dataset.calBookingTracked === "true") continue;
+    link.dataset.calBookingTracked = "true";
+    link.addEventListener("click", () => {
+      trackEvent("calendar_booking_clicked", {
+        conversionStep: "calendar_booking",
+        payload: { placement: link.dataset.calBookingPlacement ?? "calendar_booking" },
+      });
+    });
   }
 }
 
@@ -407,6 +472,7 @@ export function trackPageView(): void {
 
 export function initAttribution(): void {
   hydrateWhatsappLinks();
+  hydrateCalendarBookingLinks();
   captureClarityPlayback();
   trackPageView();
 }
