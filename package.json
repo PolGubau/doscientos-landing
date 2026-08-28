@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev --host",
     "dev:fast": "astro dev --host --no-sync",
+    "prebuild": "node scripts/sync-brand-tokens.mjs",
     "build": "astro build",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix --fix-suggestions",

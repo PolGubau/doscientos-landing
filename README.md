@@ -233,6 +233,10 @@ Los estilos usan Tailwind CSS 4 con variables CSS personalizadas. Puedes modific
 
 El proyecto genera un sitio estático. Conecta el repositorio a Vercel y configura el directorio raíz como `landing`. Vercel instalará las dependencias y ejecutará el build de Astro; replica allí las variables de entorno que necesite la publicación.
 
+Antes de cada build, `prebuild` descarga una sola vez los tokens publicados del
+backoffice y actualiza `src/data/brand-tokens.json`. Las páginas estáticas leen
+esa instantánea local; si el feed no responde, se conserva la última válida.
+
 Antes de publicar, ejecuta `pnpm test:build` localmente.
 
 ## 👀 Más información

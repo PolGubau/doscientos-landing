@@ -1,0 +1,14 @@
+{
+  "--primary": "#2a4227",
+  "--primary-foreground": "#ffffff",
+  "--accent": "#bdff7b",
+  "--accent-foreground": "#1a2e18",
+  "--background": "#fafafa",
+  "--foreground": "#171717",
+  "--destructive": "#ef4444",
+  "--success": "#16a34a",
+  "--warning": "#ca8a04",
+  "--info": "#2563eb",
+  "--radius": "0.625rem",
+  "--font-sans": "Onest, ui-sans-serif, system-ui, sans-serif"
+}
