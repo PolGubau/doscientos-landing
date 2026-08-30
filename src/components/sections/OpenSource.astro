@@ -1,0 +1,224 @@
+---
+import { ArrowUpRight, BadgeCheck, ShieldCheck, Sparkles } from "@lucide/astro";
+
+const benefits = [
+  {
+    icon: ShieldCheck,
+    title: "Base técnica mantenida",
+    description:
+      "Partimos de componentes propios para lo repetible, en lugar de improvisar las partes críticas en cada proyecto.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Nada es una caja negra",
+    description:
+      "Documentamos decisiones y mantenemos una parte de nuestras bases abierta para que pueda revisarse.",
+  },
+  {
+    icon: Sparkles,
+    title: "A medida donde importa",
+    description:
+      "Tu operativa, integraciones y ventajas de negocio se diseñan específicamente para tu empresa.",
+  },
+];
+---
+
+<section id="open-source" class="open-source-section landing-section">
+  <div class="open-source-shell">
+    <div class="open-source-intro" data-stagger="100">
+      <span class="open-source-kicker" data-reveal="bottom"
+        >BASE TÉCNICA ABIERTA</span
+      >
+      <h2 data-reveal="bottom" data-speed="normal" data-easing="smooth">
+        No empezamos de cero donde no aporta valor.
+      </h2>
+      <p data-reveal="bottom" data-speed="normal" data-easing="soft">
+        Construimos lo específico de tu negocio a medida. Para lo repetible,
+        partimos de componentes propios, mantenidos y abiertos.
+      </p>
+      <a
+        href="/open-source"
+        class="open-source-link"
+        data-reveal="bottom"
+        data-speed="fast"
+        data-easing="soft"
+      >
+        Conocer nuestra base técnica <ArrowUpRight
+          class="size-4"
+          aria-hidden="true"
+        />
+      </a>
+    </div>
+
+    <div class="open-source-panel" data-stagger="100">
+      <div
+        class="open-source-principle"
+        data-reveal="bottom"
+        data-easing="smooth"
+      >
+        <span>La regla</span>
+        <p>Estándar donde da seguridad. A medida donde da ventaja.</p>
+      </div>
+      <ul class="open-source-benefits">
+        {
+          benefits.map(({ icon: Icon, title, description }) => (
+            <li data-reveal="bottom" data-speed="normal" data-easing="soft">
+              <span class="open-source-icon">
+                <Icon class="size-5" aria-hidden="true" />
+              </span>
+              <div>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="open-source-note" data-reveal="bottom" data-speed="fast">
+        Para equipos técnicos: código, documentación y paquetes públicos
+        disponibles.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .open-source-section {
+    padding-block: clamp(3rem, 8vw, 7rem);
+  }
+  .open-source-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 7vw, 7rem);
+    width: min(72rem, 100%);
+    margin: 0 auto;
+    align-items: center;
+  }
+  .open-source-intro {
+    max-width: 34rem;
+  }
+  .open-source-kicker {
+    color: var(--primary);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+  }
+  .open-source-intro h2 {
+    max-width: 13ch;
+    margin: 0.8rem 0 1.25rem;
+    color: var(--foreground);
+    font-size: clamp(2.25rem, 4vw, 4.25rem);
+    font-weight: 800;
+    line-height: 0.96;
+    letter-spacing: -0.065em;
+    text-wrap: balance;
+  }
+  .open-source-intro > p {
+    max-width: 31rem;
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .open-source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 1.5rem;
+    color: var(--foreground);
+    font-size: 0.88rem;
+    font-weight: 750;
+    text-decoration: underline;
+    text-decoration-color: var(--primary);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35rem;
+    transition: color 180ms ease;
+  }
+  .open-source-link:hover {
+    color: var(--primary);
+  }
+  .open-source-link :global(svg) {
+    transition: transform 180ms ease;
+  }
+  .open-source-link:hover :global(svg) {
+    transform: translate(0.14rem, -0.14rem);
+  }
+  .open-source-panel {
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+    border-radius: 1.5rem;
+    background: var(--foreground);
+    box-shadow: var(--shadow-pastel);
+  }
+  .open-source-principle {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    background: color-mix(in srgb, var(--primary) 18%, var(--foreground));
+  }
+  .open-source-principle span,
+  .open-source-note {
+    color: color-mix(in srgb, var(--background) 62%, transparent);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .open-source-principle p {
+    max-width: 20rem;
+    margin: 0.65rem 0 0;
+    color: var(--background);
+    font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  .open-source-benefits {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .open-source-benefits li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    padding: 1.25rem clamp(1.5rem, 4vw, 2.5rem);
+    border-top: 1px solid color-mix(in srgb, var(--background) 12%, transparent);
+  }
+  .open-source-icon {
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    place-items: center;
+    border-radius: 0.75rem;
+    background: color-mix(in srgb, var(--background) 10%, transparent);
+    color: var(--background);
+  }
+  .open-source-benefits h3 {
+    margin: 0;
+    color: var(--background);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .open-source-benefits p {
+    margin: 0.3rem 0 0;
+    color: color-mix(in srgb, var(--background) 66%, transparent);
+    font-size: 0.83rem;
+    line-height: 1.55;
+  }
+  .open-source-note {
+    margin: 0;
+    padding: 1.1rem clamp(1.5rem, 4vw, 2.5rem);
+    border-top: 1px solid color-mix(in srgb, var(--background) 12%, transparent);
+  }
+  @media (max-width: 800px) {
+    .open-source-shell {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .open-source-intro h2 {
+      max-width: 15ch;
+    }
+  }
+</style>

@@ -69,6 +69,7 @@ export const footerLinkColumns = [
       { label: "Proyectos", href: "/projects" },
       { label: "Caso Optinergia", href: "/projects/optinergia" },
       { label: "Caso Bitacora ERP", href: "/projects/bitacora-erp" },
+      { label: "Código abierto", href: "/open-source" },
       { label: "Packs de webs", href: "/packs" },
       { label: "Recursos", href: "/recursos" },
       { label: "Guía de marca", href: "/marca" },
