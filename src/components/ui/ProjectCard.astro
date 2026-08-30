@@ -10,8 +10,9 @@ type ProjectProps = Pick<
 type Props = {
   id: string;
   client: string;
-  timeline: number;
+  timeline?: number;
   timelineUnit?: "semana" | "mes";
+  timelineLabel?: string;
 } & ProjectProps;
 
 const {
@@ -23,8 +24,23 @@ const {
   client,
   timeline,
   timelineUnit = "mes",
+  timelineLabel,
   color,
 } = Astro.props;
+
+const timelineText =
+  timelineLabel ??
+  (timeline
+    ? `${timeline} ${
+        timelineUnit === "semana"
+          ? timeline === 1
+            ? "semana"
+            : "semanas"
+          : timeline === 1
+            ? "mes"
+            : "meses"
+      }`
+    : "");
 ---
 
 <a
@@ -50,18 +66,7 @@ const {
     <footer class="project-card-content flex grow flex-col">
       <div class="project-card-meta">
         <span class="project-card-client">{client}</span>
-        <span class="project-card-timeline">
-          {timeline}
-          {
-            timelineUnit === "semana"
-              ? timeline === 1
-                ? "semana"
-                : "semanas"
-              : timeline === 1
-                ? "mes"
-                : "meses"
-          }
-        </span>
+        <span class="project-card-timeline">{timelineText}</span>
       </div>
 
       <div class="project-card-heading">

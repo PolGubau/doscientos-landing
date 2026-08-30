@@ -34,6 +34,11 @@ const publishedTime =
 // SEO: title y meta description optimizados con fallback al contenido base
 const seoTitle = project.data.seoTitle ?? `${project.data.title} | doscientos`;
 const metaDescription = project.data.metaDescription ?? project.data.summary;
+const timelineText =
+  project.data.timelineLabel ??
+  (project.data.timeline
+    ? `${project.data.timeline} ${project.data.timelineUnit}${project.data.timeline === 1 ? "" : project.data.timelineUnit === "semana" ? "s" : "es"}`
+    : "");
 ---
 
 <MainLayout
@@ -124,8 +129,8 @@ const metaDescription = project.data.metaDescription ?? project.data.summary;
           <Layout class="size-5 text-muted-foreground" />
         </Highlight>
         <Highlight
-          label="Timeline"
-          value={`${project.data.timeline} ${project.data.timelineUnit}${project.data.timeline === 1 ? "" : project.data.timelineUnit === "semana" ? "s" : "es"}`}
+          label={project.data.timelineLabel ? "Estado" : "Timeline"}
+          value={timelineText}
         >
           <Timer class="size-5 text-muted-foreground" />
         </Highlight>
