@@ -38,6 +38,7 @@ export default function ContactForm() {
       <CalEmbed
         name={formData.name}
         email={formData.email}
+        phone={formData.phone}
         leadId={submittedLeadId}
         dedupeKey={dedupeKey}
       />

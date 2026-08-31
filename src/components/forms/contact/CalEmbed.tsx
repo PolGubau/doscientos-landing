@@ -11,11 +11,12 @@ const CAL_ORIGIN = new URL(branding.contact.calCom.bookingUrl).origin // "https:
 type CalEmbedProps = {
   name: string
   email: string
+  phone: string
   leadId: string | null
   dedupeKey: string
 }
 
-export function CalEmbed({ name, email, leadId, dedupeKey }: CalEmbedProps) {
+export function CalEmbed({ name, email, phone, leadId, dedupeKey }: CalEmbedProps) {
   useEffect(() => {
     trackEvent('calendar_viewed', { conversionStep: 'contact_form' })
     ;(async () => {
@@ -46,6 +47,7 @@ export function CalEmbed({ name, email, leadId, dedupeKey }: CalEmbedProps) {
         config={{
           name,
           email,
+          attendeePhoneNumber: phone,
           layout: 'month_view',
           metadata: { leadId: leadId ?? '', landingDedupeKey: dedupeKey },
         }}
