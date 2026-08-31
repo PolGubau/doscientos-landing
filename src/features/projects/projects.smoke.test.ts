@@ -1,28 +1,29 @@
-import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { existsSync, readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
-const DIST = join(process.cwd(), "dist");
-const hasBuild = existsSync(DIST);
+import { describe, expect, it } from 'vitest'
 
-describe.skipIf(!hasBuild)("Precio Luz project", () => {
-  const projectPath = join(DIST, "projects", "precio-luz", "index.html");
+const DIST = join(process.cwd(), 'dist')
+const hasBuild = existsSync(DIST)
 
-  it("builds the public project page", () => {
-    expect(existsSync(projectPath), `Missing: ${projectPath}`).toBe(true);
-  });
+describe.skipIf(!hasBuild)('Precio Luz project', () => {
+  const projectPath = join(DIST, 'projects', 'precio-luz', 'index.html')
 
-  it("links to the live utility from its project page", () => {
-    const html = readFileSync(projectPath, "utf-8");
+  it('builds the public project page', () => {
+    expect(existsSync(projectPath), `Missing: ${projectPath}`).toBe(true)
+  })
 
-    expect(html).toContain("https://precioluz.polgubau.com/");
-    expect(html).toContain("Precio Luz");
-  });
+  it('links to the live utility from its project page', () => {
+    const html = readFileSync(projectPath, 'utf-8')
 
-  it("includes Precio Luz in the home project section", () => {
-    const home = readFileSync(join(DIST, "index.html"), "utf-8");
+    expect(html).toContain('https://precioluz.polgubau.com/')
+    expect(html).toContain('Precio Luz')
+  })
 
-    expect(home).toContain("Precio Luz");
-    expect(home).toContain("/projects/precio-luz");
-  });
-});
+  it('includes Precio Luz in the home project section', () => {
+    const home = readFileSync(join(DIST, 'index.html'), 'utf-8')
+
+    expect(home).toContain('Precio Luz')
+    expect(home).toContain('/projects/precio-luz')
+  })
+})

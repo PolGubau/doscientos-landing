@@ -1,32 +1,32 @@
 ---
-title: "Arquitectura offline-first para apps de eventos: decisiones y errores reales"
-description: "Cómo diseñar una app que siga funcionando con mala cobertura: caché, frescura, sincronización, conflictos y observabilidad, con aprendizajes de Les Santes."
-publishDate: "2026-07-28"
+title: 'Arquitectura offline-first para apps de eventos: decisiones y errores reales'
+description: 'Cómo diseñar una app que siga funcionando con mala cobertura: caché, frescura, sincronización, conflictos y observabilidad, con aprendizajes de Les Santes.'
+publishDate: '2026-07-28'
 draft: false
 tags:
   [
-    "offline-first",
-    "arquitectura móvil",
-    "React Native",
-    "sincronización",
-    "apps de eventos",
-    "caso real",
+    'offline-first',
+    'arquitectura móvil',
+    'React Native',
+    'sincronización',
+    'apps de eventos',
+    'caso real',
   ]
-resourceType: "caso"
-buyerStage: "consideration"
-author: "Pol Gubau"
+resourceType: 'caso'
+buyerStage: 'consideration'
+author: 'Pol Gubau'
 faqs:
-  - question: "¿Qué significa offline-first?"
-    answer: "Significa que la aplicación diseña su función principal para operar con datos locales y usa la red para sincronizar, en lugar de tratar la ausencia de conexión como un error excepcional."
-  - question: "¿Offline-first significa que todo funciona sin internet?"
-    answer: "No necesariamente. Cada función debe clasificarse. Consultar agenda puede funcionar offline; recibir una cancelación instantánea o enviar un pago requiere conexión."
-  - question: "¿Cómo se evita mostrar información antigua?"
-    answer: "Guardando la fecha de última sincronización, definiendo caducidades por tipo de dato y mostrando el estado de frescura cuando sea relevante para la decisión del usuario."
-  - question: "¿Hace falta una base de datos local?"
-    answer: "Depende del volumen y de las consultas. Para pocos documentos puede bastar almacenamiento clave-valor; para relaciones, búsquedas y colas de cambios suele ser mejor una base de datos local."
+  - question: '¿Qué significa offline-first?'
+    answer: 'Significa que la aplicación diseña su función principal para operar con datos locales y usa la red para sincronizar, en lugar de tratar la ausencia de conexión como un error excepcional.'
+  - question: '¿Offline-first significa que todo funciona sin internet?'
+    answer: 'No necesariamente. Cada función debe clasificarse. Consultar agenda puede funcionar offline; recibir una cancelación instantánea o enviar un pago requiere conexión.'
+  - question: '¿Cómo se evita mostrar información antigua?'
+    answer: 'Guardando la fecha de última sincronización, definiendo caducidades por tipo de dato y mostrando el estado de frescura cuando sea relevante para la decisión del usuario.'
+  - question: '¿Hace falta una base de datos local?'
+    answer: 'Depende del volumen y de las consultas. Para pocos documentos puede bastar almacenamiento clave-valor; para relaciones, búsquedas y colas de cambios suele ser mejor una base de datos local.'
 ---
 
-import BlogCTA from "../../components/blog/BlogCTA.astro";
+import BlogCTA from '../../components/blog/BlogCTA.astro'
 
 El peor momento para descubrir que una app depende demasiado de la red es cuando miles de personas abren el mapa a la vez en una calle saturada.
 
@@ -81,11 +81,11 @@ Cada conjunto sincronizado necesita más que su contenido:
 
 ```ts
 type LocalSnapshot<T> = {
-  data: T;
-  schemaVersion: number;
-  fetchedAt: string;
-  sourceVersion?: string;
-};
+  data: T
+  schemaVersion: number
+  fetchedAt: string
+  sourceVersion?: string
+}
 ```
 
 - `fetchedAt` permite comunicar antigüedad.
@@ -154,12 +154,12 @@ Una cola local necesita al menos:
 
 ```ts
 type PendingOperation = {
-  id: string;
-  type: "favorite.add" | "favorite.remove";
-  entityId: string;
-  createdAt: string;
-  attempts: number;
-};
+  id: string
+  type: 'favorite.add' | 'favorite.remove'
+  entityId: string
+  createdAt: string
+  attempts: number
+}
 ```
 
 El identificador hace la operación idempotente: si la red se corta después de enviarla pero antes de recibir respuesta, repetirla no debe aplicar el cambio dos veces.

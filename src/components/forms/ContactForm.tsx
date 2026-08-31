@@ -1,16 +1,13 @@
-import { ArrowLeft, Check, ChevronRight, Loader2, Lock } from "lucide-react";
-import { BudgetPicker } from "./contact/BudgetPicker";
-import { CalEmbed } from "./contact/CalEmbed";
-import { Field } from "./contact/Field";
-import { ProgressBar } from "./contact/ProgressBar";
-import {
-  COMPANY_SIZE_OPTIONS,
-  SOLUTION_TYPE_OPTIONS,
-  URGENCY_OPTIONS,
-} from "./contact/types";
-import { useContactForm } from "./contact/useContactForm";
+import { ArrowLeft, Check, ChevronRight, Loader2, Lock } from 'lucide-react'
 
-const TOTAL_STEPS = 2;
+import { BudgetPicker } from './contact/BudgetPicker'
+import { CalEmbed } from './contact/CalEmbed'
+import { Field } from './contact/Field'
+import { ProgressBar } from './contact/ProgressBar'
+import { COMPANY_SIZE_OPTIONS, SOLUTION_TYPE_OPTIONS, URGENCY_OPTIONS } from './contact/types'
+import { useContactForm } from './contact/useContactForm'
+
+const TOTAL_STEPS = 2
 
 export default function ContactForm() {
   const {
@@ -34,7 +31,7 @@ export default function ContactForm() {
     nextStep,
     prevStep,
     handleSubmit,
-  } = useContactForm();
+  } = useContactForm()
 
   if (step === 3) {
     return (
@@ -44,17 +41,17 @@ export default function ContactForm() {
         leadId={submittedLeadId}
         dedupeKey={dedupeKey}
       />
-    );
+    )
   }
 
   return (
-    <div className="relative overflow-hidden p-1 w-full">
+    <div className="relative w-full overflow-hidden p-1">
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Honeypot anti-spam — off-screen, no display:none para que los bots lo rellenen */}
         <input
           type="text"
           name="website"
-          className="absolute -left-[9999px] -top-[9999px] h-px w-px opacity-0 pointer-events-none"
+          className="pointer-events-none absolute -top-[9999px] -left-[9999px] h-px w-px opacity-0"
           tabIndex={-1}
           autoComplete="off"
           aria-hidden="true"
@@ -65,10 +62,11 @@ export default function ContactForm() {
         {step === 1 && (
           <div
             key="step-1"
-            className={`w-full motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
-                ? "motion-safe:slide-in-from-right-4"
-                : "motion-safe:slide-in-from-left-4"
-              }`}
+            className={`motion-safe:animate-in motion-safe:fade-in w-full motion-safe:duration-300 motion-safe:ease-out ${
+              stepDirection === 1
+                ? 'motion-safe:slide-in-from-right-4'
+                : 'motion-safe:slide-in-from-left-4'
+            }`}
           >
             <div className="grid lg:grid-cols-2 lg:gap-6">
               <Field
@@ -107,10 +105,10 @@ export default function ContactForm() {
             <button
               type="button"
               onClick={nextStep}
-              className="w-full py-4 bg-primary text-background rounded-full font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-2"
+              className="bg-primary text-background flex w-full items-center justify-center gap-2 rounded-full py-4 font-semibold transition-all hover:opacity-90"
             >
               Siguiente
-              <ChevronRight className="w-4 h-4" aria-hidden="true" />
+              <ChevronRight className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
         )}
@@ -118,10 +116,11 @@ export default function ContactForm() {
         {step === 2 && (
           <div
             key="step-2"
-            className={`space-y-4 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300 motion-safe:ease-out ${stepDirection === 1
-                ? "motion-safe:slide-in-from-right-4"
-                : "motion-safe:slide-in-from-left-4"
-              }`}
+            className={`motion-safe:animate-in motion-safe:fade-in space-y-4 motion-safe:duration-300 motion-safe:ease-out ${
+              stepDirection === 1
+                ? 'motion-safe:slide-in-from-right-4'
+                : 'motion-safe:slide-in-from-left-4'
+            }`}
           >
             <Field
               id="phone"
@@ -155,7 +154,7 @@ export default function ContactForm() {
             <div className="space-y-1.5">
               <label
                 htmlFor="solutionType"
-                className="flex items-center justify-between text-sm font-medium text-foreground"
+                className="text-foreground flex items-center justify-between text-sm font-medium"
               >
                 <span>¿Qué necesitas resolver?</span>
                 <span className="text-xs font-normal">Opcional</span>
@@ -166,7 +165,7 @@ export default function ContactForm() {
                 value={formData.solutionType}
                 onChange={(e) => selectSolutionType(e.target.value)}
                 onFocus={handleFieldFocus}
-                className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm text-foreground transition-all focus:border-primary focus:ring-1 focus:ring-primary"
+                className="border-muted-foreground/30 bg-background text-foreground focus:border-primary focus:ring-primary h-12 w-full rounded-xl border px-4 text-sm transition-all focus:ring-1"
               >
                 <option value="">Selecciona una opción</option>
                 {SOLUTION_TYPE_OPTIONS.map((opt) => (
@@ -180,7 +179,7 @@ export default function ContactForm() {
             <div className="space-y-1.5">
               <label
                 htmlFor="companySize"
-                className="flex items-center justify-between text-sm font-medium text-foreground"
+                className="text-foreground flex items-center justify-between text-sm font-medium"
               >
                 <span>Tamaño de empresa</span>
                 <span className="text-xs font-normal">Opcional</span>
@@ -191,7 +190,7 @@ export default function ContactForm() {
                 value={formData.companySize}
                 onChange={(e) => selectCompanySize(e.target.value)}
                 onFocus={handleFieldFocus}
-                className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm text-foreground transition-all focus:border-primary focus:ring-1 focus:ring-primary"
+                className="border-muted-foreground/30 bg-background text-foreground focus:border-primary focus:ring-primary h-12 w-full rounded-xl border px-4 text-sm transition-all focus:ring-1"
               >
                 <option value="">Selecciona un rango</option>
                 {COMPANY_SIZE_OPTIONS.map((opt) => (
@@ -205,7 +204,7 @@ export default function ContactForm() {
             <div className="space-y-1.5">
               <label
                 htmlFor="urgency"
-                className="flex items-center justify-between text-sm font-medium text-foreground"
+                className="text-foreground flex items-center justify-between text-sm font-medium"
               >
                 <span>¿Cuándo quieres empezar?</span>
                 <span className="text-xs font-normal">Opcional</span>
@@ -216,7 +215,7 @@ export default function ContactForm() {
                 value={formData.urgency}
                 onChange={(e) => selectUrgency(e.target.value)}
                 onFocus={handleFieldFocus}
-                className="h-12 w-full rounded-xl border border-muted-foreground/30 bg-background px-4 text-sm text-foreground transition-all focus:border-primary focus:ring-1 focus:ring-primary"
+                className="border-muted-foreground/30 bg-background text-foreground focus:border-primary focus:ring-primary h-12 w-full rounded-xl border px-4 text-sm transition-all focus:ring-1"
               >
                 <option value="">Selecciona una opción</option>
                 {URGENCY_OPTIONS.map((opt) => (
@@ -234,29 +233,26 @@ export default function ContactForm() {
                 type="button"
                 onClick={prevStep}
                 aria-label="Volver al paso anterior"
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-muted-foreground/30 font-semibold text-foreground transition-all hover:bg-muted/10 sm:w-auto sm:px-6"
+                className="border-muted-foreground/30 text-foreground hover:bg-muted/10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border font-semibold transition-all sm:w-auto sm:px-6"
               >
-                <ArrowLeft className="w-5 h-5 sm:hidden" aria-hidden="true" />
+                <ArrowLeft className="h-5 w-5 sm:hidden" aria-hidden="true" />
                 <span className="hidden sm:inline">Atrás</span>
               </button>
               <button
                 type="submit"
-                disabled={status === "loading"}
-                aria-busy={status === "loading"}
-                className="flex h-12 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 font-semibold text-background transition-all hover:opacity-90 disabled:opacity-50"
+                disabled={status === 'loading'}
+                aria-busy={status === 'loading'}
+                className="bg-primary text-background flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-4 font-semibold whitespace-nowrap transition-all hover:opacity-90 disabled:opacity-50"
               >
-                {status === "loading" ? (
-                  <Loader2
-                    className="w-4 h-4 animate-spin"
-                    aria-hidden="true"
-                  />
+                {status === 'loading' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
                 ) : (
-                  <Check className="w-4 h-4" aria-hidden="true" />
+                  <Check className="h-4 w-4" aria-hidden="true" />
                 )}
-                {status === "loading" ? "Enviando..." : "Confirmar y agendar"}
+                {status === 'loading' ? 'Enviando...' : 'Confirmar y agendar'}
               </button>
             </div>
-            {status === "error" && (
+            {status === 'error' && (
               <p
                 role="alert"
                 className="flex items-center justify-center gap-1.5 rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500"
@@ -265,7 +261,7 @@ export default function ContactForm() {
               </p>
             )}
 
-            <p className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground pt-1">
+            <p className="text-muted-foreground flex items-center justify-center gap-1.5 pt-1 text-xs">
               <Lock className="size-3" aria-hidden="true" />
               Tus datos están seguros. Sin spam ni compromiso.
             </p>
@@ -273,5 +269,5 @@ export default function ContactForm() {
         )}
       </form>
     </div>
-  );
+  )
 }

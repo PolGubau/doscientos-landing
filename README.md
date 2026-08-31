@@ -33,7 +33,7 @@ pnpm install
 | `PUBLIC_GOOGLE_SITE_VERIFICATION` | No          | Token de verificación HTML de Google Search Console.                                                                |
 | `PUBLIC_CLARITY_ID`               | No          | ID de Microsoft Clarity. Sin él, Clarity no se carga.                                                               |
 | `PUBLIC_LEADS_ENDPOINT`           | No          | Endpoint público del backoffice para los formularios. Por defecto usa `https://app.doscientos.es/api/public/leads`. |
-| `PUBLIC_BRAND_KIT_API_URL`         | No          | Feed público de tokens publicados del backoffice. Si falla, se usan los tokens incluidos en CSS.                 |
+| `PUBLIC_BRAND_KIT_API_URL`        | No          | Feed público de tokens publicados del backoffice. Si falla, se usan los tokens incluidos en CSS.                    |
 
 ### Analítica, consentimiento y tráfico interno
 
@@ -51,37 +51,37 @@ Toda la configuración de branding está centralizada en `src/config/branding.ts
 
 ```typescript
 export const branding = {
-  name: "doscientos",
-  slogan: "Modernizamos sistemas críticos sin detener tu negocio",
-  domain: "doscientos.es",
-  url: "https://doscientos.es",
+  name: 'doscientos',
+  slogan: 'Modernizamos sistemas críticos sin detener tu negocio',
+  domain: 'doscientos.es',
+  url: 'https://doscientos.es',
 
   contact: {
     whatsapp: {
-      number: "34671171525",
-      displayNumber: "+34 671 17 15 25",
-      defaultMessage: "Hola, quiero saber más...",
+      number: '34671171525',
+      displayNumber: '+34 671 17 15 25',
+      defaultMessage: 'Hola, quiero saber más...',
     },
-    email: "hola@doscientos.es",
+    email: 'hola@doscientos.es',
   },
 
   social: {
-    twitter: "https://twitter.com/doscientos_es",
-    github: "https://github.com/doscientos",
-    linkedin: "https://www.linkedin.com/company/doscientos",
-    instagram: "https://instagram.com/doscientos.es",
+    twitter: 'https://twitter.com/doscientos_es',
+    github: 'https://github.com/doscientos',
+    linkedin: 'https://www.linkedin.com/company/doscientos',
+    instagram: 'https://instagram.com/doscientos.es',
   },
 
   location: {
-    city: "Barcelona",
-    country: "España",
+    city: 'Barcelona',
+    country: 'España',
   },
 
   assets: {
-    logo: "/assets/branding/logo.png",
-    thumbnail: "/assets/media/og-image.png",
+    logo: '/assets/branding/logo.png',
+    thumbnail: '/assets/media/og-image.png',
   },
-};
+}
 ```
 
 **Para personalizar el branding**, simplemente edita este archivo con tu información.
@@ -208,11 +208,11 @@ El blog usa Content Collections de Astro:
 
 ```yaml
 ---
-title: "Título del post"
-description: "Descripción breve"
-publishDate: "2025-02-28"
-tags: ["tag1", "tag2"]
-author: "doscientos"
+title: 'Título del post'
+description: 'Descripción breve'
+publishDate: '2025-02-28'
+tags: ['tag1', 'tag2']
+author: 'doscientos'
 draft: false
 ---
 ```

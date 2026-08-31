@@ -1,38 +1,38 @@
 ---
-title: "Les Santes"
-summary: "App móvil, landing y CMS para Les Santes, el festival más grande de Mataró. Mapa en tiempo real con interpolación de posición de desfiles, arquitectura offline-first, notificaciones push y panel de administración integrado."
-seoTitle: "Les Santes | App, landing y CMS para el festival de Mataró"
-metaDescription: "App móvil, landing y CMS para Les Santes, el festival de Mataró: mapa en tiempo real, arquitectura offline-first, push y panel de administración."
+title: 'Les Santes'
+summary: 'App móvil, landing y CMS para Les Santes, el festival más grande de Mataró. Mapa en tiempo real con interpolación de posición de desfiles, arquitectura offline-first, notificaciones push y panel de administración integrado.'
+seoTitle: 'Les Santes | App, landing y CMS para el festival de Mataró'
+metaDescription: 'App móvil, landing y CMS para Les Santes, el festival de Mataró: mapa en tiempo real, arquitectura offline-first, push y panel de administración.'
 available: true
 link: https://lessantes.polgubau.com
-client: "Ajuntament de Mataró"
-endedAt: "2026-06-10"
+client: 'Ajuntament de Mataró'
+endedAt: '2026-06-10'
 timeline: 8
-color: "#b2374a90"
+color: '#b2374a90'
 services_provided:
   - App
   - API
   - Landing
   - Admin
-cover: "../../assets/media/projects/les-santes/thumbnail.avif"
-logo: "../../assets/media/projects/les-santes/logo.svg"
+cover: '../../assets/media/projects/les-santes/thumbnail.avif'
+logo: '../../assets/media/projects/les-santes/logo.svg'
 ---
 
-import { Image } from "astro:assets";
+import { Image } from 'astro:assets'
 
-import landingThumbnail from "../../assets/media/projects/les-santes/landing-thumbnail.avif";
-import landingScreens from "../../assets/media/projects/les-santes/landing-screens.avif";
-import landingPosters from "../../assets/media/projects/les-santes/landing-posters.avif";
-import landing404 from "../../assets/media/projects/les-santes/landing-404.avif";
-import appAgenda from "../../assets/media/projects/les-santes/app-agenda.avif";
-import appAgendaFavs from "../../assets/media/projects/les-santes/app-agenda-favs.avif";
-import appMapa from "../../assets/media/projects/les-santes/app-mapa.avif";
-import appAra from "../../assets/media/projects/les-santes/app-ara.avif";
-import appCartells from "../../assets/media/projects/les-santes/app-cartells.avif";
-import appPostals from "../../assets/media/projects/les-santes/app-postals.avif";
-import appRecursos from "../../assets/media/projects/les-santes/app-recursos.avif";
-import adminHome from "../../assets/media/projects/les-santes/admin-home.avif";
-import adminEditEvent from "../../assets/media/projects/les-santes/admin-edit-event.avif";
+import landingThumbnail from '../../assets/media/projects/les-santes/landing-thumbnail.avif'
+import landingScreens from '../../assets/media/projects/les-santes/landing-screens.avif'
+import landingPosters from '../../assets/media/projects/les-santes/landing-posters.avif'
+import landing404 from '../../assets/media/projects/les-santes/landing-404.avif'
+import appAgenda from '../../assets/media/projects/les-santes/app-agenda.avif'
+import appAgendaFavs from '../../assets/media/projects/les-santes/app-agenda-favs.avif'
+import appMapa from '../../assets/media/projects/les-santes/app-mapa.avif'
+import appAra from '../../assets/media/projects/les-santes/app-ara.avif'
+import appCartells from '../../assets/media/projects/les-santes/app-cartells.avif'
+import appPostals from '../../assets/media/projects/les-santes/app-postals.avif'
+import appRecursos from '../../assets/media/projects/les-santes/app-recursos.avif'
+import adminHome from '../../assets/media/projects/les-santes/admin-home.avif'
+import adminEditEvent from '../../assets/media/projects/les-santes/admin-edit-event.avif'
 
 Cada verano, **Mataró** celebra **Les Santes**: 6 días de conciertos, correfocs, desfiles de gigantes y actos al aire libre que reúnen a decenas de miles de personas en toda la ciudad.
 
@@ -42,11 +42,7 @@ La única herramienta oficial: un **PDF impreso** y una web estática sin datos 
 
 **Construimos el stack completo desde cero: app móvil, landing y CMS, como proyecto de código abierto.**
 
-<Image
-  src={landingThumbnail}
-  alt="Landing page de Les Santes"
-  class="rounded-2xl my-6"
-/>
+<Image src={landingThumbnail} alt="Landing page de Les Santes" class="rounded-2xl my-6" />
 
 <div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4 my-8 p-5 rounded-2xl border border-muted bg-accent/40">
   <div class="flex flex-col gap-0.5">
@@ -79,62 +75,49 @@ Les Santes es una de las fiestas mayores más importantes de Cataluña y no ten�
 
 <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">
-      Posición de desfiles en tiempo real, sin GPS
-    </span>
+    <span class="text-sm font-semibold">Posición de desfiles en tiempo real, sin GPS</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      Cada desfile tiene una ruta GeoJSON planificada y una hora de inicio. La
-      app interpola su posición a lo largo de esa ruta cada segundo, en el
-      cliente. Sin hardware, sin peticiones al servidor - solo geometría y
-      tiempo transcurrido.
+      Cada desfile tiene una ruta GeoJSON planificada y una hora de inicio. La app interpola su
+      posición a lo largo de esa ruta cada segundo, en el cliente. Sin hardware, sin peticiones al
+      servidor - solo geometría y tiempo transcurrido.
     </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">
-      Offline-first, no offline-tolerante
-    </span>
+    <span class="text-sm font-semibold">Offline-first, no offline-tolerante</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      Todos los datos se cachean en la primera carga con un timestamp. Si abres
-      la app sin conexión, tienes el programa completo - con una nota que indica
-      la antigüedad del caché. Sin spinners ni pantallas vacías.
+      Todos los datos se cachean en la primera carga con un timestamp. Si abres la app sin conexión,
+      tienes el programa completo - con una nota que indica la antigüedad del caché. Sin spinners ni
+      pantallas vacías.
     </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">
-      Cero cuentas, cero datos recogidos
-    </span>
+    <span class="text-sm font-semibold">Cero cuentas, cero datos recogidos</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      Sin login, sin sesiones, sin tokens. Simplificó todo el backend y facilitó
-      la revisión del App Store: no había nada que revisar en materia de
-      privacidad.
+      Sin login, sin sesiones, sin tokens. Simplificó todo el backend y facilitó la revisión del App
+      Store: no había nada que revisar en materia de privacidad.
     </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">
-      Cancelaciones instantáneas vía Supabase Realtime
-    </span>
+    <span class="text-sm font-semibold">Cancelaciones instantáneas vía Supabase Realtime</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      Cuando el organizador cancela un acto, todas las instancias de la app lo
-      reciben al momento vía Realtime broadcast. Los usuarios con notificaciones
-      activas reciben una push con el motivo. Sin polling.
+      Cuando el organizador cancela un acto, todas las instancias de la app lo reciben al momento
+      vía Realtime broadcast. Los usuarios con notificaciones activas reciben una push con el
+      motivo. Sin polling.
     </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
     <span class="text-sm font-semibold">134 años de carteles en 146 KB</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      El archivo completo de carteles (1892–presente) recodificado a AVIF. Lo
-      que habrían sido 5,2 MB de PNGs ocupa 146 KB - un 97% menos, con la misma
-      calidad visual.
+      El archivo completo de carteles (1892–presente) recodificado a AVIF. Lo que habrían sido 5,2
+      MB de PNGs ocupa 146 KB - un 97% menos, con la misma calidad visual.
     </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">
-      MapLibre en lugar de Google Maps o Apple Maps
-    </span>
+    <span class="text-sm font-semibold">MapLibre en lugar de Google Maps o Apple Maps</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      MapLibre GL JS en un WebView aislado con tiles de MapTiler. Sin tracking
-      de terceros, sin overhead de SDK nativo, control total sobre el estilo.
-      Política de privacidad de un solo párrafo.
+      MapLibre GL JS en un WebView aislado con tiles de MapTiler. Sin tracking de terceros, sin
+      overhead de SDK nativo, control total sobre el estilo. Política de privacidad de un solo
+      párrafo.
     </span>
   </div>
 </div>
@@ -164,11 +147,7 @@ La app móvil (React Native + Expo) está organizada en torno a una sola pregunt
 
 Abre la app y ves al instante qué está en marcha: una tarjeta con el acto en curso y una tira horizontal con los siguientes. Sin pantalla de login, sin onboarding, sin configuración - solo el festival.
 
-<Image
-  src={appAra}
-  alt="Vista Ara de la app"
-  class="max-h-[60vh] w-auto rounded-2xl my-6"
-/>
+<Image src={appAra} alt="Vista Ara de la app" class="max-h-[60vh] w-auto rounded-2xl my-6" />
 
 ### Mapa
 
@@ -186,10 +165,7 @@ Los eventos fijos aparecen como marcadores. Los desfiles muestran su **posición
 
 El programa completo, filtrable por día, categoría, tipo de acto o distancia desde la ubicación del usuario. Un sistema de favoritos permite fijar actos y recibir una notificación antes de que empiecen.
 
-<div
-  class="not-prose flex flex-wrap justify-center gap-4 my-6"
-  data-stagger="100"
->
+<div class="not-prose flex flex-wrap justify-center gap-4 my-6" data-stagger="100">
   <Image
     src={appAgenda}
     alt="Vista de agenda completa"
@@ -212,10 +188,7 @@ El programa completo, filtrable por día, categoría, tipo de acto o distancia d
 
 Un archivo desplazable con todos los carteles oficiales del festival desde 1892, más un lightbox deslizable con las postales de los Gegants - todo codificado en AVIF para carga casi instantánea.
 
-<div
-  class="not-prose flex flex-wrap gap-4 justify-center my-6"
-  data-stagger="100"
->
+<div class="not-prose flex flex-wrap gap-4 justify-center my-6" data-stagger="100">
   <Image
     src={appCartells}
     alt="Archivo de carteles"

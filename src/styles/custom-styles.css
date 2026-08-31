@@ -1,5 +1,5 @@
 .landing-section {
-  @apply max-w-7xl px-6 mx-auto w-full flex flex-col gap-12 justify-center items-center;
+  @apply mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-12 px-6;
 }
 
 .impact-section {
@@ -8,7 +8,7 @@
 }
 
 .impact-section::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: -2rem 0;
   z-index: -1;
@@ -22,12 +22,12 @@
 
 /* Panels standalone (ForWho, etc.) */
 .panel {
-  @apply flex flex-col gap-4 bg-muted rounded-3xl border border-muted/60 p-7;
+  @apply bg-muted border-muted/60 flex flex-col gap-4 rounded-3xl border p-7;
 }
 
 ul.bento {
   li.panel {
-    @apply flex flex-col gap-4 bg-muted rounded-3xl border border-muted/60 shadow-pastel p-7;
+    @apply bg-muted border-muted/60 shadow-pastel flex flex-col gap-4 rounded-3xl border p-7;
     transition:
       transform 220ms ease,
       box-shadow 220ms ease,
@@ -44,7 +44,7 @@ ul.bento {
     }
 
     p {
-      @apply text-sm text-muted-foreground max-w-sm text-pretty;
+      @apply text-muted-foreground max-w-sm text-sm text-pretty;
     }
   }
 }
@@ -71,7 +71,7 @@ ul.bento {
 }
 
 [data-spotlight]::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -98,7 +98,7 @@ ul.bento {
 
 /* ── Project prose: centralized image style ─────────────────────────── */
 .prose img {
-  @apply rounded-2xl border border-muted/60 block w-full;
+  @apply border-muted/60 block w-full rounded-2xl border;
   box-shadow: var(--shadow-pastel-sm);
 }
 

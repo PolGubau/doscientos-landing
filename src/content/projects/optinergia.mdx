@@ -1,32 +1,32 @@
 ---
-title: "Optinergia CRM"
-summary: "CRM a medida para una asesoría energética. Centraliza clientes, contratos, renovaciones e incidencias en una sola herramienta responsive con alertas automáticas de vencimiento, historial de actividad y roles por perfil de usuario."
-seoTitle: "Optinergia CRM | Software a medida para asesoría energética"
-metaDescription: "CRM a medida para una asesoría energética: centraliza clientes, contratos, renovaciones e incidencias con alertas de vencimiento y roles por usuario."
+title: 'Optinergia CRM'
+summary: 'CRM a medida para una asesoría energética. Centraliza clientes, contratos, renovaciones e incidencias en una sola herramienta responsive con alertas automáticas de vencimiento, historial de actividad y roles por perfil de usuario.'
+seoTitle: 'Optinergia CRM | Software a medida para asesoría energética'
+metaDescription: 'CRM a medida para una asesoría energética: centraliza clientes, contratos, renovaciones e incidencias con alertas de vencimiento y roles por usuario.'
 available: true
-client: "Optinergia"
-endedAt: "2026-06-28"
+client: 'Optinergia'
+endedAt: '2026-06-28'
 timeline: 2
-color: "#f6b9b5"
+color: '#f6b9b5'
 services_provided:
   - Web App
   - CRM
   - UX/UI
-cover: "../../assets/media/projects/optinergia/thumbnail.webp"
-logo: "../../assets/media/projects/optinergia/logo.svg"
+cover: '../../assets/media/projects/optinergia/thumbnail.webp'
+logo: '../../assets/media/projects/optinergia/logo.svg'
 ---
 
-import { Image } from "astro:assets";
+import { Image } from 'astro:assets'
 
-import dashboard from "../../assets/media/projects/optinergia/dashboard.webp";
-import dashboardMd from "../../assets/media/projects/optinergia/dashboard-md.webp";
-import clientDetails from "../../assets/media/projects/optinergia/client-details.webp";
-import renovations from "../../assets/media/projects/optinergia/renovations.webp";
-import incidentsTable from "../../assets/media/projects/optinergia/incidents-table.webp";
-import registerCall from "../../assets/media/projects/optinergia/register-call.webp";
-import searchMd from "../../assets/media/projects/optinergia/search-md.webp";
-import loginPage from "../../assets/media/projects/optinergia/login-page.webp";
-import settings from "../../assets/media/projects/optinergia/settings.webp";
+import dashboard from '../../assets/media/projects/optinergia/dashboard.webp'
+import dashboardMd from '../../assets/media/projects/optinergia/dashboard-md.webp'
+import clientDetails from '../../assets/media/projects/optinergia/client-details.webp'
+import renovations from '../../assets/media/projects/optinergia/renovations.webp'
+import incidentsTable from '../../assets/media/projects/optinergia/incidents-table.webp'
+import registerCall from '../../assets/media/projects/optinergia/register-call.webp'
+import searchMd from '../../assets/media/projects/optinergia/search-md.webp'
+import loginPage from '../../assets/media/projects/optinergia/login-page.webp'
+import settings from '../../assets/media/projects/optinergia/settings.webp'
 
 Una asesoría energética con centenares de clientes activos, varios comerciales y contratos con fechas de vencimiento distintas. El problema: todo vivía en hojas de cálculo, correos y la memoria de cada comercial. Cada renovación que se perdía era dinero que se iba.
 
@@ -79,11 +79,7 @@ El equipo perdía renovaciones por falta de visibilidad. No había forma rápida
 
 Construimos un panel de gestión que da al equipo lo que necesita de un vistazo: cuántos clientes activos hay, qué contratos están a punto de vencer, cuántas incidencias siguen abiertas y quién tiene que actuar.
 
-<Image
-  src={dashboardMd}
-  alt="Dashboard responsive en pantalla mediana"
-  class="rounded-2xl my-6"
-/>
+<Image src={dashboardMd} alt="Dashboard responsive en pantalla mediana" class="rounded-2xl my-6" />
 
 La ficha de cada cliente agrupa todo en un solo lugar: datos de contacto, contratos energéticos con sus CUPS, fechas de vigencia, importes y comisiones, documentos adjuntos, incidencias activas y un historial completo de cada acción registrada sobre esa cuenta.
 
@@ -139,52 +135,46 @@ Las incidencias (facturas pendientes, DNI no entregado, contratos sin firma) se 
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
     <span class="text-sm font-semibold">Roles diferenciados por perfil</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      El sistema distingue entre propietario, administrador, comercial y solo
-      lectura. Cada rol ve y puede hacer cosas distintas — los comerciales solo
-      ven sus propios clientes; los admin ven todo el equipo.
+      El sistema distingue entre propietario, administrador, comercial y solo lectura. Cada rol ve y
+      puede hacer cosas distintas — los comerciales solo ven sus propios clientes; los admin ven
+      todo el equipo.
     </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
     <span class="text-sm font-semibold">Historial de actividad automático</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      Cada acción queda registrada sin que nadie tenga que apuntarlo: alta de
-      cliente, cambio de contrato, contacto de renovación, resolución de
-      incidencia. El historial de cada cliente es la memoria del equipo.
+      Cada acción queda registrada sin que nadie tenga que apuntarlo: alta de cliente, cambio de
+      contrato, contacto de renovación, resolución de incidencia. El historial de cada cliente es la
+      memoria del equipo.
     </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
-    <span class="text-sm font-semibold">
-      PWA: sin instalación, funciona en móvil
-    </span>
+    <span class="text-sm font-semibold">PWA: sin instalación, funciona en móvil</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      La app está optimizada como Progressive Web App. Los comerciales la usan
-      desde el móvil entre visitas sin instalar nada. Modo oscuro incluido, con
-      preferencia persistida por usuario.
+      La app está optimizada como Progressive Web App. Los comerciales la usan desde el móvil entre
+      visitas sin instalar nada. Modo oscuro incluido, con preferencia persistida por usuario.
     </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
     <span class="text-sm font-semibold">Documentos adjuntos por cliente</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      DNIs, contratos firmados y propuestas se suben directamente a la ficha del
-      cliente. Los PDFs se pueden visualizar dentro de la propia herramienta sin
-      descargar nada.
+      DNIs, contratos firmados y propuestas se suben directamente a la ficha del cliente. Los PDFs
+      se pueden visualizar dentro de la propia herramienta sin descargar nada.
     </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
     <span class="text-sm font-semibold">Exportación a CSV filtrada</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      Clientes y contratos se pueden exportar con los filtros activos — por
-      periodo, estado o comercial. El fichero resultante tiene todos los campos
-      que necesita el equipo: DNI, IBAN, fecha de firma, renovación y servicios
-      contratados.
+      Clientes y contratos se pueden exportar con los filtros activos — por periodo, estado o
+      comercial. El fichero resultante tiene todos los campos que necesita el equipo: DNI, IBAN,
+      fecha de firma, renovación y servicios contratados.
     </span>
   </div>
   <div class="flex flex-col gap-1.5 rounded-xl border border-muted bg-accent/40 p-4">
     <span class="text-sm font-semibold">Entregado en 2 semanas</span>
     <span class="text-sm leading-relaxed text-muted-foreground">
-      Fase 1 (desarrollo completo) en la primera semana. Fase 2 (importación de
-      datos reales y validación conjunta con el cliente) en la segunda. Sin
-      sorpresas, sin scope creep.
+      Fase 1 (desarrollo completo) en la primera semana. Fase 2 (importación de datos reales y
+      validación conjunta con el cliente) en la segunda. Sin sorpresas, sin scope creep.
     </span>
   </div>
 </div>
@@ -195,11 +185,7 @@ Las incidencias (facturas pendientes, DNI no entregado, contratos sin firma) se 
   class="rounded-2xl my-6"
 />
 
-<Image
-  src={loginPage}
-  alt="Pantalla de acceso con autenticación segura"
-  class="rounded-2xl my-6"
-/>
+<Image src={loginPage} alt="Pantalla de acceso con autenticación segura" class="rounded-2xl my-6" />
 
 ---
 

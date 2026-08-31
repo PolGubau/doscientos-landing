@@ -39,32 +39,32 @@ npm install resend
 
 ```typescript
 // src/lib/email.ts
-import { Resend } from "resend";
+import { Resend } from 'resend'
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
+const resend = new Resend(import.meta.env.RESEND_API_KEY)
 
 export async function sendContactEmail(data: {
-  name: string;
-  email: string;
-  message: string;
-  phone?: string;
-  company?: string;
+  name: string
+  email: string
+  message: string
+  phone?: string
+  company?: string
 }) {
   // Email al equipo
   await resend.emails.send({
-    from: "Contacto <contacto@doscientos.es>",
-    to: "hola@doscientos.es",
+    from: 'Contacto <contacto@doscientos.es>',
+    to: 'hola@doscientos.es',
     subject: `Nuevo contacto de ${data.name}`,
     html: ContactEmail(data),
-  });
+  })
 
   // Email de confirmación al cliente
   await resend.emails.send({
-    from: "doscientos <hola@doscientos.es>",
+    from: 'doscientos <hola@doscientos.es>',
     to: data.email,
-    subject: "Gracias por contactarnos - doscientos",
+    subject: 'Gracias por contactarnos - doscientos',
     html: ConfirmationEmail({ name: data.name }),
-  });
+  })
 }
 ```
 
@@ -72,23 +72,23 @@ export async function sendContactEmail(data: {
 
 ```typescript
 // src/pages/api/contact.ts
-import type { APIRoute } from "astro";
-import { sendContactEmail } from "~/lib/email";
+import type { APIRoute } from 'astro'
+import { sendContactEmail } from '~/lib/email'
 
 export const POST: APIRoute = async ({ request }) => {
-  const data = await request.json();
+  const data = await request.json()
 
   try {
-    await sendContactEmail(data);
+    await sendContactEmail(data)
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
-    });
+    })
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Error sending email" }), {
+    return new Response(JSON.stringify({ error: 'Error sending email' }), {
       status: 500,
-    });
+    })
   }
-};
+}
 ```
 
 ## 🎨 Personalización
@@ -135,15 +135,15 @@ const html = ContactEmail({
 Resend tiene un modo de testing que no envía emails reales:
 
 ```typescript
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
+const resend = new Resend(import.meta.env.RESEND_API_KEY)
 
 // En desarrollo, los emails se envían a tu email de testing
 await resend.emails.send({
-  from: "test@resend.dev",
-  to: "tu-email@example.com",
-  subject: "Test",
+  from: 'test@resend.dev',
+  to: 'tu-email@example.com',
+  subject: 'Test',
   html: ContactEmail(data),
-});
+})
 ```
 
 ## 🔒 Variables de Entorno

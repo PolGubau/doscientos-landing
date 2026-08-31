@@ -1,1 +1,1 @@
-declare module "@polgubau/astro-reveal/styles";
+declare module '@polgubau/astro-reveal/styles'

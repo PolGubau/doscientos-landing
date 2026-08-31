@@ -7,7 +7,7 @@ import type {
   Service,
   WebSite,
   WithContext,
-} from "schema-dts";
+} from 'schema-dts'
 
 export type JsonLdSchema =
   | WithContext<Organization>
@@ -16,17 +16,14 @@ export type JsonLdSchema =
   | WithContext<BlogPosting>
   | WithContext<Service>
   | WithContext<CreativeWork>
-  | WithContext<FAQPage>;
+  | WithContext<FAQPage>
 
-export function absoluteUrl(
-  value: string | undefined,
-  base: URL,
-): string | undefined {
-  if (!value) return undefined;
-  return new URL(value, base).toString();
+export function absoluteUrl(value: string | undefined, base: URL): string | undefined {
+  if (!value) return undefined
+  return new URL(value, base).toString()
 }
 
 /** Serialize JSON-LD safely inside an inline script element. */
 export function serializeJsonLd(value: unknown): string {
-  return JSON.stringify(value).replace(/</g, "\\u003c");
+  return JSON.stringify(value).replace(/</g, '\\u003c')
 }

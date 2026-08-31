@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "./custom-styles.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import './custom-styles.css';
 @plugin "@tailwindcss/typography";
 
 /*
@@ -13,7 +13,7 @@
  * transform there: the hero stage timeline owns the choreography and only
  * flips opacity.
  */
-#hero [data-reveal]:not([data-state="visible"]) {
+#hero [data-reveal]:not([data-state='visible']) {
   transform: none !important;
 }
 
@@ -37,8 +37,8 @@
 /* @custom-variant dark (&:where(.dark, .dark *)); */
 
 @font-face {
-  font-family: "Onest";
-  src: url("../assets/fonts/onest.ttf") format("truetype");
+  font-family: 'Onest';
+  src: url('../assets/fonts/onest.ttf') format('truetype');
   font-weight: 100 900;
   font-style: normal;
   font-optical-sizing: auto;
@@ -77,8 +77,8 @@
   --destructive: oklch(0.704 0.191 22.216);
 } */
 @theme inline {
-  --font-heading: "Onest", sans-serif;
-  --font-body: "Onest", sans-serif;
+  --font-heading: 'Onest', sans-serif;
+  --font-body: 'Onest', sans-serif;
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-background: var(--background);
@@ -122,11 +122,9 @@
     0px 38.99230544391321px 19.496152721956605px -3.125px rgba(39, 40, 42, 0.01),
     0px 63.82653521484462px 31.91326760742231px -3.75px rgba(39, 40, 42, 0.01),
     0px 109.90498352673603px 54.952491763368016px -4.375px rgba(39, 40, 42, 0),
-    0px 200px 100px -5px rgba(39, 40, 42, 0),
-    0px -0.5px 0px 0.5px rgba(240, 244, 247, 0);
+    0px 200px 100px -5px rgba(39, 40, 42, 0), 0px -0.5px 0px 0.5px rgba(240, 244, 247, 0);
 
-  --shadow-pastel-sm:
-    rgba(0, 0, 0, 0.11) 0px 0.5px 2px 0px, rgba(0, 0, 0, 0.04) 0px 2px 12px 0px;
+  --shadow-pastel-sm: rgba(0, 0, 0, 0.11) 0px 0.5px 2px 0px, rgba(0, 0, 0, 0.04) 0px 2px 12px 0px;
 }
 
 h1,
@@ -148,7 +146,7 @@ html {
 }
 
 body {
-  @apply bg-background text-foreground antialiased font-heading overflow-x-clip;
+  @apply bg-background text-foreground font-heading overflow-x-clip antialiased;
   timeline-scope: --scroll;
   font-size: 16px;
 }

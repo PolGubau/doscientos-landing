@@ -1,11 +1,12 @@
-import path from "node:path";
-import { branding } from "~/config/branding";
+import path from 'node:path'
+
+import { branding } from '~/config/branding'
 
 export const paths = {
-  projects: path.join(process.cwd(), "src", "content", "projects"),
-};
+  projects: path.join(process.cwd(), 'src', 'content', 'projects'),
+}
 
-export const baseUrl = branding.url;
+export const baseUrl = branding.url
 
 export function getMetadata() {
   return {
@@ -26,45 +27,45 @@ export function getMetadata() {
     picture: branding.assets.logo,
 
     getInTouch: {
-      label: "Contáctanos",
+      label: 'Contáctanos',
 
-      short_label: "¡Hablemos!",
+      short_label: '¡Hablemos!',
 
-      href: "/contact",
+      href: '/contact',
     },
 
     tags: [
       branding.name,
 
-      "Automatización de Procesos",
+      'Automatización de Procesos',
 
-      "IA Empresarial",
+      'IA Empresarial',
 
-      "Chatbots",
+      'Chatbots',
 
-      "Páginas Web",
+      'Páginas Web',
 
-      "Automatización España",
+      'Automatización España',
 
-      "Inteligencia Artificial",
+      'Inteligencia Artificial',
 
-      "Ahorro de Tiempo",
+      'Ahorro de Tiempo',
 
-      "Productividad",
+      'Productividad',
 
-      "N8n",
+      'N8n',
 
-      "SEO",
+      'SEO',
 
-      "Transformación Digital",
+      'Transformación Digital',
 
-      "Automatización Tareas",
+      'Automatización Tareas',
 
-      "Digitalización",
+      'Digitalización',
 
-      "Webs Corporativas",
+      'Webs Corporativas',
 
-      "Landing Pages",
+      'Landing Pages',
 
       branding.location.city,
 
@@ -84,7 +85,7 @@ export function getMetadata() {
     },
 
     homeOgImage: branding.assets.thumbnail,
-  };
+  }
 }
 
-export const defaultLocale = "es";
+export const defaultLocale = 'es'

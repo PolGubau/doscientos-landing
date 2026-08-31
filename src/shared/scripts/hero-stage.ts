@@ -1,7 +1,7 @@
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
 /**
  * Hero storyboard: a single pinned, scroll-scrubbed timeline that turns a
@@ -17,126 +17,103 @@ gsap.registerPlugin(ScrollTrigger);
  * skipped entirely, see revealHeroStatic() in animations.ts.
  */
 
-let tl: gsap.core.Timeline | undefined;
+let tl: gsap.core.Timeline | undefined
 
 export const killHeroStage = () => {
-  tl?.scrollTrigger?.kill();
-  tl?.kill();
-  tl = undefined;
-};
+  tl?.scrollTrigger?.kill()
+  tl?.kill()
+  tl = undefined
+}
 
 // Resting scale of a chip's card once it has popped in, and how far it has
 // shrunk by the time it's fully absorbed into the window in phase 2.
-const REST_SCALE = 0.9;
-const CONVERGE_SCALE = 0.18;
+const REST_SCALE = 0.9
+const CONVERGE_SCALE = 0.18
 
 // Phase boundaries, expressed as timeline position (not evenly spaced — each
 // phase gets however long its beat needs): scattered work becomes an
 // integrated result, then the completed software remains on screen as the
 // closing proof point.
-const P1_END = 0.2;
-const P2_END = 0.62;
+const P1_END = 0.2
+const P2_END = 0.62
 // Window has fully formed and its rows/metric have finished revealing by
 // ~0.94 (see the phase 3 reveal loop below). Phase 4 then shows that a single
 // user action triggers the remaining automated work.
-const P3_END = 1;
+const P3_END = 1
 
 export const setupHeroStage = () => {
-  killHeroStage();
+  killHeroStage()
 
-  const hero = document.getElementById("hero");
-  const stage = document.getElementById("hero-stage");
-  const win = document.getElementById("hero-window");
-  const linesLayer = document.getElementById("hero-lines");
-  const chaosWraps = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-chaos-item"),
-  );
-  const chaosInners = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-chaos-inner"),
-  );
-  const rows = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-window-row"),
-  );
-  const metric = document.querySelector<HTMLElement>(".hero-window-metric");
-  const rowStatuses = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-window-row-status"),
-  );
-  const rowLoaders = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-window-row-loader"),
-  );
-  const rowChecks = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-window-row-check"),
-  );
-  const cursor = document.getElementById("hero-cursor");
-  const flowLines = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-window-flow-line"),
-  );
-  const flowPackets = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-window-flow-packet"),
-  );
+  const hero = document.getElementById('hero')
+  const stage = document.getElementById('hero-stage')
+  const win = document.getElementById('hero-window')
+  const linesLayer = document.getElementById('hero-lines')
+  const chaosWraps = Array.from(document.querySelectorAll<HTMLElement>('.hero-chaos-item'))
+  const chaosInners = Array.from(document.querySelectorAll<HTMLElement>('.hero-chaos-inner'))
+  const rows = Array.from(document.querySelectorAll<HTMLElement>('.hero-window-row'))
+  const metric = document.querySelector<HTMLElement>('.hero-window-metric')
+  const rowStatuses = Array.from(document.querySelectorAll<HTMLElement>('.hero-window-row-status'))
+  const rowLoaders = Array.from(document.querySelectorAll<HTMLElement>('.hero-window-row-loader'))
+  const rowChecks = Array.from(document.querySelectorAll<HTMLElement>('.hero-window-row-check'))
+  const cursor = document.getElementById('hero-cursor')
+  const flowLines = Array.from(document.querySelectorAll<HTMLElement>('.hero-window-flow-line'))
+  const flowPackets = Array.from(document.querySelectorAll<HTMLElement>('.hero-window-flow-packet'))
   // Content pieces inside each chip's preview (mail draft bars, spreadsheet/
   // calendar cells, WhatsApp photo + read receipt) — filled in progressively
   // during phase 1 instead of growing the whole card. See the gsap.set below
   // and the phase 1 tweens further down.
-  const chaosBars = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-chaos-bar"),
-  );
+  const chaosBars = Array.from(document.querySelectorAll<HTMLElement>('.hero-chaos-bar'))
   const chaosActiveCells = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-chaos-cell.is-active"),
-  );
+    document.querySelectorAll<HTMLElement>('.hero-chaos-cell.is-active'),
+  )
   const chaosChatPhotos = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-chaos-chat-photo"),
-  );
-  const chaosChatMeta = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-chaos-chat-meta"),
-  );
+    document.querySelectorAll<HTMLElement>('.hero-chaos-chat-photo'),
+  )
+  const chaosChatMeta = Array.from(document.querySelectorAll<HTMLElement>('.hero-chaos-chat-meta'))
   const chaosWatermarks = Array.from(
-    document.querySelectorAll<HTMLElement>(".hero-chaos-watermark"),
-  );
-  if (!hero || !stage || !win || chaosWraps.length === 0) return;
+    document.querySelectorAll<HTMLElement>('.hero-chaos-watermark'),
+  )
+  if (!hero || !stage || !win || chaosWraps.length === 0) return
 
   // Pre-compute how far each chip must travel to reach the stage's centre,
   // so the "absorption" tween reads as chips flying into the window rather
   // than a generic fade. Reading the transform GSAP finds on first tween
   // (translate(-50%,-50%) from CSS) as its baseline, so `x`/`y` below add on
   // top of that centring instead of overwriting it.
-  const stageRect = stage.getBoundingClientRect();
-  const cx = stageRect.left + stageRect.width / 2;
-  const cy = stageRect.top + stageRect.height / 2;
+  const stageRect = stage.getBoundingClientRect()
+  const cx = stageRect.left + stageRect.width / 2
+  const cy = stageRect.top + stageRect.height / 2
   for (const wrap of chaosWraps) {
-    const r = wrap.getBoundingClientRect();
-    wrap.dataset.dx = String(cx - (r.left + r.width / 2));
-    wrap.dataset.dy = String(cy - (r.top + r.height / 2));
+    const r = wrap.getBoundingClientRect()
+    wrap.dataset.dx = String(cx - (r.left + r.width / 2))
+    wrap.dataset.dy = String(cy - (r.top + r.height / 2))
   }
 
   // One connecting line per chip, drawn from the chip's own resting spot
   // towards the stage centre. Built fresh on every setup (view transitions
   // can call this again) so stale lines from a previous layout never linger.
-  const lines: HTMLElement[] = [];
+  const lines: HTMLElement[] = []
   if (linesLayer) {
-    linesLayer.innerHTML = "";
+    linesLayer.innerHTML = ''
     for (const wrap of chaosWraps) {
-      const dx = Number(wrap.dataset.dx);
-      const dy = Number(wrap.dataset.dy);
-      const length = Math.hypot(dx, dy);
-      const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
-      const line = document.createElement("div");
-      line.className = "hero-chaos-line";
-      line.style.left = wrap.style.left;
-      line.style.top = wrap.style.top;
-      line.style.setProperty(
-        "--chip-color",
-        wrap.style.getPropertyValue("--chip-color"),
-      );
-      linesLayer.appendChild(line);
+      const dx = Number(wrap.dataset.dx)
+      const dy = Number(wrap.dataset.dy)
+      const length = Math.hypot(dx, dy)
+      const angle = (Math.atan2(dy, dx) * 180) / Math.PI
+      const line = document.createElement('div')
+      line.className = 'hero-chaos-line'
+      line.style.left = wrap.style.left
+      line.style.top = wrap.style.top
+      line.style.setProperty('--chip-color', wrap.style.getPropertyValue('--chip-color'))
+      linesLayer.appendChild(line)
       gsap.set(line, {
         width: length,
         rotation: angle,
-        transformOrigin: "0% 50%",
+        transformOrigin: '0% 50%',
         autoAlpha: 0,
         scaleX: 0,
-      });
-      lines.push(line);
+      })
+      lines.push(line)
     }
   }
 
@@ -145,11 +122,11 @@ export const setupHeroStage = () => {
   // scrolls, rather than the old approach of growing the whole card to a
   // large peak scale (which looked bad and started overlapping neighbours
   // once the previews got bigger than the old icon pills).
-  gsap.set(chaosBars, { scaleX: 0, transformOrigin: "0% 50%" });
-  gsap.set(chaosActiveCells, { autoAlpha: 0, scale: 0.6 });
-  gsap.set(chaosChatPhotos, { autoAlpha: 0, scale: 0.7 });
-  gsap.set(chaosChatMeta, { autoAlpha: 0, y: 4 });
-  gsap.set(chaosWatermarks, { autoAlpha: 0 });
+  gsap.set(chaosBars, { scaleX: 0, transformOrigin: '0% 50%' })
+  gsap.set(chaosActiveCells, { autoAlpha: 0, scale: 0.6 })
+  gsap.set(chaosChatPhotos, { autoAlpha: 0, scale: 0.7 })
+  gsap.set(chaosChatMeta, { autoAlpha: 0, y: 4 })
+  gsap.set(chaosWatermarks, { autoAlpha: 0 })
 
   // Document-relative (scroll-invariant) resting offset of #hero from the
   // top of the viewport — i.e. the space the fixed navbar's spacer reserves
@@ -160,10 +137,8 @@ export const setupHeroStage = () => {
   // and creating a "dead" scroll range before the storyboard visibly reacts.
   // Adding scrollY back recovers the true resting offset regardless of when
   // this is measured.
-  const heroOffset = Math.round(
-    hero.getBoundingClientRect().top + window.scrollY,
-  );
-  const startOffset = heroOffset > 0 ? `${heroOffset}px` : "top";
+  const heroOffset = Math.round(hero.getBoundingClientRect().top + window.scrollY)
+  const startOffset = heroOffset > 0 ? `${heroOffset}px` : 'top'
 
   // The chaos cloud must already be on screen the instant the page loads —
   // it's the very first thing a visitor sees, before they've scrolled at
@@ -189,7 +164,7 @@ export const setupHeroStage = () => {
   // immediateRender snaps every chip back to invisible right before the
   // first real paint, and the stagger plays out untouched from there.
   requestAnimationFrame(() => {
-    gsap.set(chaosInners, { autoAlpha: 1, scale: REST_SCALE, y: 0 });
+    gsap.set(chaosInners, { autoAlpha: 1, scale: REST_SCALE, y: 0 })
     gsap.from(chaosInners, {
       autoAlpha: 0,
       scale: 0.5,
@@ -197,8 +172,8 @@ export const setupHeroStage = () => {
       // "Poco a poco": each chip pops in ~0.16s after the previous one, in
       // randomized order, so the cloud visibly builds note-by-note instead
       // of materializing as a single block.
-      stagger: { each: 0.16, from: "random" },
-      ease: "power2.out",
+      stagger: { each: 0.16, from: 'random' },
+      ease: 'power2.out',
       duration: 0.6,
       delay: 0.15,
       // The scrubbed timeline also tweens autoAlpha/scale on these same
@@ -207,7 +182,7 @@ export const setupHeroStage = () => {
       // properties the moment this one starts; overwrite:false keeps this
       // entrance safe from that.
       overwrite: false,
-    });
+    })
 
     // The first caption's entrance is handled by a pure-CSS keyframe
     // animation (see .hero-caption:first-child in Hero.astro), not GSAP —
@@ -217,7 +192,7 @@ export const setupHeroStage = () => {
     // instant this code runs, undoing the CSS entrance that may already be
     // mid-flight or finished, and reading as a jarring "pop, vanish,
     // replay" whenever the import lagged behind first paint.
-  });
+  })
 
   tl = gsap.timeline({
     scrollTrigger: {
@@ -226,14 +201,14 @@ export const setupHeroStage = () => {
       pin: true,
       // The closing automation sequence earns a little extra scroll space so
       // the user can read the causal chain instead of seeing it flash by.
-      end: "+=125%",
+      end: '+=125%',
       // Lower smoothing than the default scrub:1 so the very first wheel
       // tick visibly moves the timeline right away instead of spending its
       // first fraction of a second catching up (which read as a dead
       // scroll).
       scrub: 0.35,
     },
-  });
+  })
 
   // Phase 1 (0 → P1_END): "el problema se reconoce" — each
   // chip's card is already visible (poco a poco entrance above) but starts
@@ -271,22 +246,22 @@ export const setupHeroStage = () => {
       immediateRender: false,
     },
     0,
-  );
+  )
 
-  const fillDuration = P1_END * 0.85;
+  const fillDuration = P1_END * 0.85
   if (chaosBars.length > 0) {
     tl.fromTo(
       chaosBars,
       { scaleX: 0 },
       {
         scaleX: 1,
-        stagger: { each: 0.02, from: "random" },
-        ease: "power2.out",
+        stagger: { each: 0.02, from: 'random' },
+        ease: 'power2.out',
         duration: fillDuration,
         overwrite: false,
       },
       0,
-    );
+    )
   }
   if (chaosActiveCells.length > 0) {
     tl.fromTo(
@@ -295,13 +270,13 @@ export const setupHeroStage = () => {
       {
         autoAlpha: 1,
         scale: 1,
-        stagger: { each: 0.03, from: "random" },
-        ease: "back.out(2)",
+        stagger: { each: 0.03, from: 'random' },
+        ease: 'back.out(2)',
         duration: fillDuration,
         overwrite: false,
       },
       0,
-    );
+    )
   }
   if (chaosChatPhotos.length > 0) {
     tl.fromTo(
@@ -310,8 +285,8 @@ export const setupHeroStage = () => {
       {
         autoAlpha: 1,
         scale: 1,
-        stagger: { each: 0.05, from: "random" },
-        ease: "back.out(2)",
+        stagger: { each: 0.05, from: 'random' },
+        ease: 'back.out(2)',
         duration: fillDuration,
         overwrite: false,
       },
@@ -322,13 +297,13 @@ export const setupHeroStage = () => {
       {
         autoAlpha: 1,
         y: 0,
-        stagger: { each: 0.05, from: "random" },
-        ease: "power2.out",
+        stagger: { each: 0.05, from: 'random' },
+        ease: 'power2.out',
         duration: fillDuration * 0.6,
         overwrite: false,
       },
       P1_END * 0.3,
-    );
+    )
   }
   if (chaosWatermarks.length > 0) {
     tl.fromTo(
@@ -336,13 +311,13 @@ export const setupHeroStage = () => {
       { autoAlpha: 0 },
       {
         autoAlpha: 0.22,
-        stagger: { each: 0.03, from: "random" },
-        ease: "power1.out",
+        stagger: { each: 0.03, from: 'random' },
+        ease: 'power1.out',
         duration: fillDuration,
         overwrite: false,
       },
       0,
-    );
+    )
   }
 
   // Phase 2 (P1_END → P2_END): "lo conectamos todo" —
@@ -354,8 +329,8 @@ export const setupHeroStage = () => {
   // on the same property for the same target — this is what keeps the
   // scrubbed timeline symmetric in both scroll directions (see the reverse-
   // scroll fix above for why an implicit "from" breaks that).
-  const fusionStart = P1_END;
-  const fusionSpan = P2_END - P1_END;
+  const fusionStart = P1_END
+  const fusionSpan = P2_END - P1_END
 
   // Lines: draw from each chip toward the centre early in the phase, hold
   // at full length while the chips wind up and launch, then fade out as the
@@ -367,8 +342,8 @@ export const setupHeroStage = () => {
       {
         scaleX: 1,
         autoAlpha: 0.9,
-        stagger: { each: 0.02, from: "random" },
-        ease: "power2.out",
+        stagger: { each: 0.02, from: 'random' },
+        ease: 'power2.out',
         duration: fusionSpan * 0.35,
         overwrite: false,
       },
@@ -378,13 +353,13 @@ export const setupHeroStage = () => {
       { autoAlpha: 0.9 },
       {
         autoAlpha: 0,
-        stagger: { each: 0.02, from: "random" },
-        ease: "power1.in",
+        stagger: { each: 0.02, from: 'random' },
+        ease: 'power1.in',
         duration: fusionSpan * 0.2,
         overwrite: false,
       },
       fusionStart + fusionSpan * 0.75,
-    );
+    )
   }
 
   // Chips: a chaotic, snappy collapse into the centre — `back.in` gives each
@@ -398,25 +373,25 @@ export const setupHeroStage = () => {
       x: (_i, target: HTMLElement) => Number(target.dataset.dx),
       y: (_i, target: HTMLElement) => Number(target.dataset.dy),
       rotation: () => gsap.utils.random(-28, 28),
-      stagger: { each: 0.035, from: "random" },
-      ease: "back.in(1.6)",
+      stagger: { each: 0.035, from: 'random' },
+      ease: 'back.in(1.6)',
       duration: fusionSpan * 0.7,
       overwrite: false,
     },
     fusionStart + fusionSpan * 0.15,
-  );
+  )
   tl.fromTo(
     chaosInners,
     { scale: REST_SCALE },
     {
       scale: CONVERGE_SCALE,
-      stagger: { each: 0.035, from: "random" },
-      ease: "power2.in",
+      stagger: { each: 0.035, from: 'random' },
+      ease: 'power2.in',
       duration: fusionSpan * 0.7,
       overwrite: false,
     },
     fusionStart + fusionSpan * 0.15,
-  );
+  )
   // Separate, later tween for the fade so the chips stay fully visible while
   // they fly inward and only dissolve once they've essentially arrived —
   // reads as "colliding and merging" into the window rather than fading
@@ -427,13 +402,13 @@ export const setupHeroStage = () => {
     { autoAlpha: 1 },
     {
       autoAlpha: 0,
-      stagger: { each: 0.02, from: "random" },
-      ease: "power1.in",
+      stagger: { each: 0.02, from: 'random' },
+      ease: 'power1.in',
       duration: fusionSpan * 0.15,
       overwrite: false,
     },
     fusionStart + fusionSpan * 0.8,
-  );
+  )
   tl.fromTo(
     win,
     { autoAlpha: 0, y: 16, scale: 0.85 },
@@ -441,11 +416,11 @@ export const setupHeroStage = () => {
       autoAlpha: 1,
       y: 0,
       scale: 1,
-      ease: "back.out(1.5)",
+      ease: 'back.out(1.5)',
       duration: fusionSpan * 0.35,
     },
     fusionStart + fusionSpan * 0.6,
-  );
+  )
 
   // Phase 3 (P2_END → P3_END): "el resultado funciona" — the chips are
   // gone, fully integrated; reveal the window's rows and metric one by one.
@@ -453,17 +428,17 @@ export const setupHeroStage = () => {
     tl?.fromTo(
       row,
       { autoAlpha: 0, y: 8 },
-      { autoAlpha: 1, y: 0, ease: "power2.out", duration: 0.12 },
+      { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.12 },
       P2_END + 0.05 + i * 0.09,
-    );
-  });
+    )
+  })
   if (metric) {
     tl.fromTo(
       metric,
       { autoAlpha: 0, y: 8 },
-      { autoAlpha: 1, y: 0, ease: "power2.out", duration: 0.15 },
+      { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.15 },
       P2_END + 0.05 + rows.length * 0.09,
-    );
+    )
   }
 
   // Phase 4: the cursor represents the user starting the workflow once. An
@@ -471,7 +446,7 @@ export const setupHeroStage = () => {
   // remaining completions read as automation rather than more manual clicks.
   // All values are in the scrubbed timeline, which also makes this sequence
   // reverse cleanly when the visitor scrolls back.
-  let proofStart = P3_END;
+  let proofStart = P3_END
   if (
     cursor &&
     rowStatuses.length === rows.length &&
@@ -479,59 +454,53 @@ export const setupHeroStage = () => {
     rowChecks.length === rows.length &&
     rows.length > 0
   ) {
-    const windowRect = win.getBoundingClientRect();
-    const windowScale = windowRect.width / win.offsetWidth || 1;
+    const windowRect = win.getBoundingClientRect()
+    const windowScale = windowRect.width / win.offsetWidth || 1
     const statusTargets = rowStatuses.map((status) => {
-      const statusRect = status.getBoundingClientRect();
+      const statusRect = status.getBoundingClientRect()
       return {
-        x:
-          (statusRect.left - windowRect.left) / windowScale +
-          statusRect.width / windowScale / 2,
-        y:
-          (statusRect.top - windowRect.top) / windowScale +
-          statusRect.height / windowScale / 2,
-      };
-    });
+        x: (statusRect.left - windowRect.left) / windowScale + statusRect.width / windowScale / 2,
+        y: (statusRect.top - windowRect.top) / windowScale + statusRect.height / windowScale / 2,
+      }
+    })
     const cursorTargets = statusTargets.map((target) => ({
       x: win.offsetLeft + target.x - 4,
       y: win.offsetTop + target.y - 4,
-    }));
-    const hasFlow =
-      flowLines.length >= rows.length - 1 &&
-      flowPackets.length >= rows.length - 1;
+    }))
+    const hasFlow = flowLines.length >= rows.length - 1 && flowPackets.length >= rows.length - 1
     const flowSegments = statusTargets.slice(0, -1).map((start, index) => {
-      const end = statusTargets[index + 1];
-      const dx = end.x - start.x;
-      const dy = end.y - start.y;
-      const line = flowLines[index];
+      const end = statusTargets[index + 1]
+      const dx = end.x - start.x
+      const dy = end.y - start.y
+      const line = flowLines[index]
       if (line) {
         gsap.set(line, {
           x: start.x,
           y: start.y,
           width: Math.hypot(dx, dy),
           rotation: (Math.atan2(dy, dx) * 180) / Math.PI,
-          transformOrigin: "0% 50%",
+          transformOrigin: '0% 50%',
           autoAlpha: 0,
           scaleX: 0,
-        });
+        })
       }
-      return { start, end, line, packet: flowPackets[index] };
-    });
-    const automationStart = P3_END;
-    const firstTarget = cursorTargets[0];
+      return { start, end, line, packet: flowPackets[index] }
+    })
+    const automationStart = P3_END
+    const firstTarget = cursorTargets[0]
     const doneRow = (rowIndex: number, at: number) => {
       tl!.fromTo(
         rows[rowIndex],
-        { backgroundColor: "#e3e5e7", borderColor: "transparent" },
+        { backgroundColor: '#e3e5e7', borderColor: 'transparent' },
         {
-          backgroundColor: "#e4f5cf",
-          borderColor: "#acd97a",
+          backgroundColor: '#e4f5cf',
+          borderColor: '#acd97a',
           duration: 0.1,
-          ease: "power1.out",
+          ease: 'power1.out',
         },
         at,
-      );
-    };
+      )
+    }
 
     if (firstTarget) {
       tl!
@@ -549,7 +518,7 @@ export const setupHeroStage = () => {
             y: firstTarget.y,
             scale: 1,
             duration: 0.1,
-            ease: "power2.out",
+            ease: 'power2.out',
           },
           automationStart,
         )
@@ -560,11 +529,11 @@ export const setupHeroStage = () => {
             autoAlpha: 1,
             scale: 1,
             duration: 0.08,
-            ease: "back.out(2)",
+            ease: 'back.out(2)',
           },
           automationStart + 0.11,
-        );
-      doneRow(0, automationStart + 0.11);
+        )
+      doneRow(0, automationStart + 0.11)
       tl.to(
         cursor,
         {
@@ -573,16 +542,16 @@ export const setupHeroStage = () => {
           y: firstTarget.y - 18,
           scale: 0.92,
           duration: 0.08,
-          ease: "power1.in",
+          ease: 'power1.in',
         },
         automationStart + 0.21,
-      );
+      )
     }
 
     rows.slice(1).forEach((_, index) => {
-      const rowIndex = index + 1;
-      const flowStart = automationStart + 0.27 + index * 0.25;
-      const segment = flowSegments[index];
+      const rowIndex = index + 1
+      const flowStart = automationStart + 0.27 + index * 0.25
+      const segment = flowSegments[index]
       if (hasFlow && segment?.line && segment.packet) {
         tl!
           .fromTo(
@@ -595,7 +564,7 @@ export const setupHeroStage = () => {
               autoAlpha: 0.72,
               scaleX: 1,
               duration: 0.1,
-              ease: "power2.out",
+              ease: 'power2.out',
             },
             flowStart,
           )
@@ -613,15 +582,15 @@ export const setupHeroStage = () => {
               y: segment.end.y,
               scale: 1,
               duration: 0.13,
-              ease: "power1.inOut",
+              ease: 'power1.inOut',
             },
             flowStart,
           )
           .to(
             segment.packet,
-            { autoAlpha: 0, scale: 0.7, duration: 0.04, ease: "power1.in" },
+            { autoAlpha: 0, scale: 0.7, duration: 0.04, ease: 'power1.in' },
             flowStart + 0.13,
-          );
+          )
       }
       tl!
         .fromTo(
@@ -632,7 +601,7 @@ export const setupHeroStage = () => {
             scale: 1,
             rotation: 180,
             duration: 0.08,
-            ease: "power1.out",
+            ease: 'power1.out',
           },
           flowStart + 0.08,
         )
@@ -643,7 +612,7 @@ export const setupHeroStage = () => {
             scale: 0.45,
             rotation: 270,
             duration: 0.06,
-            ease: "power1.in",
+            ease: 'power1.in',
           },
           flowStart + 0.16,
         )
@@ -654,35 +623,29 @@ export const setupHeroStage = () => {
             autoAlpha: 1,
             scale: 1,
             duration: 0.08,
-            ease: "back.out(2)",
+            ease: 'back.out(2)',
           },
           flowStart + 0.16,
-        );
-      doneRow(rowIndex, flowStart + 0.16);
-    });
+        )
+      doneRow(rowIndex, flowStart + 0.16)
+    })
 
-    proofStart = automationStart + 0.77;
+    proofStart = automationStart + 0.77
   }
 
   // Final proof beat: the completed workflow and its metric get a short,
   // high-contrast pulse without removing the system or the CTA.
-  const metricValue = document.querySelector<HTMLElement>(
-    ".hero-window-metric-value",
-  );
-  tl.to(
-    win,
-    { scale: 1.035, y: -6, duration: 0.16, ease: "power2.out" },
-    proofStart,
-  )
-    .to(win, { scale: 1, y: 0, duration: 0.16, ease: "power2.inOut" }, ">")
+  const metricValue = document.querySelector<HTMLElement>('.hero-window-metric-value')
+  tl.to(win, { scale: 1.035, y: -6, duration: 0.16, ease: 'power2.out' }, proofStart)
+    .to(win, { scale: 1, y: 0, duration: 0.16, ease: 'power2.inOut' }, '>')
     .to(
       metricValue,
-      { scale: 1.12, color: "#1f5b35", duration: 0.16, ease: "back.out(1.7)" },
+      { scale: 1.12, color: '#1f5b35', duration: 0.16, ease: 'back.out(1.7)' },
       proofStart,
     )
-    .to(metricValue, { scale: 1, duration: 0.2, ease: "power2.out" }, ">")
+    .to(metricValue, { scale: 1, duration: 0.2, ease: 'power2.out' }, '>')
     // Hold the finished product long enough to read the completed workflow
     // before the pin releases. The window then leaves naturally with the hero
     // as the next section enters the normal document flow.
-    .to({}, { duration: 0.24 }, ">");
-};
+    .to({}, { duration: 0.24 }, '>')
+}

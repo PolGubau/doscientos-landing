@@ -1,27 +1,26 @@
 ---
-title: "Modernizar sistemas legacy sin parar el negocio | Guía 2026"
-description: "Cómo modernizar un sistema legacy por fases, sin reescribir desde cero ni bloquear operaciones. Estrategia, costes, riesgos y señales para empezar."
-publishDate: "2025-02-28"
-updatedDate: "2026-03-25"
-tags:
-  ["modernización", "legacy", "arquitectura", "refactoring", "sistemas legacy"]
-author: "doscientos"
+title: 'Modernizar sistemas legacy sin parar el negocio | Guía 2026'
+description: 'Cómo modernizar un sistema legacy por fases, sin reescribir desde cero ni bloquear operaciones. Estrategia, costes, riesgos y señales para empezar.'
+publishDate: '2025-02-28'
+updatedDate: '2026-03-25'
+tags: ['modernización', 'legacy', 'arquitectura', 'refactoring', 'sistemas legacy']
+author: 'doscientos'
 draft: false
 faqs:
-  - question: "¿Es necesario reescribir el sistema completo para modernizarlo?"
-    answer: "Casi nunca. La reescritura total es el enfoque más caro y arriesgado. La modernización progresiva — extrayendo módulos uno a uno — permite reducir deuda técnica sin parar operaciones ni perder el conocimiento de negocio acumulado en el sistema actual."
-  - question: "¿Cuánto cuesta modernizar un sistema legacy?"
-    answer: "Depende del tamaño y la tecnología. Un módulo aislado puede modernizarse en 4-8 semanas. Un sistema complejo puede requerir 6-18 meses en fases. Lo que sí es seguro: el coste de no modernizarlo (bugs, parches, velocidad de entrega) suele superar el de hacerlo en 2-3 años."
-  - question: "¿Se puede migrar sin perder datos históricos?"
-    answer: "Sí. Una migración bien planificada incluye una fase de paridad de datos donde ambos sistemas corren en paralelo hasta verificar que los datos son consistentes. Nadie pierde nada."
-  - question: "¿Mi equipo puede seguir trabajando durante la modernización?"
-    answer: "Sí, es el objetivo. El patrón Strangler Fig permite añadir funcionalidad nueva en el sistema moderno mientras el legacy sigue operando. El equipo no para en ningún momento."
+  - question: '¿Es necesario reescribir el sistema completo para modernizarlo?'
+    answer: 'Casi nunca. La reescritura total es el enfoque más caro y arriesgado. La modernización progresiva — extrayendo módulos uno a uno — permite reducir deuda técnica sin parar operaciones ni perder el conocimiento de negocio acumulado en el sistema actual.'
+  - question: '¿Cuánto cuesta modernizar un sistema legacy?'
+    answer: 'Depende del tamaño y la tecnología. Un módulo aislado puede modernizarse en 4-8 semanas. Un sistema complejo puede requerir 6-18 meses en fases. Lo que sí es seguro: el coste de no modernizarlo (bugs, parches, velocidad de entrega) suele superar el de hacerlo en 2-3 años.'
+  - question: '¿Se puede migrar sin perder datos históricos?'
+    answer: 'Sí. Una migración bien planificada incluye una fase de paridad de datos donde ambos sistemas corren en paralelo hasta verificar que los datos son consistentes. Nadie pierde nada.'
+  - question: '¿Mi equipo puede seguir trabajando durante la modernización?'
+    answer: 'Sí, es el objetivo. El patrón Strangler Fig permite añadir funcionalidad nueva en el sistema moderno mientras el legacy sigue operando. El equipo no para en ningún momento.'
 ---
 
-import { Image } from "astro:assets";
-import BlogCTA from "../../components/blog/BlogCTA.astro";
-import legacyGraph from "../../assets/media/projects/ifco/graph.webp";
-import legacyShowcase from "../../assets/media/projects/ifco/showcase.webp";
+import { Image } from 'astro:assets'
+import BlogCTA from '../../components/blog/BlogCTA.astro'
+import legacyGraph from '../../assets/media/projects/ifco/graph.webp'
+import legacyShowcase from '../../assets/media/projects/ifco/showcase.webp'
 
 ¿Tienes un sistema que lleva años funcionando, que nadie se atreve a tocar y que cada vez cuesta más mantener? Bienvenido al problema más común —y más costoso— del software empresarial.
 

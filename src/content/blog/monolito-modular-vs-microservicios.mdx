@@ -1,32 +1,32 @@
 ---
-title: "Monolito modular vs microservicios: cómo elegir arquitectura sin sobreingeniería"
-description: "Guía para decidir entre monolito modular y microservicios según equipo, despliegue, escala, datos y coste operativo. Con señales concretas para separar servicios."
-publishDate: "2026-07-30"
+title: 'Monolito modular vs microservicios: cómo elegir arquitectura sin sobreingeniería'
+description: 'Guía para decidir entre monolito modular y microservicios según equipo, despliegue, escala, datos y coste operativo. Con señales concretas para separar servicios.'
+publishDate: '2026-07-30'
 draft: false
 tags:
   [
-    "arquitectura de software",
-    "monolito modular",
-    "microservicios",
-    "escalabilidad",
-    "backend",
-    "decisión tecnológica",
+    'arquitectura de software',
+    'monolito modular',
+    'microservicios',
+    'escalabilidad',
+    'backend',
+    'decisión tecnológica',
   ]
-resourceType: "guia"
-buyerStage: "consideration"
-author: "Gerard Martínez"
+resourceType: 'guia'
+buyerStage: 'consideration'
+author: 'Gerard Martínez'
 faqs:
-  - question: "¿Un monolito modular puede escalar?"
-    answer: "Sí. Puede ejecutarse en varias instancias y atender volúmenes altos. Su límite aparece cuando distintas partes necesitan escalar, desplegarse o evolucionar de forma independiente."
-  - question: "¿Cuándo merece la pena usar microservicios?"
-    answer: "Cuando existen límites de dominio estables, varios equipos autónomos, necesidades de despliegue independiente o perfiles de escala muy diferentes entre módulos, y la organización puede asumir observabilidad y operación distribuida."
-  - question: "¿Es difícil pasar de un monolito modular a microservicios?"
-    answer: "Es trabajo relevante, pero unos módulos bien separados y contratos claros facilitan extraer servicios. Es mucho más difícil separar un monolito sin límites internos."
-  - question: "¿Microservicios significa usar Kubernetes?"
-    answer: "No. Los microservicios pueden desplegarse en diferentes plataformas. Kubernetes resuelve parte de la orquestación, pero también añade una capa operativa que no todos los equipos necesitan."
+  - question: '¿Un monolito modular puede escalar?'
+    answer: 'Sí. Puede ejecutarse en varias instancias y atender volúmenes altos. Su límite aparece cuando distintas partes necesitan escalar, desplegarse o evolucionar de forma independiente.'
+  - question: '¿Cuándo merece la pena usar microservicios?'
+    answer: 'Cuando existen límites de dominio estables, varios equipos autónomos, necesidades de despliegue independiente o perfiles de escala muy diferentes entre módulos, y la organización puede asumir observabilidad y operación distribuida.'
+  - question: '¿Es difícil pasar de un monolito modular a microservicios?'
+    answer: 'Es trabajo relevante, pero unos módulos bien separados y contratos claros facilitan extraer servicios. Es mucho más difícil separar un monolito sin límites internos.'
+  - question: '¿Microservicios significa usar Kubernetes?'
+    answer: 'No. Los microservicios pueden desplegarse en diferentes plataformas. Kubernetes resuelve parte de la orquestación, pero también añade una capa operativa que no todos los equipos necesitan.'
 ---
 
-import BlogCTA from "../../components/blog/BlogCTA.astro";
+import BlogCTA from '../../components/blog/BlogCTA.astro'
 
 Muchas decisiones de arquitectura nacen de una pregunta equivocada: “¿Qué usan las empresas grandes?”. La pregunta útil es otra: **¿qué complejidad necesita nuestro producto y qué complejidad puede operar nuestro equipo?**
 

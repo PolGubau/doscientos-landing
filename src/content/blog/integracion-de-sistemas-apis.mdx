@@ -1,35 +1,27 @@
 ---
-title: "Integración de sistemas y APIs: cómo conectar tu ERP, tienda y CRM sin fricción"
-description: "Guía práctica para integrar los sistemas de tu empresa vía API. Qué es una integración real, cuándo usar Zapier o desarrollo a medida, costes y errores que evitar."
-publishDate: "2026-06-23"
+title: 'Integración de sistemas y APIs: cómo conectar tu ERP, tienda y CRM sin fricción'
+description: 'Guía práctica para integrar los sistemas de tu empresa vía API. Qué es una integración real, cuándo usar Zapier o desarrollo a medida, costes y errores que evitar.'
+publishDate: '2026-06-23'
 draft: false
-tags:
-  [
-    "integración de sistemas",
-    "API",
-    "automatización",
-    "ERP",
-    "CRM",
-    "software a medida",
-  ]
-author: "doscientos"
+tags: ['integración de sistemas', 'API', 'automatización', 'ERP', 'CRM', 'software a medida']
+author: 'doscientos'
 faqs:
-  - question: "¿Qué es una integración vía API?"
+  - question: '¿Qué es una integración vía API?'
     answer: "Es una conexión directa entre dos programas que les permite 'hablar' entre sí y compartir datos automáticamente. Por ejemplo, que cuando vendas algo en tu web, se cree el cliente en el CRM y se reste el stock en el ERP sin intervención humana."
-  - question: "¿Es mejor Zapier o una integración a medida?"
-    answer: "Zapier es excelente para flujos simples y bajo volumen. Una integración a medida es necesaria cuando manejas datos sensibles, reglas de negocio complejas, alto volumen de operaciones o necesitas fiabilidad absoluta sin depender de una plataforma externa."
-  - question: "¿Cuánto cuesta integrar dos sistemas?"
-    answer: "Una integración simple suele partir de los 2.500€. El coste varía según la documentación de las APIs, la complejidad de la lógica a implementar (filtros, transformaciones de datos) y si requiere monitorización de errores avanzada."
-  - question: "¿Qué pasa si uno de los sistemas cambia su API?"
-    answer: "Diseñamos las integraciones con una capa de abstracción que minimiza el impacto de los cambios externos. Si un sistema cambia, solo actualizamos esa capa, manteniendo el resto de la lógica de tu negocio intacta."
-  - question: "¿Se pueden integrar programas antiguos (legacy)?"
+  - question: '¿Es mejor Zapier o una integración a medida?'
+    answer: 'Zapier es excelente para flujos simples y bajo volumen. Una integración a medida es necesaria cuando manejas datos sensibles, reglas de negocio complejas, alto volumen de operaciones o necesitas fiabilidad absoluta sin depender de una plataforma externa.'
+  - question: '¿Cuánto cuesta integrar dos sistemas?'
+    answer: 'Una integración simple suele partir de los 2.500€. El coste varía según la documentación de las APIs, la complejidad de la lógica a implementar (filtros, transformaciones de datos) y si requiere monitorización de errores avanzada.'
+  - question: '¿Qué pasa si uno de los sistemas cambia su API?'
+    answer: 'Diseñamos las integraciones con una capa de abstracción que minimiza el impacto de los cambios externos. Si un sistema cambia, solo actualizamos esa capa, manteniendo el resto de la lógica de tu negocio intacta.'
+  - question: '¿Se pueden integrar programas antiguos (legacy)?'
     answer: "Sí, siempre que permitan algún tipo de acceso a sus datos (aunque sea vía base de datos directa o archivos planos). A menudo construimos una 'capa de API' moderna sobre sistemas antiguos para que puedan hablar con herramientas nuevas."
 ---
 
-import { Image } from "astro:assets";
-import BlogCTA from "../../components/blog/BlogCTA.astro";
-import apiGraph from "../../assets/media/projects/ifco/graph.webp";
-import apiSettings from "../../assets/media/projects/optinergia/settings.webp";
+import { Image } from 'astro:assets'
+import BlogCTA from '../../components/blog/BlogCTA.astro'
+import apiGraph from '../../assets/media/projects/ifco/graph.webp'
+import apiSettings from '../../assets/media/projects/optinergia/settings.webp'
 
 La mayoría de empresas no tienen un problema de software: tienen un problema de software que no se habla entre sí. El ERP por un lado, la tienda online por otro, el CRM en una tercera pestaña y, en medio, una persona copiando datos de un sistema a otro varias veces al día. **Cada vez que un dato se introduce a mano dos veces, hay un error esperando a ocurrir.**
 

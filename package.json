@@ -1,7 +1,7 @@
 {
   "name": "doscientos-landing",
-  "type": "module",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "astro dev --host",
     "dev:fast": "astro dev --host --no-sync",
@@ -15,10 +15,17 @@
     "test:coverage": "vitest run --coverage",
     "check": "astro check",
     "typecheck": "astro check",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format": "oxfmt -c node_modules/@doscientos/configs/oxfmt.json --write .",
+    "format:check": "oxfmt -c node_modules/@doscientos/configs/oxfmt.json --check .",
+    "format:prettier": "prettier --write .",
+    "format:oxfmt": "oxfmt -c node_modules/@doscientos/configs/oxfmt.json --write .",
+    "format:oxfmt:check": "oxfmt -c node_modules/@doscientos/configs/oxfmt.json --check .",
+    "lint:common": "oxlint",
+    "lint:common:fix": "oxlint --fix --fix-suggestions",
+    "quality:common": "pnpm format:oxfmt:check && pnpm lint:common && pnpm check && pnpm test",
     "seo:check": "node scripts/seo-check.mjs",
-    "test:build": "pnpm lint && pnpm check && pnpm seo:check && pnpm test && pnpm build",
+    "quality": "pnpm format:check && pnpm lint && pnpm check && pnpm test",
+    "test:build": "pnpm quality && pnpm seo:check && pnpm build",
     "astro": "astro"
   },
   "dependencies": {
@@ -50,11 +57,9 @@
     "tailwindcss-motion": "^1.1.1",
     "typescript": "^6.0.3"
   },
-  "lint-staged": {
-    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
-  },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@doscientos/configs": "^0.1.5",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/canvas-confetti": "^1.9.0",
@@ -64,7 +69,9 @@
     "@vitest/coverage-v8": "^4.1.10",
     "astro-meta-tags": "^0.3.1",
     "jsdom": "^29.1.1",
+    "oxfmt": "^0.65.0",
     "oxlint": "^1.0.0",
+    "oxlint-tsgolint": "^7.0.2001",
     "prettier": "^3.9.6",
     "rimraf": "^6.1.3",
     "schema-dts": "^2.0.0",
@@ -74,8 +81,11 @@
     "vite-plugin-pwa": "^1.2.0",
     "vitest": "^4.1.8"
   },
-  "packageManager": "pnpm@11.17.0",
+  "lint-staged": {
+    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
+  },
   "engines": {
     "node": ">=22 <25"
-  }
+  },
+  "packageManager": "pnpm@11.17.0"
 }
