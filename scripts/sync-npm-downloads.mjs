@@ -3,13 +3,7 @@ import { resolve } from 'node:path'
 
 import { collectReport, parseArguments } from './npm-downloads-report.mjs'
 
-const scopes = [
-  'mesalvo',
-  'doscientos',
-  'codedbypol',
-  'polgubau',
-  'wisemark',
-]
+const scopes = ['mesalvo', 'doscientos', 'codedbypol', 'polgubau', 'wisemark']
 
 const options = parseArguments(scopes.flatMap((scope) => ['--scope', scope]))
 const report = await collectReport(options)
