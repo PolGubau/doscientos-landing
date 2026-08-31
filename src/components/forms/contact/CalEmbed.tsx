@@ -16,6 +16,16 @@ type CalEmbedProps = {
   dedupeKey: string
 }
 
+export function calEmbedConfig({ name, email, phone, leadId, dedupeKey }: CalEmbedProps) {
+  return {
+    name,
+    email,
+    attendeePhoneNumber: phone,
+    layout: 'month_view' as const,
+    metadata: { leadId: leadId ?? '', landingDedupeKey: dedupeKey },
+  }
+}
+
 export function CalEmbed({ name, email, phone, leadId, dedupeKey }: CalEmbedProps) {
   useEffect(() => {
     trackEvent('calendar_viewed', { conversionStep: 'contact_form' })
@@ -44,13 +54,7 @@ export function CalEmbed({ name, email, phone, leadId, dedupeKey }: CalEmbedProp
         calLink={CAL_LINK}
         calOrigin={CAL_ORIGIN}
         style={{ width: '100%', height: '100%', minHeight: '500px' }}
-        config={{
-          name,
-          email,
-          attendeePhoneNumber: phone,
-          layout: 'month_view',
-          metadata: { leadId: leadId ?? '', landingDedupeKey: dedupeKey },
-        }}
+        config={calEmbedConfig({ name, email, phone, leadId, dedupeKey })}
       />
     </div>
   )
