@@ -108,6 +108,9 @@ pnpm check
 pnpm test
 pnpm seo:check
 
+# Informe histórico de descargas npm (paquetes públicos)
+pnpm npm:downloads -- --user mi-usuario --scope mi-organizacion
+
 # Validación completa previa a publicar
 pnpm test:build
 

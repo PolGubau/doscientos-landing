@@ -24,6 +24,8 @@
     "lint:common:fix": "oxlint --fix --fix-suggestions",
     "quality:common": "pnpm format:oxfmt:check && pnpm lint:common && pnpm check && pnpm test",
     "seo:check": "node scripts/seo-check.mjs",
+    "npm:downloads": "node scripts/npm-downloads-report.mjs",
+    "npm:downloads:sync": "node scripts/sync-npm-downloads.mjs",
     "quality": "pnpm format:check && pnpm lint && pnpm check && pnpm test",
     "test:build": "pnpm quality && pnpm seo:check && pnpm build",
     "astro": "astro"
