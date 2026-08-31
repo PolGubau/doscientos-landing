@@ -1,0 +1,288 @@
+---
+import { Icon } from "astro-icon/components";
+import { branding } from "~/config/branding";
+
+const sources = [
+  { label: "Google Drive", icon: "simple-icons:googledrive" },
+  { label: "Gmail", icon: "simple-icons:gmail" },
+  { label: "Notion", icon: "simple-icons:notion" },
+];
+
+const destinations = [
+  { label: "WhatsApp Business", icon: "simple-icons:whatsapp" },
+  { label: "Google Calendar", icon: "simple-icons:googlecalendar" },
+  { label: "Slack", icon: "simple-icons:slack" },
+];
+---
+
+<section class="integrations-section" aria-labelledby="integrations-title">
+  <div class="integrations-section__inner">
+    <header class="integrations-section__header" data-stagger="80">
+      <p class="integrations-section__eyebrow" data-reveal="top">
+        Integraciones
+      </p>
+      <h2 id="integrations-title" data-reveal="scale" data-easing="smooth">
+        Tus herramientas, conectadas.
+      </h2>
+      <p data-reveal="bottom" data-easing="soft" data-distance="small">
+        Conectamos Drive, correo, WhatsApp y las herramientas que ya usas para
+        que la información fluya sin trabajo manual.
+      </p>
+    </header>
+
+    <div
+      class="integration-map"
+      role="img"
+      aria-label="Doscientos conecta Google Drive, Gmail y Notion con WhatsApp Business, Google Calendar y Slack"
+      data-reveal="bottom"
+      data-speed="normal"
+      data-easing="smooth"
+    >
+      <svg class="integration-map__lines" viewBox="0 0 720 310" fill="none" aria-hidden="true">
+        <path d="M138 54H224L310 155H360" />
+        <path d="M138 155H360" />
+        <path d="M138 256H224L310 155H360" />
+        <path d="M360 155H410L496 54H582" />
+        <path d="M360 155H582" />
+        <path d="M360 155H410L496 256H582" />
+      </svg>
+
+      <ul class="integration-tools integration-tools--sources">
+        {
+          sources.map((tool, index) => (
+            <li class="integration-tool" style={`--tool-delay: ${index * 90}ms`}>
+              <Icon name={tool.icon} class="integration-tool__icon" aria-hidden="true" />
+              <span>{tool.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="integration-center">
+        <img src={branding.assets.isotype} alt="" aria-hidden="true" />
+        <span>{branding.name}</span>
+      </div>
+
+      <ul class="integration-tools integration-tools--destinations">
+        {
+          destinations.map((tool, index) => (
+            <li class="integration-tool" style={`--tool-delay: ${270 + index * 90}ms`}>
+              <Icon name={tool.icon} class="integration-tool__icon" aria-hidden="true" />
+              <span>{tool.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .integrations-section {
+    width: 100%;
+    padding: 5rem 1.5rem;
+  }
+
+  .integrations-section__inner {
+    width: min(72rem, 100%);
+    margin: 0 auto;
+  }
+
+  .integrations-section__header {
+    max-width: 42rem;
+    margin: 0 auto 3rem;
+    text-align: center;
+  }
+
+  .integrations-section__eyebrow {
+    margin: 0 0 0.85rem;
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .integrations-section h2 {
+    margin: 0;
+    color: var(--foreground);
+    font-size: clamp(2.25rem, 4.3vw, 4.25rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.07em;
+    text-wrap: balance;
+  }
+
+  .integrations-section__header > p:last-child {
+    max-width: 34rem;
+    margin: 1.25rem auto 0;
+    color: var(--muted-foreground);
+    font-size: 1rem;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .integration-map {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(8rem, 1fr) minmax(8rem, 1fr) minmax(8rem, 1fr);
+    align-items: center;
+    gap: clamp(1rem, 4vw, 4.5rem);
+    min-height: 19.5rem;
+    padding: clamp(1rem, 3vw, 2rem);
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--primary) 12%, var(--muted));
+    border-radius: 2rem;
+    background: color-mix(in srgb, var(--foreground) 3%, var(--background));
+    box-shadow: var(--shadow-pastel);
+  }
+
+  .integration-map__lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: color-mix(in srgb, var(--primary) 32%, var(--muted));
+    pointer-events: none;
+  }
+
+  .integration-map__lines path {
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-dasharray: 2 6;
+  }
+
+  .integration-tools {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .integration-tools--sources {
+    justify-items: start;
+  }
+
+  .integration-tools--destinations {
+    justify-items: end;
+  }
+
+  .integration-tool {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 8.9rem;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid color-mix(in srgb, var(--foreground) 10%, var(--muted));
+    border-radius: 0.9rem;
+    background: var(--background);
+    box-shadow: var(--shadow-pastel-sm);
+    color: var(--foreground);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.1;
+    animation: integration-tool-enter 480ms cubic-bezier(0.22, 1, 0.36, 1) var(--tool-delay) both;
+  }
+
+  .integration-tool__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+  }
+
+  .integration-center {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    justify-self: center;
+    width: clamp(6.75rem, 12vw, 8.25rem);
+    aspect-ratio: 1;
+    border-radius: 1.4rem;
+    background: var(--primary);
+    box-shadow: 0 1.25rem 2.5rem color-mix(in srgb, var(--primary) 28%, transparent);
+    color: var(--background);
+  }
+
+  .integration-center img {
+    width: 2.3rem;
+    height: 2.3rem;
+    filter: brightness(0) invert(1);
+  }
+
+  .integration-center span {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  @keyframes integration-tool-enter {
+    from {
+      opacity: 0;
+      transform: translateY(0.65rem) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .integrations-section {
+      padding: 3.5rem 1rem;
+    }
+
+    .integration-map {
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      min-height: auto;
+      padding: 1rem;
+    }
+
+    .integration-map__lines {
+      display: none;
+    }
+
+    .integration-center {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      width: 6.75rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .integration-tools {
+      gap: 0.65rem;
+    }
+
+    .integration-tools--sources {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .integration-tools--destinations {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .integration-tool {
+      min-width: 0;
+      width: 100%;
+      padding: 0.6rem;
+      gap: 0.45rem;
+      font-size: 0.68rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .integration-tool {
+      animation: none;
+    }
+  }
+</style>

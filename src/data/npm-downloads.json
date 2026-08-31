@@ -6,13 +6,7 @@
   },
   "sources": {
     "user": null,
-    "scopes": [
-      "mesalvo",
-      "doscientos",
-      "codedbypol",
-      "polgubau",
-      "wisemark"
-    ]
+    "scopes": ["mesalvo", "doscientos", "codedbypol", "polgubau", "wisemark"]
   },
   "totals": {
     "packages": 26,
