@@ -1,7 +1,17 @@
 ---
 import { ArrowUpRight, Check, Code, ShieldCheck } from "@lucide/astro";
 import Breadcrumbs from "~/components/seo/Breadcrumbs.astro";
+import npmDownloads from "~/data/npm-downloads.json";
 import MainLayout from "~/layouts/MainLayout.astro";
+
+const downloads = new Intl.NumberFormat("es-ES").format(
+  npmDownloads.totals.downloads,
+);
+const updatedAt = new Intl.DateTimeFormat("es-ES", {
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+}).format(new Date(npmDownloads.generatedAt));
 
 const foundations = [
   {
@@ -64,6 +74,10 @@ const foundations = [
         caja negra. Lo que construimos contigo sigue respondiendo a tu
         operativa, tus datos y tus objetivos.
       </p>
+      <p class="open-source-downloads" data-reveal="bottom" data-speed="fast">
+        <strong>{downloads}</strong>
+        <span>descargas históricas de {npmDownloads.totals.packages} paquetes públicos</span>
+      </p>
     </header>
 
     <section class="open-source-boundary" aria-labelledby="boundary-title">
@@ -83,6 +97,20 @@ const foundations = [
           en que trabaja tu equipo.
         </p>
       </div>
+    </section>
+
+    <section class="open-source-downloads-explained" aria-labelledby="downloads-title">
+      <span class="open-source-eyebrow">USO REAL</span>
+      <h2 id="downloads-title">Software abierto que se usa.</h2>
+      <p>
+        La cifra reúne las descargas históricas de los paquetes públicos que
+        mantenemos en npm. Es una señal de que las bases que compartimos se
+        reutilizan más allá de un único proyecto.
+      </p>
+      <p class="open-source-downloads-note">
+        Una descarga no equivale a una persona usuaria única: puede venir de
+        desarrollo, automatizaciones o producción. Instantánea actualizada en {updatedAt}.
+      </p>
     </section>
 
     <section
@@ -188,6 +216,28 @@ const foundations = [
     font-size: clamp(1rem, 1.8vw, 1.2rem);
     line-height: 1.65;
     text-wrap: balance;
+  }
+  .open-source-downloads {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.7rem;
+    margin: 1.75rem 0 0;
+  }
+  .open-source-downloads strong {
+    color: var(--primary);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+  }
+  .open-source-downloads span {
+    max-width: 13rem;
+    color: var(--muted-foreground);
+    font-size: 0.76rem;
+    font-weight: 750;
+    line-height: 1.35;
+    text-align: left;
   }
   .open-source-boundary {
     display: grid;
@@ -318,6 +368,31 @@ const foundations = [
     text-decoration-color: var(--primary);
     text-underline-offset: 0.3rem;
   }
+  .open-source-downloads-explained {
+    max-width: 48rem;
+    margin: clamp(4rem, 9vw, 7rem) auto 0;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+    border-radius: 1.5rem;
+    background: color-mix(in srgb, var(--foreground) 3%, var(--background));
+    text-align: center;
+  }
+  .open-source-downloads-explained h2 {
+    margin: 0.7rem 0;
+    color: var(--foreground);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    letter-spacing: -0.055em;
+  }
+  .open-source-downloads-explained > p {
+    max-width: 38rem;
+    margin: 0 auto;
+    color: var(--muted-foreground);
+    line-height: 1.65;
+  }
+  .open-source-downloads-explained .open-source-downloads-note {
+    margin-top: 1rem;
+    font-size: 0.78rem;
+  }
   .open-source-assurance {
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -383,6 +458,13 @@ const foundations = [
     }
     .open-source-assurance a {
       width: fit-content;
+    }
+    .open-source-downloads {
+      align-items: center;
+      flex-direction: column;
+    }
+    .open-source-downloads span {
+      text-align: center;
     }
   }
 </style>

@@ -4,6 +4,10 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 const dist = join(process.cwd(), 'dist')
+const npmDownloads = JSON.parse(
+  readFileSync(join(process.cwd(), 'src', 'data', 'npm-downloads.json'), 'utf-8'),
+)
+const formattedDownloads = new Intl.NumberFormat('es-ES').format(npmDownloads.totals.downloads)
 
 describe.skipIf(!existsSync(dist))('open-source showcase', () => {
   const pagePath = join(dist, 'open-source', 'index.html')
@@ -17,6 +21,8 @@ describe.skipIf(!existsSync(dist))('open-source showcase', () => {
 
     expect(home).toContain('No empezamos de cero donde no aporta valor.')
     expect(home).toContain('href="/open-source"')
+    expect(home).toContain('descargas acumuladas de nuestras herramientas abiertas')
+    expect(home).toContain(formattedDownloads)
   })
 
   it('includes each public foundation', () => {
@@ -31,5 +37,8 @@ describe.skipIf(!existsSync(dist))('open-source showcase', () => {
     ]) {
       expect(page).toContain(packageName)
     }
+    expect(page).toContain('descargas históricas de')
+    expect(page).toContain('Una descarga no equivale a una persona usuaria única')
+    expect(page).toContain(formattedDownloads)
   })
 })

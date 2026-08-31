@@ -108,8 +108,8 @@ pnpm check
 pnpm test
 pnpm seo:check
 
-# Informe histórico de descargas npm (paquetes públicos)
-pnpm npm:downloads -- --user mi-usuario --scope mi-organizacion
+# Actualizar la instantánea estática de descargas npm
+pnpm npm:downloads:sync
 
 # Validación completa previa a publicar
 pnpm test:build

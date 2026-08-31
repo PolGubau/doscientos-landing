@@ -1,5 +1,10 @@
 ---
 import { ArrowUpRight, BadgeCheck, ShieldCheck, Sparkles } from "@lucide/astro";
+import npmDownloads from "~/data/npm-downloads.json";
+
+const downloads = new Intl.NumberFormat("es-ES").format(
+  npmDownloads.totals.downloads,
+);
 
 const benefits = [
   {
@@ -35,6 +40,10 @@ const benefits = [
       <p data-reveal="bottom" data-speed="normal" data-easing="soft">
         Construimos lo específico de tu negocio a medida. Para lo repetible,
         partimos de componentes propios, mantenidos y abiertos.
+      </p>
+      <p class="open-source-downloads" data-reveal="bottom" data-speed="fast">
+        <strong>{downloads}</strong>
+        <span>descargas acumuladas de nuestras herramientas abiertas</span>
       </p>
       <a
         href="/open-source"
@@ -119,6 +128,26 @@ const benefits = [
     color: var(--muted-foreground);
     font-size: 1rem;
     line-height: 1.65;
+  }
+  .open-source-downloads {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    margin: 1.5rem 0 0;
+  }
+  .open-source-downloads strong {
+    color: var(--primary);
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+  }
+  .open-source-downloads span {
+    max-width: 14rem;
+    color: var(--muted-foreground);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.35;
   }
   .open-source-link {
     display: inline-flex;
