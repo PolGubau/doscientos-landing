@@ -6,13 +6,13 @@ import SectionTag from "~/components/ui/SectionTag.astro";
 import { commercialRoutes, diagnosticRoute } from "~/data/commercialRoutes";
 import MainLayout from "~/layouts/MainLayout.astro";
 
-const title = "Automatizacion de procesos para pymes | Que automatizar primero";
+const title = "Automatización de procesos para pymes | Qué automatizar primero";
 const description =
-  "Guia practica para automatizar procesos en pymes: que tareas priorizar, cuando no construir software y como calcular si una automatizacion compensa.";
+  "Guía práctica para automatizar procesos en pymes: qué tareas priorizar, cuándo no construir software y cómo calcular si una automatización compensa.";
 
 const automationCandidates = [
   {
-    title: "Excel critico",
+    title: "Excel crítico",
     description:
       "Hojas que deciden ventas, operaciones, cobros o reporting y que solo entiende una persona.",
   },
@@ -45,7 +45,7 @@ const automationCandidates = [
 
 const prioritizationRules = [
   "Frecuencia alta: ocurre varias veces por semana o afecta a varias personas.",
-  "Reglas claras: se puede explicar cuando cambia de estado o que aviso se dispara.",
+  "Reglas claras: se puede explicar cuándo cambia de estado o qué aviso se dispara.",
   "Coste visible: consume horas, genera errores o retrasa ventas/cobros.",
   "Datos disponibles: ya existe una hoja, CRM, email o herramienta con parte del proceso.",
 ];
@@ -54,12 +54,12 @@ const avoidAutomation = [
   {
     title: "El proceso cambia cada semana",
     description:
-      "Primero conviene estabilizarlo. Automatizar caos solo lo hace mas rapido.",
+      "Primero conviene estabilizarlo. Automatizar caos solo lo hace más rápido.",
   },
   {
     title: "No hay responsable claro",
     description:
-      "Si nadie decide estados, prioridades o excepciones, el software no arreglara el bloqueo.",
+      "Si nadie decide estados, prioridades o excepciones, el software no arreglará el bloqueo.",
   },
   {
     title: "La herramienta actual ya lo cubre",
@@ -70,19 +70,19 @@ const avoidAutomation = [
 
 const faqs = [
   {
-    question: "Que proceso deberia automatizar primero una pyme?",
+    question: "¿Qué proceso debería automatizar primero una pyme?",
     answer:
       "El que combine frecuencia alta, reglas claras, coste de error y datos disponibles. Normalmente aparece en Excel, renovaciones, incidencias, documentos o reporting.",
   },
   {
-    question: "Siempre hace falta software a medida?",
+    question: "¿Siempre hace falta software a medida?",
     answer:
-      "No. Si una herramienta existente resuelve el flujo con poca configuracion, es mejor usarla. El software a medida compensa cuando el proceso es diferencial o no encaja en SaaS generico.",
+      "No. Si una herramienta existente resuelve el flujo con poca configuración, es mejor usarla. El software a medida compensa cuando el proceso es diferencial o no encaja en SaaS genérico.",
   },
   {
-    question: "Como se calcula el ROI de una automatizacion?",
+    question: "¿Cómo se calcula el ROI de una automatización?",
     answer:
-      "Se miden horas repetidas, coste por persona, frecuencia, errores evitados, retrasos reducidos y oportunidades recuperadas. Por eso empezamos con un diagnostico corto.",
+      "Se miden horas repetidas, coste por persona, frecuencia, errores evitados, retrasos reducidos y oportunidades recuperadas. Por eso empezamos con un diagnóstico corto.",
   },
 ];
 ---
@@ -92,7 +92,7 @@ const faqs = [
   description={description}
   type="service"
   service={{
-    name: "Automatizacion de procesos para pymes",
+    name: "Automatización de procesos para pymes",
     description,
     serviceType: "Business Process Automation",
     url: "/automatizacion-procesos",
@@ -102,7 +102,7 @@ const faqs = [
   <section class="px-6 max-w-7xl mx-auto pt-24 pb-32 space-y-32 md:space-y-40">
     <Breadcrumbs
       items={[
-        { name: "Automatizacion de procesos", url: "/automatizacion-procesos" },
+        { name: "Automatización de procesos", url: "/automatizacion-procesos" },
       ]}
     />
 
@@ -112,9 +112,9 @@ const faqs = [
           <h1
             class="text-3xl md:text-4xl font-bold tracking-tight text-foreground text-balance"
           >
-            Automatiza el proceso que mas dinero pierde
+            Automatiza el proceso que más dinero pierde
             <span class="block text-primary mt-2"
-              >antes de construir de mas.</span
+              >antes de construir de más.</span
             >
           </h1>
           <p
@@ -126,7 +126,7 @@ const faqs = [
         </div>
         <div class="flex flex-col sm:flex-row gap-4">
           <a href={`${diagnosticRoute.href}?ref=automatizacion-procesos-hero`}>
-            <Button size="lg" withArrow>Pedir diagnostico gratis</Button>
+            <Button size="lg" withArrow>Pedir diagnóstico gratis</Button>
           </a>
           <a href="#procesos">
             <Button size="lg" variant="outline">Ver procesos candidatos</Button>
@@ -182,12 +182,12 @@ const faqs = [
         <h2
           class="text-3xl md:text-5xl font-bold tracking-tight text-foreground"
         >
-          Cuando no conviene automatizar todavia.
+          Cuándo no conviene automatizar todavía.
         </h2>
         <p class="text-muted-foreground leading-relaxed">
-          Una buena automatizacion empieza por una decision honesta. Si el
-          proceso no esta listo, es mejor ordenar el flujo antes que pagar por
-          software que nadie adoptara.
+          Una buena automatización empieza por una decisión honesta. Si el
+          proceso no está listo, es mejor ordenar el flujo antes que pagar por
+          software que nadie adoptará.
         </p>
       </div>
       <div class="space-y-4">
@@ -206,9 +206,9 @@ const faqs = [
 
     <section class="space-y-10">
       <SectionHeader
-        title="Soluciones segun el problema"
-        subtitle="rutas especificas para aterrizar"
-        description="Si ya reconoces el proceso, entra por la landing concreta. Si no, empieza por el diagnostico."
+        title="Soluciones según el problema"
+        subtitle="rutas específicas para aterrizar"
+        description="Si ya reconoces el proceso, entra por la landing concreta. Si no, empieza por el diagnóstico."
         align="center"
       />
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -235,11 +235,11 @@ const faqs = [
     >
       <div class="space-y-2 max-w-2xl">
         <h2 class="text-2xl md:text-4xl font-bold">
-          Decide que automatizar esta semana.
+          Decide qué automatizar esta semana.
         </h2>
         <p class="text-background/70">
           En 20 minutos revisamos tu proceso y te decimos si compensa construir,
-          configurar mejor lo que tienes o no tocarlo todavia.
+          configurar mejor lo que tienes o no tocarlo todavía.
         </p>
       </div>
       <a
@@ -252,7 +252,7 @@ const faqs = [
           arrowInverted={false}
           class="bg-background text-foreground hover:bg-background/90 shadow-none"
         >
-          Pedir diagnostico
+          Pedir diagnóstico
         </Button>
       </a>
     </section>

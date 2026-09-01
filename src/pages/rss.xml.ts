@@ -1,25 +1,25 @@
-import rss from '@astrojs/rss'
-import type { APIRoute } from 'astro'
-import { getCollection } from 'astro:content'
+import rss from "@astrojs/rss";
+import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
 
 export const GET: APIRoute = async ({ site }) => {
-  const blog = await getCollection('blog', ({ data }) => !data.draft)
-  const baseUrl = (site?.toString() || 'https://doscientos.es').replace(/\/$/, '')
+  const blog = await getCollection("blog", ({ data }) => !data.draft);
+  const baseUrl = (site?.toString() || "https://doscientos.es").replace(/\/$/, "");
 
   const sorted = blog.sort(
     (a, b) =>
       (b.data.updatedDate ?? b.data.publishDate).getTime() -
       (a.data.updatedDate ?? a.data.publishDate).getTime(),
-  )
+  );
 
   return rss({
-    title: 'Recursos de doscientos | Desarrollo Web y Automatización',
+    title: "Recursos de doscientos | Desarrollo Web y Automatización",
     description:
-      'Guias, checklists y articulos tecnicos sobre desarrollo web, automatizacion de procesos, MVPs y transformacion digital.',
+      "Guías, checklists y artículos técnicos sobre desarrollo web, automatización de procesos, MVPs y transformación digital.",
     site: baseUrl,
     xmlns: {
-      media: 'http://search.yahoo.com/mrss/',
-      atom: 'http://www.w3.org/2005/Atom',
+      media: "http://search.yahoo.com/mrss/",
+      atom: "http://www.w3.org/2005/Atom",
     },
     items: sorted.map((post) => ({
       title: post.data.title,
@@ -33,9 +33,9 @@ export const GET: APIRoute = async ({ site }) => {
         : `<media:content url="${baseUrl}/og-image.png" medium="image" />`,
     })),
     customData: [
-      '<language>es-es</language>',
+      "<language>es-es</language>",
       `<atom:link href="${baseUrl}/rss.xml" rel="self" type="application/rss+xml" />`,
-      '<ttl>1440</ttl>',
-    ].join('\n'),
-  })
-}
+      "<ttl>1440</ttl>",
+    ].join("\n"),
+  });
+};

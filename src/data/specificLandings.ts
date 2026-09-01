@@ -341,7 +341,7 @@ export const specificLandings: SpecificLanding[] = [
       {
         question: "¿Se puede conectar con email o formularios?",
         answer:
-          "Sí. Podemos crear entradas desde formularios, emails o cargas manuales según como trabaje vuestro equipo.",
+          "Sí. Podemos crear entradas desde formularios, emails o cargas manuales según cómo trabaje vuestro equipo.",
       },
       {
         question: "¿Sirve si ya tenemos otro programa?",
@@ -360,7 +360,7 @@ export const specificLandings: SpecificLanding[] = [
     heroTitle: "Un CRM para asesorías energéticas",
     heroHighlight: "que viven entre contratos y vencimientos",
     heroDescription:
-      "Centralizamos clientes, contratos, CUPS, renovaciones, incidencias y documentos para que cada comercial sepa que toca hacer hoy.",
+      "Centralizamos clientes, contratos, CUPS, renovaciones, incidencias y documentos para que cada comercial sepa qué toca hacer hoy.",
     primaryCta: "Revisar mi CRM actual",
     secondaryCta: "Diagnosticar renovaciones",
     subject: "CRM asesoría energética",
