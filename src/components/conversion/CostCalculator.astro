@@ -149,7 +149,7 @@ const { compact = false, ctaBase = "/diagnostico" } = Astro.props;
         noteEl.textContent =
           yearlyCost >= 4000
             ? "Este proceso ya tiene tamaño suficiente para revisarlo: puede haber ahorro, menos errores y más control."
-            : "El coste directo parece moderado. Revisariamos si el mayor problema esta en errores, retrasos u oportunidades perdidas.";
+            : "El coste directo parece moderado. Revisaríamos si el mayor problema está en los errores, los retrasos o las oportunidades perdidas.";
       }
       if (cta instanceof HTMLAnchorElement) {
         const base = cta.dataset.ctaBase ?? "/diagnostico";

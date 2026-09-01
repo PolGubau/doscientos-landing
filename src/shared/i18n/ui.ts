@@ -83,7 +83,7 @@ export const ui = {
 
     "faq.q6.question": "¿Cómo garantizáis la calidad de vuestro trabajo?",
     "faq.q6.answer":
-      "Combinamos experiencia técnica con procesos probados. Cada proyecto pasa por fases de diseño, desarrollo, testing y optimización. Trabajamos con las últimas tecnologías y mejores prácticas del sector. Puedes revisar nuestro portfolio para ver ejemplos reales de nuestro trabajo.",
+      "Combinamos experiencia técnica con procesos probados. Cada proyecto pasa por fases de diseño, desarrollo, pruebas y optimización. Trabajamos con las últimas tecnologías y mejores prácticas del sector. Puedes revisar nuestro portfolio para ver ejemplos reales de nuestro trabajo.",
 
     "faq.q7.question": "¿Ofrecéis asesoramiento antes de empezar?",
     "faq.q7.answer":

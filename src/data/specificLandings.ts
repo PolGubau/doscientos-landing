@@ -186,7 +186,7 @@ export const specificLandings: SpecificLanding[] = [
       },
       {
         title: "Los informes siempre se rehacen",
-        description: "Cada semana alguien repite el mismo reporte copiando datos y capturas.",
+        description: "Cada semana alguien repite el mismo informe copiando datos y capturas.",
       },
     ],
     solution: [
@@ -481,7 +481,7 @@ export const specificLandings: SpecificLanding[] = [
       },
       {
         value: "24-48h",
-        label: "para feedback",
+        label: "para recoger comentarios",
         description: "Trabajamos con demos frecuentes para ajustar con operativa real.",
       },
     ],
@@ -499,7 +499,7 @@ export const specificLandings: SpecificLanding[] = [
       {
         title: "Los informes llegan tarde",
         description:
-          "La dirección no ve márgenes, carga de trabajo o tareas bloqueadas hasta que alguien prepara el reporte.",
+          "La dirección no ve márgenes, carga de trabajo o tareas bloqueadas hasta que alguien prepara el informe.",
       },
     ],
     solution: [
@@ -533,14 +533,14 @@ export const specificLandings: SpecificLanding[] = [
       {
         title: "Construimos por módulos",
         description:
-          "Primero el flujo crítico, después documentos, integraciones, reportes o portal de cliente.",
+          "Primero el flujo crítico; después, documentos, integraciones, informes o un portal de cliente.",
       },
     ],
     fit: [
       "Empresas de mantenimiento, instalación o servicios técnicos",
       "Equipos que gestionan presupuestos y partes de trabajo",
       "Negocios con mucha documentación repetida",
-      "Pymes que necesitan visibilidad operativa sin cambiar todo el stack",
+      "Pymes que necesitan visibilidad operativa sin cambiar todas sus herramientas",
     ],
     faqs: [
       {
