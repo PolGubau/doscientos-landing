@@ -10,24 +10,24 @@ import SectionTag from "~/components/ui/SectionTag.astro";
 import { branding } from "~/config/branding";
 import MainLayout from "~/layouts/MainLayout.astro";
 
-const title = "Diagnostico de procesos para pymes | doscientos";
+const title = "Diagnóstico de procesos para pymes | doscientos";
 const description =
-  "Diagnostico gratis en 20 minutos: revisamos tu proceso, calculamos el coste oculto y te decimos que automatizar primero o si no merece la pena construir.";
+  "Diagnóstico gratis en 20 minutos: revisamos tu proceso, calculamos el coste oculto y te decimos qué automatizar primero o si no merece la pena construir.";
 
 const steps = [
   {
     title: "Nos cuentas el proceso real",
     description:
-      "El que pasa un martes cualquiera: herramientas, personas, pasos y donde se bloquea.",
+      "El que pasa un martes cualquiera: herramientas, personas, pasos y dónde se bloquea.",
   },
   {
     title: "Calculamos coste y riesgo",
     description:
-      "Tiempo repetido, errores, retrasos y oportunidades perdidas. Con numeros.",
+      "Tiempo repetido, errores, retrasos y oportunidades perdidas. Con números.",
   },
   {
-    title: "Salimos con una decision",
-    description: "Construir, simplificar o no tocarlo todavia. Sin ambiguedad.",
+    title: "Salimos con una decisión",
+    description: "Construir, simplificar o no tocarlo todavía. Sin ambigüedad.",
   },
 ];
 
@@ -44,17 +44,17 @@ const deliverables = [
   {
     title: "Prioridad clara",
     description:
-      "Te diremos que proceso atacar primero y cual dejar para mas adelante.",
+      "Te diremos qué proceso atacar primero y cuál dejar para más adelante.",
   },
   {
-    title: "Estimacion de impacto",
+    title: "Estimación de impacto",
     description:
-      "Calculamos horas, coste de error y senales de retorno antes de hablar de construir.",
+      "Calculamos horas, coste de error y señales de retorno antes de hablar de construir.",
   },
   {
-    title: "Primer modulo recomendado",
+    title: "Primer módulo recomendado",
     description:
-      "Si tiene sentido avanzar, salimos con un alcance inicial pequeno y medible.",
+      "Si tiene sentido avanzar, salimos con un alcance inicial pequeño y medible.",
   },
 ];
 
@@ -69,11 +69,11 @@ const proofCases = [
   {
     title: "Optinergia",
     description:
-      "CRM operativo para una asesoria energetica con contratos, clientes y seguimiento comercial.",
+      "CRM operativo para una asesoría energética con contratos, clientes y seguimiento comercial.",
     href: "/projects/optinergia",
   },
   {
-    title: "Bitacora ERP",
+    title: "Bitácora ERP",
     description:
       "Sistema interno para ordenar operaciones, trazabilidad y reporting sin depender de hojas sueltas.",
     href: "/projects/bitacora-erp",
@@ -81,26 +81,26 @@ const proofCases = [
   {
     title: "Flatmatch",
     description:
-      "Validacion de producto con alcance cerrado antes de invertir de mas en desarrollo.",
+      "Validación de producto con alcance cerrado antes de invertir de más en desarrollo.",
     href: "/projects/flatmatch",
   },
 ];
 
 const faqs = [
   {
-    question: "El diagnostico es realmente gratis?",
+    question: "¿El diagnóstico es realmente gratis?",
     answer:
-      "Si. Es una llamada corta para entender si hay un problema claro y si tiene sentido automatizarlo. Si no compensa, te lo diremos.",
+      "Sí. Es una llamada corta para entender si hay un problema claro y si tiene sentido automatizarlo. Si no compensa, te lo diremos.",
   },
   {
-    question: "Tengo que tener claro que quiero construir?",
+    question: "¿Tengo que tener claro qué quiero construir?",
     answer:
-      "No. De hecho, lo normal es llegar con un proceso que duele, no con una especificacion tecnica.",
+      "No. De hecho, lo normal es llegar con un proceso que duele, no con una especificación técnica.",
   },
   {
-    question: "Que recibo despues de la llamada?",
+    question: "¿Qué recibo después de la llamada?",
     answer:
-      "Una recomendacion concreta: que automatizar primero, que evitar y cual seria el primer modulo si decidimos construir.",
+      "Una recomendación concreta: qué automatizar primero, qué evitar y cuál sería el primer módulo si decidimos construir.",
   },
 ];
 ---
@@ -110,7 +110,7 @@ const faqs = [
   description={description}
   type="service"
   service={{
-    name: "Diagnostico de procesos para pymes",
+    name: "Diagnóstico de procesos para pymes",
     description,
     serviceType: "Business Process Automation",
     url: "/diagnostico",
@@ -119,7 +119,7 @@ const faqs = [
 >
   <div class="px-6 max-w-7xl mx-auto pt-24 pb-32 space-y-32 md:space-y-40">
     <Breadcrumbs
-      items={[{ name: "Diagnostico de procesos", url: "/diagnostico" }]}
+      items={[{ name: "Diagnóstico de procesos", url: "/diagnostico" }]}
     />
 
     {/* ── HERO ─────────────────────────────────────────────────────── */}
@@ -129,26 +129,26 @@ const faqs = [
           <h1
             class="text-3xl md:text-4xl font-bold tracking-tight text-foreground text-balance leading-[1.05]"
           >
-            Te decimos que proceso automatizar primero
-            <span class="text-primary"> y cuanto te esta costando.</span>
+            Te decimos qué proceso automatizar primero
+            <span class="text-primary"> y cuánto te está costando.</span>
           </h1>
           <p
             class="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed"
           >
-            Revisamos un proceso real, ponemos numeros al coste oculto y salimos
-            con una recomendacion concreta. Sin venderte una app innecesaria.
+            Revisamos un proceso real, ponemos números al coste oculto y salimos
+            con una recomendación concreta. Sin venderte una app innecesaria.
           </p>
         </div>
         <div class="flex flex-col sm:flex-row gap-3">
           <a href="#formulario">
-            <Button size="lg" withArrow>Quiero el diagnostico</Button>
+            <Button size="lg" withArrow>Quiero el diagnóstico</Button>
           </a>
           <a href="#calculadora-coste">
             <Button size="lg" variant="outline">Calcular coste primero</Button>
           </a>
         </div>
         <p class="text-sm text-muted-foreground">
-          Si no merece la pena automatizarlo, te lo decimos. Sin presion.
+          Si no merece la pena automatizarlo, te lo decimos. Sin presión.
         </p>
       </div>
 
@@ -183,7 +183,7 @@ const faqs = [
         </ul>
         <div class="border-t border-background/10 pt-5">
           <p class="text-xs text-background/40">
-            Sin compromiso de compra. La decision es tuya.
+            Sin compromiso de compra. La decisión es tuya.
           </p>
         </div>
       </aside>
@@ -195,16 +195,16 @@ const faqs = [
     {/* ── QUE OBTIENES ─────────────────────────────────────────────── */}
     <section class="space-y-12">
       <div class="max-w-2xl space-y-4" data-reveal="bottom">
-        <SectionTag>Decision, no demo generica</SectionTag>
+        <SectionTag>Decisión, no demo genérica</SectionTag>
         <h2
           class="text-3xl md:text-5xl font-bold tracking-tight text-foreground"
         >
-          Sales con una recomendacion accionable.
+          Sales con una recomendación accionable.
         </h2>
         <p class="text-muted-foreground leading-relaxed">
           El objetivo no es venderte una app. Es decidir si hay una
-          automatizacion rentable, cual seria el primer paso y que deberias
-          evitar para no construir de mas.
+          automatización rentable, cuál sería el primer paso y qué deberías
+          evitar para no construir de más.
         </p>
       </div>
       <div class="grid sm:grid-cols-3 gap-5" data-stagger="100">
