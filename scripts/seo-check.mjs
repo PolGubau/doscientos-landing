@@ -40,8 +40,27 @@ assert(
   'sitemap.xml.ts must use the shared commercial route registry.',
 )
 assert(
-  sitemap.includes('route.href !== "/diagnostico-procesos"'),
+  sitemap.includes("route.href !== '/diagnostico-procesos'"),
   'sitemap.xml.ts must avoid duplicating the diagnostic route.',
+)
+
+const breadcrumbs = read('src/components/seo/Breadcrumbs.astro')
+assert(
+  breadcrumbs.includes('new URL(item.url, baseUrl).toString()'),
+  'Breadcrumb JSON-LD must resolve absolute URLs without duplicate slashes.',
+)
+
+const notFound = read('src/pages/404.astro')
+assert(
+  notFound.includes('robots="noindex, nofollow"'),
+  'The 404 page must be excluded from search results.',
+)
+
+const vercelConfig = read('vercel.json')
+assert(
+  vercelConfig.includes('"source": "/blog/:path*"') &&
+    vercelConfig.includes('"destination": "/recursos/:path*"'),
+  'Legacy blog articles must permanently redirect to their canonical resource URLs.',
 )
 
 const blogTemplate = read('src/pages/blog/[...slug].astro')

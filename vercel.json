@@ -8,6 +8,16 @@
       "permanent": true
     },
     {
+      "source": "/blog",
+      "destination": "/recursos",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/recursos/:path*",
+      "permanent": true
+    },
+    {
       "source": "/recursos/tags/:tag((?!automatizacion|software-a-medida|digitalizacion|desarrollo-web|aplicaciones-moviles|arquitectura-software|gestion-empresarial).*)",
       "destination": "/recursos",
       "permanent": true

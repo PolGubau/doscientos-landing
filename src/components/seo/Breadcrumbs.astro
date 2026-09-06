@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { items, className } = Astro.props;
-const baseUrl = Astro.site?.toString() || "https://doscientos.es";
+const baseUrl = (Astro.site?.toString() || "https://doscientos.es").replace(/\/$/, "");
 const showVisualBreadcrumbs = items.length > 1;
 
 // Siempre incluir Home como primer item
@@ -31,7 +31,7 @@ const breadcrumbSchema = {
     "@type": "ListItem",
     position: index + 1,
     name: item.name,
-    item: item.url.startsWith("http") ? item.url : `${baseUrl}${item.url}`,
+    item: new URL(item.url, baseUrl).toString(),
   })),
 };
 ---
